@@ -16,6 +16,22 @@
 
     <properties>
 
+        <developers>
+            <developer>
+                <id>ezegonmac</id>
+                <name>Ezequiel</name>
+                <email>ezegonmac01@gmail.com</email>
+                <url></url>
+                <roles>
+                    <role></role>
+                </roles>
+                <properties>
+                <picUrl></picUrl>
+                </properties>
+            </developer>
+        </developers>
+
+
         <!-- Generic properties -->
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
