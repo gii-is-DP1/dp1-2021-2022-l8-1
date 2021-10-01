@@ -29,6 +29,24 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
+<developers>
+ <developer>
+ <id>TomasCB24</id>
+ <name>Tomas</name>
+ <email>tcamerob@gmail.com</email>
+ <url>http://www.tmht.com/leo</url>
+ <roles>
+ <role>leader</role>
+ </roles>
+ <properties>
+ <picUrl>
+https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.jpg
+</picUrl>
+ </properties>
+ </developer>
+
+ <!-- More developers ...-->
+</developers>
 
     <developers>
         <developer>
