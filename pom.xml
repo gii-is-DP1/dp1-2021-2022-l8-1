@@ -16,21 +16,6 @@
 
     <properties>
 
-    <developers>
-        <developer>
-            <id>ezegonmac</id>
-            <name>Ezequiel</name>
-            <email>ezegonmac01@gmail.com</email>
-            <url></url>
-            <roles>
-                <role></role>
-            </roles>
-            <properties>
-            <picUrl></picUrl>
-            </properties>
-        </developer>
-    </developers>
-
         <!-- Generic properties -->
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,6 +31,21 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
+
+    <developers>
+        <developer>
+            <id>ezegonmac</id>
+            <name>Ezequiel</name>
+            <email>ezegonmac01@gmail.com</email>
+            <url></url>
+            <roles>
+                <role></role>
+            </roles>
+            <properties>
+            <picUrl>https://avatars.githubusercontent.com/u/53529939?v=4</picUrl>
+            </properties>
+        </developer>
+    </developers>
 
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
