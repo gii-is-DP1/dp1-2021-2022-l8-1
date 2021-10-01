@@ -32,6 +32,18 @@
 
     <developers>
         <developer>
+            <id>ezegonmac</id>
+            <name>Ezequiel</name>
+            <email>ezegonmac01@gmail.com</email>
+            <url></url>
+            <roles>
+                <role></role>
+            </roles>
+            <properties>
+            <picUrl>https://avatars.githubusercontent.com/u/53529939?v=4</picUrl>
+            </properties>
+        </developer>
+        <developer>
             <id>IsmaelP19</id>
             <name>Ismael Pérez Ortiz</name>
             <email>ismaelperezortiz@gmail.com</email>
@@ -61,7 +73,6 @@
         </developer>
         <!-- More developers ...-->
     </developers>
-
 
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
