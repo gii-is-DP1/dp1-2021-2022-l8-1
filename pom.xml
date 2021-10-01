@@ -33,7 +33,11 @@
     </properties>
 
 <developers>
- <developer>
+ 
+
+ <!-- More developers ...-->
+</developers>
+<developer>
  <id>TomasCB24</id>
  <name>Tomas</name>
  <email>tcamerob@gmail.com</email>
@@ -47,10 +51,6 @@ https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.j
 </picUrl>
  </properties>
  </developer>
-
- <!-- More developers ...-->
-</developers>
-
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
