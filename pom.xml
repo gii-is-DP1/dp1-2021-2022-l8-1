@@ -3,7 +3,7 @@
     xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
-    <artifactId>spring-petclinic</artifactId>
+    <artifactId>L8-1</artifactId>
     <version>2.2.0.BUILD-SNAPSHOT</version>
 
     <parent>
@@ -11,7 +11,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
     </parent>
-    <name>petclinic</name>
+    <name>L8-1</name>
 
     <properties>
 
@@ -33,6 +33,58 @@
 
     <developers>
         <developer>
+            <id>TomasCB24</id>
+            <name>Tomas</name>
+            <email>tcamerob@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>leader</role>
+            </roles>
+            <properties>
+                <picUrl>
+                https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.jpg
+                </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>pabrivjim</id>
+            <name>Pablo</name>
+            <email>parijimenez@gmail.com</email>
+            <url>https://github.com/pabrivjim</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <picUrl> https://avatars.githubusercontent.com/u/80245685?v=4
+                </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>ezegonmac</id>
+            <name>Ezequiel</name>
+            <email>ezegonmac01@gmail.com</email>
+            <url></url>
+            <roles>
+                <role></role>
+            </roles>
+            <properties>
+                <picUrl>https://avatars.githubusercontent.com/u/53529939?v=4</picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>IsmaelP19</id>
+            <name>Ismael Pérez Ortiz</name>
+            <email>ismaelperezortiz@gmail.com</email>
+            <url>https://github.com/IsmaelP19</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <picUrl> https://avatars.githubusercontent.com/u/79575588?v=4
+                </picUrl>
+            </properties>
+        </developer>
+        <developer>
             <id>migromarj</id>
             <name>Miguel</name>
             <email>miguelromeroarjona@gmail.com</email>
@@ -45,6 +97,7 @@
                 </picUrl>
             </properties>
         </developer>
+
     </developers>
 
     <dependencies>
@@ -269,7 +322,6 @@
             <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
-
 
 
 </project>
