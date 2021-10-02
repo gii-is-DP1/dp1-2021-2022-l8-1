@@ -31,7 +31,23 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
-
+    <developers>
+        <developer>
+        <id>pabrivjim</id>
+        <name>Pablo</name>
+        <email>parijimenez@gmail.com</email>
+        <url>https://github.com/pabrivjim</url>
+        <roles>
+        <role>developer</role>
+        </roles>
+        <properties>
+        <picUrl>
+            https://avatars.githubusercontent.com/u/80245685?v=4
+       </picUrl>
+        </properties>
+        </developer>
+        <!-- More developers ...-->
+       </developers>
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
