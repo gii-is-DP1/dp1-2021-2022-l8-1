@@ -29,25 +29,36 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
- 
 
-<!-- More developers ...-->
-<developers>
-<developer>
- <id>TomasCB24</id>
- <name>Tomas</name>
- <email>tcamerob@gmail.com</email>
- <url>http://www.tmht.com/leo</url>
- <roles>
- <role>leader</role>
- </roles>
- <properties>
- <picUrl>
-https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.jpg
-</picUrl>
- </properties>
- </developer>
- 
+    <developers>
+        <developer>
+            <id>TomasCB24</id>
+            <name>Tomas</name>
+            <email>tcamerob@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>leader</role>
+            </roles>
+            <properties>
+                <picUrl>
+                https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.jpg
+                </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>pabrivjim</id>
+            <name>Pablo</name>
+            <email>parijimenez@gmail.com</email>
+            <url>https://github.com/pabrivjim</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+        https://avatars.githubusercontent.com/u/80245685?v=4
+   </picUrl>
+            </properties>
+        </developer>
         <developer>
             <id>ezegonmac</id>
             <name>Ezequiel</name>
@@ -57,7 +68,7 @@ https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.j
                 <role></role>
             </roles>
             <properties>
-            <picUrl>https://avatars.githubusercontent.com/u/53529939?v=4</picUrl>
+                <picUrl>https://avatars.githubusercontent.com/u/53529939?v=4</picUrl>
             </properties>
         </developer>
         <developer>
@@ -83,15 +94,10 @@ https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.j
                 <role>tech master</role>
             </roles>
             <properties>
-                <picUrl>
-                    
-                </picUrl>
+                <picUrl></picUrl>
             </properties>
         </developer>
-        
     </developers>
-
-
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
