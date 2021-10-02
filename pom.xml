@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
-    <artifactId>spring-petclinic</artifactId>
+    <artifactId>L8-1</artifactId>
     <version>2.2.0.BUILD-SNAPSHOT</version>
 
     <parent>
@@ -12,7 +10,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
     </parent>
-    <name>petclinic</name>
+    <name>L8-1</name>
 
     <properties>
 
@@ -31,23 +29,75 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
+
     <developers>
         <developer>
-        <id>pabrivjim</id>
-        <name>Pablo</name>
-        <email>parijimenez@gmail.com</email>
-        <url>https://github.com/pabrivjim</url>
-        <roles>
-        <role>developer</role>
-        </roles>
-        <properties>
-        <picUrl>
-            https://avatars.githubusercontent.com/u/80245685?v=4
-       </picUrl>
-        </properties>
+            <id>TomasCB24</id>
+            <name>Tomas</name>
+            <email>tcamerob@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>leader</role>
+            </roles>
+            <properties>
+                <picUrl>
+                https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.jpg
+                </picUrl>
+            </properties>
         </developer>
-        <!-- More developers ...-->
-       </developers>
+        <developer>
+            <id>pabrivjim</id>
+            <name>Pablo</name>
+            <email>parijimenez@gmail.com</email>
+            <url>https://github.com/pabrivjim</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+        https://avatars.githubusercontent.com/u/80245685?v=4
+   </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>ezegonmac</id>
+            <name>Ezequiel</name>
+            <email>ezegonmac01@gmail.com</email>
+            <url></url>
+            <roles>
+                <role></role>
+            </roles>
+            <properties>
+                <picUrl>https://avatars.githubusercontent.com/u/53529939?v=4</picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>IsmaelP19</id>
+            <name>Ismael Pérez Ortiz</name>
+            <email>ismaelperezortiz@gmail.com</email>
+            <url>https://github.com/IsmaelP19</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://avatars.githubusercontent.com/u/79575588?v=4
+                </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>Donnie</id>
+            <name>Donatello</name>
+            <email>donnie@tmht.com</email>
+            <url>http://www.tmht.com/donnie</url>
+            <roles>
+                <role>tech master</role>
+            </roles>
+            <properties>
+                <picUrl></picUrl>
+            </properties>
+        </developer>
+    </developers>
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
@@ -66,16 +116,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <dependency>  
-            <groupId>org.springframework.security</groupId>  
-            <artifactId>spring-security-taglibs</artifactId>  
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
         </dependency>
         <!-- Databases - Uses H2 by default -->
         <!-- dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
                 <scope>runtime</scope>
-        </dependency-->        
+        </dependency-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -270,7 +320,6 @@
             <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
-
 
 
 </project>
