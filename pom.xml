@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
     <artifactId>L8-1</artifactId>
@@ -29,8 +30,23 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
-    
-    <developers> 
+
+    <developers>
+        <developer>
+            <id>TomasCB24</id>
+            <name>Tomas</name>
+            <email>tcamerob@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+            <role>leader</role>
+            </roles>
+            <properties>
+            <picUrl>
+            https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.jpg
+            </picUrl>
+            </properties>
+        </developer>
+
         <developer> 
         <id>juradosalado</id> 
         <name>Juan</name> 
@@ -46,20 +62,18 @@
         </developer> 
 
         <developer>
-            <id>TomasCB24</id>
-            <name>Tomas</name>
-            <email>tcamerob@gmail.com</email>
-            <url>http://www.tmht.com/leo</url>
+            <id>pabrivjim</id>
+            <name>Pablo</name>
+            <email>parijimenez@gmail.com</email>
+            <url>https://github.com/pabrivjim</url>
             <roles>
-            <role>leader</role>
+                <role>developer</role>
             </roles>
             <properties>
-            <picUrl>
-            https://sm.ign.com/ign_es/screenshot/default/spider-man-sin-camino-a-casa_uf48.jpg
-            </picUrl>
+                <picUrl> https://avatars.githubusercontent.com/u/80245685?v=4
+                </picUrl>
             </properties>
         </developer>
-        
         <developer>
             <id>ezegonmac</id>
             <name>Ezequiel</name>
@@ -69,7 +83,7 @@
                 <role></role>
             </roles>
             <properties>
-            <picUrl>https://avatars.githubusercontent.com/u/53529939?v=4</picUrl>
+                <picUrl>https://avatars.githubusercontent.com/u/53529939?v=4</picUrl>
             </properties>
         </developer>
 
@@ -82,29 +96,26 @@
                 <role>developer</role>
             </roles>
             <properties>
-                <picUrl>
-                    https://avatars.githubusercontent.com/u/79575588?v=4
+                <picUrl> https://avatars.githubusercontent.com/u/79575588?v=4
                 </picUrl>
             </properties>
         </developer>
 
         <developer>
-            <id>Donnie</id>
-            <name>Donatello</name>
-            <email>donnie@tmht.com</email>
-            <url>http://www.tmht.com/donnie</url>
+            <id>migromarj</id>
+            <name>Miguel</name>
+            <email>miguelromeroarjona@gmail.com</email>
+            <url>https://github.com/migromarj</url>
             <roles>
-                <role>tech master</role>
+                <role>developer</role>
             </roles>
             <properties>
-                <picUrl>
-                    
+                <picUrl> https://avatars.githubusercontent.com/u/80202474?v=4
                 </picUrl>
             </properties>
         </developer>
-        
-    </developers>
 
+    </developers>
 
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
