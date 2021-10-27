@@ -12,6 +12,6 @@ public class Game extends NamedEntity {
     private String name;
     private String gameCode;
     private LocalDateTime startTime;
-    private LocalDateTime EndTime;
+    private LocalDateTime endTime;
     
 }
