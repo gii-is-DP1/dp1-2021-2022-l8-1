@@ -1,9 +1,17 @@
 package org.springframework.samples.petclinic.game;
 
+import java.util.Optional;
+
+import javax.validation.Valid;
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -19,6 +27,40 @@ public class GameController {
         Iterable<Game> games = gameService.findAll();
         modelMap.addAttribute("games" , games);
         return vista;
+    }
+
+    @GetMapping(path="/new")
+    public String crearJuego(ModelMap modelMap){
+        String view = "games/editGame"; //Hacer pagina
+        modelMap.addAttribute("game", new Game());
+        return view;
+    }
+
+    @PostMapping(path="/save")
+    public String salvarEvento(@Valid Game game, BindingResult result,ModelMap modelMap){
+        String view = "games/listadoPartidas";
+        if(result.hasErrors())
+        {
+            modelMap.addAttribute("game", game);
+            return "games/editGames";
+        }else{
+            gameService.save(game);
+            modelMap.addAttribute("message","Game successfully saved!");
+        }
+        return view;
+    }
+
+    @GetMapping(path="/delete/{gameId}")
+    public String borrarJuego(@PathVariable("gameId") int gameId,ModelMap modelMap){
+        String view = "games/listadoPartidas";
+        Optional<Game> game = gameService.findGameById(gameId); //optional puede ser error el import
+        if(game.isPresent()){
+            gameService.delete(game.get());
+            modelMap.addAttribute("message","Game successfully deleted!");
+        }else{
+            modelMap.addAttribute("message","Game not Found!");
+        }
+        return view;        
     }
 
 }
