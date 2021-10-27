@@ -31,7 +31,7 @@ public class GameController {
 
     @GetMapping(path="/new")
     public String crearJuego(ModelMap modelMap){
-        String view = "games/editGame"; //Hacer pagina
+        String view = "games/editarJuego"; //Hacer pagina
         modelMap.addAttribute("game", new Game());
         return view;
     }
@@ -42,17 +42,17 @@ public class GameController {
         if(result.hasErrors())
         {
             modelMap.addAttribute("game", game);
-            return "games/editGames";
+            return "games/editarJuego";
         }else{
             gameService.save(game);
             modelMap.addAttribute("message","Game successfully saved!");
+            view = listadoPartidas(modelMap);
         }
         return view;
     }
 
     @GetMapping(path="/delete/{gameId}")
     public String borrarJuego(@PathVariable("gameId") int gameId,ModelMap modelMap){
-        String view = "games/listadoPartidas";
         Optional<Game> game = gameService.findGameById(gameId); //optional puede ser error el import
         if(game.isPresent()){
             gameService.delete(game.get());
@@ -60,6 +60,7 @@ public class GameController {
         }else{
             modelMap.addAttribute("message","Game not Found!");
         }
+        String view = listadoPartidas(modelMap);
         return view;        
     }
 
