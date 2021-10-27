@@ -1,18 +1,18 @@
-package org.springframework.samples.petclinic.service;
+package org.springframework.samples.petclinic.game;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.repository.GameRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GameService {
     @Autowired
-    private GameRepository gameRepo;
+    private GameRepository gameRepo; //Error
 
     @Transactional
     public int gameCount(){
+        //int data = (int) gameRepo.count();
         return (int) gameRepo.count();
     }
 }

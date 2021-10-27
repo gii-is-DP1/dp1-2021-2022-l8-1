@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.repository;
+package org.springframework.samples.petclinic.game;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.samples.petclinic.model.Game;
 
