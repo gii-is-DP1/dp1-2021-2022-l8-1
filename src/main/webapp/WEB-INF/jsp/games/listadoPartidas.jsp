@@ -13,9 +13,7 @@
         <thead>
         <tr>
             <th style="width: 200px;">Name</th>
-            <th style="width: 200px;">Game Code</th>
-            <th style="width: 200px;">Start Time</th>
-            <th style="width: 200px;">End Time</th>
+            <th style="width: 200px;">GameCode</th>
         </tr>
         </thead>
         <tbody>
@@ -25,29 +23,8 @@
                     <c:out value="${game.name}"/>
                 </td>
                 <td>
-                    <c:out value="${game.gameCode}"/>
+                    <c:out value="${game.code}"/>
                 </td>
-                <td>
-                    <c:out value="${game.startTime}"/>
-                </td>
-                <td>
-                    <c:out value="${game.endTime}"/>
-                </td>
-                <td>
-                    <c:forEach var="pet" items="${owner.pets}">
-                        <c:out value="${pet.name} "/>
-                    </c:forEach>
-                </td>
-                
-      
-<!--
-                <td> 
-                    <c:out value="${owner.user.username}"/> 
-                </td>
-                <td> 
-                   <c:out value="${owner.user.password}"/> 
-                </td> 
--->
                 
             </tr>
         </c:forEach>
