@@ -3,8 +3,8 @@ package org.springframework.samples.petclinic.game;
 import java.util.Optional;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,51 +17,91 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/games")
 public class GameController {
-    
+
     @Autowired
     private GameService gameService;
 
     @GetMapping()
-    public String listadoPartidas(ModelMap modelMap){
-        String vista ="games/listadoPartidas";
+    public String listadoPartidas(ModelMap modelMap) {
+        String vista = "games/listadoPartidas";
         Iterable<Game> games = gameService.findAll();
-        modelMap.addAttribute("games" , games);
+        modelMap.addAttribute("games", games);
         return vista;
     }
 
-    @GetMapping(path="/new")
-    public String crearJuego(ModelMap modelMap){
-        String view = "games/editarJuego"; //Hacer pagina
+    @GetMapping(path = "/new")
+    public String crearJuego(ModelMap modelMap) {
+        String view = "games/editarJuego"; // Hacer pagina
         modelMap.addAttribute("game", new Game());
         return view;
     }
 
-    @PostMapping(path="/save")
-    public String salvarEvento(@Valid Game game, BindingResult result,ModelMap modelMap){
+    @PostMapping(path = "/save")
+    public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
         String view = "games/listadoPartidas";
-        if(result.hasErrors())
-        {
+        if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
             return "games/editarJuego";
-        }else{
+        } else {
             gameService.save(game);
-            modelMap.addAttribute("message","Game successfully saved!");
+            modelMap.addAttribute("message", "Game successfully saved!");
             view = listadoPartidas(modelMap);
         }
         return view;
     }
 
-    @GetMapping(path="/delete/{gameId}")
-    public String borrarJuego(@PathVariable("gameId") int gameId,ModelMap modelMap){
-        Optional<Game> game = gameService.findGameById(gameId); //optional puede ser error el import
-        if(game.isPresent()){
+    @GetMapping(path = "/delete/{gameId}")
+    public String borrarJuego(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+        Optional<Game> game = gameService.findGameById(gameId); // optional puede ser error el import
+        if (game.isPresent()) {
             gameService.delete(game.get());
-            modelMap.addAttribute("message","Game successfully deleted!");
-        }else{
-            modelMap.addAttribute("message","Game not Found!");
+            modelMap.addAttribute("message", "Game successfully deleted!");
+        } else {
+            modelMap.addAttribute("message", "Game not Found!");
         }
         String view = listadoPartidas(modelMap);
-        return view;        
+        return view;
     }
+
+    private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
+
+    @GetMapping(path = "/edit/{gameId}")
+    public String actualizarJuego(@PathVariable("gameId") int gameId, ModelMap model) {
+        Game game = gameService.findGameById(gameId).get(); // optional puede ser error el import
+        model.put("game", game);
+        return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+    }
+
+     /**
+     *
+     * @param game
+     * @param result
+     * @param gameId
+     * @param model
+     * @param name
+     * @param code
+     * @param model
+     * @return
+     */
+
+    @PostMapping(value = "/edit/{gameId}")
+	public String processUpdateForm(@Valid Game game, BindingResult result,@PathVariable("gameId") int gameId, ModelMap model) {
+		if (result.hasErrors()) {
+			model.put("game", game);
+			return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+                    Game gameToUpdate=this.gameService.findGameById(gameId).get();
+			BeanUtils.copyProperties(game, gameToUpdate, "id","game","games","code");                                                                                  
+                    try {                    
+                        this.gameService.save(gameToUpdate);                    
+                    
+                    } catch (Exception ex) {
+                        result.rejectValue("name", "duplicate", "already exists");
+                        return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+                    }
+			return "redirect:/games";
+		}
+	}
 
 }
