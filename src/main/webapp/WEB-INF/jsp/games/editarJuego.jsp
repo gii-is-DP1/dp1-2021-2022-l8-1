@@ -24,7 +24,7 @@
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <input type="hidden" name="petId" value="${game.id}"/>
+                    <input type="hidden" name="gameId" value="${game.id}"/>
                     <button class="btn btn-default" type="submit">Save Game</button>
                 </div>
             </div>

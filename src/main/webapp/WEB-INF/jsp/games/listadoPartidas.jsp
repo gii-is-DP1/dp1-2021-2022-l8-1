@@ -14,7 +14,8 @@
         <tr>
             <th style="width: 200px;">Name</th>
             <th style="width: 200px;">GameCode</th>
-            <th>Actions</th>
+            <th>Delete game</th>
+            <th>Update game</th>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +32,12 @@
                         <spring:param name="gameId" value="${game.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(gameUrl)}">Delete</a>
+                </td>
+                <td>
+                    <spring:url value="/games/edit/{gameId}" var="gameUrl">
+                        <spring:param name="gameId" value="${game.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(gameUrl)}">Edit</a>
                 </td>
                 
             </tr>
