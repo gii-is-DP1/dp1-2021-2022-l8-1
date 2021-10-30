@@ -27,5 +27,6 @@ public class Person extends NamedEntity {
     
     @NotEmpty
     @Email
+    @Column(unique = true)
     private String email;
 }
