@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.achievement;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -30,11 +32,12 @@ public class Achievement extends NamedEntity {
     @NotEmpty
     private Integer minValue;
     
+    @Enumerated(EnumType.STRING)
     @Column(name="achievement_type")
     @NotEmpty
     private ACHIEVEMENT_TYPE achievementType;
     
     @Column(name="condition")
     @NotEmpty
-    private Integer condition;
+    private String condition;
 }
