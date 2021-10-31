@@ -18,8 +18,12 @@ public class Game extends NamedEntity {
 
     @Column(unique = true)
     private String code;
-
     
+    private Integer numberOfPlayers;
+    private Integer numberOfTurn;
+    private String actualPlayer;
+    private Integer remainsCards;
+     
 
     // @DateTimeFormat(pattern = "yyyy/MM/dd")
     // private LocalDateTime startTime;

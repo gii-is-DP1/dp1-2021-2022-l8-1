@@ -62,7 +62,7 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO game(name,code) VALUES ('Prueba', 'ABCD124');
+INSERT INTO game(name,code, number_of_players, number_of_turn, actual_player,remains_cards) VALUES ('Prueba', 'ABCD124', 4,7,'Juan', 34);
 
 INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');
 
