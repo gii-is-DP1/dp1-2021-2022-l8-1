@@ -23,7 +23,7 @@ public class CardService {
     }
 
     @Transactional
-    public Optional<Card> findPersonById(int id) {
+    public Optional<Card> findCardById(int id) {
         return cardRepo.findById(id);
     }
 }
