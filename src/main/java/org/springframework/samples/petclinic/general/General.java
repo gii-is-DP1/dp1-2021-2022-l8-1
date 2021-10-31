@@ -14,8 +14,10 @@ import lombok.Data;
 public class General extends NamedEntity {
 
     @NotEmpty
+    @Column(name = "total_games")
     private String totalGames;
     
     @NotEmpty
-    private String totalDurationAllGames; //In seconds
+    @Column(name = "total_duration_all_games")
+    private Integer totalDurationAllGames; //In seconds
 }
