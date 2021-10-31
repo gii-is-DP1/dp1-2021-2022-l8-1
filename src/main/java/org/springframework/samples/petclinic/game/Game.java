@@ -19,6 +19,8 @@ public class Game extends NamedEntity {
     @Column(unique = true)
     private String code;
 
+    
+
     // @DateTimeFormat(pattern = "yyyy/MM/dd")
     // private LocalDateTime startTime;
 
