@@ -13,7 +13,7 @@ public class CardService {
     private CardRepository cardRepo;
     
     @Transactional
-    public int personCount() {
+    public int cardCount() {
         return (int) cardRepo.count();
     }
 
