@@ -73,3 +73,11 @@ INSERT INTO achievements(id, name, description, icon, min_value,achievement_type
     VALUES (1, 'Gold_points', 'Get 300 points.', './img/achiev_gold_points.png', 300, 'GOLD', 'points');
     
 INSERT INTO cell(position,card) VALUES (1,'Revolver');
+
+INSERT INTO islands(id,island_num) VALUES (1,1);
+INSERT INTO islands(id,island_num) VALUES (2,2);
+INSERT INTO islands(id,island_num) VALUES (3,3);
+INSERT INTO islands(id,island_num) VALUES (4,4);
+INSERT INTO islands(id,island_num) VALUES (5,5);
+INSERT INTO islands(id,island_num) VALUES (6,6);
+INSERT INTO islands(id,island_num) VALUES (7,7);
