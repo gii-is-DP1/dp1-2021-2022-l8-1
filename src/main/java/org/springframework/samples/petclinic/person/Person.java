@@ -14,19 +14,22 @@ import lombok.Data;
 public class Person extends NamedEntity {
 
     @NotEmpty
+    @Column(name = "first_name")
     private String firstName;
     
     @NotEmpty
+    @Column(name = "surname")
     private String surname;
 
     @NotEmpty
+    @Column(name = "password")
     private String password;
     
-    @Column(unique = true)
+    @Column(unique = true, name = "user_name")
     private String userName;
     
     @NotEmpty
     @Email
-    @Column(unique = true)
+    @Column(unique = true, name = "email")
     private String email;
 }
