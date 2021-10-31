@@ -66,4 +66,5 @@ INSERT INTO game(name,code) VALUES ('Prueba', 'ABCD124');
 
 INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');
 
-INSERT INTO cards(id,card_type) VALUES (1, DOUBLON);
+INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
