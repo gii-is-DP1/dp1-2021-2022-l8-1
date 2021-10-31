@@ -26,16 +26,4 @@ public class CardService {
     public Optional<Card> findPersonById(int id) {
         return cardRepo.findById(id);
     }
-
-    @Transactional
-    public void save(Card card){
-        cardRepo.save(card);
-    }
-
-    @Transactional
-    public void delete(Card card){
-        cardRepo.delete(card);
-    }
-
-
 }
