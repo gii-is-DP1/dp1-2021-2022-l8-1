@@ -7,14 +7,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.model.NamedEntity;
 
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "cards")
-public class Card extends BaseEntity {
+public class Card extends NamedEntity {
 
     @Column(name = "card_type")
     @Enumerated(EnumType.STRING)
