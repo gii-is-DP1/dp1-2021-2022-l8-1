@@ -87,6 +87,7 @@ INSERT INTO islands(id,island_num) VALUES (5,5);
 INSERT INTO islands(id,island_num) VALUES (6,6);
 INSERT INTO islands(id,island_num) VALUES (7,7);
 
-
 INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games) 
     VALUES (1, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56);
+
+INSERT INTO general(id, total_games, total_duration_all_games) VALUES (1, 200, 300);

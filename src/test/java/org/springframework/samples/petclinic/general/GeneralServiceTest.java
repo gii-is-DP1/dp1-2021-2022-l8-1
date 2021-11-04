@@ -17,6 +17,6 @@ public class GeneralServiceTest {
     @Test
     public void testCountWithInitialData(){
         int count = generalService.generalCount();
-        assertEquals(count,0);
+        assertEquals(count,1);
     }
 }

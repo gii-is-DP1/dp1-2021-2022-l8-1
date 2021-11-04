@@ -7,14 +7,14 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name="islands")
-public class Island extends NamedEntity {
+public class Island extends BaseEntity {
     
     @Column(name="island_num")
     @NotEmpty
