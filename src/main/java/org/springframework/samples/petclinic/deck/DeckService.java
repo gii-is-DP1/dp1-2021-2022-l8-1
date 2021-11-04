@@ -12,7 +12,7 @@ public class DeckService {
     private DeckRepository deckRepo;
 
     @Transactional
-    public int getDeckSize() {  // obtain the number of cards in the deck
+    public int getDecksNumber() {  
         return (int) deckRepo.count();
     }
 }
