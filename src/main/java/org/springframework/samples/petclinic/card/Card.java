@@ -1,24 +1,23 @@
-package org.springframework.samples.petclinic.cell;
+package org.springframework.samples.petclinic.card;
 
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.samples.petclinic.card.CARD_TYPE;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
 import lombok.Data;
 
 @Data
 @Entity
-public class Cell extends NamedEntity {
-    
-    private Integer position;
-    
+@Table(name = "cards")
+public class Card extends NamedEntity {
+
+    @Column(name = "card_type")
     @Enumerated(EnumType.STRING)
     @NotEmpty
-    private CARD_TYPE card;  
+    private CARD_TYPE cardType;
 }
-

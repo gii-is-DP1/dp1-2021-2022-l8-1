@@ -62,8 +62,28 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO game(name,code, number_of_players, number_of_turn, actual_player,remains_cards) VALUES ('Prueba', 'ABCD124', 4,7,'Juan', 34);
+INSERT INTO game(name,code,players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
+VALUES ('Prueba', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY; CROWN,STIR; SWORD,DIAMOND','3,4,7');
+-- AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
 
 INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');
 
-INSERT INTO cell(position,card) VALUES (1,'Revolver');
+INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
+
+INSERT INTO achievements(id, name, description, icon, min_value,achievement_type , condition)
+    VALUES (1, 'Gold_points', 'Get 300 points.', './img/achiev_gold_points.png', 300, 'GOLD', 'points');
+    
+INSERT INTO cell(position,card) VALUES (1,'DOUBLON');
+
+INSERT INTO islands(id,island_num) VALUES (1,1);
+INSERT INTO islands(id,island_num) VALUES (2,2);
+INSERT INTO islands(id,island_num) VALUES (3,3);
+INSERT INTO islands(id,island_num) VALUES (4,4);
+INSERT INTO islands(id,island_num) VALUES (5,5);
+INSERT INTO islands(id,island_num) VALUES (6,6);
+INSERT INTO islands(id,island_num) VALUES (7,7);
+
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games) 
+    VALUES (1, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56);
