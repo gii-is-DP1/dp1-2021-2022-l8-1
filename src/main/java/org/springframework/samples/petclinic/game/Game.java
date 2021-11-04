@@ -1,27 +1,19 @@
 package org.springframework.samples.petclinic.game;
 
-import java.util.List;
-
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 
 //import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 
-import org.springframework.samples.petclinic.card.CARD_TYPE;
-import org.springframework.samples.petclinic.card.Card;
 //import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
-
 
 import lombok.Data;
 
 @Data
 @Entity
 public class Game extends NamedEntity {
-    private String name;
 
     @Column(unique = true)
     private String code;
