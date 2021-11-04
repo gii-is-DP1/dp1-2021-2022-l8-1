@@ -91,3 +91,5 @@ INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_g
     VALUES (1, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56);
 
 INSERT INTO general(id, total_games, total_duration_all_games) VALUES (1, 200, 300);
+
+INSERT INTO deck(id) VALUES (1);
