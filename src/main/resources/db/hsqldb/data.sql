@@ -62,7 +62,9 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO game(name,code, number_of_players, number_of_turn, actual_player,remains_cards) VALUES ('Prueba', 'ABCD124', 4,7,'Juan', 34);
+INSERT INTO game(name,code,players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
+VALUES ('Prueba', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY; CROWN,STIR; SWORD,DIAMOND','3,4,7');
+-- AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
 
 INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');
 
@@ -72,7 +74,7 @@ INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
 INSERT INTO achievements(id, name, description, icon, min_value,achievement_type , condition)
     VALUES (1, 'Gold_points', 'Get 300 points.', './img/achiev_gold_points.png', 300, 'GOLD', 'points');
     
-INSERT INTO cell(position,card) VALUES (1,'Revolver');
+INSERT INTO cell(position,card) VALUES (1,'DOUBLON');
 
 INSERT INTO islands(id,island_num) VALUES (1,1);
 INSERT INTO islands(id,island_num) VALUES (2,2);
