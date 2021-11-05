@@ -91,3 +91,5 @@ INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_g
 INSERT INTO boards(id) VALUES(1);
 
 INSERT INTO forums(id, name, description) VALUES(1, 'Players', 'Forum about players');
+
+INSERT INTO topics(id, name, author, description) VALUES(1, 'Rival players', 'Player1', 'do you want to be my rival?');
