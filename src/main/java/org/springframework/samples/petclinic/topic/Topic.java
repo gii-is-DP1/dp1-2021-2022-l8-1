@@ -14,8 +14,4 @@ import lombok.Data;
 public class Topic extends NamedEntity{
     @NotEmpty
     private String description;
-
-    @NotEmpty
-    private String author;
-    
 }
