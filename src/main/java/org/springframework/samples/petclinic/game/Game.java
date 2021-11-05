@@ -1,13 +1,10 @@
 package org.springframework.samples.petclinic.game;
 
-<<<<<<< HEAD
 import java.time.LocalDateTime;
 
 import java.util.List;
 
 import javax.persistence.CollectionTable;
-=======
->>>>>>> master
 import javax.persistence.Column;
 
 //import java.time.LocalDateTime;
@@ -17,12 +14,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotEmpty;
 
-<<<<<<< HEAD
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
 import org.springframework.samples.petclinic.card.Card;
-=======
->>>>>>> master
 //import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
