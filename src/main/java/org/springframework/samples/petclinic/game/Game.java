@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import java.util.List;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 
 //import java.time.LocalDateTime;
@@ -12,11 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.card.CARD_TYPE;
-import org.springframework.samples.petclinic.card.Card;
 //import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
@@ -28,30 +24,21 @@ public class Game extends NamedEntity {
 
     @Column(unique = true)
     private String code;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime startTime = LocalDateTime.now();
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime endTime; //HABRIA QUE HACERLO CON UNA RESTA
     
     private Integer numberOfPlayers;
-    private Integer numberOfTurn;
-    private String players;
     private Integer actualPlayer;
+    private Integer numberOfTurn;
     private Integer remainsCards;
-    
-    // @ElementCollection(targetClass = CARD_TYPE.class)
-    // private List<List<CARD_TYPE>> deck; 
-    
-    private String deck;//HEMOS SEPARADO LOS MAZOS POR PUNTO Y COMA Y LAS CARTAS DE CADA MAZO POR COMA, PARA DESPUES OBTENER EL QUE NOS HAGA FALTA Y PARSEARLO
-    private String points; //HEMOS SEPARADO LOS PUNTOS POR UNA COMA PARA DESPUES OBTENER EL QUE NOS HAGA FALTA Y PARSEARLO
+    private String deck;
+    private String players;
+    private String points; //pointsOfPlayers
 
-    
-     
-
-     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-     private LocalDateTime startTime = LocalDateTime.now();
-
-     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-     private LocalDateTime endTime;
-
-     @Enumerated(EnumType.STRING)
-     //@NotEmpty
-     private PRIVACITY privacity;
+    @Enumerated(EnumType.STRING)
+    private PRIVACITY privacity;
     
 }
