@@ -2,16 +2,17 @@ package org.springframework.samples.petclinic.person;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Data;
 
 @Data
 @Entity
-public class Person extends NamedEntity {
+public class Person extends BaseEntity {
 
     @NotEmpty
     @Column(name = "first_name")
