@@ -71,9 +71,12 @@ INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo',
 INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
 
-INSERT INTO achievements(id, name, description, icon, min_value,achievement_type , condition)
-    VALUES (1, 'Gold_points', 'Get 300 points.', './img/achiev_gold_points.png', 300, 'GOLD', 'points');
-    
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
+    VALUES (1, 'Gold_points', 'Get 300 points.', './img/achiev_gold_points.png', 300, 'GOLD', 'POINTS');
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
+    VALUES (2, 'Silver_losses', 'Loose 200 times.', './img/achiev_silver_looses.png', 200, 'SILVER', 'LOOSES');
+
+
 INSERT INTO cell(position,card) VALUES (1,'DOUBLON');
 
 INSERT INTO islands(id,island_num) VALUES (1,1);
@@ -84,12 +87,17 @@ INSERT INTO islands(id,island_num) VALUES (5,5);
 INSERT INTO islands(id,island_num) VALUES (6,6);
 INSERT INTO islands(id,island_num) VALUES (7,7);
 
-
 INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games) 
     VALUES (1, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56);
 
+<<<<<<< HEAD
 INSERT INTO boards(id) VALUES(1);
 
 INSERT INTO forums(id, name, description) VALUES(1, 'Players', 'Forum about players');
 
 INSERT INTO topics(id, name, author, description) VALUES(1, 'Rival players', 'Player1', 'do you want to be my rival?');
+=======
+INSERT INTO general(id, total_games, total_duration_all_games) VALUES (1, 200, 300);
+
+INSERT INTO deck(id) VALUES (1);
+>>>>>>> master

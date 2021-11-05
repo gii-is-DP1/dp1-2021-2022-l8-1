@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.achievement;
+package org.springframework.samples.petclinic.deck;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -9,15 +9,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class AchievementServiceTest {
-    
-    @Autowired
-    private AchievementService achievementService;
-    
-    @Test
-    public void testCountWithInitialData(){
-        int count = achievementService.achievementCount();
-        assertEquals(count,2);
-    }
+public class DeckServiceTest {
 
+    @Autowired
+    private DeckService deckService;
+
+    @Test
+    public void testCountWithInitialData() {
+        int count = deckService.getDecksNumber();
+        assertEquals(1, count);
+    }
+    
 }

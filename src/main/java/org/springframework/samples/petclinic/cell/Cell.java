@@ -8,7 +8,10 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.card.CARD_TYPE;
 import org.springframework.samples.petclinic.model.BaseEntity;
+<<<<<<< HEAD
 import org.springframework.samples.petclinic.model.NamedEntity;
+=======
+>>>>>>> master
 
 import lombok.Data;
 

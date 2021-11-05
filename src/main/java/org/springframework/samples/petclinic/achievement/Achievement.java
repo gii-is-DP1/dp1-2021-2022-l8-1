@@ -32,12 +32,13 @@ public class Achievement extends NamedEntity {
     @NotEmpty
     private Integer minValue;
     
-    @Enumerated(EnumType.STRING)
     @Column(name="achievement_type")
+    @Enumerated(EnumType.STRING)
     @NotEmpty
     private ACHIEVEMENT_TYPE achievementType;
     
-    @Column(name="condition")
+    @Column(name="parameter")
+    @Enumerated(EnumType.STRING)
     @NotEmpty
-    private String condition;
+    private PARAMETER parameter;
 }
