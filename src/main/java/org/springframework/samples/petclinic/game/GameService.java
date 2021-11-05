@@ -38,4 +38,11 @@ public class GameService {
         gameRepo.delete(game);
     }
 
+    //INVENTADO QUE FLIPAS
+    @Transactional
+    public int getTotalPlayers(int id){
+        return gameRepo.findTotalPlayers(id);
+    }
+
+
 }
