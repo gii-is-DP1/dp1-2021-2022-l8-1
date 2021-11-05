@@ -12,6 +12,20 @@
                 $("#date").datepicker({dateFormat: 'yy/mm/dd'});
             }) ;
         </script>
+
+        <script>
+            let btnPublic = document.getElementById("id-public");
+            let btnPrivate = document.getElementById("id-private");
+            var privacity;
+            btnPublic.onclick = function(){
+                privacity = PUBLIC;
+
+            }
+            btnPrivate.onclick = function(){
+                privacity = PRIVATE;
+
+            }
+        </script>
     </jsp:attribute>
     <jsp:body>
         <h2>Game</h2>
@@ -20,11 +34,14 @@
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Name of room" name="name"/>
                 <petclinic:inputField label="Code of the room" name="code"/>
+                <button class="btn btn-default" type="button" id="id-public">Public</button>
+                <button class="btn btn-default" type="button" id="id-private">Private</button>
             </div>
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="hidden" name="gameId" value="${game.id}"/>
+                    <!--<input type="hidden" name="privacity" value="privacity"/> -->
                     <button class="btn btn-default" type="submit">Save Game</button>
                 </div>
             </div>
