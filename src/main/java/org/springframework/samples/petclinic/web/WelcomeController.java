@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.model.Person1;
 
 @Controller
 public class WelcomeController {
@@ -16,13 +16,13 @@ public class WelcomeController {
 	  @GetMapping({"/","/welcome"})
 	  public String welcome(Map<String, Object> model) {
 		  
-		List<Person> persons = new ArrayList<Person>();
-		Person a = new Person();
-		Person b = new Person();
-		Person c = new Person();
-		Person d = new Person();
-		Person e = new Person();
-		Person f = new Person();
+		List<Person1> persons = new ArrayList<Person1>();
+		Person1 a = new Person1();
+		Person1 b = new Person1();
+		Person1 c = new Person1();
+		Person1 d = new Person1();
+		Person1 e = new Person1();
+		Person1 f = new Person1();
 
 
 		a.setFirstName("Ismael");

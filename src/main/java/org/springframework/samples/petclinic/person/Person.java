@@ -1,17 +1,15 @@
 package org.springframework.samples.petclinic.person;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 
-import lombok.Data;
 
-@Data
-@Entity
+
+@MappedSuperclass
 public class Person extends BaseEntity {
 
     @NotEmpty
