@@ -1,5 +1,13 @@
 package org.springframework.samples.petclinic.achievement;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.Collection;
 
-public interface AchievementRepository extends CrudRepository<Achievement, Integer>{}
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
+public interface AchievementRepository extends CrudRepository<Achievement, Integer>{
+
+    @Query("SELECT a FROM Achievements a WHERE a.player.id = :playerId")
+	Collection<Achievement> findByPlayerId(@Param("playerId")int playerId);
+}
