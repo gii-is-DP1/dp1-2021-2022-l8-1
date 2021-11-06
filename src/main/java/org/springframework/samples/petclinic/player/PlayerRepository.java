@@ -9,9 +9,8 @@ import org.springframework.samples.petclinic.achievement.Achievement;
 
 public interface PlayerRepository extends CrudRepository<Player, Integer> {
 
-    @Modifying
-    void addAchievement(String name) throws DataAccessException;
+    //@Modifying
+    //void addAchievement(String name) throws DataAccessException;
 
-    List<Achievement> findAchievements() throws DataAccessException;
-
+    //List<Achievement> findAchievements() throws DataAccessException;
 }

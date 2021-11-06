@@ -26,5 +26,10 @@ public class AchievementService {
     public Optional<Achievement> findAchievementById(int id) {
         return achievementRepo.findById(id);
     }
+
+    @Transactional
+    public Iterable<Achievement> findByPlayerId(int id) {
+        return achievementRepo.findByPlayerId(id);
+    }
     
 }

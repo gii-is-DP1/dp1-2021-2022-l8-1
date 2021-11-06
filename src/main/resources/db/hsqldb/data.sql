@@ -102,3 +102,6 @@ INSERT INTO deck(id) VALUES (1);
 INSERT INTO admins(id) VALUES (1);
 
 INSERT INTO comments(id, message) VALUES (1, 'I agree');
+
+INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1);
+INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);

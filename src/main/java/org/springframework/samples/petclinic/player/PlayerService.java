@@ -37,9 +37,10 @@ public class PlayerService {
         playerRepo.delete(player);
     }
 
+    /*
     @Transactional
     public void addAchievement(String name) {
         playerRepo.addAchievement(name);
     }
-
+    */
 }

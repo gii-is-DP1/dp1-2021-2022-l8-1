@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface AchievementRepository extends CrudRepository<Achievement, Integer>{
 
-    @Query("SELECT a FROM Achievements a WHERE a.player.id = :playerId")
+    @Query("SELECT * FROM Achievements a JOIN Players_Achievements pa JOIN Players p WHERE a.id = pa.achievement_Id AND p.id = pa.player_Id")
 	Collection<Achievement> findByPlayerId(@Param("playerId")int playerId);
 }

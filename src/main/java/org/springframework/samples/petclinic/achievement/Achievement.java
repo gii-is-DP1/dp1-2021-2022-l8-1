@@ -50,7 +50,7 @@ public class Achievement extends NamedEntity {
     private PARAMETER parameter;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "player_achievements", joinColumns = @JoinColumn(name = "player_id"),
+	@JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Player> Player;
 }

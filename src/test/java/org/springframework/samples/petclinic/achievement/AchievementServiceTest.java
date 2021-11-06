@@ -20,4 +20,10 @@ public class AchievementServiceTest {
         assertEquals(count,2);
     }
 
+    @Test
+    public void testFindByPlayerId(){
+        Iterable<Achievement> achievements = achievementService.findByPlayerId(1);
+        assertEquals(achievements.spliterator().getExactSizeIfKnown(), 2);
+    }
+
 }

@@ -78,7 +78,7 @@ public class Player extends Person{
     private Integer minPointsOfGames;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "player_achievements", joinColumns = @JoinColumn(name = "player_id"),
+	@JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievement;
 }
