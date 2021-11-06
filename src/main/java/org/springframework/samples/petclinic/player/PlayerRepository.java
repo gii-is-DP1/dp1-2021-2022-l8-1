@@ -1,5 +1,17 @@
 package org.springframework.samples.petclinic.player;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
 
-public interface PlayerRepository extends CrudRepository<Player, Integer>{}
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.samples.petclinic.achievement.Achievement;
+
+public interface PlayerRepository extends CrudRepository<Player, Integer> {
+
+    @Modifying
+    void addAchievement(String name) throws DataAccessException;
+
+    List<Achievement> findAchievements() throws DataAccessException;
+
+}
