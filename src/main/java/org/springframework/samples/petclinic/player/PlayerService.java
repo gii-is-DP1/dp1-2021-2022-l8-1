@@ -37,13 +37,4 @@ public class PlayerService {
         playerRepo.delete(player);
     }
 
-<<<<<<< HEAD
-    /*
-    @Transactional
-    public void addAchievement(String name) {
-        playerRepo.addAchievement(name);
-    }
-    */
-=======
->>>>>>> parent of 02615e8 (Added 2 new methods to PlayerRepository)
 }
