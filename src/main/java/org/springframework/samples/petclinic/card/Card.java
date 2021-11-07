@@ -1,9 +1,15 @@
 package org.springframework.samples.petclinic.card;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -20,4 +26,9 @@ public class Card extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @NotEmpty
     private CARD_TYPE cardType;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
+			inverseJoinColumns = @JoinColumn(name = "card_id"))
+	private Set<Player> Player;
 }

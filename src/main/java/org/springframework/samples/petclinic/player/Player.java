@@ -17,6 +17,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.achievement.Achievement;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
+import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.model.Person;
 
 import lombok.Data;
@@ -81,4 +82,9 @@ public class Player extends Person{
 	@JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievement;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
+			inverseJoinColumns = @JoinColumn(name = "card_id"))
+	private Set<Card> Cards;
 }
