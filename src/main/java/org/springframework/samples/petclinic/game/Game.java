@@ -33,14 +33,28 @@ public class Game extends NamedEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endTime; //HABRIA QUE HACERLO CON UNA RESTA
     
+    @Column(name = "number_of_players")   
     private Integer numberOfPlayers;
+
+    @Column(name = "actual_player")   
     private Integer actualPlayer;
+
+    @Column(name = "number_of_turn")   
     private Integer numberOfTurn;
+
+    @Column(name = "remains_cards")   
     private Integer remainsCards;
+
+    @Column(name = "deck")   
     private String deck;
+
+    @Column(name = "players")   
     private String players;
+
+    @Column(name = "points")   
     private String points; //pointsOfPlayers
 
+    @Column(name = "privacity")   
     @Enumerated(EnumType.STRING)
     private PRIVACITY privacity;
     

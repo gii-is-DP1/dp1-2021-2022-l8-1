@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.forum;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -13,6 +14,7 @@ import lombok.Data;
 @Table(name="forums")
 public class Forum extends NamedEntity{
     @NotEmpty
+    @Column(name = "description")   
     private String description;
     
 }
