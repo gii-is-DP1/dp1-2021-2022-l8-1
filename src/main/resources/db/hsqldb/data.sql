@@ -77,7 +77,7 @@ INSERT INTO achievements(id, name, description, icon, min_value, achievement_typ
     VALUES (2, 'Silver_losses', 'Loose 200 times.', './img/achiev_silver_looses.png', 200, 'SILVER', 'LOOSES');
 
 
-INSERT INTO cell(position,card) VALUES (1,'DOUBLON');
+INSERT INTO cells(position,card) VALUES (1,'DOUBLON');
 
 INSERT INTO islands(id,island_num) VALUES (1,1);
 INSERT INTO islands(id,island_num) VALUES (2,2);
