@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import java.util.List;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 
 //import java.time.LocalDateTime;
@@ -12,46 +11,51 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.card.CARD_TYPE;
-import org.springframework.samples.petclinic.card.Card;
 //import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Game extends NamedEntity {
 
     @Column(unique = true)
     private String code;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime startTime = LocalDateTime.now();
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime endTime; //HABRIA QUE HACERLO CON UNA RESTA
     
+    @Column(name = "number_of_players")   
     private Integer numberOfPlayers;
-    private Integer numberOfTurn;
-    private String players;
+
+    @Column(name = "actual_player")   
     private Integer actualPlayer;
+
+    @Column(name = "number_of_turn")   
+    private Integer numberOfTurn;
+
+    @Column(name = "remains_cards")   
     private Integer remainsCards;
-    
-    // @ElementCollection(targetClass = CARD_TYPE.class)
-    // private List<List<CARD_TYPE>> deck; 
-    
-    private String deck;//HEMOS SEPARADO LOS MAZOS POR PUNTO Y COMA Y LAS CARTAS DE CADA MAZO POR COMA, PARA DESPUES OBTENER EL QUE NOS HAGA FALTA Y PARSEARLO
-    private String points; //HEMOS SEPARADO LOS PUNTOS POR UNA COMA PARA DESPUES OBTENER EL QUE NOS HAGA FALTA Y PARSEARLO
 
-    
-     
+    @Column(name = "deck")   
+    private String deck;
 
-     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-     private LocalDateTime startTime = LocalDateTime.now();
+    @Column(name = "players")   
+    private String players;
 
-     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-     private LocalDateTime endTime;
+    @Column(name = "points")   
+    private String points; //pointsOfPlayers
 
-     @Enumerated(EnumType.STRING)
-     //@NotEmpty
-     private PRIVACITY privacity;
+    @Column(name = "privacity")   
+    @Enumerated(EnumType.STRING)
+    private PRIVACITY privacity;
     
 }
