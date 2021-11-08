@@ -16,5 +16,17 @@ public class GeneralService {
         return (int) generalRepo.count();
     }
 
+    //INVENTADO QUE FLIPAS 2
+
+    @Transactional
+    public int totalDurationAll(){
+        return (int) generalRepo.totalDurationAllGames();
+    }
+
+    @Transactional
+    public int totalGamesCount(){
+        return (int) generalRepo.totalGames();
+    }
+
 
 }

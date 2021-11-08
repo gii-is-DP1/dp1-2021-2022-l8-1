@@ -66,7 +66,7 @@ INSERT INTO game(name,code,players, number_of_players, number_of_turn, actual_pl
 VALUES ('Prueba', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY; CROWN,STIR; SWORD,DIAMOND','3,4,7');
 -- AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
 
-INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');
+/*INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');*/
 
 INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
