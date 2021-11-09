@@ -5,9 +5,11 @@ import javax.persistence.Table;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name="boards")
 public class Board extends BaseEntity{

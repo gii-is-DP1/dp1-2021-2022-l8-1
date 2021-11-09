@@ -6,9 +6,11 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class General extends BaseEntity {
 
