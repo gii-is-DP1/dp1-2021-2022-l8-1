@@ -2,10 +2,9 @@ package org.springframework.samples.petclinic.achievement;
 
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AchievementService {
@@ -25,6 +24,11 @@ public class AchievementService {
     @Transactional
     public Optional<Achievement> findAchievementById(int id) {
         return achievementRepo.findById(id);
+    }
+
+    @Transactional
+    public Iterable<Achievement> findByPlayerId(int id) {
+        return achievementRepo.findByPlayerId(id);
     }
     
 }

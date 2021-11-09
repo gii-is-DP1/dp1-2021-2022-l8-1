@@ -17,7 +17,13 @@ public class AchievementServiceTest {
     @Test
     public void testCountWithInitialData(){
         int count = achievementService.achievementCount();
-        assertEquals(count,2);
+        assertEquals(count,3);
+    }
+
+    @Test
+    public void testFindByPlayerId(){
+        Iterable<Achievement> achievements = achievementService.findByPlayerId(1);
+        assertEquals(achievements.spliterator().getExactSizeIfKnown(), 2);
     }
 
 }

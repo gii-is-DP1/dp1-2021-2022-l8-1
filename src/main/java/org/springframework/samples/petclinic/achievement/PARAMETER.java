@@ -3,6 +3,6 @@ package org.springframework.samples.petclinic.achievement;
 public enum PARAMETER {
     POINTS,
     WINS,
-    LOSSES,
+    LOSES,
     GAMES_PLAYED
 }

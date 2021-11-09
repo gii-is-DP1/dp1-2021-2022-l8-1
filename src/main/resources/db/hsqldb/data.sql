@@ -70,11 +70,15 @@ VALUES ('Prueba', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY; CRO
 
 INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type) VALUES (3, 'RUBY');
+INSERT INTO cards(id,card_type) VALUES (4, 'DIAMOND');
 
 INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
     VALUES (1, 'Gold_points', 'Get 300 points.', './img/achiev_gold_points.png', 300, 'GOLD', 'POINTS');
 INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-    VALUES (2, 'Silver_losses', 'Loose 200 times.', './img/achiev_silver_looses.png', 200, 'SILVER', 'LOOSES');
+    VALUES (2, 'Silver_loses', 'Loses 200 times.', './img/achiev_silver_loses.png', 200, 'SILVER', 'LOSES');
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
+    VALUES (3, 'Gold_loses', 'Loses 300 times.', './img/achiev_gold_loses.png', 300, 'GOLD', 'LOSES');
 
 
 INSERT INTO cells(position,card) VALUES (1,'DOUBLON');
@@ -102,3 +106,10 @@ INSERT INTO deck(id) VALUES (1);
 INSERT INTO admins(id, first_name, surname, password, user_name, email) VALUES (1, 'Ismael', 'Perez', '123123123', 'ismperort', 'ismperort@alum.us.es');
 
 INSERT INTO comments(id, message) VALUES (1, 'I agree');
+
+INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1);
+INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
+
+INSERT INTO players_cards(player_id, card_id) VALUES (1, 1);
+INSERT INTO players_cards(player_id, card_id) VALUES (1, 2);
+INSERT INTO players_cards(player_id, card_id) VALUES (1, 3);
