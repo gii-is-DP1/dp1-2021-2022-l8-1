@@ -1,14 +1,12 @@
 package org.springframework.samples.petclinic.achievement;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -49,8 +47,6 @@ public class Achievement extends NamedEntity {
     @NotEmpty
     private PARAMETER parameter;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
-			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-	private Set<Player> Player;
+	@ManyToMany(mappedBy = "achievements")
+	private Set<Player> players = new HashSet<Player>();;
 }

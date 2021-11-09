@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.player;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -81,10 +82,10 @@ public class Player extends Person{
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-	private Set<Achievement> achievement;
+	private Set<Achievement> achievements  = new HashSet<Achievement>();
 
     @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "card_id"))
-	private Set<Card> Cards;
+	private Set<Card> Cards  = new HashSet<Card>();
 }
