@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.board.BoardService;
 import org.springframework.samples.petclinic.game.GameService;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.model.Person1;
 
 
 @Controller
