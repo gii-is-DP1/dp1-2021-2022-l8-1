@@ -10,7 +10,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.card.CARD_TYPE;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.person.Person;
 
 import lombok.Data;
 
