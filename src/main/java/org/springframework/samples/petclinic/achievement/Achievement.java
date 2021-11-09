@@ -14,9 +14,11 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.player.Player;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name="achievements")
 public class Achievement extends NamedEntity {
@@ -48,5 +50,5 @@ public class Achievement extends NamedEntity {
     private PARAMETER parameter;
 
 	@ManyToMany(mappedBy = "achievements")
-	private Set<Player> players = new HashSet<Player>();;
+	private Set<Player> players;
 }

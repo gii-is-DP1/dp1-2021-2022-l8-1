@@ -21,9 +21,11 @@ import org.springframework.samples.petclinic.card.CARD_TYPE;
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.model.Person;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name="players")
 public class Player extends Person{
@@ -82,7 +84,7 @@ public class Player extends Person{
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-	private Set<Achievement> achievements  = new HashSet<Achievement>();
+	private Set<Achievement> achievements;
 
     @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
