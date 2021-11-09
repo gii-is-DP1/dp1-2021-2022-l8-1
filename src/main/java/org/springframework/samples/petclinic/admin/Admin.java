@@ -10,8 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-@Getter
-@Setter
+@Entity
 @Table (name = "admins")
 public class Admin extends Person{
     
