@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GameService {
+   
     @Autowired
     private GameRepository gameRepo;
 
@@ -36,5 +37,9 @@ public class GameService {
     public void delete(Game game){
         gameRepo.delete(game);
     }
+
+    
+
+
 
 }

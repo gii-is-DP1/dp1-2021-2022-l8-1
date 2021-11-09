@@ -34,7 +34,7 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.core.style.ToStringCreator;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.model.Person1;
 import org.springframework.samples.petclinic.pet.Pet;
 import org.springframework.samples.petclinic.user.User;
 
@@ -48,7 +48,7 @@ import org.springframework.samples.petclinic.user.User;
  */
 @Entity
 @Table(name = "owners")
-public class Owner extends Person {
+public class Owner extends Person1 {
 
 	@Column(name = "address")
 	@NotEmpty

@@ -66,7 +66,7 @@ INSERT INTO game(name,code,players, number_of_players, number_of_turn, actual_pl
 VALUES ('Prueba', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY; CROWN,STIR; SWORD,DIAMOND','3,4,7');
 -- AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
 
-INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');
+/*INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');*/
 
 INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
@@ -81,7 +81,7 @@ INSERT INTO achievements(id, name, description, icon, min_value, achievement_typ
     VALUES (3, 'Gold_loses', 'Loses 300 times.', './img/achiev_gold_loses.png', 300, 'GOLD', 'LOSES');
 
 
-INSERT INTO cell(position,card) VALUES (1,'DOUBLON');
+INSERT INTO cells(position,card) VALUES (1,'DOUBLON');
 
 INSERT INTO islands(id,island_num) VALUES (1,1);
 INSERT INTO islands(id,island_num) VALUES (2,2);
@@ -103,7 +103,7 @@ INSERT INTO general(id, total_games, total_duration_all_games) VALUES (1, 200, 3
 
 INSERT INTO deck(id) VALUES (1);
 
-INSERT INTO admins(id) VALUES (1);
+INSERT INTO admins(id, first_name, surname, password, user_name, email) VALUES (1, 'Ismael', 'Perez', '123123123', 'ismperort', 'ismperort@alum.us.es');
 
 INSERT INTO comments(id, message) VALUES (1, 'I agree');
 
