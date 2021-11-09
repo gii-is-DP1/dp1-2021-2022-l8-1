@@ -20,7 +20,7 @@ import org.springframework.samples.petclinic.achievement.Achievement;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
 
 import org.springframework.samples.petclinic.card.Card;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.person.Person;
 
 
 import lombok.Getter;
