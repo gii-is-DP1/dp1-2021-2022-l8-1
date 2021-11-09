@@ -25,11 +25,14 @@ import lombok.Setter;
 @Entity
 public class Game extends NamedEntity {
 
-    @Column(unique = true)
+    @Column(unique = true, name = "code")
     private String code;
+    
+    @Column(name = "start_time") 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime startTime = LocalDateTime.now();
-
+    
+    @Column(name = "end_time") 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endTime; //HABRIA QUE HACERLO CON UNA RESTA
     
