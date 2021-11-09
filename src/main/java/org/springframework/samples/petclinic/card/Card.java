@@ -16,9 +16,11 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "cards")
 public class Card extends BaseEntity {
@@ -28,8 +30,6 @@ public class Card extends BaseEntity {
     @NotEmpty
     private CARD_TYPE cardType;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
-			inverseJoinColumns = @JoinColumn(name = "card_id"))
-	private Set<Player> Player;
+    @ManyToMany(mappedBy = "cards")
+	private Set<Player> players;
 }

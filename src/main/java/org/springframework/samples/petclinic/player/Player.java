@@ -89,5 +89,5 @@ public class Player extends Person{
     @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "card_id"))
-	private Set<Card> Cards  = new HashSet<Card>();
+	private Set<Card> cards;
 }
