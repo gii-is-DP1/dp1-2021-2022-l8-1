@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.player;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ import org.springframework.samples.petclinic.achievement.Achievement;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
 
 import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.person.Person;
 
 
@@ -31,6 +33,9 @@ import lombok.Setter;
 @Entity
 @Table(name="players")
 public class Player extends Person{
+
+    @ManyToMany
+    private Collection<Game> games;   
  
     @Column(name="profile_photo")
     @NotEmpty
