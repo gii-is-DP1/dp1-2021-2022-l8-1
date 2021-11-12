@@ -2,14 +2,29 @@ package org.springframework.samples.petclinic.player;
 
 import java.util.Optional;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.achievement.Achievement;
+import org.springframework.samples.petclinic.achievement.AchievementRepository;
+import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.card.CardRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PlayerService {
-    @Autowired
+
     private PlayerRepository playerRepo;
+
+    private CardRepository cardRepo;
+
+    private AchievementRepository achievementRepo;
+
+    @Autowired
+	public PlayerService(PlayerRepository playerRepo,
+                    CardRepository cardRepo) {
+		this.playerRepo = playerRepo;
+		this.cardRepo = cardRepo;
+	}
 
     @Transactional(readOnly = true)
     public int playerCount(){
@@ -36,4 +51,13 @@ public class PlayerService {
         playerRepo.delete(player);
     }
 
+    @Transactional(readOnly = true)
+    public Iterable<Card> getCardsByPlayerId(int id) {
+        return cardRepo.getByPlayerId(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Iterable<Achievement> getAchievementsByPlayerId(int id) {
+        return achievementRepo.getByPlayerId(id);
+    }
 }

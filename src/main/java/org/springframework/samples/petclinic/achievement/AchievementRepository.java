@@ -10,5 +10,5 @@ import org.springframework.data.repository.query.Param;
 public interface AchievementRepository extends CrudRepository<Achievement, Integer>{
 
     @Query("SELECT A FROM Achievement A INNER JOIN A.players P WHERE P.id = :playerId")
-	Collection<Achievement> findByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
+	Collection<Achievement> getByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 }
