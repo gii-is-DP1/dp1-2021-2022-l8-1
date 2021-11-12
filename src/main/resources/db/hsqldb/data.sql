@@ -99,7 +99,7 @@ INSERT INTO boards(id) VALUES(1);
 INSERT INTO forums(id, name, description) VALUES(1, 'Players', 'Forum about players');
 
 INSERT INTO topics(id, name, description) VALUES(1, 'Rival players', 'do you want to be my rival?');
-INSERT INTO general(id, total_games, total_duration_all_games) VALUES (1, 200, 300);
+INSERT INTO generals(id, total_games, total_duration_all_games) VALUES (1, 200, 300);
 
 INSERT INTO deck(id) VALUES (1);
 

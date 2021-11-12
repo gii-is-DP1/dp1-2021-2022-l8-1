@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -20,6 +21,7 @@ import org.springframework.samples.petclinic.achievement.Achievement;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
 
 import org.springframework.samples.petclinic.card.Card;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.person.Person;
 
 
@@ -92,4 +94,7 @@ public class Player extends Person{
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;
+
+    @ManyToOne(optional = true)
+	private Game watchGame;
 }
