@@ -26,4 +26,9 @@ public class CardService {
     public Optional<Card> findCardById(int id) {
         return cardRepo.findById(id);
     }
+
+    @Transactional
+    public Iterable<Card> getByPlayerId(int playerId) {
+        return cardRepo.getByPlayerId(playerId);
+    }
 }

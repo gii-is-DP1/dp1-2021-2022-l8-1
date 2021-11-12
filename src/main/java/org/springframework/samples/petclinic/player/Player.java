@@ -1,20 +1,33 @@
 package org.springframework.samples.petclinic.player;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.samples.petclinic.achievement.Achievement;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
+
+import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.person.Person;
 
-import lombok.Data;
 
-@Data
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
 @Table(name="players")
 public class Player extends Person{
@@ -68,6 +81,15 @@ public class Player extends Person{
 
     @Column(name="min_points_of_games")
     @NotEmpty
-    private Integer minPointsOfGames; 
+    private Integer minPointsOfGames;
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
+			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
+	private Set<Achievement> achievements;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
+			inverseJoinColumns = @JoinColumn(name = "card_id"))
+	private Set<Card> cards;
 }

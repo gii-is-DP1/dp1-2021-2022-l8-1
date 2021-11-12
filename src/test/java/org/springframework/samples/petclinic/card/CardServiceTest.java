@@ -17,7 +17,13 @@ public class CardServiceTest {
     @Test
     public void testCountWithInitialData(){
         int count = cardService.cardCount();
-        assertEquals(count,2);
+        assertEquals(count,4);
+    }
+
+    @Test
+    public void testGetByPlayerId() {
+        Iterable<Card> cards = cardService.getByPlayerId(1);
+        assertEquals(cards.spliterator().getExactSizeIfKnown(), 3);
     }
     
 }
