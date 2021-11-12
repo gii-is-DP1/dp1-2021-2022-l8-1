@@ -2,8 +2,6 @@ package org.springframework.samples.petclinic.game;
 
 import java.time.LocalDateTime;
 
-import java.util.List;
-
 import javax.persistence.Column;
 
 //import java.time.LocalDateTime;
@@ -11,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 //import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "game")
 public class Game extends NamedEntity {
 
     @Column(unique = true, name = "code")
