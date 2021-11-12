@@ -11,4 +11,7 @@ public interface AchievementRepository extends CrudRepository<Achievement, Integ
 
     @Query("SELECT A FROM Achievement A INNER JOIN A.players P WHERE P.id = :playerId")
 	Collection<Achievement> findByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
+
+    @Query("SELECT A FROM Achievement A INNER JOIN A.admins AD WHERE AD.id = :adminId")
+	Collection<Achievement> findByAdminId(@Param("adminId") int adminId) throws DataAccessException;
 }
