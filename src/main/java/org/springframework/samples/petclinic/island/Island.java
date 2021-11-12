@@ -26,6 +26,6 @@ public class Island extends BaseEntity {
     private Integer islandNum;
 
     @OneToOne(optional=true)
-    private Island island;
+    private Island card;
     
 }
