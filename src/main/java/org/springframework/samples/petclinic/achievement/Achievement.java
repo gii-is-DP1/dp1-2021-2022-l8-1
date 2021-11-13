@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.samples.petclinic.admin.Admin;
 import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.player.Player;
 
@@ -51,4 +52,7 @@ public class Achievement extends NamedEntity {
 
 	@ManyToMany(mappedBy = "achievements")
 	private Set<Player> players;
+
+    @ManyToMany(mappedBy = "achievements")
+	private Set<Admin> admins;
 }

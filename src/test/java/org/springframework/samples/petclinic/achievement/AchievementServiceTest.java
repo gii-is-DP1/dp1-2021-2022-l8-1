@@ -26,4 +26,10 @@ public class AchievementServiceTest {
         assertEquals(achievements.spliterator().getExactSizeIfKnown(), 2);
     }
 
+    @Test
+    public void testFindByAdminId(){
+        Iterable<Achievement> achievements = achievementService.findByAdminId(1);
+        assertEquals(achievements.spliterator().getExactSizeIfKnown(), 2);
+    }
+
 }

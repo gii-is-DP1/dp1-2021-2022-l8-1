@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+
 import javax.persistence.Column;
 
-//import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,19 +16,19 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
-//import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.player.Player;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@Table(name = "game")
 public class Game extends NamedEntity {
 
     @Column(unique = true, name = "code")

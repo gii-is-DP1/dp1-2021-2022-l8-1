@@ -94,11 +94,22 @@ public class Player extends Person{
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;
 
 	@ManyToMany(mappedBy = "players")
 	private Collection<Game> games;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
+	 		inverseJoinColumns = @JoinColumn(name = "invited_id"))
+  private Collection<Player> invitations;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
+			inverseJoinColumns = @JoinColumn(name = "requested_id"))
+  private Collection<Player> friend_requests;
+
 }
