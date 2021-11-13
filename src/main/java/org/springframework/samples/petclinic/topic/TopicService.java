@@ -15,4 +15,8 @@ public class TopicService {
         return (int) topicRepo.count();
     }
     
+    @Transactional
+    public Iterable<Topic> findByCommentId(int id) {
+        return topicRepo.findByCommentId(id);
+    }
 }

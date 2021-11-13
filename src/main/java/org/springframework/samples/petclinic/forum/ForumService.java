@@ -14,5 +14,10 @@ public class ForumService {
     public int forumCount(){
         return (int) forumRepo.count();
     }
+
+    @Transactional
+    public Iterable<Forum> findByTopicId(int id) {
+        return forumRepo.findByTopicId(id);
+    }
     
 }

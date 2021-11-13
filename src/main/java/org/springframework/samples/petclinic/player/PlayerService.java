@@ -36,4 +36,9 @@ public class PlayerService {
         playerRepo.delete(player);
     }
 
+    @Transactional
+    public Iterable<Player> findByForumId(int id) {
+        return playerRepo.findByForumId(id);
+    }
+
 }

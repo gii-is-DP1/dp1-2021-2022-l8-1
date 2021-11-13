@@ -19,5 +19,11 @@ public class TopicServiceTest {
         int count = topicService.topicCount();
         assertEquals(count, 1);
     }
+
+    @Test
+    public void testFindByCommentId(){
+        Iterable<Topic> topics = topicService.findByCommentId(1);
+        assertEquals(topics.spliterator().getExactSizeIfKnown(), 1);
+    }
     
 }

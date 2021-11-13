@@ -19,5 +19,13 @@ public class DeckServiceTest {
         int count = deckService.getDecksNumber();
         assertEquals(1, count);
     }
+
+    @Test
+    public void testFindByCardId(){
+        Iterable<Deck> decks = deckService.findByCardId(1);
+        assertEquals(decks.spliterator().getExactSizeIfKnown(), 1);
+    }
+
+    
     
 }

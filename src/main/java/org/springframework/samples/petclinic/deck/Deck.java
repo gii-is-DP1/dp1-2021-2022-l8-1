@@ -5,7 +5,8 @@ import java.util.Collection;
 
 
 import javax.persistence.Entity;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,6 +24,8 @@ import lombok.Setter;
 public class Deck extends BaseEntity {
 
     @OneToMany
+    @JoinTable(name = "decks_cards", joinColumns = @JoinColumn(name = "deck_id"),
+			inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Collection<Card> cards;
     
 }
