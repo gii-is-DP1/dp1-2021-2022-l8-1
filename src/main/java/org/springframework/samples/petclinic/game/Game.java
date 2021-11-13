@@ -26,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "game")
+@Table(name = "games")
 public class Game extends NamedEntity {
 
     @Column(unique = true, name = "code")

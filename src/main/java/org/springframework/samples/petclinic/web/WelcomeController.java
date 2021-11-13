@@ -7,13 +7,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.samples.petclinic.model.Person1;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.board.BoardService;
 import org.springframework.samples.petclinic.game.GameService;
-import org.springframework.samples.petclinic.model.Person1;
+import org.springframework.samples.petclinic.person.Person;
 
 
 @Controller
@@ -28,37 +27,37 @@ public class WelcomeController {
 	  @GetMapping({"/","/welcome"})
 	  public String welcome(Map<String, Object> model, HttpServletResponse response) {
 		  
-		List<Person1> persons = new ArrayList<Person1>();
-		Person1 a = new Person1();
-		Person1 b = new Person1();
-		Person1 c = new Person1();
-		Person1 d = new Person1();
-		Person1 e = new Person1();
-		Person1 f = new Person1();
+		List<Person> persons = new ArrayList<Person>();
+		Person a = new Person();
+		Person b = new Person();
+		Person c = new Person();
+		Person d = new Person();
+		Person e = new Person();
+		Person f = new Person();
 
 
 		a.setFirstName("Ismael");
-		a.setLastName("Pérez");
+		a.setSurname("Pérez");
 		persons.add(a);
 
 		b.setFirstName("Miguel");
-		b.setLastName("Romero");
+		b.setSurname("Romero");
 		persons.add(b);
 
 		c.setFirstName("Ezequiel");
-		c.setLastName("González");
+		c.setSurname("González");
 		persons.add(c);
 
 		d.setFirstName("Pablo");
-		d.setLastName("Rivera");
+		d.setSurname("Rivera");
 		persons.add(d);
 
 		e.setFirstName("Tomás");
-		e.setLastName("Camero");
+		e.setSurname("Camero");
 		persons.add(e);
 
 		f.setFirstName("Juan");
-		f.setLastName("Salado");
+		f.setSurname("Salado");
 		persons.add(f);
 
 		model.put("persons", persons);

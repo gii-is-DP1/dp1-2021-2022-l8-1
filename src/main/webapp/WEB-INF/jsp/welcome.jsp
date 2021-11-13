@@ -16,7 +16,7 @@
         <p><ul>
             <c:forEach items="${persons}" var="person">
                 <li>
-                    <c:out value="${person.firstName} ${person.lastName}" />
+                    <c:out value="${person.firstName} ${person.surName}" />
                 </li>
             </c:forEach>
         </ul></p>
