@@ -6,20 +6,20 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch islasApplication",
+            "name": "Launch SevenIslandsApplication",
             "request": "launch",
-            "mainClass": "org.springframework.samples.petclinic.islasApplication",
+            "mainClass": "org.springframework.samples.SevenIslands.SevenIslandsApplication",
             "projectName": "L8-1"
         },
         {
             "type": "java",
-            "name": "Debug (Launch)-IslasApplication<spring-petclinic>",
+            "name": "Debug (Launch)-SevenIslandsApplication<spring-SevenIslands>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopOnEntry": false,
-            "mainClass": "org.springframework.samples.petclinic.IslasApplication",
-            "projectName": "spring-petclinic",
+            "mainClass": "org.springframework.samples.SevenIslands.SevenIslandsApplication",
+            "projectName": "spring-SevenIslands",
             "args": ""
         },
         {

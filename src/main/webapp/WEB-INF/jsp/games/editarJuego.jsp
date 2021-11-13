@@ -2,10 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 
-<petclinic:layout pageName="Games">
+<SevenIslands:layout pageName="Games">
     <jsp:attribute name="customScript">
         <script>
             $(function () {
@@ -32,8 +32,8 @@
 
         <form:form modelAttribute="game" class="form-horizontal" action="/games/save ">
             <div class="form-group has-feedback">
-                <petclinic:inputField label="Name of room" name="name"/>
-                <petclinic:inputField label="Code of the room" name="code"/>
+                <SevenIslands:inputField label="Name of room" name="name"/>
+                <SevenIslands:inputField label="Code of the room" name="code"/>
                 <button class="btn btn-default" type="button" id="id-public">Public</button>
                 <button class="btn btn-default" type="button" id="id-private">Private</button>
             </div>
@@ -48,4 +48,4 @@
         </form:form>
     </jsp:body>
 
-</petclinic:layout>
+</SevenIslands:layout>
