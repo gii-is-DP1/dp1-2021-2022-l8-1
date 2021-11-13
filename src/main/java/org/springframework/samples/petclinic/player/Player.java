@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.player;
 
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -92,4 +92,14 @@ public class Player extends Person{
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
+			inverseJoinColumns = @JoinColumn(name = "invited_id"))
+    private Collection<Player> invitations;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
+			inverseJoinColumns = @JoinColumn(name = "requested_id"))
+    private Collection<Player> friend_requests;
 }

@@ -94,6 +94,12 @@ INSERT INTO islands(id,island_num) VALUES (7,7);
 INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games) 
     VALUES (1, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56);
 
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games) 
+    VALUES (2, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 2, 1220, 220.0, 720, 540, 121, 24.2, 3, 'BARREL_OF_RUM', 59, 26);
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games) 
+    VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47);
+
 INSERT INTO boards(id) VALUES(1);
 
 INSERT INTO forums(id, name, description) VALUES(1, 'Players', 'Forum about players');
@@ -112,6 +118,13 @@ INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
 
 INSERT INTO admins_achievements(admin_id, achievement_id) VALUES (1, 1);
 INSERT INTO admins_achievements(admin_id, achievement_id) VALUES (1, 2);
+
+INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
+INSERT INTO players_invitations(invitation_id, invited_id) VALUES (3, 2);
+INSERT INTO players_invitations(invitation_id, invited_id) VALUES (2, 3);
+
+INSERT INTO players_requests(friend_request_id, requested_id) VALUES (1, 2);
+INSERT INTO players_requests(friend_request_id, requested_id) VALUES (2, 3);
 
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 1);
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 2);
