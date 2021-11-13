@@ -35,6 +35,11 @@ public class PlayerService {
     public void delete(Player player){
         playerRepo.delete(player);
     }
+    
+    @Transactional
+    public Iterable<Player> findPlayersByGameId(int id) {
+        return playerRepo.findByGameId(id);
+    }
 
     //Return invitations of a player with playerId=id
     @Transactional

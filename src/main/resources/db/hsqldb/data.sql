@@ -62,8 +62,14 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO game(name,code,players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
-VALUES ('Prueba', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY; CROWN,STIR; SWORD,DIAMOND','3,4,7');
+INSERT INTO game(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
+VALUES ('Prueba', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,4,7');
+
+INSERT INTO game(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
+VALUES ('Prueba', 'ABCD123', '1,8,3', 3, 4, 2 ,27,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','2,4,9');
+
+INSERT INTO game(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
+VALUES ('Prueba', 'ABCD122', '4,1,3', 3, 2, 1 ,29,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,2,7');
 -- AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
 
 /*INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');*/
@@ -113,6 +119,7 @@ INSERT INTO admins(id, first_name, surname, password, user_name, email) VALUES (
 
 INSERT INTO comments(id, message) VALUES (1, 'I agree');
 
+
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1);
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
 
@@ -129,3 +136,7 @@ INSERT INTO players_requests(friend_request_id, requested_id) VALUES (2, 3);
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 1);
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 2);
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 3);
+
+INSERT INTO games_players(game_id, player_id) VALUES (1, 1);
+INSERT INTO games_players(game_id, player_id) VALUES (2, 1);
+INSERT INTO games_players(game_id, player_id) VALUES (2, 2);
