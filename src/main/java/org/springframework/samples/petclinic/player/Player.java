@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.player;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,10 +18,15 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.achievement.Achievement;
+import org.springframework.samples.petclinic.admin.Admin;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
 
 import org.springframework.samples.petclinic.card.Card;
+
 import org.springframework.samples.petclinic.forum.Forum;
+
+import org.springframework.samples.petclinic.game.Game;
+
 import org.springframework.samples.petclinic.person.Person;
 
 
@@ -32,6 +38,9 @@ import lombok.Setter;
 @Entity
 @Table(name="players")
 public class Player extends Person{
+
+    @ManyToMany
+    private Collection<Admin> admins;
  
     @Column(name="profile_photo")
     @NotEmpty
@@ -89,13 +98,28 @@ public class Player extends Person{
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_forums", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "forum_id"))
 	private Set<Forum> forums;
+
+	@ManyToMany(mappedBy = "players")
+	private Collection<Game> games;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
+	 		inverseJoinColumns = @JoinColumn(name = "invited_id"))
+  private Collection<Player> invitations;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
+			inverseJoinColumns = @JoinColumn(name = "requested_id"))
+  private Collection<Player> friend_requests;
+
 }

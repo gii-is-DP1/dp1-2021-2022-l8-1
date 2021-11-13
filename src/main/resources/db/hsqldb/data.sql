@@ -62,8 +62,14 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO game(name,code,players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
-VALUES ('Prueba', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY; CROWN,STIR; SWORD,DIAMOND','3,4,7');
+INSERT INTO game(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
+VALUES ('Prueba', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,4,7');
+
+INSERT INTO game(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
+VALUES ('Prueba', 'ABCD123', '1,8,3', 3, 4, 2 ,27,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','2,4,9');
+
+INSERT INTO game(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points) 
+VALUES ('Prueba', 'ABCD122', '4,1,3', 3, 2, 1 ,29,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,2,7');
 -- AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
 
 /*INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');*/
@@ -93,6 +99,12 @@ INSERT INTO islands(id,island_num, card_id) VALUES (6,6, 1);
 INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games) 
     VALUES (1, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56);
 
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games) 
+    VALUES (2, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 2, 1220, 220.0, 720, 540, 121, 24.2, 3, 'BARREL_OF_RUM', 59, 26);
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games) 
+    VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47);
+
 INSERT INTO boards(id) VALUES(1);
 
 INSERT INTO forums(id, name, description) VALUES(1, 'Players', 'Forum about players');
@@ -107,15 +119,24 @@ INSERT INTO admins(id, first_name, surname, password, user_name, email) VALUES (
 
 INSERT INTO comments(id, message) VALUES (1, 'I agree');
 
+
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1);
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
 
 INSERT INTO admins_achievements(admin_id, achievement_id) VALUES (1, 1);
 INSERT INTO admins_achievements(admin_id, achievement_id) VALUES (1, 2);
 
+INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
+INSERT INTO players_invitations(invitation_id, invited_id) VALUES (3, 2);
+INSERT INTO players_invitations(invitation_id, invited_id) VALUES (2, 3);
+
+INSERT INTO players_requests(friend_request_id, requested_id) VALUES (1, 2);
+INSERT INTO players_requests(friend_request_id, requested_id) VALUES (2, 3);
+
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 1);
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 2);
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 3);
+
 
 INSERT INTO players_forums(player_id, forum_id) VALUES (1, 1);
 INSERT INTO players_forums(player_id, forum_id) VALUES (1, 2);
@@ -126,3 +147,8 @@ INSERT INTO decks_cards(deck_id, card_id) VALUES (1, 2);
 INSERT INTO forums_topics(forum_id, topic_id) VALUES (1, 1);
 
 INSERT INTO topics_comments(topic_id, comment_id) VALUES (1, 1);
+
+INSERT INTO games_players(game_id, player_id) VALUES (1, 1);
+INSERT INTO games_players(game_id, player_id) VALUES (2, 1);
+INSERT INTO games_players(game_id, player_id) VALUES (2, 2);
+

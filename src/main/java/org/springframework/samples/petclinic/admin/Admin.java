@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.admin;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -11,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.samples.petclinic.person.Person;
+import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.achievement.Achievement;
 
 import lombok.Getter;
@@ -27,5 +30,7 @@ public class Admin extends Person{
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
     
+    @ManyToMany
+    private Collection<Player> players;
     
 }
