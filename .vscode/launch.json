@@ -6,19 +6,19 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch PetclinicApplication",
+            "name": "Launch islasApplication",
             "request": "launch",
-            "mainClass": "org.springframework.samples.petclinic.PetclinicApplication",
+            "mainClass": "org.springframework.samples.petclinic.islasApplication",
             "projectName": "L8-1"
         },
         {
             "type": "java",
-            "name": "Debug (Launch)-PetClinicApplication<spring-petclinic>",
+            "name": "Debug (Launch)-IslasApplication<spring-petclinic>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopOnEntry": false,
-            "mainClass": "org.springframework.samples.petclinic.PetClinicApplication",
+            "mainClass": "org.springframework.samples.petclinic.IslasApplication",
             "projectName": "spring-petclinic",
             "args": ""
         },
