@@ -18,6 +18,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.achievement.Achievement;
+import org.springframework.samples.petclinic.admin.Admin;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
 
 import org.springframework.samples.petclinic.card.Card;
@@ -35,7 +36,7 @@ import lombok.Setter;
 public class Player extends Person{
 
     @ManyToMany
-    private Collection<Game> games;   
+    private Collection<Admin> admins;
  
     @Column(name="profile_photo")
     @NotEmpty
@@ -97,4 +98,7 @@ public class Player extends Person{
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;
+
+	@ManyToMany(mappedBy = "players")
+	private Collection<Game> games;
 }

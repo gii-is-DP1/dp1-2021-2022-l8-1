@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface GameRepository extends CrudRepository<Game, Integer>{
 
+    
 // @Query("SELECT g.numberOfPlayers FROM Game g WHERE g.id = :id")
 // int findTotalPlayers(int id) throws DataAccessException;
 

@@ -1,8 +1,9 @@
 package org.springframework.samples.petclinic.game;
 
 import java.time.LocalDateTime;
-
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 
@@ -11,10 +12,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 //import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Data;
 import lombok.Getter;
@@ -51,8 +57,8 @@ public class Game extends NamedEntity {
     @Column(name = "deck")   
     private String deck;
 
-    @Column(name = "players")   
-    private String players;
+    @Column(name = "name_of_players")   
+    private String nameOfPlayers;
 
     @Column(name = "points")   
     private String points; //pointsOfPlayers
@@ -60,5 +66,11 @@ public class Game extends NamedEntity {
     @Column(name = "privacity")   
     @Enumerated(EnumType.STRING)
     private PRIVACITY privacity;
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 
+                inverseJoinColumns = @JoinColumn(name="player_id"))
+    private Collection<Player> players;
+
     
 }
