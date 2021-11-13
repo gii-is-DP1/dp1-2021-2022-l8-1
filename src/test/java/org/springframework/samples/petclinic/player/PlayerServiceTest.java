@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -41,6 +40,13 @@ public class PlayerServiceTest {
         long count = players.spliterator().getExactSizeIfKnown();
         assertEquals(1, count);
 
+    }
+
+    @Test
+    public void testWatchGameByPlayerId(){
+        Iterable<Player> players = playerService.findWatchGameByPlayerId(3);
+        long count = players.spliterator().getExactSizeIfKnown();
+        assertEquals(1, count);
     }
 
     @Test

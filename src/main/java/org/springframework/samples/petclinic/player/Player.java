@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -22,6 +23,7 @@ import org.springframework.samples.petclinic.admin.Admin;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
 
 import org.springframework.samples.petclinic.card.Card;
+
 
 import org.springframework.samples.petclinic.forum.Forum;
 
@@ -104,6 +106,10 @@ public class Player extends Person{
 	private Set<Card> cards;
 
 
+    @ManyToOne(optional = true)
+	private Game watchGames;
+
+
     @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_forums", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "forum_id"))
@@ -121,5 +127,6 @@ public class Player extends Person{
 	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
 			inverseJoinColumns = @JoinColumn(name = "requested_id"))
   private Collection<Player> friend_requests;
+
 
 }

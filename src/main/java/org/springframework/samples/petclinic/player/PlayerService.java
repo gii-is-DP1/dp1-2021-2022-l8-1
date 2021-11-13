@@ -53,6 +53,12 @@ public class PlayerService {
         return playerRepo.findRequestsByPlayerId(id);
     }
 
+     //Return watchGame of a player with playerId=id
+     @Transactional
+     public Iterable<Player> findWatchGameByPlayerId(int id) {
+         return playerRepo.findWatchGameByPlayerId(id);
+     }
+
     @Transactional
     public Iterable<Player> findByForumId(int id) {
         return playerRepo.findByForumId(id);
