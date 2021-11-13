@@ -15,4 +15,9 @@ public class DeckService {
     public int getDecksNumber() {  
         return (int) deckRepo.count();
     }
+
+    @Transactional
+    public Iterable<Deck> findByCardId(int id) {
+        return deckRepo.findByCardId(id);
+    }
 }

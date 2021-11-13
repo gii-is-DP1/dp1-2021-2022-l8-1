@@ -17,7 +17,7 @@ public class IslandServiceTest {
     @Test
     public void testCountWithInitialData(){
         int count = islandService.islandCount();
-        assertEquals(7, count);
+        assertEquals(6, count);
     }
     
 }

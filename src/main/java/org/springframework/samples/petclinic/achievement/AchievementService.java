@@ -30,5 +30,10 @@ public class AchievementService {
     public Iterable<Achievement> findByPlayerId(int id) {
         return achievementRepo.findByPlayerId(id);
     }
+
+    @Transactional
+    public Iterable<Achievement> findByAdminId(int id) {
+        return achievementRepo.findByAdminId(id);
+    }
     
 }

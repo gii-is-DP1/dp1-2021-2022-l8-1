@@ -38,6 +38,11 @@ public class GameService {
         gameRepo.delete(game);
     }
 
+    @Transactional
+    public Iterable<Game> findGamesByPlayerId(int id){
+        return gameRepo.findGameByPlayerId(id);
+    }
+
     
 
 
