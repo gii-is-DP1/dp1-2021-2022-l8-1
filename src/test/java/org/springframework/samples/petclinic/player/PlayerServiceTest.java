@@ -42,4 +42,10 @@ public class PlayerServiceTest {
         assertEquals(1, count);
 
     }
+
+    @Test
+    public void testFindByForumId(){
+        Iterable<Player> players = playerService.findByForumId(1);
+        assertEquals(players.spliterator().getExactSizeIfKnown(), 1);
+    }
 }

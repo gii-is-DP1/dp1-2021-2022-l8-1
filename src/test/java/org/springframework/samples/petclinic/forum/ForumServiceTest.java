@@ -15,7 +15,12 @@ public class ForumServiceTest {
     @Test
     public void testCountWithInitialData(){
         int count = forumService.forumCount();
-        assertEquals(count, 1);
+        assertEquals(count, 2);
     }
-    
+
+    @Test
+    public void testFindByTopicId(){
+        Iterable<Forum> forums = forumService.findByTopicId(1);
+        assertEquals(forums.spliterator().getExactSizeIfKnown(), 1);
+    }
 }

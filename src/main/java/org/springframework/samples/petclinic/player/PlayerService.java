@@ -53,4 +53,9 @@ public class PlayerService {
         return playerRepo.findRequestsByPlayerId(id);
     }
 
+    @Transactional
+    public Iterable<Player> findByForumId(int id) {
+        return playerRepo.findByForumId(id);
+    }
+
 }

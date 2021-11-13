@@ -22,7 +22,11 @@ import org.springframework.samples.petclinic.admin.Admin;
 import org.springframework.samples.petclinic.card.CARD_TYPE;
 
 import org.springframework.samples.petclinic.card.Card;
+
+import org.springframework.samples.petclinic.forum.Forum;
+
 import org.springframework.samples.petclinic.game.Game;
+
 import org.springframework.samples.petclinic.person.Person;
 
 
@@ -98,6 +102,12 @@ public class Player extends Person{
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_forums", joinColumns = @JoinColumn(name = "player_id"),
+			inverseJoinColumns = @JoinColumn(name = "forum_id"))
+	private Set<Forum> forums;
 
 	@ManyToMany(mappedBy = "players")
 	private Collection<Game> games;
