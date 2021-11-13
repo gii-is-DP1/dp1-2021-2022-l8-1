@@ -107,7 +107,7 @@ public class Player extends Person{
 
 
     @ManyToOne(optional = true)
-	private Game watchGame;
+	private Game watchGames;
 
 
     @ManyToMany(fetch = FetchType.LAZY)
