@@ -1,6 +1,9 @@
 package org.springframework.samples.petclinic.island;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +22,12 @@ public class IslandServiceTest {
         int count = islandService.islandCount();
         assertEquals(6, count);
     }
-    
+
+    @Test
+    public void testfindCardOnIsland(){  
+        Integer card = islandService.islandCard(6);
+        assertTrue("Pass", card!=null);   
+        assertFalse("Not Pass", card==null);
+    }
+   
 }
