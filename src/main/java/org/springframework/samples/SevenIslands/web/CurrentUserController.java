@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.web;
+package org.springframework.samples.SevenIslands.web;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
