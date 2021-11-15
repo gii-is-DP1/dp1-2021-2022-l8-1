@@ -8,6 +8,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.model.BaseEntity;
 
 import lombok.Getter;
@@ -26,6 +27,6 @@ public class Island extends BaseEntity {
     private Integer islandNum;
 
     @OneToOne(optional=true)
-    private Island card;
+    private Card card;
     
 }
