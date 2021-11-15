@@ -10,22 +10,22 @@ import org.springframework.samples.SevenIslands.model.BaseEntity;
 @MappedSuperclass
 public class Person extends BaseEntity {
 
-    @NotEmpty
+    // @NotEmpty
     @Column(name = "first_name")
     private String firstName;
     
-    @NotEmpty
+    // @NotEmpty
     @Column(name = "surname")
     private String surname;
 
-    @NotEmpty
+    // @NotEmpty
     @Column(name = "password")
     private String password;
     
     @Column(unique = true, name = "user_name")
     private String userName;
     
-    @NotEmpty
+    // @NotEmpty
     @Email
     @Column(unique = true, name = "email")
     private String email;

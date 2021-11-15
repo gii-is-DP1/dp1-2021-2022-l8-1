@@ -67,9 +67,11 @@ public class PlayerController {
 	@PostMapping(value = "/players/new")
 	public String processCreationForm(@Valid Player player, BindingResult result) {
 		if (result.hasErrors()) {
+			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n" + result);
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
+			System.out.println("hello\n\n\n\n\n\n\n");
 			//creating player, user and authorities
 			this.playerService.savePlayer(player);
 			
@@ -80,7 +82,7 @@ public class PlayerController {
 	@GetMapping(value = "/players/find")
 	public String initFindForm(Map<String, Object> model) {
 		model.put("player", new Player());
-		return "players/findOwners";
+		return "players/findPlayers";
 	}
 
 	@GetMapping(value = "/players")
@@ -96,7 +98,7 @@ public class PlayerController {
 		if (results.isEmpty()) {
 			// no owners found
 			result.rejectValue("surname", "notFound", "not found");
-			return "players/findOwners";
+			return "players/findPlayers";
 		}
 		else if (results.size() == 1) {
 			// 1 player found
