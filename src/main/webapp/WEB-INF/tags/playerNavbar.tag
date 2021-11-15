@@ -22,37 +22,37 @@
 			<div class="navbar-collapse collapse navbar-right" id="main-navbar">
 				
 				<ul class="nav navbar-nav navbar-right">
-					<sevenislands:navbarItem active="${name eq 'newgame'}" url="/players/profile"
-					title="trigger a RuntimeException to see how it is handled">
+					<sevenislands:navbarItem active="${name eq 'profile'}" url="/players/profile"
+					title="Enter into your profile">
 					<span>Username</span>
-					<sevenislands:avatar img="/profile.jpg"></sevenislands:avatar>
+					<sevenislands:avatar></sevenislands:avatar>
 					</sevenislands:navbarItem>
 				</ul>
 			
 				<ul class="nav navbar-nav navbar-right">
-					<sevenislands:navbarItem active="${name eq 'newgame'}" url="#"
-					title="trigger a RuntimeException to see how it is handled">
+					<sevenislands:navbarItem active="${name eq 'rooms'}" url="#"
+					title="Enter rooms page">
 					<span>Rooms</span>
 					</sevenislands:navbarItem>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<sevenislands:navbarItem active="${name eq 'newgame'}" url="#"
-					title="trigger a RuntimeException to see how it is handled">
+					<sevenislands:navbarItem active="${name eq 'ranking'}" url="#"
+					title="Enter ranking page">
 					<span>Ranking</span>
 					</sevenislands:navbarItem>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<sevenislands:navbarItem active="${name eq 'newgame'}" url="#"
-					title="trigger a RuntimeException to see how it is handled">
+					<sevenislands:navbarItem active="${name eq 'forum'}" url="#"
+					title="Enter forum page">
 					<span>Forum</span>
 					</sevenislands:navbarItem>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<sevenislands:navbarItem active="${name eq 'newgame'}" url="#"
-					title="trigger a RuntimeException to see how it is handled">
+					<sevenislands:navbarItem active="${name eq 'viewerMode'}" url="#"
+					title="Enter viewer mode page">
 					<span>Viewer Mode</span>
 					</sevenislands:navbarItem>
 				</ul>
