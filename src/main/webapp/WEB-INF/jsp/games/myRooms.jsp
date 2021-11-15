@@ -12,9 +12,9 @@
     <table id="gamesTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 200px;">Name</th>
-            <th style="width: 200px;">GameCode</th>
-            <th>Date</th>
+            <th style="width: 200px;">Games</th>
+            <th style="width: 200px;">Date</th>
+            <th>Players</th>
             <th>Delete game</th>
             <th>Update game</th>
         </tr>
@@ -26,11 +26,11 @@
                     <c:out value="${game.name}"/>
                 </td>
                 <td>
-                    <c:out value="${game.code}"/>
-                </td>
-                <td>
                     <c:out value="${game.startTime}"/>
                 </td>
+                <!-- <td>
+                    <c:out value="${game.startTime}"/>
+                </td> -->
                 <td>
                     <spring:url value="/games/delete/{gameId}" var="gameUrl">
                         <spring:param name="gameId" value="${game.id}"/>
