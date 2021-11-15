@@ -61,7 +61,8 @@ INSERT INTO generals(id, total_games, total_duration_all_games) VALUES (1, 200, 
 
 INSERT INTO deck(id) VALUES (1);
 
-INSERT INTO admins(id, first_name, surname, password, user_name, email) VALUES (1, 'Ismael', 'Perez', '123123123', 'ismperort', 'ismperort@alum.us.es');
+-- INSERT INTO admins(id, first_name, surname, password, user_name, email) VALUES (1, 'Ismael', 'Perez', '123123123', 'ismperort', 'ismperort@alum.us.es');
+INSERT INTO admins(id, first_name, surname, email) VALUES (1, 'Ismael', 'Perez', 'ismperort@alum.us.es');
 
 INSERT INTO comments(id, message) VALUES (1, 'I agree');
 

@@ -32,14 +32,13 @@ class ValidatorTests {
 		Person person = new Person();
 		person.setFirstName("John");
 		person.setSurname("smith");
-		person.setEmail("smith@gmail.com");
 
 		Validator validator = createValidator();
 		Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
 
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Person> violation = constraintViolations.iterator().next();
-		assertThat(violation.getPropertyPath().toString()).isEqualTo("password");
+		assertThat(violation.getPropertyPath().toString()).isEqualTo("email");
 		assertThat(violation.getMessage()).isEqualTo("must not be empty");
 	}
 

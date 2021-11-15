@@ -89,12 +89,12 @@ public class PlayerController {
 	public String processFindForm(Player player, BindingResult result, Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records
-		if (player.getSurName() == null) {
+		if (player.getSurname() == null) {
 			player.setSurname(""); // empty string signifies broadest possible search
 		}
 
 		// find owners by last name
-		Collection<Player> results = this.playerService.findPlayerBySurname(player.getSurName());
+		Collection<Player> results = this.playerService.findPlayerBySurname(player.getSurname());
 		if (results.isEmpty()) {
 			// no owners found
 			result.rejectValue("surname", "notFound", "not found");
