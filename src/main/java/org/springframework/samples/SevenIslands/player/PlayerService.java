@@ -1,15 +1,25 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.samples.SevenIslands.user.AuthoritiesService;
+import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PlayerService {
     @Autowired
     private PlayerRepository playerRepo;
+
+    @Autowired
+	private UserService userService;
+	
+	@Autowired
+	private AuthoritiesService authoritiesService;
 
     @Transactional(readOnly = true)
     public int playerCount(){
@@ -20,6 +30,11 @@ public class PlayerService {
     public Iterable<Player> findAll(){
         return playerRepo.findAll();
     }
+
+    @Transactional(readOnly = true)
+	public Collection<Player> findPlayerBySurname(String surname) throws DataAccessException {
+		return playerRepo.findBySurname(surname);
+	}
 
     @Transactional(readOnly = true)
     public Optional<Player> findPlayerById(int id){
@@ -63,5 +78,15 @@ public class PlayerService {
     public Iterable<Player> findByForumId(int id) {
         return playerRepo.findByForumId(id);
     }
+
+    @Transactional
+	public void savePlayer(Player player) throws DataAccessException {
+		//creating owner
+		playerRepo.save(player);		
+		//creating user
+		userService.saveUser(player.getUser());
+		//creating authorities
+		authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
+	}
 
 }

@@ -1,9 +1,9 @@
 package org.springframework.samples.SevenIslands.player;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -30,7 +31,7 @@ import org.springframework.samples.SevenIslands.forum.Forum;
 import org.springframework.samples.SevenIslands.game.Game;
 
 import org.springframework.samples.SevenIslands.person.Person;
-
+import org.springframework.samples.SevenIslands.user.User;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -40,59 +41,69 @@ import lombok.Setter;
 @Entity
 @Table(name="players")
 public class Player extends Person{
+  
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "username", referencedColumnName = "username")
+	private User user;
+
+  
+  public User getUser() {
+		return user;
+	}
+
 
     @ManyToMany
     private Collection<Admin> admins;
  
     @Column(name="profile_photo")
-    @NotEmpty
+    // @NotEmpty
     private String profilePhoto;
 
     @Column(name="total_games")
-    @NotEmpty
+    // @NotEmpty
     private Integer totalGames;
     
     @Column(name="total_time_games")
-    @NotEmpty
+    // @NotEmpty
     private Integer totalTimeGames;  //In seconds
 
     @Column(name="avg_time_games")
-    @NotEmpty
+    // @NotEmpty
     private Double avgTimeGames;  //In seconds
 
     @Column(name="max_time_game")
-    @NotEmpty
+    // @NotEmpty
     private Integer maxTimeGame;  //In seconds
 
     @Column(name="min_time_game")
-    @NotEmpty
+    // @NotEmpty
     private Integer minTimeGame;  //In seconds
 
     @Column(name="total_points_all_games")
-    @NotEmpty
+    // @NotEmpty
     private Integer totalPointsAllGames; 
     
     @Column(name="avg_total_points")
-    @NotEmpty
+    // @NotEmpty
     private Double avgTotalPoints;
     
     @Column(name="favorite_island")
-    @NotEmpty
+    // @NotEmpty
     @Min(value = 1)
     @Max(value = 7)
     private Integer favoriteIsland;
 
     @Column(name="favorite_treasure")
     @Enumerated(EnumType.STRING)
-    @NotEmpty
+    // @NotEmpty
     private CARD_TYPE favoriteTreasure;
 
     @Column(name="max_points_of_games")
-    @NotEmpty
+    // @NotEmpty
     private Integer maxPointsOfGames;
 
     @Column(name="min_points_of_games")
-    @NotEmpty
+    // @NotEmpty
     private Integer minPointsOfGames;
 
 	@ManyToMany(fetch = FetchType.LAZY)

@@ -26,4 +26,6 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
 	@Query("SELECT P FROM Player P WHERE P.id = :playerId")
 	Collection<Player> findWatchGameByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 
+	@Query("SELECT P FROM Player P WHERE P.surname LIKE :surname%")
+	Collection<Player> findBySurname(@Param("surname") String surname);
 }
