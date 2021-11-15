@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.player;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
@@ -28,4 +29,7 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
 
 	@Query("SELECT P FROM Player P WHERE P.surname LIKE :surname%")
 	Collection<Player> findBySurname(@Param("surname") String surname);
+
+	@Query("SELECT P FROM Player P WHERE P.username = :username")
+	Collection<Player> findPlayerIdByName(@Param("username") String username);
 }
