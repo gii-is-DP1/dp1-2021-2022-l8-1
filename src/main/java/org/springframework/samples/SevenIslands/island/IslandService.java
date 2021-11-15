@@ -14,10 +14,6 @@ public class IslandService {
     @Transactional
     public int islandCount() {
         return (int) islandRepo.count();
-    }  
-    
-    @Transactional
-    public Integer islandCard(int id) {
-        return islandRepo.findCardOnIsland(id);
-    }
+    }    
 }
+
