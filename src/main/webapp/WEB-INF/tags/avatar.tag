@@ -6,5 +6,5 @@
 <%@ attribute name="avatarSmall" required="false" rtexprvalue="true" %>
 
 <div id="avatar" class="${avatarBig ? 'avatar-big': ''} ${avatarSmall ? 'avatar-small': ''}">
-    <img class="img" src="/resources/images/profile-photo.png"/>
+    <img src="/resources/images/profile-photo.png"/>
 </div>
