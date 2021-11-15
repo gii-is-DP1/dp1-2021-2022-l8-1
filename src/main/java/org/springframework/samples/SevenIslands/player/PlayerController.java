@@ -31,7 +31,7 @@ public class PlayerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "players/createOrUpdatePlayerForm";
 	
-	private static final String VIEWS_PROFILE = "player/profile";
+	private static final String VIEWS_PROFILE = "players/profile";
 
 	private final PlayerService playerService;
 	

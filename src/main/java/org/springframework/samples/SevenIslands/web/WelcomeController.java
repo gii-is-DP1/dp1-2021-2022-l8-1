@@ -64,11 +64,11 @@ public class WelcomeController {
 		model.put("title", "Board Game");
 		model.put("group", "L8-1 a.k.a. Dream Team");
 		
-		//ESTO ES DE EJEMPLO
-		response.addHeader("Refresh", "1");
-		model.put("now", new Date());
-		model.put("boardService", gameService.findGameById(1).get());
-		//CUIDAO
+		// //ESTO ES DE EJEMPLO
+		// response.addHeader("Refresh", "1");
+		// model.put("now", new Date());
+		// model.put("boardService", gameService.findGameById(1).get());
+		// //CUIDAO
 		
 		
 		return "welcome";
