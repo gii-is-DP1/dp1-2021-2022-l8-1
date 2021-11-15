@@ -23,11 +23,6 @@ public class IslandServiceTest {
         assertEquals(6, count);
     }
 
-    @Test
-    public void testfindCardOnIsland(){  
-        Integer card = islandService.islandCard(6);
-        assertTrue("Pass", card!=null);   
-        assertFalse("Not Pass", card==null);
-    }
+    
    
 }
