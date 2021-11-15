@@ -22,8 +22,8 @@ public class GameController {
     private GameService gameService;
 
     @GetMapping()
-    public String listadoPartidas(ModelMap modelMap) {
-        String vista = "games/listadoPartidas";
+    public String myRooms(ModelMap modelMap) {
+        String vista = "games/myRooms";
         Iterable<Game> games = gameService.findAll();
         modelMap.addAttribute("games", games);
         return vista;
@@ -38,14 +38,14 @@ public class GameController {
 
     @PostMapping(path = "/save")
     public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
-        String view = "games/listadoPartidas";
+        String view = "games/myRooms";
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
             return "games/editarJuego";
         } else {
             gameService.save(game);
             modelMap.addAttribute("message", "Game successfully saved!");
-            view = listadoPartidas(modelMap);
+            view = myRooms(modelMap);
         }
         return view;
     }
@@ -59,7 +59,7 @@ public class GameController {
         } else {
             modelMap.addAttribute("message", "Game not Found!");
         }
-        String view = listadoPartidas(modelMap);
+        String view = myRooms(modelMap);
         return view;
     }
 
