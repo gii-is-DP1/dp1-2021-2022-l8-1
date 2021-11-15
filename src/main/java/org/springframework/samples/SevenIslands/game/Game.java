@@ -14,9 +14,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.SevenIslands.board.Board;
 import org.springframework.samples.SevenIslands.model.NamedEntity;
 import org.springframework.samples.SevenIslands.player.Player;
 
@@ -70,5 +72,7 @@ public class Game extends NamedEntity {
                 inverseJoinColumns = @JoinColumn(name="player_id"))
     private Collection<Player> players;
 
+    @OneToOne(optional=false)
+    private Board board;
     
 }
