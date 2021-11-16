@@ -29,8 +29,6 @@ public class Admin extends Person{
 	@JoinTable(name = "admins_achievements", joinColumns = @JoinColumn(name = "admin_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
-    
-    @ManyToMany
-    private Collection<Player> players;
+
     
 }
