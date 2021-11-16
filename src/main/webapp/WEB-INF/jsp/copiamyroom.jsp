@@ -7,7 +7,7 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="games">
-    <h2>MyRooms</h2>
+    <h2>Games</h2>
 
     <table id="gamesTable" class="table table-striped">
         <thead>
@@ -15,7 +15,8 @@
             <th style="width: 200px;">Games</th>
             <th style="width: 200px;">Date</th>
             <th>Players</th>
-           
+            <th>Delete game</th>
+            <th>Update game</th>
         </tr>
         </thead>
         <tbody>
@@ -28,9 +29,17 @@
                     <c:out value="${game.startTime}"/>
                 </td>
                 <td>
-                    <c:out value = "${game.nameOfPlayers}"/>
+                    <spring:url value="/games/delete/{gameId}" var="gameUrl">
+                        <spring:param name="gameId" value="${game.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(gameUrl)}">Delete</a>
                 </td>
-                
+                <td>
+                    <spring:url value="/games/edit/{gameId}" var="gameUrl">
+                        <spring:param name="gameId" value="${game.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(gameUrl)}">Edit</a>
+                </td>
                 
             </tr>
         </c:forEach>
