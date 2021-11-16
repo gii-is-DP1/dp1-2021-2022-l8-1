@@ -50,9 +50,6 @@ public class Player extends Person{
 		return user;
 	}
 
-
-    @ManyToMany
-    private Collection<Admin> admins;
  
     @Column(name="profile_photo")
     // @NotEmpty
