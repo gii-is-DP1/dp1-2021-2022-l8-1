@@ -17,8 +17,10 @@ SevenIslandsCss :: a Spring Framework demonstration
     <title>Seven Island</title>
 
     <%-- CSS generated from LESS --%>
+
     <spring:url value="/resources/css/sevenislands.css" var="sevenislandsCss"/>
     <link href="${sevenislandsCss}" rel="stylesheet"/>
+
 
 
     <%-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --%>
