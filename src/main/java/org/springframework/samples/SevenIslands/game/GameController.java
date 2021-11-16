@@ -6,6 +6,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.player.PlayerService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -21,9 +25,25 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
+    @Autowired
+    private PlayerService playerService;
+
     @GetMapping()
     public String myRooms(ModelMap modelMap) {
         String vista = "games/myRooms";
+        
+        Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
+        if(authetication != null){
+            if(authetication.isAuthenticated()){
+                User currentUser = (User)authetication.getPrincipal();
+                System.out.println(currentUser.getUsername());
+                System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
+        }else
+               return "/welcome"; //da error creo que es por que request mapping de arriba
+    }
+
+
+
         Iterable<Game> games = gameService.findAll();
         modelMap.addAttribute("games", games);
         return vista;
