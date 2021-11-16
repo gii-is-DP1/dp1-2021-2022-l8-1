@@ -17,7 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.admin.Admin;
@@ -51,9 +50,6 @@ public class Player extends Person{
 		return user;
 	}
 
-
-    @ManyToMany
-    private Collection<Admin> admins;
  
     @Column(name="profile_photo")
     // @NotEmpty

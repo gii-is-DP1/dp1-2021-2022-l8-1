@@ -6,7 +6,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.samples.SevenIslands.admin.Admin;
+
+import org.springframework.samples.SevenIslands.player.Player;
+
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,19 +43,23 @@ public class GameController {
                 User currentUser = (User)authetication.getPrincipal();
                 System.out.println(currentUser.getUsername());
                 System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
+
+                int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
+
+                Iterable<Game> games = gameService.findGamesByPlayerId(playerId);
+                modelMap.addAttribute("games", games);
+
+                return vista;
+
         }else
                return "/welcome"; //da error creo que es por que request mapping de arriba
     }
 
-
-
-        Iterable<Game> games = gameService.findAll();
-        modelMap.addAttribute("games", games);
         return vista;
     }
 
     @GetMapping(path = "/new")
-    public String crearJuego(ModelMap modelMap) {
+    public String crearJuego(Player player,ModelMap modelMap) {
         String view = "games/editarJuego"; // Hacer pagina
         modelMap.addAttribute("game", new Game());
         return view;
@@ -65,8 +73,16 @@ public class GameController {
             return "games/editarJuego";
         } else {
             gameService.save(game);
-            modelMap.addAttribute("message", "Game successfully saved!");
+            
             view = myRooms(modelMap);
+
+            Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User)authetication.getPrincipal();
+            int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
+            gameService.insertGP(game.getId(), playerId);
+
+            modelMap.addAttribute("message", "Game successfully saved!");
+            
         }
         return view;
     }

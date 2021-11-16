@@ -45,10 +45,13 @@ public class GameService {
 
     @Transactional
     public Iterable<Game> findGamesByPlayerId(int id){
-        return gameRepo.findGameByPlayerId(id);
+        return gameRepo.findGamesByPlayerId(id);
     }
 
-    
+    @Transactional
+    public void insertGP(int game_id, int player_id){
+        gameRepo.insertGP(game_id,player_id);
+    }
 
 
 
