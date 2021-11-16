@@ -17,7 +17,7 @@ public class BoardServiceTest {
     @Test
     public void testCountWithInitialData(){
         int count = boardService.boardCount();
-        assertEquals(count, 1);
+        assertEquals(count, 0);
     }
     
 }

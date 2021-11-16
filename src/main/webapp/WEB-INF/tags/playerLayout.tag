@@ -1,5 +1,5 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="SevenIslandsCss" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ attribute name="pageName" required="true" %>
@@ -7,10 +7,10 @@
 
 <!doctype html>
 <html>
-<sevenislands:htmlHeader/>
+<SevenIslandsCss:htmlHeader/>
 
 <body>
-<sevenislands:playerBodyHeader menuName="${pageName}"/>
+<SevenIslandsCss:bodyHeader menuName="${pageName}"/>
 
 <div class="container-fluid">
     <div class="container xd-container">
@@ -25,10 +25,10 @@
 
         <jsp:doBody/>
 
-        <sevenislands:pivotal/>
+        <SevenIslandsCss:pivotal/>
     </div>
 </div>
-<sevenislands:footer/>
+<SevenIslandsCss:footer/>
 <jsp:invoke fragment="customScript" />
 
 </body>

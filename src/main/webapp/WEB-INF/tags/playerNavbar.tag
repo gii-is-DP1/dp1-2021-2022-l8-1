@@ -25,7 +25,6 @@
 					<sevenislands:navbarItem active="${name eq 'profile'}" url="/players/profile"
 					title="Enter into your profile">
 					<span>Username</span>
-					<sevenislands:avatar></sevenislands:avatar>
 					</sevenislands:navbarItem>
 				</ul>
 			

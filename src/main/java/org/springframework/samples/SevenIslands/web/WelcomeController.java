@@ -63,7 +63,7 @@ public class WelcomeController {
 		model.put("persons", persons);
 		model.put("title", "Board Game");
 		model.put("group", "L8-1 a.k.a. Dream Team");
-		
+	
 		// //ESTO ES DE EJEMPLO
 		// response.addHeader("Refresh", "1");
 		// model.put("now", new Date());

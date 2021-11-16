@@ -122,4 +122,9 @@ public class PlayerService {
         return achievementRepo.getByPlayerId(id);
     }
 
+    @Transactional(readOnly = true)
+    public Integer getIdPlayerByName(String n) {
+        return playerRepo.findPlayerIdByName(n);
+    }
+
 }

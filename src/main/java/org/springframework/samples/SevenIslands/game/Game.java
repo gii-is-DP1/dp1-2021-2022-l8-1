@@ -69,6 +69,5 @@ public class Game extends NamedEntity {
     @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 
                 inverseJoinColumns = @JoinColumn(name="player_id"))
     private Collection<Player> players;
-
     
 }
