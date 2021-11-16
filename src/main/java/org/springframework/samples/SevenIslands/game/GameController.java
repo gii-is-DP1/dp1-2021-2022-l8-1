@@ -122,6 +122,31 @@ public class GameController {
                     }
 			return "redirect:/games";
 		}
+
+
+
 	}
+
+
+
+
+    //ROOMS VIEW (PUBLIC ONES)
+    @GetMapping(path = "/rooms")
+    public String publicRooms(ModelMap modelMap) {
+        String view = "games/publicRooms"; // Hacer pagina
+        
+        Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
+        if(authetication != null){
+            if(authetication.isAuthenticated()){
+                User currentUser = (User)authetication.getPrincipal();
+                System.out.println(currentUser.getUsername());
+                System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
+        }else
+               return "/welcome"; //da error creo que es por que request mapping de arriba
+    }
+        Iterable<Game> games = gameService.findAllPublic();
+        modelMap.addAttribute("games", games);
+        return view;
+    }
 
 }
