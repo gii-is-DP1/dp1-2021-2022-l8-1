@@ -67,15 +67,20 @@ public class GameController {
             modelMap.addAttribute("game", game);
             return "games/editarJuego";
         } else {
+            Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User)authetication.getPrincipal();
+            
+            
+            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); //PUESTO DE PRUEBA
+            
+            System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE   " + playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()   );
+            
             gameService.save(game);
             
             view = myRooms(modelMap);
-
-            Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
-            User currentUser = (User)authetication.getPrincipal();
+            
             int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
             gameService.insertGP(game.getId(), playerId);
-
             modelMap.addAttribute("message", "Game successfully saved!");
             
         }

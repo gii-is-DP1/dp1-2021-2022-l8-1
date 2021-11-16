@@ -22,7 +22,7 @@ public class PlayerServiceTest {
 
     @Test
     public void testFindPlayersByGameId() {
-        Iterable<Player> players = playerService.findPlayersByGameId(2);
+        Iterable<Player> players = playerService.findPlayersByGameId(1);//JUGADORES QUE HAY EN UNA PARTIDA DADA POR EL ID
         long count = players.spliterator().getExactSizeIfKnown();
         assertEquals(2, count);
     }

@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -69,5 +70,8 @@ public class Game extends NamedEntity {
     @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 
                 inverseJoinColumns = @JoinColumn(name="player_id"))
     private Collection<Player> players;
+
+    @ManyToOne(optional=false)
+    private Player player;
     
 }
