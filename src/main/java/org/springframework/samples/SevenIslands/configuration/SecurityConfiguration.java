@@ -35,16 +35,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.antMatchers("/resources/**","/webjars/**","/h2-console/**").permitAll() //ESTO HAY QUE CAMBIARLO DEPENDIENDO DE NUESTRAS REGLAS DE NEGOCIO
 				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
+				.antMatchers("/currentuser").permitAll()
 				.antMatchers("/users/new").permitAll()
+				.antMatchers("/players/**").permitAll()
 				.antMatchers("/games").permitAll()
-				.antMatchers("/games/**").hasAnyAuthority("admin")
+				.antMatchers("/games/**").permitAll()
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				
 				.antMatchers("/vets/**").authenticated()
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
-				 	/*.loginPage("/login")*/
+				 	/*.loginPage("/login1")*/
 				 	.failureUrl("/login-error")
 				.and()
 					.logout()

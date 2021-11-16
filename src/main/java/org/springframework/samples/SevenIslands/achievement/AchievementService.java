@@ -28,7 +28,7 @@ public class AchievementService {
 
     @Transactional
     public Iterable<Achievement> findByPlayerId(int id) {
-        return achievementRepo.findByPlayerId(id);
+        return achievementRepo.getByPlayerId(id);
     }
 
     @Transactional

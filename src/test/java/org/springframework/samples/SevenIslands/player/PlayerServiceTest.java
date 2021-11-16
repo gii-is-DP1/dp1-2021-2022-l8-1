@@ -52,6 +52,6 @@ public class PlayerServiceTest {
     @Test
     public void testFindByForumId(){
         Iterable<Player> players = playerService.findByForumId(1);
-        assertEquals(players.spliterator().getExactSizeIfKnown(), 1);
+        assertEquals(1, players.spliterator().getExactSizeIfKnown());
     }
 }
