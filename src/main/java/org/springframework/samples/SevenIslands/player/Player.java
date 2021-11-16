@@ -113,24 +113,24 @@ public class Player extends Person{
 	private Set<Card> cards;
 
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, cascade = CascadeType.ALL)
 	private Game watchGames;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "players_forums", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "forum_id"))
 	private Set<Forum> forums;
 
-	@ManyToMany(mappedBy = "players")
+	@ManyToMany(mappedBy = "players", cascade = CascadeType.ALL)
 	private Collection<Game> games;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
 	 		inverseJoinColumns = @JoinColumn(name = "invited_id"))
   private Collection<Player> invitations;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
 			inverseJoinColumns = @JoinColumn(name = "requested_id"))
   private Collection<Player> friend_requests;

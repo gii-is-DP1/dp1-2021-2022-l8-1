@@ -3,7 +3,7 @@ package org.springframework.samples.SevenIslands.game;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 
@@ -65,7 +65,7 @@ public class Game extends NamedEntity {
     @Enumerated(EnumType.STRING)
     private PRIVACITY privacity;
     
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 
                 inverseJoinColumns = @JoinColumn(name="player_id"))
     private Collection<Player> players;
