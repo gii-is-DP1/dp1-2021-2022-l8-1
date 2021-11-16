@@ -9,6 +9,13 @@
             "name": "Launch SevenIslandsApplication",
             "request": "launch",
             "mainClass": "org.springframework.samples.SevenIslands.SevenIslandsApplication",
+            "projectName": "spring-petclinic"
+        },
+        {
+            "type": "java",
+            "name": "Launch SevenIslandsApplication",
+            "request": "launch",
+            "mainClass": "org.springframework.samples.SevenIslands.SevenIslandsApplication",
             "projectName": "L8-1"
         },
         {
