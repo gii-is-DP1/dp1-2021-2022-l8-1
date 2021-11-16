@@ -4,33 +4,31 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="owners">
+<SevenIslands:layout pageName="players">
     <h2>
-        <c:if test="${owner['new']}">New </c:if> Owner
+        <c:if test="${player['new']}">New </c:if> Player
     </h2>
-    <form:form modelAttribute="owner" class="form-horizontal" id="add-owner-form">
+    <form:form modelAttribute="player" class="form-horizontal" id="add-player-form">
         <div class="form-group has-feedback">
-            <petclinic:inputField label="First Name" name="firstName"/>
-            <petclinic:inputField label="Last Name" name="lastName"/>
-            <petclinic:inputField label="Address" name="address"/>
-            <petclinic:inputField label="City" name="city"/>
-            <petclinic:inputField label="Telephone" name="telephone"/>
-            <petclinic:inputField label="Username" name="user.username"/>
-            <petclinic:inputField label="Password" name="user.password"/>
+            <SevenIslands:inputField label="First Name" name="firstName"/>
+            <SevenIslands:inputField label="Surname" name="surname"/>
+            <SevenIslands:inputField label="Email" name="email"/>
+            <SevenIslands:inputField label="Username" name="user.username"/>
+            <SevenIslands:inputField label="Password" name="user.password"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
-                    <c:when test="${owner['new']}">
-                        <button class="btn btn-default" type="submit">Add Owner</button>
+                    <c:when test="${player['new']}">
+                        <button class="btn btn-default" type="submit">Add Player</button>
                     </c:when>
                     <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update Owner</button>
+                        <button class="btn btn-default" type="submit">Update Player</button>
                     </c:otherwise>
                 </c:choose>
             </div>
         </div>
     </form:form>
-</petclinic:layout>
+</SevenIslands:layout>

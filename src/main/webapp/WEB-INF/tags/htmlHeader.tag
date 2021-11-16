@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%--
-PetClinic :: a Spring Framework demonstration
+SevenIslandsCss :: a Spring Framework demonstration
 --%>
 
 <head>
@@ -14,11 +14,11 @@ PetClinic :: a Spring Framework demonstration
     <spring:url value="/resources/images/favicon.png" var="favicon"/>
     <link rel="shortcut icon" type="image/x-icon" href="${favicon}">
 
-    <title>PetClinic :: a Spring Framework demonstration</title>
+    <title>Seven Island</title>
 
     <%-- CSS generated from LESS --%>
-    <spring:url value="/resources/css/petclinic.css" var="petclinicCss"/>
-    <link href="${petclinicCss}" rel="stylesheet"/>
+    <spring:url value="/resources/css/sevenislands.css" var="sevenislandsCss"/>
+    <link href="${sevenislandsCss}" rel="stylesheet"/>
 
 
     <%-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --%>
