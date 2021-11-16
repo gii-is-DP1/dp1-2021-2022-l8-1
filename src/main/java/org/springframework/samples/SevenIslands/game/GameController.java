@@ -41,7 +41,6 @@ public class GameController {
                 System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
 
                 int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
-
                 Iterable<Game> games = gameService.findGamesByPlayerId(playerId);
                 modelMap.addAttribute("games", games);
 
