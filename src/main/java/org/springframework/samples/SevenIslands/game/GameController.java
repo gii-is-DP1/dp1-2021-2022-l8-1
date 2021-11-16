@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,7 +35,7 @@ public class GameController {
         
         Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
         if(authetication != null){
-            if(authetication.isAuthenticated()){
+            if(authetication.isAuthenticated() && authetication.getPrincipal() instanceof User){
                 User currentUser = (User)authetication.getPrincipal();
                 System.out.println(currentUser.getUsername());
                 System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
@@ -133,17 +134,21 @@ public class GameController {
     //ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
     public String publicRooms(ModelMap modelMap) {
-        String view = "games/publicRooms"; // Hacer pagina
-        
+        String view = "/welcome"; // Hacer pagina
         Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
         if(authetication != null){
-            if(authetication.isAuthenticated()){
-                User currentUser = (User)authetication.getPrincipal();
-                System.out.println(currentUser.getUsername());
-                System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
-        }else
-               return "/welcome"; //da error creo que es por que request mapping de arriba
-    }
+            System.out.println("\n\n\n\n" + authetication.getPrincipal());
+            if(authetication.isAuthenticated() && authetication.getPrincipal() instanceof User){
+                //If the user has admin perms then:
+                if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x->x.toString().equals("admin"))){
+                    view = "games/publicRoomsAdmins"; // Hacer pagina
+                }else{
+                    view = "games/publicRooms"; // Hacer pagina
+                }
+        }else{
+            return "welcome"; //da error creo que es por que request mapping de arriba
+        }    
+        }       
         Iterable<Game> games = gameService.findAllPublic();
         modelMap.addAttribute("games", games);
         return view;
