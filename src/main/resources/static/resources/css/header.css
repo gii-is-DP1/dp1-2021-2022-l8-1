@@ -6,20 +6,28 @@
   border-left: 0;
   border-right: 0;
 }
+.navbar .navbar-header {
+  min-width: 100px;
+  margin-right: 20px;
+}
 .navbar a.navbar-brand {
-  background: url("../images/7islands-logo-60.png");
   margin: 12px 0 6px;
-  width: 229px;
-  height: 46px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   display: inline-block;
   text-decoration: none;
   padding: 0;
+}
+.navbar a.navbar-brand img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
 }
 .navbar a.navbar-brand span {
   display: block;
   width: 229px;
   height: 46px;
-  background: url("../images/7islands-logo-60.png");
   opacity: 0;
   -moz-transition: opacity 0.12s ease-in-out;
   -webkit-transition: opacity 0.12s ease-in-out;
@@ -61,4 +69,17 @@
 .navbar-toggle .icon-bar {
   width: 19px;
   height: 3px;
+}
+@media (max-width: 768px) {
+  .navbar a.navbar-brand {
+    position: absolute;
+    right: 10%;
+    top: 10px;
+    background: none !important;
+    height: 60px !important;
+    width: 60px !important;
+  }
+  .navbar {
+    height: 70px;
+  }
 }

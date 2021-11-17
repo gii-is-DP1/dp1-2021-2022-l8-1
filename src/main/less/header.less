@@ -1,38 +1,45 @@
 .navbar {
-  border-top: 4px solid #6db33f;
-  background-color: #34302d;
+  border-top: 4px solid @spring-dark-primary;
+  background-color: @spring-brown;
   margin-bottom: 0px;
   border-bottom: 0;
   border-left: 0;
   border-right: 0;
 }
 
+.navbar .navbar-header {
+  min-width: 100px;
+  margin-right: 20px;
+}
+
 .navbar a.navbar-brand {
-  background: url("../images/7islands-logo-60.png");
   margin: 12px 0 6px;
-  width: 229px;
-  height: 46px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   display: inline-block;
   text-decoration: none;
   padding: 0;
+
+  img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;    
+  }
+
+  box-shadow: none;
+  -moz-transition: box-shadow 0.12s ease-in-out;
+  -webkit-transition: box-shadow 0.12s ease-in-out;
+  -o-transition: box-shadow 0.12s ease-in-out;
+
+  &:hover,
+  &:active,
+  &:target {
+    box-shadow: 0 0 15px 3px @spring-primary;
+  }
 }
 
-.navbar a.navbar-brand span {
-  display: block;
-  width: 229px;
-  height: 46px;
-  background: url("../images/7islands-logo-60.png");
-  opacity: 0;
-  -moz-transition: opacity 0.12s ease-in-out;
-  -webkit-transition: opacity 0.12s ease-in-out;
-  -o-transition: opacity 0.12s ease-in-out;
-}
-
-.navbar a:hover.navbar-brand span {
-  opacity: 1;
-}
-
-.navbar li > a, .navbar-text {
+.navbar li > a{
   font-family: "montserratregular", sans-serif;
   text-shadow: none;
   font-size: 14px;
@@ -46,17 +53,20 @@
   -ms-transition: all 0.15s;
 }
 
-.navbar li > a {
-  text-transform: uppercase;
-}
-
 .navbar .navbar-text {
   margin-top: 0;
   margin-bottom: 0;
 }
+
+.navbar li > a {
+  text-transform: uppercase;
+  color: @spring-grey;
+  background-color: none;
+}
+
 .navbar li:hover > a {
-  color: #eeeeee;
-  background-color: #6db33f;
+  color: @spring-brown !important;
+  background-color: @spring-primary;
 }
 
 .navbar-toggle {
@@ -70,4 +80,19 @@
     height: 3px;
   }
 
+}
+
+@media (max-width: 768px) {
+  .navbar a.navbar-brand {
+    position: absolute;
+    right: 10%;
+    top: 10px;
+    background: none !important;
+    height: 60px !important;
+    width: 60px !important;
+  } 
+
+  .navbar {
+    height: 70px;
+  }
 }
