@@ -32,6 +32,11 @@ public class AchievementService {
     }
 
     @Transactional
+    public void save(Achievement achievement){
+        achievementRepo.save(achievement);
+    }
+
+    @Transactional
     public Iterable<Achievement> findByAdminId(int id) {
         return achievementRepo.findByAdminId(id);
     }
