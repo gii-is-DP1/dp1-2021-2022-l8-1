@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
@@ -41,16 +42,6 @@ import lombok.Setter;
 @Table(name="players")
 public class Player extends Person{
   
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "username", referencedColumnName = "username")
-	private User user;
-
-  
-  public User getUser() {
-		return user;
-	}
-
- 
     @Column(name="profile_photo")
     // @NotEmpty
     private String profilePhoto;
@@ -102,38 +93,55 @@ public class Player extends Person{
     // @NotEmpty
     private Integer minPointsOfGames;
 
+
+  //RELACION CON LOGROS
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
 
+  //RELACION CON CARTAS
   @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;
 
-
-    @ManyToOne(optional = true, cascade = CascadeType.ALL)
+  //RELACION CON ESPECTADOR
+  @ManyToOne(optional = true)
 	private Game watchGames;
 
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  //RELACION CON FOROS
+  @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_forums", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "forum_id"))
 	private Set<Forum> forums;
 
-	@ManyToMany(mappedBy = "players", cascade = CascadeType.ALL)
+  //RELACION CON ESPECTADOR GAMES
+	@ManyToMany(mappedBy = "players")
 	private Collection<Game> games;
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  //RELACION CON INVITACIONES
+  @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
 	 		inverseJoinColumns = @JoinColumn(name = "invited_id"))
   private Collection<Player> invitations;
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  //RELACION CON PLAYER
+  @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
 			inverseJoinColumns = @JoinColumn(name = "requested_id"))
   private Collection<Player> friend_requests;
 
+  //RELACION CON USER
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "username", referencedColumnName = "username")
+	private User user;
 
+  public User getUser() {
+		return user;
+  }
+  //SEGUNDA RELACION CON GAMES
+  @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+  private Set<Game> gamesCreador;
+	
 }

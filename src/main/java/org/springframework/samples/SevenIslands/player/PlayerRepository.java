@@ -32,6 +32,9 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
 	@Query(value = "SELECT P.id FROM Players P JOIN Users U ON U.username=P.username WHERE P.username LIKE ?1", nativeQuery = true)
 	Integer findPlayerIdByName(String n);
 
+	@Query(value = "SELECT * FROM Players P JOIN Users U ON U.username=P.username WHERE P.username LIKE ?1", nativeQuery = true) //PUESTO DE PRUEBA
+	Collection<Player> findPlayerByName(String n);
+
 
 
 

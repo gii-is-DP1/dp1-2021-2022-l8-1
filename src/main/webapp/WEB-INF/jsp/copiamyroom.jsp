@@ -7,15 +7,16 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="games">
-    <h2>MyRooms</h2>
+    <h2>Games</h2>
 
     <table id="gamesTable" class="table table-striped">
         <thead>
         <tr>
             <th style="width: 200px;">Games</th>
             <th style="width: 200px;">Date</th>
-            <th style="width: 200px;">Players</th>
-           
+            <th>Players</th>
+            <th>Delete game</th>
+            <th>Update game</th>
         </tr>
         </thead>
         <tbody>
@@ -24,25 +25,24 @@
                 <td>
                     <c:out value="${game.name}"/>
                 </td>
-
                 <td>
                     <c:out value="${game.startTime}"/>
-                </td> 
-
+                </td>
                 <td>
-                <c:forEach items ="${game.players}" var="p">
-                
-                <c:out value = "${p.user.username}"/>  <!--AQUI SE PUEDE PONER LO DE DIRECCIONAR A LA VISTA DE UN PERFIL DANDOLE EL ID-->
-                
-    
-                </c:forEach>  
-                </td>  
-            
+                    <spring:url value="/games/delete/{gameId}" var="gameUrl">
+                        <spring:param name="gameId" value="${game.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(gameUrl)}">Delete</a>
+                </td>
+                <td>
+                    <spring:url value="/games/edit/{gameId}" var="gameUrl">
+                        <spring:param name="gameId" value="${game.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(gameUrl)}">Edit</a>
+                </td>
                 
             </tr>
         </c:forEach>
-        
-        
         </tbody>
     </table>
 </SevenIslands:layout>

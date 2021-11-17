@@ -2,6 +2,8 @@ package org.springframework.samples.SevenIslands.game;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +46,18 @@ public class GameService {
     }
 
     @Transactional
-    public Iterable<Game> findGamesByPlayerId(int id){
+    public Collection<Game> findGamesByPlayerId(int id){
         return gameRepo.findGamesByPlayerId(id);
     }
 
     @Transactional
     public void insertGP(int game_id, int player_id){
         gameRepo.insertGP(game_id,player_id);
+    }
+
+    @Transactional
+    public Collection<Integer> getPlayersIdOnGame(int game_id){
+        return gameRepo.findIdPlayersByGameId(game_id);
     }
 
 

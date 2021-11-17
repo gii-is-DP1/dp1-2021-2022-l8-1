@@ -2,6 +2,7 @@ package org.springframework.samples.SevenIslands.game;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -68,6 +70,9 @@ public class Game extends NamedEntity {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 
                 inverseJoinColumns = @JoinColumn(name="player_id"))
-    private Collection<Player> players;
+    private List<Player> players;
+
+    @ManyToOne(optional=false)
+    private Player player;
     
 }

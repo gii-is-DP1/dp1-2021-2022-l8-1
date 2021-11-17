@@ -127,4 +127,10 @@ public class PlayerService {
         return playerRepo.findPlayerIdByName(n);
     }
 
+    @Transactional(readOnly = true)
+    public Collection<Player> getPlayerByName(String n) {
+        return playerRepo.findPlayerByName(n); //PUESTO DE PRUEBA
+
+    }
+
 }
