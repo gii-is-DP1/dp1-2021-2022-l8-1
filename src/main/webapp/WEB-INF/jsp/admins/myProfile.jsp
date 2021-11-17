@@ -23,7 +23,7 @@
         <c:forEach items="${admins}" var="admin">
             <tr>
                 <td>
-                    <c:out value="${admin.username}"/>
+                    <c:out value="${admin.user.username}"/>
                 </td>
                 <td>
                     <c:out value="${admin.firstName}"/>

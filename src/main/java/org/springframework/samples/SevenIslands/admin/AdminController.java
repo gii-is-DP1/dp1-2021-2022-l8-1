@@ -28,8 +28,11 @@ public class AdminController {
         if(authetication != null){
             if(authetication.isAuthenticated() && authetication.getPrincipal() instanceof User){
                 User currentUser = (User)authetication.getPrincipal();
-
+                
                 Iterable<Admin> admin = adminService.getAdminByName(currentUser.getUsername());
+
+                System.out.println("\n\n\n\n" + admin.toString());
+                
                 modelMap.addAttribute("admins", admin);
 
                 return vista;
