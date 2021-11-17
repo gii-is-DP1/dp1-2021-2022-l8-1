@@ -1,7 +1,6 @@
 package org.springframework.samples.SevenIslands.game;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -66,6 +65,9 @@ public class Game extends NamedEntity {
     @Column(name = "privacity")   
     @Enumerated(EnumType.STRING)
     private PRIVACITY privacity;
+
+    @Column(name="game_status")
+    private boolean gameStatus;
     
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 
