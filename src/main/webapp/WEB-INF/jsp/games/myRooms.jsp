@@ -14,7 +14,7 @@
         <tr>
             <th style="width: 200px;">Games</th>
             <th style="width: 200px;">Date</th>
-            <th>Players</th>
+            <th style="width: 200px;">Players</th>
            
         </tr>
         </thead>
@@ -24,16 +24,25 @@
                 <td>
                     <c:out value="${game.name}"/>
                 </td>
+
                 <td>
                     <c:out value="${game.startTime}"/>
-                </td>
+                </td> 
+
                 <td>
-                    <c:out value = "${game.nameOfPlayers}"/>
-                </td>
+                <c:forEach items ="${game.players}" var="p">
                 
+                <c:out value = "${p.user.username}"/>  <!--AQUI SE PUEDE PONER LO DE DIRECCIONAR A LA VISTA DE UN PERFIL DANDOLE EL ID-->
+                
+    
+                </c:forEach>  
+                </td>  
+            
                 
             </tr>
         </c:forEach>
+        
+        
         </tbody>
     </table>
 </SevenIslands:layout>
