@@ -1,6 +1,12 @@
 package org.springframework.samples.SevenIslands.game;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -41,11 +47,13 @@ public class GameController {
         if(authetication != null){
             if(authetication.isAuthenticated() && authetication.getPrincipal() instanceof User){
                 User currentUser = (User)authetication.getPrincipal();
-                System.out.println(currentUser.getUsername());
-                System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
+                //System.out.println(currentUser.getUsername());
+                //System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
 
-                int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
-                Iterable<Game> games = gameService.findGamesByPlayerId(playerId);
+                int playerId=playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL JUGADOR QUE ESTA AHORA MISMO CONECTADO
+                Collection<Game> games = gameService.findGamesByPlayerId(playerId); //ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO
+                
+                //PRUEBA DE HOY
                 modelMap.addAttribute("games", games);
 
                 return vista;
@@ -77,7 +85,7 @@ public class GameController {
             
             game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); //PUESTO DE PRUEBA
             
-            System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE   " + playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()   );
+            //System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE   " + playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get());
             
             gameService.save(game);
             
