@@ -7,44 +7,57 @@
 
 <SevenIslands:layout pageName="Games">
     <jsp:attribute name="customScript">
-        <script>
-            $(function () {
-                $("#date").datepicker({dateFormat: 'yy/mm/dd'});
-            }) ;
-        </script>
+        <script type="text/javascript">
+            var result           = '';
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < 9; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
 
-        <script>
-            let btnPublic = document.getElementById("id-public");
-            let btnPrivate = document.getElementById("id-private");
-            var privacity;
-            btnPublic.onclick = function(){
-                privacity = PUBLIC;
-
-            }
-            btnPrivate.onclick = function(){
-                privacity = PRIVATE;
-
+            window.onload = function () {
+                document.getElementById("roomCode").value = result;
             }
         </script>
     </jsp:attribute>
     <jsp:body>
-        <h2>Game</h2>
+
+        <div class="row text-center"><h2>New Game</h2></div>
+        <br>
+        <br>
 
         <form:form modelAttribute="game" class="form-horizontal" action="/games/save ">
             <div class="form-group has-feedback">
-                <SevenIslands:inputField label="Name of room" name="name"/>
-                <SevenIslands:inputField label="Code of the room" name="code"/>
-                <button class="btn btn-default" type="button" id="id-public">Public</button>
-                <button class="btn btn-default" type="button" id="id-private">Private</button>
-            </div>
 
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <input type="hidden" name="gameId" value="${game.id}"/>
-                    <!--<input type="hidden" name="privacity" value="privacity"/> -->
-                    <button class="btn btn-default" type="submit">Save Game</button>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <SevenIslands:inputField label="Name of room" name="name" />
+                            <input type="hidden" name="code" id="roomCode"/>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <label class="col-sm-2 control-label"
+                                for="privacity-input">Privacity</label>
+                            <div class="col-sm-10">
+                                <select id="privacity-input" name="privacity" class="selectpicker">
+                                    <option value="PUBLIC">Public</option>
+                                    <option value="PRIVATE">Private</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                
+                <br>
+                <br>
+                <div class="form-group row text-center">
+                    <div class="col-sm">
+                        <input type="hidden" name="gameId" value="${game.id}" />
+                        <button onclick="window.location.href='/welcome';" class="btn btn-default" type="submit">Continue</button>
+                    </div>
+                </div>
         </form:form>
     </jsp:body>
 
