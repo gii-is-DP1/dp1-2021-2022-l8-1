@@ -14,6 +14,7 @@
             <th style="width: 150px;">Name</th>
             <th>Surname</th>
             <th>Email</th>
+            <th>Username</th>
             <th>Delete player</th>
             <th>Edit player</th>
         </tr>
@@ -30,6 +31,10 @@
                 
                 <td>
                     <c:out value="${player.email}"/>
+                </td>
+
+                <td>
+                    <c:out value="${player.user.username}"/>
                 </td>
 
                 <td>
