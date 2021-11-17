@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="SevenIslandsCss" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 <%@ attribute name="menuName" required="true" rtexprvalue="true"
               description="Name of the active menu: home, owners, vets or error" %>
 
-<SevenIslandsCss:menu name="${menuName}"/>
+<sevenislands:menu name="${menuName}"/>

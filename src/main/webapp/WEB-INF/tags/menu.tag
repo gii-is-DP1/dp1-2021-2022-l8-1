@@ -1,6 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="SevenIslandsCss" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
@@ -11,7 +11,9 @@
 	<div class="container">
 		<div class="navbar-header">
 			<a class="navbar-brand"
-				href="<spring:url value="/" htmlEscape="true" />"><span></span></a>
+				href="<spring:url value="/" htmlEscape="true" />">
+				<img src="/resources/images/7islands-logo-60.png">
+			</a>
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
 				data-target="#main-navbar">
 				<span class="sr-only"><os-p>Toggle navigation</os-p></span> <span
@@ -22,23 +24,31 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<SevenIslandsCss:menuItem active="${name eq 'home'}" url="/"
-					title="home page">
-					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>Home</span>
-				</SevenIslandsCss:menuItem>
-				
-				<SevenIslandsCss:menuItem active="${name eq 'error'}" url="/oups"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>Error</span>
-				</SevenIslandsCss:menuItem>
+				<sevenislands:menuItem active="${name eq 'rooms'}" url="#"
+					title="Enter rooms page">
+					<span>Rooms</span>
+				</sevenislands:menuItem>
 
-				<SevenIslandsCss:menuItem active="${name eq 'newgame'}" url="/games/new"
+				<sevenislands:menuItem active="${name eq 'ranking'}" url="#"
+					title="Enter ranking page">
+					<span>Ranking</span>
+				</sevenislands:menuItem>
+
+				<sevenislands:menuItem active="${name eq 'forum'}" url="#"
+					title="Enter forum page">
+					<span>Forum</span>
+				</sevenislands:menuItem>
+
+				<sevenislands:menuItem active="${name eq 'viewerMode'}" url="#"
+					title="Enter viewer mode page">
+					<span>Viewer Mode</span>
+				</sevenislands:menuItem>
+
+				<sevenislands:menuItem active="${name eq 'newgame'}" url="/games/new"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					<span>New game</span>
-				</SevenIslandsCss:menuItem>
+				</sevenislands:menuItem>
 				
 
 			</ul>
