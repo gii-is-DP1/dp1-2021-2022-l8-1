@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.model.NamedEntity;
@@ -37,17 +38,17 @@ public class Achievement extends NamedEntity {
     private String icon;
     
     @Column(name="min_value")
-    @NotEmpty
+    @NotNull
     private Integer minValue;
     
     @Column(name="achievement_type")
     @Enumerated(EnumType.STRING)
-    @NotEmpty
+    @NotNull
     private ACHIEVEMENT_TYPE achievementType;
     
     @Column(name="parameter")
     @Enumerated(EnumType.STRING)
-    @NotEmpty
+    @NotNull
     private PARAMETER parameter;
 
 	@ManyToMany(mappedBy = "achievements")

@@ -24,7 +24,7 @@ public class GameServiceTest {
     public void testFindGamesByPlayerId(){  // counts the games of a player
         Iterable<Game> games = gameService.findGamesByPlayerId(2);
         long count = games.spliterator().getExactSizeIfKnown();
-        assertEquals(2, count);
+        assertEquals(0, count);
     }
     
 }

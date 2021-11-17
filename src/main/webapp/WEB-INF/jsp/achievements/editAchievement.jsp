@@ -17,35 +17,43 @@
         <h2>Achievement</h2>
         <form:form modelAttribute="achievement" class="form-horizontal" action="/achievements/save">
             <div class="form-group has-feedback">
-                <SevenIslands:inputField label="Name" name="name"/>
-                <SevenIslands:inputField label="Description" name="description"/>
-                <SevenIslands:inputField label="Icon" name="icon"/>
-                <SevenIslands:inputField label="MinValue" name="minValue"/>
-            </div>
-            <div class="row">
-                <label class="col-sm-2 control-label"
-                    for="type-input">Achivement Type</label>
-                <div class="col-sm-4">
-                    <select id="type-input" name="achievementType" class="selectpicker">
-                        <option value="GOLD">Gold</option>
-                        <option value="SILVER">Silver</option>
-                        <option value="BRONZE">Bronze</option>
-                    </select>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <SevenIslands:inputField label="MinValue" name="minValue"/>
+                            <SevenIslands:inputField label="Name" name="name"/>
+                            <SevenIslands:inputField label="Description" name="description"/>
+                            <SevenIslands:inputField label="Icon" name="icon"/>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <label class="col-sm-2 control-label"
+                                for="type-input">Achivement Type</label>
+                            <div class="col-sm-4">
+                                <select id="type-input" name="achievementType" class="selectpicker">
+                                    <option value="GOLD">Gold</option>
+                                    <option value="SILVER">Silver</option>
+                                    <option value="BRONZE">Bronze</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2 control-label"
+                                for="parameter-input">Achievement Parameter</label>
+                            <div class="col-sm-4">
+                                <select id="parameter-input" name="parameter" class="selectpicker">
+                                    <option value="POINTS">Points</option>
+                                    <option value="WINS">Wins</option>
+                                    <option value="LOSES">Loses</option>
+                                    <option value="GAMES_PLAYED">Games Played</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
             </div>
-
-            <div class="row">
-                <label class="col-sm-2 control-label"
-                    for="parameter-input">Achivement Parameter</label>
-                <div class="col-sm-4">
-                    <select id="parameter-input" name="parameter" class="selectpicker">
-                        <option value="POINTS">Points</option>
-                        <option value="WINS">Wins</option>
-                        <option value="LOSES">Loses</option>
-                        <option value="GAMES_PLAYED">Games Played</option>
-                    </select>
-                </div>
-            </div>
+            
 
 
             <div class="form-group">

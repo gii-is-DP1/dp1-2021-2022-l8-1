@@ -15,7 +15,7 @@
             <SevenIslands:inputField label="First Name" name="firstName"/>
             <SevenIslands:inputField label="Surname" name="surname"/>
             <SevenIslands:inputField label="Email" name="email"/>
-            <SevenIslands:inputField label="Id" name="id"/>
+            <SevenIslands:inputField label="Username" name="user.username"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

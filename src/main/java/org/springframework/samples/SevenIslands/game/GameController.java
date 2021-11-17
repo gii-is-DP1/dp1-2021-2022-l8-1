@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.samples.SevenIslands.admin.Admin;
+
 
 import org.springframework.samples.SevenIslands.player.Player;
 
@@ -50,12 +50,17 @@ public class GameController {
                 //System.out.println(currentUser.getUsername());
                 //System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
 
-                int playerId=playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL JUGADOR QUE ESTA AHORA MISMO CONECTADO
-                Collection<Game> games = gameService.findGamesByPlayerId(playerId); //ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO
-                
-                //PRUEBA DE HOY
-                modelMap.addAttribute("games", games);
-
+                if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x->x.toString().equals("admin"))){
+                   
+                    Iterable<Game> games = gameService.findAll(); //ESTO BUSCA TODOS LOS JUEGOS, PORQUE SOY ADMIN
+                    
+                    modelMap.addAttribute("games", games);
+                }else{
+                    int playerId=playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL JUGADOR QUE ESTA AHORA MISMO CONECTADO
+                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); //ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO
+                    
+                    modelMap.addAttribute("games", games);
+                }
                 return vista;
 
         }else
@@ -163,6 +168,7 @@ public class GameController {
     @GetMapping(path = "/rooms")
     public String publicRooms(ModelMap modelMap) {
         String view = "/welcome"; // Hacer pagina
+        Iterable<Game> games;
         Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
         if(authetication != null){
             System.out.println("\n\n\n\n" + authetication.getPrincipal());
@@ -170,15 +176,17 @@ public class GameController {
                 //If the user has admin perms then:
                 if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x->x.toString().equals("admin"))){
                     view = "games/publicRoomsAdmins"; // Hacer pagina
+                    games = gameService.findAll();
+                    modelMap.addAttribute("games", games);
                 }else{
                     view = "games/publicRooms"; // Hacer pagina
+                    games = gameService.findAllPublic();
+                    modelMap.addAttribute("games", games);
                 }
         }else{
             return "welcome"; //da error creo que es por que request mapping de arriba
         }    
         }       
-        Iterable<Game> games = gameService.findAllPublic();
-        modelMap.addAttribute("games", games);
         return view;
     }
 

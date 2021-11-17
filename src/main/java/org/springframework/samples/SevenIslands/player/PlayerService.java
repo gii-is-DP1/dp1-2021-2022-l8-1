@@ -40,7 +40,6 @@ public class PlayerService {
         this.playerRepo = playerRepo;
         this.userService = userService;                
         this.cardRepo = cardRepo;
-        this.playerRepo = playerRepo;
         this.achievementRepo = achievementRepo;
 	}
 
