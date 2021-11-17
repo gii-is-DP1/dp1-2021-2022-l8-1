@@ -13,5 +13,4 @@ public interface AdminRepository extends CrudRepository<Admin, Integer> {
     @Query(value = "SELECT A.* FROM Admins A JOIN Users U ON U.username=A.username WHERE A.username LIKE ?1", nativeQuery = true)
 	Collection<Admin> findAdminByName(String n);
     
-    
 }

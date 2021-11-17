@@ -50,12 +50,17 @@ public class GameController {
                 //System.out.println(currentUser.getUsername());
                 //System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
 
-                int playerId=playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL JUGADOR QUE ESTA AHORA MISMO CONECTADO
-                Collection<Game> games = gameService.findGamesByPlayerId(playerId); //ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO
-                
-                //PRUEBA DE HOY
-                modelMap.addAttribute("games", games);
-
+                if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x->x.toString().equals("admin"))){
+                   
+                    Iterable<Game> games = gameService.findAll(); //ESTO BUSCA TODOS LOS JUEGOS, PORQUE SOY ADMIN
+                    
+                    modelMap.addAttribute("games", games);
+                }else{
+                    int playerId=playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL JUGADOR QUE ESTA AHORA MISMO CONECTADO
+                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); //ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO
+                    
+                    modelMap.addAttribute("games", games);
+                }
                 return vista;
 
         }else

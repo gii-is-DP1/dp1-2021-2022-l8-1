@@ -20,7 +20,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 import org.springframework.samples.SevenIslands.achievement.Achievement;
-import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 
 import org.springframework.samples.SevenIslands.card.Card;
