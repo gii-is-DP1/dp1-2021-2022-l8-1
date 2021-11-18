@@ -25,6 +25,19 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
+    @GetMapping(path="/profile/{playerId}")
+    public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "/players/profile";
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error"; //TODO: crear una vista de erro personalizada 
+        }
+        return view;
+    }
+
     @GetMapping()
     public String listadoPlayers(ModelMap modelMap){
         String vista ="players/listPlayers";

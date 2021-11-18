@@ -87,8 +87,8 @@ public class GameController {
             Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = (User)authetication.getPrincipal();
             
-            
-            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); //ESTO ES PARA QUE EN LA TABLA DE QUIEN ES EL CREADOR DE UN JUEGO SALGA DICHA RELACIÓN
+            Player p = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
+            game.setPlayer(p); //ESTO ES PARA QUE EN LA TABLA DE QUIEN ES EL CREADOR DE UN JUEGO SALGA DICHA RELACIÓN
             
             //int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
             //gameService.insertGP(game.getId(), playerId);
@@ -97,19 +97,22 @@ public class GameController {
             Game juego = game;
             Player jugador = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
             
-            if(juego.getPlayers()==null){
-                List<Player> l = new ArrayList<>();
-                l.add(jugador);
-                juego.setPlayers(l);     
-            }else{
-                List<Player> l = juego.getPlayers();
-                l.add(jugador);
-                juego.setPlayers(l);
-            }
+            // if(juego.getPlayers()==null){
+            //     List<Player> l = new ArrayList<>();
+            //     l.add(jugador);
+            //     juego.setPlayers(l);     
+            // }else{
+            //     List<Player> l = juego.getPlayers();
+            //     l.add(jugador);
+            //     juego.setPlayers(l);
+            // }
             
-            List<Game> g = new ArrayList<>(jugador.getGames());
-            g.add(juego);
-            jugador.setGames(g);
+            // List<Game> g = new ArrayList<>(jugador.getGames());
+            // g.add(juego);
+            // jugador.setGames(g);
+
+            juego.addPlayerinPlayers(jugador);
+            jugador.addGameinGames(juego);
 
             gameService.save(juego);
             view = myRooms(modelMap);
