@@ -31,6 +31,16 @@ public class GameService {
     }
 
     @Transactional
+    public Iterable<Game> findAllPublicPlaying() {
+        return gameRepo.findAllPublicPlayingc();
+    }
+
+    @Transactional
+    public Iterable<Game> findAllPlaying() {
+        return gameRepo.findAllPlaying();
+    }
+
+    @Transactional
     public Optional<Game> findGameById(int id){
         return gameRepo.findById(id);
     }

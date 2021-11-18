@@ -66,8 +66,8 @@ public class Game extends NamedEntity {
     @Enumerated(EnumType.STRING)
     private PRIVACITY privacity;
 
-    @Column(name="game_status")
-    private boolean gameStatus;
+    @Column(name="has_started")
+    private boolean hasStarted;
     
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 

@@ -14,8 +14,14 @@ import org.springframework.data.repository.query.Param;
 public interface GameRepository extends CrudRepository<Game, Integer>{
 
 
-    @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC'")
-    Collection<Game> findAllPublic() throws DataAccessException;
+  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC'")
+  Collection<Game> findAllPublic() throws DataAccessException;
+
+  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC' AND P.has_started = TRUE")
+  Collection<Game> findAllPublicPlayingc() throws DataAccessException;
+
+  @Query("SELECT P from Game P WHERE P.has_started = TRUE")
+  Collection<Game> findAllPlaying() throws DataAccessException;
 
   @Query(value = "SELECT * FROM GAMES WHERE PLAYER_ID LIKE ?1", nativeQuery = true)
   Collection<Game> findGamesByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
@@ -27,7 +33,7 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
     @Query(value = "insert into games_players (game_id,player_id) VALUES (:game_id,:player_id)", nativeQuery = true)
     @Transactional
     void insertGP(@Param("game_id") int game_id, @Param("player_id") int player_id);
-  
+    
 // @Query("SELECT g.numberOfPlayers FROM Game g WHERE g.id = :id")
 // int findTotalPlayers(int id) throws DataAccessException;
 
