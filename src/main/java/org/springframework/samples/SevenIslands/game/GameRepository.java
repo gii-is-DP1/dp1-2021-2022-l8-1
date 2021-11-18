@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.game;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -17,11 +18,11 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
   @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC'")
   Collection<Game> findAllPublic() throws DataAccessException;
 
-  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC' AND P.has_started = TRUE")
-  Collection<Game> findAllPublicPlayingc() throws DataAccessException;
+  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC' AND P.has_started = True")
+  Optional<Game> findAllPublicPlaying() throws DataAccessException;
 
-  @Query("SELECT P from Game P WHERE P.has_started = TRUE")
-  Collection<Game> findAllPlaying() throws DataAccessException;
+  @Query("SELECT P from Game P WHERE P.has_started = True")
+  Optional<Game> findAllPlaying() throws DataAccessException;
 
   @Query(value = "SELECT * FROM GAMES WHERE PLAYER_ID LIKE ?1", nativeQuery = true)
   Collection<Game> findGamesByPlayerId(@Param("playerId") int playerId) throws DataAccessException;

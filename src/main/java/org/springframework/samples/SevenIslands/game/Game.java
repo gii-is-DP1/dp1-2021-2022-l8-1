@@ -67,7 +67,7 @@ public class Game extends NamedEntity {
     private PRIVACITY privacity;
 
     @Column(name="has_started")
-    private boolean hasStarted;
+    private boolean has_started;
     
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 

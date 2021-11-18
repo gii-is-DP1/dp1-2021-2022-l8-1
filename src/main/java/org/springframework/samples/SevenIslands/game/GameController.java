@@ -2,19 +2,14 @@ package org.springframework.samples.SevenIslands.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.samples.SevenIslands.player.Player;
-
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -247,7 +242,7 @@ public class GameController {
     @GetMapping(path = "/rooms/playing")
     public String currentlyPlaying(ModelMap modelMap) {
         String res = "/welcome"; // Hacer pagina
-        Iterable<Game> games;
+        Optional<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             System.out.println("\n\n\n\n" + authentication.getPrincipal());
@@ -267,7 +262,6 @@ public class GameController {
                     modelMap.addAttribute("games", games);
                 }
 
-            
 
             }
 
