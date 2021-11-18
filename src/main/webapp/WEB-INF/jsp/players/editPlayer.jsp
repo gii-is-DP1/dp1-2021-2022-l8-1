@@ -15,7 +15,7 @@
     </jsp:attribute>
     <jsp:body>
         <h2>Player</h2>
-        <form:form modelAttribute="player" class="form-horizontal" action="/players/save">
+        <form:form modelAttribute="player" class="form-horizontal" action="/players/playerAdmins/save">
             <div class="form-group has-feedback">
                 <SevenIslands:inputField label="FirstName" name="firstName"/>
                 <SevenIslands:inputField label="Surname" name="surname"/>
