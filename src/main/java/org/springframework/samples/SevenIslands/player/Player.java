@@ -1,6 +1,8 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -115,9 +117,15 @@ public class Player extends Person{
 			inverseJoinColumns = @JoinColumn(name = "forum_id"))
 	private Set<Forum> forums;
 
-  //RELACION CON GAMES
+  //RELACION CON GAMES 
 	@ManyToMany(mappedBy = "players")
 	private Collection<Game> games;
+
+  public void addGameinGames(Game game){
+    List<Game> g = new ArrayList<>(this.getGames());
+    g.add(game);
+    this.setGames(g);
+  }
 
   //RELACION CON PLAYER (Invitaciones)
   @ManyToMany(fetch = FetchType.LAZY)
