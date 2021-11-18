@@ -88,16 +88,31 @@ public class GameController {
             User currentUser = (User)authetication.getPrincipal();
             
             
-            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); //PUESTO DE PRUEBA
+            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); //ESTO ES PARA QUE EN LA TABLA DE QUIEN ES EL CREADOR DE UN JUEGO SALGA DICHA RELACIÓN
             
-            //System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE   " + playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get());
+            //int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
+            //gameService.insertGP(game.getId(), playerId);
+            //Game juego = gameService.findGameById(game.getId()).get();
+
+            Game juego = game;
+            Player jugador = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
             
-            gameService.save(game);
+            if(juego.getPlayers()==null){
+                List<Player> l = new ArrayList<>();
+                l.add(jugador);
+                juego.setPlayers(l);     
+            }else{
+                List<Player> l = juego.getPlayers();
+                l.add(jugador);
+                juego.setPlayers(l);
+            }
             
+            List<Game> g = new ArrayList<>(jugador.getGames());
+            g.add(juego);
+            jugador.setGames(g);
+
+            gameService.save(juego);
             view = myRooms(modelMap);
-            
-            int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
-            gameService.insertGP(game.getId(), playerId);
             modelMap.addAttribute("message", "Game successfully saved!");
             
         }

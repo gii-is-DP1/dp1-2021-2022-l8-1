@@ -115,7 +115,7 @@ public class Player extends Person{
 			inverseJoinColumns = @JoinColumn(name = "forum_id"))
 	private Set<Forum> forums;
 
-  //RELACION CON ESPECTADOR GAMES
+  //RELACION CON GAMES
 	@ManyToMany(mappedBy = "players")
 	private Collection<Game> games;
 
@@ -125,7 +125,7 @@ public class Player extends Person{
 	 		inverseJoinColumns = @JoinColumn(name = "invited_id"))
   private Collection<Player> invitations;
 
-  //RELACION CON PLAYER (Solicitud amistad)
+  //RELACION CON PLAYER DE REQUEST
   @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
 			inverseJoinColumns = @JoinColumn(name = "requested_id"))
