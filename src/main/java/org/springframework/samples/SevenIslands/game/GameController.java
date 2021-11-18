@@ -82,6 +82,7 @@ public class GameController {
             return "games/editarJuego";
         } else {
             Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
+
             User currentUser = (User) authetication.getPrincipal();
 
             game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); // ESTO
@@ -110,19 +111,8 @@ public class GameController {
             Game juego = game;
             Player jugador = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
 
-            if (juego.getPlayers() == null) {
-                List<Player> l = new ArrayList<>();
-                l.add(jugador);
-                juego.setPlayers(l);
-            } else {
-                List<Player> l = juego.getPlayers();
-                l.add(jugador);
-                juego.setPlayers(l);
-            }
-
-            List<Game> g = new ArrayList<>(jugador.getGames());
-            g.add(juego);
-            jugador.setGames(g);
+            juego.addPlayerinPlayers(jugador);
+            jugador.addGameinGames(juego);
 
             gameService.save(juego);
             view = myRooms(modelMap);
