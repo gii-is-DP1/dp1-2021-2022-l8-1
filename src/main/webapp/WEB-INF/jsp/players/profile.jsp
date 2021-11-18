@@ -27,23 +27,23 @@
                 <div id="statistics-resume">
                     <table>
                         <tr>
-                            <th>Total Games</th>
+                            <th><strong>Total Games</strong></th>
                             <th><c:out value="${player.totalGames}" /></th>
                         </tr>
                         <tr>
-                            <th>Time Played</th>
+                            <th><strong>Time Played</strong></th>
                             <th><c:out value="${player.totalTimeGames}" /></th>
                         </tr>
                         <tr>
-                            <th>Total Points</th>
+                            <th><strong>Total Points</strong></th>
                             <th><c:out value="${player.totalPointsAllGames}" /></th>
                         </tr>
                         <tr>
-                            <th>Favorite Island</th>
+                            <th><strong>Favorite Island</strong></th>
                             <th><c:out value="${player.favoriteIsland}" /></th>
                         </tr>
                         <tr>
-                            <th>Favorite Treasure</th>
+                            <th><strong>Favorite Treasure</strong></th>
                             <th><c:out value="${player.favoriteTreasure}" /></th>
                         </tr>
                     </table>
