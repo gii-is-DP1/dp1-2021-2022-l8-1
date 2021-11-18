@@ -1,8 +1,16 @@
 package org.springframework.samples.SevenIslands.board;
 
+import javax.persistence.CascadeType;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Positive;
+
+import org.springframework.samples.SevenIslands.cell.Cell;
 
 import org.springframework.samples.SevenIslands.model.BaseEntity;
 
@@ -21,8 +29,12 @@ public class Board extends BaseEntity{
     int height;
 
     public Board(){
-        this.background="resources/images/board.png";
+        this.background="resources/images/board.jpg";
         this.width=800;
         this.height=800;
     }
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "board",fetch = FetchType.EAGER)
+    List<Cell> cells; 
+
 }
