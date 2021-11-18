@@ -242,24 +242,24 @@ public class GameController {
     @GetMapping(path = "/rooms/playing")
     public String currentlyPlaying(ModelMap modelMap) {
         String res = "/welcome"; // Hacer pagina
-        Optional<Game> games;
+        Collection<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             System.out.println("\n\n\n\n" + authentication.getPrincipal());
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
                 // If the user has admin perms then:
+                res = "games/currentlyPlaying"; 
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
-                    res = "games/currentlyPlayingAdmin"; // all the games currently being played, both public and
-                                                          // private
                     games = gameService.findAllPlaying();
                     modelMap.addAttribute("games", games);
+                    // here we can see all the games currently being played, both public and private
 
-                } else { // in this case, the user is only able to see the public rooms in order to watch
-                         // it by streaming
-                    res = "games/currentlyPlaying";
+                } else { 
                     games = gameService.findAllPublicPlaying();
                     modelMap.addAttribute("games", games);
+                    // here we can see only the public games which are currently being played, in order to watch it by streaming
+
                 }
 
 

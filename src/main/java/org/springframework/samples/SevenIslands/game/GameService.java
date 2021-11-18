@@ -31,12 +31,12 @@ public class GameService {
     }
 
     @Transactional
-    public Optional<Game> findAllPublicPlaying() {
+    public Collection<Game> findAllPublicPlaying() {
         return gameRepo.findAllPublicPlaying();
     }
 
     @Transactional
-    public Optional<Game> findAllPlaying() {
+    public Collection<Game> findAllPlaying() {
         return gameRepo.findAllPlaying();
     }
 
