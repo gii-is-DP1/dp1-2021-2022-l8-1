@@ -141,6 +141,30 @@ public class GameController {
         return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
     }
 
+    @GetMapping(path = "/{gameId}/lobby")
+    public String salaJuego(@PathVariable("gameId") int gameId, ModelMap model) {
+
+        String view = "games/lobby";
+
+        if(gameService.findGameById(gameId).isPresent()){
+            Game game = gameService.findGameById(gameId).get(); // optional puede ser error el import
+            model.addAttribute("game", game);
+
+            Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User)authetication.getPrincipal();
+            int playerId=playerService.getIdPlayerByName(currentUser.getUsername());    //Id of player that is logged
+
+            Player pay = playerService.findPlayerById(playerId).get();
+            model.addAttribute("player", pay);
+
+            view = "games/lobby";
+        }else{
+            view = "/errors";                                   //TO DO
+        }
+
+        return view;
+    }
+
      /**
      *
      * @param game

@@ -119,7 +119,7 @@ public class Player extends Person{
 	@ManyToMany(mappedBy = "players")
 	private Collection<Game> games;
 
-  //RELACION CON INVITACIONES
+  //RELACION CON PLAYER (Invitaciones)
   @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
 	 		inverseJoinColumns = @JoinColumn(name = "invited_id"))
@@ -130,6 +130,13 @@ public class Player extends Person{
 	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
 			inverseJoinColumns = @JoinColumn(name = "requested_id"))
   private Collection<Player> friend_requests;
+
+  //RELACION CON PLAYER (Amigos)
+  @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_friends", joinColumns = @JoinColumn(name = "friend_id"),
+			inverseJoinColumns = @JoinColumn(name = "friend_identifier"))
+  private Collection<Player> players_friends;
+
 
   //RELACION CON USER
   @OneToOne(cascade = CascadeType.ALL)
