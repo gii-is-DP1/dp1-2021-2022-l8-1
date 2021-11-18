@@ -31,7 +31,7 @@
                     <c:out value="#TO-DO"/> <!-- We need to check how many players are in the room tho rn we havent that table yet-->
                 </td>
                 <td>
-                    <button class="btn btn-danger" type="">Join</button>
+                    <button class="btn btn-danger" type="">Watch</button>
                 </td>
             </tr>
         </c:forEach>
