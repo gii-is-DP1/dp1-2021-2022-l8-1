@@ -14,8 +14,8 @@
         <div id="mid-section">
             <span id="left-section">
                 <div id="profile-details">
-                    <h3><c:out value="${player.firstName}"/>Nombre prueba</h3>
-                    <h3><c:out value="${player.surname}"/>Apellido prueba</>
+                    <h3><c:out value="${player.firstName}"/></h3>
+                    <h3><c:out value="${player.surname}"/></h3>
                 </div>
         
                 <button class="btn btn-default">My games</button>

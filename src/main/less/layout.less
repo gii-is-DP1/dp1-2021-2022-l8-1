@@ -6,23 +6,27 @@
 
 #top-section {
     height: 20%;
-    background-color: red;
+    background-color: @spring-brown;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    z-index: 2;
+    box-shadow: 0 2px 7px 1px #00000059;
 
     h2 {
         margin: 0;
         text-transform: capitalize;
+        color: white;
     }
 
 }
 
 #mid-section {
     min-height: 60%;
-    background-color: aquamarine;
+    background-color: @spring-light-grey;
     display: flex;
     flex: auto;
+    flex-wrap: wrap;
     justify-content: space-around;
 
     > span {
@@ -33,6 +37,7 @@
         flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
+        background-color: @spring-grey;
 
         > * {
             width: 70%;
@@ -40,19 +45,18 @@
     }
 
     #right-section {
-        background-color: beige;
     }
 
     #left-section {
-        background-color: burlywood;
-        border: 2px @spring-grey;
+        border: 2px solid @spring-grey;
     }
 
 }
 
 #bottom-section{
     height: 15%;
-    background-color: limegreen;
+    background-color: @spring-brown;
+    box-shadow: 0 -2px 7px 1px #00000059;
 }
 
 #profile-avatar {
@@ -69,7 +73,7 @@
         height: 100%;
 
         tr {
-            border-bottom: 1px solid grey;
+            border-bottom: 1px solid @spring-brown
         }
     }
 }

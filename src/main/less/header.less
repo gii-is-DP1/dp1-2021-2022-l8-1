@@ -2,9 +2,11 @@
   border-top: 4px solid @spring-dark-primary;
   background-color: @spring-brown;
   margin-bottom: 0px;
-  border-bottom: 0;
+  border-bottom: 1px solid #fffb00;
   border-left: 0;
   border-right: 0;
+  box-shadow: 0 2px 7px 1px #00000059;
+  z-index: 3;
 }
 
 .navbar .navbar-header {
@@ -66,6 +68,7 @@
 
 .navbar li:hover > a,
 .navbar li:active > a,
+.navbar li:target > a,
 .navbar li:focus > a {
   color: @spring-brown !important;
   background-color: @spring-primary;
@@ -90,8 +93,13 @@
     right: 10%;
     top: 10px;
     background: none !important;
-    height: 60px !important;
-    width: 60px !important;
+    height: 50px !important;
+    width: 50px !important;
+
+    img {
+      height: 50px !important;
+      width: 50px !important;
+    }
   } 
 
   .navbar {
