@@ -9,9 +9,9 @@ import org.springframework.samples.SevenIslands.model.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
-@Entity
 @Table(name="boards")
 public class Board extends BaseEntity{
     String background;
