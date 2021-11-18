@@ -29,6 +29,7 @@ public class Board extends BaseEntity{
     int height;
 
     public Board(){
+
         this.background="resources/images/board.jpg";
         this.width=800;
         this.height=800;
