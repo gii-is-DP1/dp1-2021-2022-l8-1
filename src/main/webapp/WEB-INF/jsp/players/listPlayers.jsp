@@ -11,6 +11,7 @@
     <table id="playersTable" class="table table-striped">
         <thead>
         <tr>
+            <th style="width: 150px;">PlayerId</th>
             <th style="width: 150px;">Name</th>
             <th>Surname</th>
             <th>Email</th>

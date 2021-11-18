@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.samples.SevenIslands.admin.Admin;
+
 
 import org.springframework.samples.SevenIslands.player.Player;
 
@@ -87,17 +87,35 @@ public class GameController {
             Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = (User)authetication.getPrincipal();
             
+            Player p = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
+            game.setPlayer(p); //ESTO ES PARA QUE EN LA TABLA DE QUIEN ES EL CREADOR DE UN JUEGO SALGA DICHA RELACIÓN
             
-            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); //PUESTO DE PRUEBA
+            //int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
+            //gameService.insertGP(game.getId(), playerId);
+            //Game juego = gameService.findGameById(game.getId()).get();
+
+            Game juego = game;
+            Player jugador = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
             
-            //System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE   " + playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get());
+            // if(juego.getPlayers()==null){
+            //     List<Player> l = new ArrayList<>();
+            //     l.add(jugador);
+            //     juego.setPlayers(l);     
+            // }else{
+            //     List<Player> l = juego.getPlayers();
+            //     l.add(jugador);
+            //     juego.setPlayers(l);
+            // }
             
-            gameService.save(game);
-            
+            // List<Game> g = new ArrayList<>(jugador.getGames());
+            // g.add(juego);
+            // jugador.setGames(g);
+
+            juego.addPlayerinPlayers(jugador);
+            jugador.addGameinGames(juego);
+
+            gameService.save(juego);
             view = myRooms(modelMap);
-            
-            int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
-            gameService.insertGP(game.getId(), playerId);
             modelMap.addAttribute("message", "Game successfully saved!");
             
         }
@@ -124,6 +142,30 @@ public class GameController {
         Game game = gameService.findGameById(gameId).get(); // optional puede ser error el import
         model.put("game", game);
         return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+    }
+
+    @GetMapping(path = "/{gameId}/lobby")
+    public String salaJuego(@PathVariable("gameId") int gameId, ModelMap model) {
+
+        String view = "games/lobby";
+
+        if(gameService.findGameById(gameId).isPresent()){
+            Game game = gameService.findGameById(gameId).get(); // optional puede ser error el import
+            model.addAttribute("game", game);
+
+            Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User)authetication.getPrincipal();
+            int playerId=playerService.getIdPlayerByName(currentUser.getUsername());    //Id of player that is logged
+
+            Player pay = playerService.findPlayerById(playerId).get();
+            model.addAttribute("player", pay);
+
+            view = "games/lobby";
+        }else{
+            view = "/errors";                                   //TO DO
+        }
+
+        return view;
     }
 
      /**
@@ -168,6 +210,7 @@ public class GameController {
     @GetMapping(path = "/rooms")
     public String publicRooms(ModelMap modelMap) {
         String view = "/welcome"; // Hacer pagina
+        Iterable<Game> games;
         Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
         if(authetication != null){
             System.out.println("\n\n\n\n" + authetication.getPrincipal());
@@ -175,15 +218,17 @@ public class GameController {
                 //If the user has admin perms then:
                 if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x->x.toString().equals("admin"))){
                     view = "games/publicRoomsAdmins"; // Hacer pagina
+                    games = gameService.findAll();
+                    modelMap.addAttribute("games", games);
                 }else{
                     view = "games/publicRooms"; // Hacer pagina
+                    games = gameService.findAllPublic();
+                    modelMap.addAttribute("games", games);
                 }
         }else{
             return "welcome"; //da error creo que es por que request mapping de arriba
         }    
         }       
-        Iterable<Game> games = gameService.findAllPublic();
-        modelMap.addAttribute("games", games);
         return view;
     }
 

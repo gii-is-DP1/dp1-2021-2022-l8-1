@@ -1,7 +1,7 @@
 package org.springframework.samples.SevenIslands.game;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -66,13 +66,30 @@ public class Game extends NamedEntity {
     @Column(name = "privacity")   
     @Enumerated(EnumType.STRING)
     private PRIVACITY privacity;
+
+    @Column(name="game_status")
+    private boolean gameStatus;
     
+    //RELACION CON PLAYERS 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 
                 inverseJoinColumns = @JoinColumn(name="player_id"))
     private List<Player> players;
 
+    public void addPlayerinPlayers(Player player){
+        if(this.getPlayers()==null){
+            List<Player> l = new ArrayList<>();
+            l.add(player);
+            this.setPlayers(l);     
+        }else{
+            List<Player> l = this.getPlayers();
+            l.add(player);
+            this.setPlayers(l);
+        }
+        
+    }
+
     @ManyToOne(optional=false)
     private Player player;
-    
+   
 }
