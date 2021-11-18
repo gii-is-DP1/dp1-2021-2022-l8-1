@@ -14,11 +14,13 @@
         <div id="mid-section">
             <span id="left-section">
                 <div id="profile-details">
-                    <p><c:out value="${player.firstName}"/>Nombre prueba</p>
-                    <p><c:out value="${player.surname}"/>Apellido prueba</p>
+                    <h3><c:out value="${player.firstName}"/>Nombre prueba</h3>
+                    <h3><c:out value="${player.surname}"/>Apellido prueba</>
                 </div>
         
                 <button class="btn btn-default">My games</button>
+                <button class="btn btn-default">Social</button>
+                <button class="btn btn-default">Statistics</button>
                 <button class="btn btn-default">Edit profile</button>
             </span>
             <span id="right-section">
@@ -35,6 +37,14 @@
                         <tr>
                             <th>Total Points</th>
                             <th><c:out value="${player.totalPointsAllGames}" /></th>
+                        </tr>
+                        <tr>
+                            <th>Favorite Island</th>
+                            <th><c:out value="${player.favoriteIsland}" /></th>
+                        </tr>
+                        <tr>
+                            <th>Favorite Treasure</th>
+                            <th><c:out value="${player.favoriteTreasure}" /></th>
                         </tr>
                     </table>
                 </div>
