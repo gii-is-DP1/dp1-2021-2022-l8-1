@@ -96,20 +96,6 @@ public class GameController {
 
             Game juego = game;
             Player jugador = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
-            
-            // if(juego.getPlayers()==null){
-            //     List<Player> l = new ArrayList<>();
-            //     l.add(jugador);
-            //     juego.setPlayers(l);     
-            // }else{
-            //     List<Player> l = juego.getPlayers();
-            //     l.add(jugador);
-            //     juego.setPlayers(l);
-            // }
-            
-            // List<Game> g = new ArrayList<>(jugador.getGames());
-            // g.add(juego);
-            // jugador.setGames(g);
 
             juego.addPlayerinPlayers(jugador);
             jugador.addGameinGames(juego);
