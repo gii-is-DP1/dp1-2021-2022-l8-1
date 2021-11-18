@@ -15,14 +15,14 @@
     </jsp:attribute>
     <jsp:body>
         <h2>Achievement</h2>
-        <form:form modelAttribute="achievement" class="form-horizontal" action="/achievements/save">
+        <form:form modelAttribute="achievement" class="form-horizontal" action="/achievements/achievementsAdmins/save">
             <div class="form-group has-feedback">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="row">
-                            <SevenIslands:inputField label="MinValue" name="minValue"/>
                             <SevenIslands:inputField label="Name" name="name"/>
                             <SevenIslands:inputField label="Description" name="description"/>
+                            <SevenIslands:inputField label="MinValue" name="minValue"/>
                             <SevenIslands:inputField label="Icon" name="icon"/>
                         </div>
                         <br>

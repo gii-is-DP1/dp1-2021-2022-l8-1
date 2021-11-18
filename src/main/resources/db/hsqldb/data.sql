@@ -21,14 +21,14 @@ INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_g
      VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'vet1');
 
 
-INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points, player_id, privacity) 
-VALUES ('Prueba0', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,4,7', 1, 'PUBLIC');
+INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points, player_id, privacity,game_status) 
+VALUES ('Prueba0', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,4,7', 1, 'PUBLIC',false);
 
- INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity) 
- VALUES ('Prueba1', 'ABCD123', '1,8,3', 3, 4, 2 ,27,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','2,4,9',1, 'PUBLIC');
+ INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity,game_status) 
+ VALUES ('Prueba1', 'ABCD123', '1,8,3', 3, 4, 2 ,27,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','2,4,9',1, 'PUBLIC',false);
 
- INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity) 
- VALUES ('Prueba2', 'ABCD122', '4,1,3', 3, 2, 1 ,29,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,2,7',1, 'PRIVATE');
+ INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity,game_status) 
+ VALUES ('Prueba2', 'ABCD122', '4,1,3', 3, 2, 1 ,29,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,2,7',1, 'PRIVATE',false);
 --AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
 
 -- /*INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');*/
@@ -72,7 +72,7 @@ INSERT INTO admins(first_name, surname, email, username) VALUES ('Ismael', 'Pere
 INSERT INTO comments(id, message) VALUES (1, 'I agree');
 
 
-INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1);
+INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1); --ESTA TABLA ME DA LOS LOGROS QUE TENGO COMPLETADOS
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
 
 INSERT INTO admins_achievements(admin_id, achievement_id) VALUES (1, 1);
@@ -106,5 +106,10 @@ INSERT INTO games_players(game_id, player_id) VALUES (2, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 3);
 
-
+INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 2);
+INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 3);
+INSERT INTO players_friends(friend_id, friend_identifier) VALUES (2, 1);
+INSERT INTO players_friends(friend_id, friend_identifier) VALUES (2, 3);
+INSERT INTO players_friends(friend_id, friend_identifier) VALUES (3, 1);
+INSERT INTO players_friends(friend_id, friend_identifier) VALUES (3, 2);
 

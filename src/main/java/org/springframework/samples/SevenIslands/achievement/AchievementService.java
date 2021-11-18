@@ -32,9 +32,15 @@ public class AchievementService {
     }
 
     @Transactional
+    public void delete(Achievement achievement){
+        achievementRepo.delete(achievement);
+    }
+
+    @Transactional
     public Iterable<Achievement> findByPlayerId(int id) {
         return achievementRepo.getByPlayerId(id);
     }
+
 
     @Transactional
     public Iterable<Achievement> findByAdminId(int id) {
