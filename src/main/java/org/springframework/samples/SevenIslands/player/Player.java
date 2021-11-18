@@ -1,6 +1,8 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -115,21 +117,34 @@ public class Player extends Person{
 			inverseJoinColumns = @JoinColumn(name = "forum_id"))
 	private Set<Forum> forums;
 
-  //RELACION CON ESPECTADOR GAMES
+  //RELACION CON GAMES 
 	@ManyToMany(mappedBy = "players")
 	private Collection<Game> games;
 
-  //RELACION CON INVITACIONES
+  public void addGameinGames(Game game){
+    List<Game> g = new ArrayList<>(this.getGames());
+    g.add(game);
+    this.setGames(g);
+  }
+
+  //RELACION CON PLAYER (Invitaciones)
   @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
 	 		inverseJoinColumns = @JoinColumn(name = "invited_id"))
   private Collection<Player> invitations;
 
-  //RELACION CON PLAYER
+  //RELACION CON PLAYER DE REQUEST
   @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
 			inverseJoinColumns = @JoinColumn(name = "requested_id"))
   private Collection<Player> friend_requests;
+
+  //RELACION CON PLAYER (Amigos)
+  @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "players_friends", joinColumns = @JoinColumn(name = "friend_id"),
+			inverseJoinColumns = @JoinColumn(name = "friend_identifier"))
+  private Collection<Player> players_friends;
+
 
   //RELACION CON USER
   @OneToOne(cascade = CascadeType.ALL)
