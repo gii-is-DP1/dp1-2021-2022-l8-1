@@ -1,5 +1,5 @@
 #body-section {
-    height: 95vh;
+    min-height: 95vh;
     display: flex;
     flex-direction: column;
 }
@@ -22,7 +22,6 @@
 }
 
 #mid-section {
-    min-height: 60%;
     background-color: @spring-light-grey;
     display: flex;
     flex: auto;
@@ -31,6 +30,7 @@
 
     > span {
         min-width: 400px;
+        min-height: 300px;
         margin: 5%;
         padding: 20px;
         display: flex;
@@ -53,7 +53,8 @@
 }
 
 #bottom-section{
-    height: 15%;
+    height: 100px;
     background-color: @spring-brown;
     box-shadow: 0 -2px 7px 1px #00000059;
+    display: flex;
 }
