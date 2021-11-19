@@ -20,8 +20,15 @@
         
                 <button class="btn btn-default">My games</button>
                 <button class="btn btn-default">Social</button>
-                <button class="btn btn-default">Statistics</button>
+
+                <spring:url value="/players/player/profile/{playerId}/moreStadistics" var="playerUrl">
+                    <spring:param name="playerId" value="${player.id}"/>
+                </spring:url>
+
+                <a class="btn btn-default" href="${fn:escapeXml(playerUrl)}">Statistics</a>
+                
                 <button class="btn btn-default">Edit profile</button>
+            
             </span>
             <span id="right-section">
                 <div id="statistics-resume">
