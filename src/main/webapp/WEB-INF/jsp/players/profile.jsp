@@ -18,10 +18,26 @@
                     <h3><c:out value="${player.surname}"/></h3>
                 </div>
         
-                <button class="btn btn-default">My games</button>
-                <button class="btn btn-default">Social</button>
-                <button class="btn btn-default">Statistics</button>
-                <button class="btn btn-default">Edit profile</button>
+                <button id="my-games-btn" 
+                        class="btn btn-default" 
+                        onclick="location.href = '/games';"> 
+                    My games
+                </button>
+                <button id="social-btn" 
+                        class="btn btn-default"
+                        onclick="location.href = '/social';">
+                    Social
+                </button>
+                <button id="stats-btn" 
+                        class="btn btn-default"
+                        onclick="location.href = '/statistics';">
+                    Statistics
+                </button>
+                <button id="edit-prof-btn" 
+                        class="btn btn-default"
+                        onclick="location.href = '/players/player/edit/${player.id}';">
+                    Edit profile
+                </button>
             </span>
             <span id="right-section">
                 <div id="statistics-resume">

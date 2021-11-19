@@ -88,9 +88,17 @@ public class PlayerController {
 
     @GetMapping(path="/edit/{playerId}")
     public String updatePlayer(@PathVariable("playerId") int playerId, ModelMap model) {
-        Player player = playerService.findPlayerById(playerId).get(); // optional puede ser error el import
+        Player player = playerService.findPlayerById(playerId); // optional puede ser error el import
+        String view = VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+        if(player.isPresent()){
+            model.addAttribute("player", player.get());
+        }else{
+            model.addAttribute("message", "Player not found");
+            view = "/error"; //TODO: crear una vista de erro personalizada 
+        }
         model.put("player", player);
-        return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+        // TODO: Comprobar que sea o admin o q el usuer registrado tenga el mismo id q el de la url 
+        return view;
     }
 
     /**
