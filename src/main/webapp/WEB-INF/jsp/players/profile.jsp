@@ -6,11 +6,7 @@
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 <sevenislands:playerLayout pageName="profile">
-    
-        <div id="top-section">
-            <img id="profile-avatar" src="/resources/images/profile-photo.png">
-            <h2><c:out value="${player.user.username}"/></h2>
-        </div>
+
         <div id="mid-section">
             <span id="left-section">
                 <div id="profile-details">
