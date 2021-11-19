@@ -125,6 +125,8 @@ INSERT INTO games_players(game_id, player_id) VALUES (1, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (2, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 3);
+INSERT INTO games_players(game_id, player_id) VALUES (4, 1);
+INSERT INTO games_players(game_id, player_id) VALUES (5, 1);
 
 INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 2);
 INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 3);

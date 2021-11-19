@@ -58,7 +58,7 @@ public class PlayerService {
 		return playerRepo.findBySurname(surname);
 	}
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Optional<Player> findPlayerById(int id){
         return playerRepo.findById(id);
     }
