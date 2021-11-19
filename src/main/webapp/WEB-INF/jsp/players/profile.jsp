@@ -18,7 +18,11 @@
                     <h3><c:out value="${player.surname}"/></h3>
                 </div>
         
-                <button class="btn btn-default">My games</button>
+                <button id="my-games-btn" 
+                        class="btn btn-default" 
+                        onclick="location.href = '/games';"> 
+                    My games
+                </button>
                 <button class="btn btn-default">Social</button>
 
                 <spring:url value="/players/player/profile/{playerId}/moreStadistics" var="playerUrl">
