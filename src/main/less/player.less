@@ -4,6 +4,12 @@
     margin: 10px 40px 10px 60px;
 }
 
+#statistics-full, #statistics-resume {
+    .table-title {
+        font-weight: bolder;
+    }
+}
+
 #statistics-resume {
     height: 70%;
 
@@ -17,6 +23,26 @@
 
         th {
             padding-right: 5px;
+            font-weight: lighter;
+        }
+    }
+}
+
+#statistics-full {
+    height: 70%;
+
+    table {
+        width: 100%;
+        height: 100%;
+
+        tr {
+            border-bottom: 1px solid @spring-brown
+        }
+
+        th {
+            min-width: 100px;
+            padding-right: 5px;
+            font-weight: lighter;
         }
     }
 }
