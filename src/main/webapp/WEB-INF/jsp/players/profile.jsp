@@ -18,39 +18,49 @@
                     <h3><c:out value="${player.surname}"/></h3>
                 </div>
         
-                <button class="btn btn-default">My games</button>
-                <button class="btn btn-default">Social</button>
+                <button id="my-games-btn" 
+                        class="btn btn-default" 
+                        onclick="location.href = '/games';"> 
+                    My games
+                </button>
+                <button id="social-btn"
+                        class="btn btn-default"
+                        onclick="location.href = '/social';">
+                    Social
+                </button>
+                <button id="stats-btn" 
+                        class="btn btn-default"
+                        onclick="location.href = '/players/player/profile/${player.id}/moreStatistics';">
+                    More Statistics
+                </button>
+                <button id="edit-prof-btn" 
+                        class="btn btn-default"
+                        onclick="location.href = '/players/player/edit/${player.id}';">
+                    Edit profile
+                </button>
 
-                <spring:url value="/players/player/profile/{playerId}/moreStadistics" var="playerUrl">
-                    <spring:param name="playerId" value="${player.id}"/>
-                </spring:url>
-
-                <a class="btn btn-default" href="${fn:escapeXml(playerUrl)}">Statistics</a>
-                
-                <button class="btn btn-default">Edit profile</button>
-            
             </span>
             <span id="right-section">
                 <div id="statistics-resume">
                     <table>
                         <tr>
-                            <th><strong>Total Games</strong></th>
+                            <th class="table-title">Total Games</th>
                             <th><c:out value="${player.totalGames}" /></th>
                         </tr>
                         <tr>
-                            <th><strong>Time Played</strong></th>
-                            <th><c:out value="${player.totalTimeGames}" /></th>
+                            <th class="table-title">Time Played</th>
+                            <th><c:out value="${player.totalTimeGames}" /> s</th>
                         </tr>
                         <tr>
-                            <th><strong>Total Points</strong></th>
+                            <th class="table-title">Total Points</th>
                             <th><c:out value="${player.totalPointsAllGames}" /></th>
                         </tr>
                         <tr>
-                            <th><strong>Favorite Island</strong></th>
+                            <th class="table-title">Favorite Island</th>
                             <th><c:out value="${player.favoriteIsland}" /></th>
                         </tr>
                         <tr>
-                            <th><strong>Favorite Treasure</strong></th>
+                            <th class="table-title">Favorite Treasure</th>
                             <th><c:out value="${player.favoriteTreasure}" /></th>
                         </tr>
                     </table>
