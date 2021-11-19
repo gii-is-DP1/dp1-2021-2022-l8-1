@@ -105,6 +105,11 @@ public class PlayerController {
     public String updatePlayer(@PathVariable("playerId") int playerId, ModelMap model) {
         Optional<Player> player = playerService.findPlayerById(playerId); // optional puede ser error el import
         String view = VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+
+        //Test if currentplayer is admin or the same id
+        // TODO: Comprobar que sea o admin o q el usuer registrado tenga el mismo id q el de la url 
+
+        //Test if player is present
         if(player.isPresent()){
             model.addAttribute("player", player.get());
         }else{
@@ -112,7 +117,6 @@ public class PlayerController {
             view = "/error"; //TODO: crear una vista de erro personalizada 
         }
         model.put("player", player);
-        // TODO: Comprobar que sea o admin o q el usuer registrado tenga el mismo id q el de la url 
         return view;
     }
 
