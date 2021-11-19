@@ -28,7 +28,9 @@
                     <c:out value="${game.startTime}"/>
                 </td>
                 <td>
-                    <c:out value="#TO-DO"/> <!-- We need to check how many players are in the room tho rn we havent that table yet-->
+                    <c:forEach  items="${game.players}" var="p"> 
+                        <c:out value="${p.user.username}"/> 
+                    </c:forEach>
                 </td>
                 <td>
                     <button class="btn btn-danger" type="">Join</button>

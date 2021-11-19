@@ -36,10 +36,10 @@ public class GameController {
     public String myRooms(ModelMap modelMap) {
         String vista = "games/myRooms";
 
-        Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
-        if (authetication != null) {
-            if (authetication.isAuthenticated() && authetication.getPrincipal() instanceof User) {
-                User currentUser = (User) authetication.getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
+                User currentUser = (User) authentication.getPrincipal();
                 // System.out.println(currentUser.getUsername());
                 // System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
 
@@ -81,9 +81,9 @@ public class GameController {
             modelMap.addAttribute("game", game);
             return "games/editarJuego";
         } else {
-            Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            User currentUser = (User) authetication.getPrincipal();
+            User currentUser = (User) authentication.getPrincipal();
 
             game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); // ESTO
                                                                                                                  // ES
@@ -153,8 +153,8 @@ public class GameController {
             Game game = gameService.findGameById(gameId).get(); // optional puede ser error el import
             model.addAttribute("game", game);
 
-            Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
-            User currentUser = (User) authetication.getPrincipal();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User) authentication.getPrincipal();
             int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // Id of player that is logged
 
             Player pay = playerService.findPlayerById(playerId).get();
@@ -206,10 +206,10 @@ public class GameController {
     public String publicRooms(ModelMap modelMap) {
         String view = "/welcome"; // Hacer pagina
         Iterable<Game> games;
-        Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
-        if (authetication != null) {
-            System.out.println("\n\n\n\n" + authetication.getPrincipal());
-            if (authetication.isAuthenticated() && authetication.getPrincipal() instanceof User) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            System.out.println("\n\n\n\n" + authentication.getPrincipal());
+            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
                 // If the user has admin perms then:
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
