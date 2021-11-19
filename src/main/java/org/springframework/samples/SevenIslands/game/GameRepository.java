@@ -35,6 +35,9 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
     @Transactional
     void insertGP(@Param("game_id") int game_id, @Param("player_id") int player_id);
     
+  @Query("SELECT P from Game P WHERE P.code = :code")
+  Collection<Game> findGamesByRoomCode(String code) throws DataAccessException;
+
 // @Query("SELECT g.numberOfPlayers FROM Game g WHERE g.id = :id")
 // int findTotalPlayers(int id) throws DataAccessException;
 

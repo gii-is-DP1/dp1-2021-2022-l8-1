@@ -228,6 +228,24 @@ public class GameController {
         return view;
     }
 
+    //Games by room code
+    @GetMapping(path = "/rooms/{code}")
+    public String gameByCode(@PathVariable("code") String code, ModelMap modelMap) {
+        String view = "/welcome"; // TODO Hacer pagina
+        Iterable<Game> games;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+
+            view = "games/publicRooms"; // Hacer pagina
+            games = gameService.findGamesByRoomCode(code);
+            modelMap.addAttribute("games", games);
+        
+        } else {
+            return "welcome"; // da error creo que es por que request mapping de arriba
+        }
+        return view;
+    }
+
     // Games currently playing
     @GetMapping(path = "/rooms/playing")
     public String currentlyPlaying(ModelMap modelMap) {
