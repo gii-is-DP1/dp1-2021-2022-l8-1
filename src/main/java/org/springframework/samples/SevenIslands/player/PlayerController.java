@@ -60,6 +60,7 @@ public class PlayerController {
 
     }
 
+    //COMPROBAR
     @GetMapping(path="/playerAdmins/new")
     public String createPlayer(ModelMap modelMap){
         String view="players/editPlayer";
@@ -67,6 +68,7 @@ public class PlayerController {
         return view;
     }
 
+    //COMPROBAR
     @PostMapping(path="/playerAdmins/save")
     public String savePlayer(@Valid Player player, BindingResult result, ModelMap modelMap){
         String view= "players/listPlayers";
@@ -114,6 +116,8 @@ public class PlayerController {
      * @param model
      * @param surname
      * @param firstName
+     * @param email
+     * @param password
      * @param model
      * @return
      */
@@ -127,7 +131,7 @@ public class PlayerController {
 		}
 		else {
                     Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-			BeanUtils.copyProperties(player, playerToUpdate, "id","player","players","code");                                                                                  
+			BeanUtils.copyProperties(player, playerToUpdate,"id");                                                                                  
                     try {                    
                         this.playerService.save(playerToUpdate);                    
                     
