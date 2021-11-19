@@ -38,6 +38,19 @@ public class PlayerController {
         return view;
     }
 
+    @GetMapping(path="/player/profile/{playerId}/moreStadistics")
+    public String moreStadistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "players/moreStadistics";
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error"; //TODO: crear una vista de erro personalizada 
+        }
+        return view;
+    }
+
     @GetMapping(path="/playerAdmins/all")
     public String listadoPlayers(ModelMap modelMap){        //For admins
         String vista ="players/listPlayers";
