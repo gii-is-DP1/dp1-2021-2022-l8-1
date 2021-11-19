@@ -30,7 +30,7 @@
                             <br>
                             <br>
                             <c:forEach items="${player.players_friends}" var="friend">
-                                <c:out value="${friend.user.username}"></c:out>
+                                <c:out value="${friend.user.username}"></c:out><br>
                             </c:forEach>
                         </div>
 
@@ -41,7 +41,7 @@
                         <br>
                         <c:forEach items ="${game.players}" var="p">
                             <div class="row text-center">
-                                <c:out value = "${p.user.username}"/>
+                                <c:out value = "${p.user.username}"/><br>
                             </div>
                         </c:forEach> 
                     </div>
