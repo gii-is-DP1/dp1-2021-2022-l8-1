@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 
@@ -17,7 +18,7 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="row text-center">
-                            <p>Game details</p>
+                            <p><strong><u>Game details</strong></u></p>
                             <br>
                             <br>
                             <p>Name: <c:out value="${game.name}"/></p>
@@ -26,26 +27,37 @@
                     </div> 
                     <div class="col-sm-4">
                         <div class="row text-center">
-                            <p>Friends</p>
+                            <p><strong><u>Friends</strong></u></p>
                             <br>
                             <br>
                             <c:forEach items="${player.players_friends}" var="friend">
-                                <c:out value="${friend.user.username}"></c:out>
+                                <c:out value="${friend.user.username}"></c:out><br>
                             </c:forEach>
                         </div>
 
                     </div>
                     <div class="col-sm-4">
-                        <div class="row text-center">Party members</div>
+                        <div class="row text-center"><strong><u>Party members</strong></u></div>
                         <br>
                         <br>
                         <c:forEach items ="${game.players}" var="p">
                             <div class="row text-center">
-                                <c:out value = "${p.user.username}"/>
+                                <c:out value = "${p.user.username}"/><br>
                             </div>
                         </c:forEach> 
                     </div>
                     
+                </div>
+                <br><br><br><br>
+                <div class="row text-center">
+
+                    <spring:url value="/games" var="playerUrl">
+                    </spring:url>
+
+                    <a href="${fn:escapeXml(playerUrl)}" class="btn btn-default">Cancel</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-default" type="submit">Create game</button>
+
                 </div>
             </div>
         </form:form>

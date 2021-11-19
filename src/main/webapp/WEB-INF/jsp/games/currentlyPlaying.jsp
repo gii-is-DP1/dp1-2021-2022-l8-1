@@ -15,7 +15,7 @@
             <th style="width: 200px;">Games</th>
             <th style="width: 200px;">Date</th>
             <th style="width: 200px;">Players</th>
-            <th style="width: 200px;">Join Game</th>
+            <th style="width: 200px;">Watch Game</th>
         </tr>
         </thead>
         <tbody>
@@ -33,7 +33,7 @@
                     </c:forEach>
                 </td>
                 <td>
-                    <button class="btn btn-danger" type="">Join</button>
+                    <button class="btn btn-danger" type="">Watch</button>
                 </td>
             </tr>
         </c:forEach>

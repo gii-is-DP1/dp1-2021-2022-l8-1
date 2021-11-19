@@ -55,7 +55,7 @@
                 <div class="form-group row text-center">
                     <div class="col-sm">
                         <input type="hidden" name="gameId" value="${game.id}" />
-                        <button onclick="window.location.href='/welcome';" class="btn btn-default" type="submit">Continue</button>
+                        <button class="btn btn-default" type="submit">Create game</button>
                     </div>
                 </div>
         </form:form>

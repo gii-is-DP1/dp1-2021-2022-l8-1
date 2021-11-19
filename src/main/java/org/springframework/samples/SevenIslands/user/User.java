@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +17,11 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class User{
+	@NotEmpty
 	@Id
 	String username;
 	
+	@NotEmpty
 	String password;
 	
 	boolean enabled;

@@ -25,7 +25,7 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @GetMapping(path="/profile/{playerId}")
+    @GetMapping(path="/player/profile/{playerId}")
     public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "/players/profile";
         Optional<Player> player = playerService.findPlayerById(playerId);
@@ -38,8 +38,21 @@ public class PlayerController {
         return view;
     }
 
-    @GetMapping()
-    public String listadoPlayers(ModelMap modelMap){
+    @GetMapping(path="/player/profile/{playerId}/moreStatistics")
+    public String moreStatistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "players/moreStatistics";
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error"; //TODO: crear una vista de erro personalizada 
+        }
+        return view;
+    }
+
+    @GetMapping(path="/playerAdmins/all")
+    public String listadoPlayers(ModelMap modelMap){        //For admins
         String vista ="players/listPlayers";
         Iterable<Player> players = playerService.findAll();
         modelMap.addAttribute("players", players);
@@ -47,14 +60,16 @@ public class PlayerController {
 
     }
 
-    @GetMapping(path="/new")
+    //COMPROBAR
+    @GetMapping(path="/playerAdmins/new")
     public String createPlayer(ModelMap modelMap){
         String view="players/editPlayer";
         modelMap.addAttribute("player", new Player());
         return view;
     }
 
-    @PostMapping(path="/save")
+    //COMPROBAR
+    @PostMapping(path="/playerAdmins/save")
     public String savePlayer(@Valid Player player, BindingResult result, ModelMap modelMap){
         String view= "players/listPlayers";
         if(result.hasErrors()){
@@ -69,7 +84,7 @@ public class PlayerController {
         return view;
     }
 
-    @GetMapping(path="/delete/{playerId}")
+    @GetMapping(path="/playerAdmins/delete/{playerId}")
     public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view= "players/listPlayers";
         Optional<Player> player = playerService.findPlayerById(playerId);
@@ -86,9 +101,9 @@ public class PlayerController {
 
     private static final String VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM = "players/createOrUpdatePlayerForm";
 
-    @GetMapping(path="/edit/{playerId}")
+    @GetMapping(path="/playerAdmins/edit/{playerId}")
     public String updatePlayer(@PathVariable("playerId") int playerId, ModelMap model) {
-        Player player = playerService.findPlayerById(playerId); // optional puede ser error el import
+        Optional<Player> player = playerService.findPlayerById(playerId); // optional puede ser error el import
         String view = VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
         if(player.isPresent()){
             model.addAttribute("player", player.get());
@@ -109,11 +124,13 @@ public class PlayerController {
      * @param model
      * @param surname
      * @param firstName
+     * @param email
+     * @param password
      * @param model
      * @return
      */
 
-    @PostMapping(value = "/edit/{playerId}")
+    @PostMapping(value = "/playerAdmins/edit/{playerId}")
 	public String processUpdateForm(@Valid Player player, BindingResult result,@PathVariable("playerId") int playerId, ModelMap model) {
 		if (result.hasErrors()) {
             System.out.print(result.getAllErrors());
@@ -122,7 +139,7 @@ public class PlayerController {
 		}
 		else {
                     Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-			BeanUtils.copyProperties(player, playerToUpdate, "id","player","players","code");                                                                                  
+			BeanUtils.copyProperties(player, playerToUpdate,"id");                                                                                  
                     try {                    
                         this.playerService.save(playerToUpdate);                    
                     
@@ -130,7 +147,7 @@ public class PlayerController {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
                     }
-			return "redirect:/players";
+			return "redirect:/players/playerAdmins/all";
 		}
 	}
 

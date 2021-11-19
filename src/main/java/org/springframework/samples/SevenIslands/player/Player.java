@@ -143,7 +143,7 @@ public class Player extends Person{
   @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_friends", joinColumns = @JoinColumn(name = "friend_id"),
 			inverseJoinColumns = @JoinColumn(name = "friend_identifier"))
-  private Collection<Player> players_friends;
+  private List<Player> players_friends;
 
 
   //RELACION CON USER
