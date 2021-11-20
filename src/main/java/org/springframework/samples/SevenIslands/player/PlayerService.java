@@ -60,7 +60,7 @@ public class PlayerService {
 
     @Transactional
     public Optional<Player> findPlayerById(int id){
-        return playerRepo.findById(id);
+        return playerRepo.findPlayerById(id);
     }
 
     @Transactional

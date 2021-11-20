@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -53,10 +54,14 @@ public class GameController {
                     int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL
                                                                                                // JUGADOR QUE ESTA AHORA
                                                                                                // MISMO CONECTADO
-                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); // ESTO BUSCA TODOS LOS JUEGOS
-                                                                                        // DE LOS QUE SOY DUEÑO
+                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); // ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO
+                    
+                    List<Game> gameWhereIPlayed = gameService.findGamesWhereIPlayerByPlayerId(playerId);                                                                    
+                    //List<Game> games2 = gameWhereIPlayed.stream().map(x->gameService.findGameById(x).get()).collect(Collectors.toList());
+
 
                     modelMap.addAttribute("games", games);
+                    modelMap.addAttribute("games2", gameWhereIPlayed);
                 }
                 return vista;
 

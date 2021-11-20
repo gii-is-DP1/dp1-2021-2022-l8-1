@@ -116,7 +116,7 @@ public class PlayerController {
             model.addAttribute("message", "Player not found");
             view = "/error"; //TODO: crear una vista de erro personalizada 
         }
-        model.put("player", player);
+        //model.put("player", player);
         return view;
     }
 
@@ -143,7 +143,7 @@ public class PlayerController {
 		}
 		else {
                     Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-			BeanUtils.copyProperties(player, playerToUpdate,"id");  //METER AQUI OTRAS PROPIEDADES                                                                                
+			BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
                     try {                    
                         this.playerService.save(playerToUpdate);                    
                     

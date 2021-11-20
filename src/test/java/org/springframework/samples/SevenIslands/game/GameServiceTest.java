@@ -21,10 +21,18 @@ public class GameServiceTest {
     }
     
     @Test
-    public void testFindGamesByPlayerId(){  // counts the games of a player
-        Iterable<Game> games = gameService.findGamesByPlayerId(2);
+    public void testFindGamesByPlayerId(){  // counts the games where the player as created
+        Iterable<Game> games = gameService.findGamesByPlayerId(1);
         long count = games.spliterator().getExactSizeIfKnown();
-        assertEquals(0, count);
+        assertEquals(4, count);
+    }
+
+     
+    @Test
+    public void testFindGamesWherePlayerPlayed(){  // counts the games where the player played
+        Iterable<Game> games = gameService.findGamesWhereIPlayerByPlayerId(1);
+        long count = games.spliterator().getExactSizeIfKnown();
+        assertEquals(4, count);
     }
     
 }
