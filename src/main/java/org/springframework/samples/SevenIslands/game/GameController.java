@@ -213,7 +213,7 @@ public class GameController {
                 // If the user has admin perms then:
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
-                    view = "games/publicRoomsAdmins"; // Hacer pagina
+                    view = "games/RoomsAdmins"; // Hacer pagina
                     games = gameService.findAll();
                     modelMap.addAttribute("games", games);
                 } else {

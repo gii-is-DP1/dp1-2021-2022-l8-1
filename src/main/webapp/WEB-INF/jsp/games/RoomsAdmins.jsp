@@ -16,8 +16,7 @@
             <th style="width: 200px;">Date</th>
             <th style="width: 200px;">Players</th>
             <th style="width: 200px;">Delete game</th>
-            <th style="width: 200px;">Update game</th>
-            <th style="width: 200px;">Join Game</th>
+           
         </tr>
         </thead>
         <tbody>
@@ -38,17 +37,9 @@
                     <spring:url value="/games/delete/{gameId}" var="gameUrl">
                         <spring:param name="gameId" value="${game.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(gameUrl)}">Delete</a>
+                    <a class="btn btn-danger" href="${fn:escapeXml(gameUrl)}">Delete</a>
                 </td>
-                <td>
-                    <spring:url value="/games/edit/{gameId}" var="gameUrl">
-                        <spring:param name="gameId" value="${game.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(gameUrl)}">Edit</a>
-                </td>
-                <td>
-                    <button class="btn btn-danger" type="">Join</button>
-                </td>
+                
             </tr>
         </c:forEach>
         </tbody>
