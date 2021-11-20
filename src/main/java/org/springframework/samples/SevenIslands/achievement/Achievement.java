@@ -1,6 +1,8 @@
 package org.springframework.samples.SevenIslands.achievement;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -52,8 +54,20 @@ public class Achievement extends NamedEntity {
     private PARAMETER parameter;
 
 	@ManyToMany(mappedBy = "achievements")
-	private Set<Player> players;
+	private List<Player> players;
 
     @ManyToMany(mappedBy = "achievements")
-	private Set<Admin> admins;
+	private List<Admin> admins;
+
+    public void addAdminInAchievements(Admin admin){
+        if(this.getAdmins()==null){
+            List<Admin> l = new ArrayList<>();
+            l.add(admin);
+            this.setAdmins(l);     
+        }else{
+            List<Admin> l = this.getAdmins();
+            l.add(admin);
+            this.setAdmins(l);
+        }
+    }
 }
