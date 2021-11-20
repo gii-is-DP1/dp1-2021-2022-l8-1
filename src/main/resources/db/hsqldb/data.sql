@@ -45,7 +45,7 @@ VALUES ('Prueba0', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY, CR
  VALUES ('Prueba3', 'ABCD121', '1,4,2', 3, 3, 2 ,37,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','2,2,1', 1, 'PUBLIC', true, '2021-11-18 23:00:00');
 
  INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity,has_started, start_time) 
- VALUES ('Prueba4', 'ABCD120', '3,2,1', 3, 1, 1 ,49,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','1,3,9', 1, 'PRIVATE', true, '2021-11-18 23:01:00');
+ VALUES ('Prueba4', 'ABCD120', '3,2,1', 3, 1, 1 ,49,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','1,3,9', 2, 'PRIVATE', true, '2021-11-18 23:01:00');
 --AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
 
 -- /*INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');*/
@@ -126,6 +126,7 @@ INSERT INTO games_players(game_id, player_id) VALUES (2, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 3);
 INSERT INTO games_players(game_id, player_id) VALUES (4, 1);
+INSERT INTO games_players(game_id, player_id) VALUES (4, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 1);
 
 INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 2);

@@ -7,7 +7,7 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="games">
-    <h2>MyRooms</h2>
+    <h2>RoomsCreateByMe</h2>
 
     <table id="gamesTable" class="table table-striped">
         <thead>
@@ -19,30 +19,68 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${games}" var="game">
-            <tr>
-                <td>
-                    <c:out value="${game.name}"/>
-                </td>
-
-                <td>
-                    <c:out value="${game.startTime}"/>
-                </td> 
-
-                <td>
-                <c:forEach items ="${game.players}" var="p">
-                
-                <c:out value = "${p.user.username}"/>  <!--AQUI SE PUEDE PONER LO DE DIRECCIONAR A LA VISTA DE UN PERFIL DANDOLE EL ID-->
-                
-    
-                </c:forEach>  
-                </td>  
             
+        <c:forEach items="${games}" var="game">
+                <tr>
+                    <td>
+                        <c:out value="${game.name}"/>
+                    </td>
+    
+                    <td>
+                        <c:out value="${game.startTime}"/>
+                    </td> 
+    
+                    <td>
+                    <c:forEach items ="${game.players}" var="p">
+                    
+                    <c:out value = "${p.user.username}"/>  <!--AQUI SE PUEDE PONER LO DE DIRECCIONAR A LA VISTA DE UN PERFIL DANDOLE EL ID-->
+                    
+        
+                    </c:forEach>  
+                    </td>  
                 
-            </tr>
-        </c:forEach>
+                    
+                </tr>
+            </c:forEach>
+
+
+        </tbody>
+    </table>
+    
+    <h2>RoomsWhereIPlayed</h2>
+    <table id="gamesTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th style="width: 200px;">Games</th>
+            <th style="width: 200px;">Date</th>
+            <th style="width: 200px;">Players</th>
+           
+        </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${games2}" var="game">
+                <tr>
+                    <td>
+                        <c:out value="${game.name}"/>
+                    </td>
+    
+                    <td>
+                        <c:out value="${game.startTime}"/>
+                    </td> 
+    
+                    <td>
+                    <c:forEach items ="${game.players}" var="p">
+                    
+                    <c:out value = "${p.user.username}"/>  <!--AQUI SE PUEDE PONER LO DE DIRECCIONAR A LA VISTA DE UN PERFIL DANDOLE EL ID-->
+                    
         
-        
+                    </c:forEach>  
+                    </td>  
+                
+                    
+                </tr>
+            </c:forEach>
+
         </tbody>
     </table>
 </SevenIslands:layout>

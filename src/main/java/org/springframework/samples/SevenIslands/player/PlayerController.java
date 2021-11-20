@@ -143,7 +143,7 @@ public class PlayerController {
 		}
 		else {
                     Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-			BeanUtils.copyProperties(player, playerToUpdate,"id");  //METER AQUI OTRAS PROPIEDADES                                                                                
+			BeanUtils.copyProperties(player, playerToUpdate,"id", "profile_photo","total_games","total_time_games","avg_time_games","max_time_game","min_time_game","total_points_all_games","avg_total_points","favorite_island","favorite_treasure","max_points_of_games","min_points_of_games");  //METER AQUI OTRAS PROPIEDADES                                                                                
                     try {                    
                         this.playerService.save(playerToUpdate);                    
                     

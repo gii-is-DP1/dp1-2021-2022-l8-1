@@ -60,6 +60,12 @@ public class GameService {
         return gameRepo.findGamesByPlayerId(id);
     }
 
+    
+    @Transactional
+    public List<Game> findGamesWhereIPlayerByPlayerId(int id){
+        return gameRepo.findGamesWhereIPlayedByPlayerId(id);
+    }
+
     @Transactional
     public void insertGP(int game_id, int player_id){
         gameRepo.insertGP(game_id,player_id);
