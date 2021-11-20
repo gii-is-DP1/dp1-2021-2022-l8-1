@@ -9,6 +9,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.admin.Admin;
+import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.stereotype.Controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +28,9 @@ public class AchievementController {
 
     @Autowired
     private AchievementService achievementService;
+
+    @Autowired
+    private AdminService adminService;
 
     //Vistas solo para admins:
     @GetMapping()
@@ -68,6 +73,16 @@ public class AchievementController {
                         modelMap.addAttribute("achievement", achievement);
                         return "achievements/editAchievement";
                     }else{
+
+                        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                        User currentUser = (User) authentication.getPrincipal();
+                        
+                        Achievement ach = achievement;
+                        Admin admin = adminService.getAdminByName(currentUser.getUsername()).stream().findFirst().get();
+
+                        ach.addAdminInAchievements(admin);
+                        admin.addAchievementInAdmins(ach);
+
                         achievementService.save(achievement);
                         modelMap.addAttribute("message", "Achievement succesfully saved!");
                         view=listAchievements(modelMap);
