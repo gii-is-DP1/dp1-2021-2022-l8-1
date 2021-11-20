@@ -18,6 +18,7 @@
         </tr>
         </thead>
         <tbody>
+            
         <c:forEach items="${achievements}" var="achievement">
             <tr>
 
@@ -30,14 +31,14 @@
                 </td>
 
                 <td>
-                    <spring:url value="/achievements/achievementsAdmins/delete/{achievementId}" var="achievementUrl">
+                    <spring:url value="/achievements/delete/{achievementId}" var="achievementUrl">
                         <spring:param name="achievementId" value="${achievement.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(achievementUrl)}">Delete</a>
                 </td>
 
                 <td>
-                    <spring:url value="/achievements/achievementsAdmins/edit/{achievementId}" var="achievementUrl">
+                    <spring:url value="/achievements/edit/{achievementId}" var="achievementUrl">
                         <spring:param name="achievementId" value="${achievement.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(achievementUrl)}">Edit</a>

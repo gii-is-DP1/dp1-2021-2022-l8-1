@@ -15,7 +15,7 @@
     </jsp:attribute>
     <jsp:body>
         <h2>Achievement</h2>
-        <form:form modelAttribute="achievement" class="form-horizontal" action="/achievements/achievementsAdmins/save">
+        <form:form modelAttribute="achievement" class="form-horizontal" action="/achievements/save">
             <div class="form-group has-feedback">
                 <div class="row">
                     <div class="col-sm-6">
