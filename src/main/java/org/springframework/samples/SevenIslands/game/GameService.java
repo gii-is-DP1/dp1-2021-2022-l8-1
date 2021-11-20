@@ -76,6 +76,9 @@ public class GameService {
         return gameRepo.findIdPlayersByGameId(game_id);
     }
 
-
+    @Transactional
+    public Collection<Game> findGamesByRoomCode(String code){
+        return gameRepo.findGamesByRoomCode(code);
+    }
 
 }

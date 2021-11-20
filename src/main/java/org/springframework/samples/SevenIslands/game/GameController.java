@@ -218,7 +218,7 @@ public class GameController {
                 // If the user has admin perms then:
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
-                    view = "games/publicRoomsAdmins"; // Hacer pagina
+                    view = "games/RoomsAdmins"; // Hacer pagina
                     games = gameService.findAll();
                     modelMap.addAttribute("games", games);
                 } else {
@@ -229,6 +229,24 @@ public class GameController {
             } else {
                 return "welcome"; // da error creo que es por que request mapping de arriba
             }
+        }
+        return view;
+    }
+
+    //Games by room code
+    @GetMapping(path = "/rooms/{code}")
+    public String gameByCode(@PathVariable("code") String code, ModelMap modelMap) {
+        String view = "/welcome"; // TODO Hacer pagina
+        Iterable<Game> games;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+
+            view = "games/publicRooms"; // Hacer pagina
+            games = gameService.findGamesByRoomCode(code);
+            modelMap.addAttribute("games", games);
+        
+        } else {
+            return "welcome"; // da error creo que es por que request mapping de arriba
         }
         return view;
     }
