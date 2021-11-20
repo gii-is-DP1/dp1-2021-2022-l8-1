@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.validation.BindingResult;
 
 @Controller
@@ -52,10 +53,11 @@ public class PlayerController {
     }
 
     @GetMapping(path="/all")
-    public String listadoPlayers(ModelMap modelMap){        //For admins
+    public String listadoPlayers(ModelMap modelMap, @PathParam("filterName") String filterName){        //For admins
         String vista ="players/listPlayers";
         Iterable<Player> players = playerService.findAll();
         modelMap.addAttribute("players", players);
+        modelMap.addAttribute("filterName", filterName);
         return vista;
 
     }
@@ -79,7 +81,7 @@ public class PlayerController {
         }else{
             playerService.save(player);
             modelMap.addAttribute("message", "Player succesfully saved!");
-            view=listadoPlayers(modelMap);
+            view=listadoPlayers(modelMap, null);
         }
         return view;
     }
@@ -93,7 +95,7 @@ public class PlayerController {
             modelMap.addAttribute("message", "Player successfully deleted!");
         }else{
             modelMap.addAttribute("message", "Player not found");
-            view=listadoPlayers(modelMap);
+            view=listadoPlayers(modelMap, null);
         }
         return view;
 
