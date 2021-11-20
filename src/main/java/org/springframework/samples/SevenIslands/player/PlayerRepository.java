@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.player;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
@@ -34,5 +35,8 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
 
 	@Query(value = "SELECT * FROM Players P JOIN Users U ON U.username=P.username WHERE P.username LIKE ?1", nativeQuery = true) //PUESTO DE PRUEBA 
 	Collection<Player> findPlayerByName(String n);
+
+	@Query(value = "SELECT * FROM Players where id LIKE ?1", nativeQuery = true) //PUESTO DE PRUEBA 
+	Optional<Player> findPlayerById(int id);
 
 }
