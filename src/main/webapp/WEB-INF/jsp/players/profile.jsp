@@ -30,12 +30,12 @@
                 </button>
                 <button id="stats-btn" 
                         class="btn btn-default"
-                        onclick="location.href = '/players/player/profile/${player.id}/moreStatistics';">
+                        onclick="location.href = '/players/profile/${player.id}/moreStatistics';">
                     More Statistics
                 </button>
                 <button id="edit-prof-btn" 
                         class="btn btn-default"
-                        onclick="location.href = '/players/player/edit/${player.id}';">
+                        onclick="location.href = '/players/edit/${player.id}';">
                     Edit profile
                 </button>
 

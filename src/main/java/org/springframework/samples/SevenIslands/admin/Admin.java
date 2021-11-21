@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.samples.SevenIslands.person.Person;
@@ -31,7 +33,20 @@ public class Admin extends Person{
     @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "admins_achievements", joinColumns = @JoinColumn(name = "admin_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-	private Set<Achievement> achievements;
+	private List<Achievement> achievements;
+
+
+	public void addAchievementInAdmins(Achievement achi){
+        if(this.getAchievements()==null){
+            List<Achievement> l = new ArrayList<>();
+            l.add(achi);
+            this.setAchievements(l);     
+        }else{
+            List<Achievement> l = this.getAchievements();
+            l.add(achi);
+            this.setAchievements(l);
+        }
+    }
 
     
 }

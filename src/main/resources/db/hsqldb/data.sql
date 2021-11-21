@@ -18,8 +18,8 @@ INSERT INTO authorities(id,username,authority) VALUES (6,'test2','player');
 INSERT INTO users(username,password,enabled) VALUES ('test3','test3',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (7,'test3','player');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
-    VALUES (1, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56, 'test1');
+INSERT INTO players(id, first_name, surname, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
+    VALUES (1,'Paco', 'Alonso', 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56, 'test1');
 
 INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, username) 
     VALUES (2, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 2, 1220, 220.0, 720, 540, 121, 24.2, 3, 'BARREL_OF_RUM', 59, 26, 'test2');
@@ -45,7 +45,7 @@ VALUES ('Prueba0', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY, CR
  VALUES ('Prueba3', 'ABCD121', '1,4,2', 3, 3, 2 ,37,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','2,2,1', 1, 'PUBLIC', true, '2021-11-18 23:00:00');
 
  INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity,has_started, start_time) 
- VALUES ('Prueba4', 'ABCD120', '3,2,1', 3, 1, 1 ,49,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','1,3,9', 1, 'PRIVATE', true, '2021-11-18 23:01:00');
+ VALUES ('Prueba4', 'ABCD120', '3,2,1', 3, 1, 1 ,49,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','1,3,9', 2, 'PRIVATE', true, '2021-11-18 23:01:00');
 --AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
 
 -- /*INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');*/
@@ -126,6 +126,7 @@ INSERT INTO games_players(game_id, player_id) VALUES (2, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 3);
 INSERT INTO games_players(game_id, player_id) VALUES (4, 1);
+INSERT INTO games_players(game_id, player_id) VALUES (4, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 1);
 
 INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 2);

@@ -38,28 +38,18 @@
                 </td>
 
                 <td>
-                    <spring:url value="/players/playerAdmins/delete/{playerId}" var="playerUrl">
+                    <spring:url value="/players/delete/{playerId}" var="playerUrl">
                         <spring:param name="playerId" value="${player.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(playerUrl)}" class="btn btn-danger">Delete</a>
                 </td>
 
                 <td>
-                    <spring:url value="/players/playerAdmins/edit/{playerId}" var="playerUrl">
+                    <spring:url value="/players/edit/{playerId}" var="playerUrl">
                         <spring:param name="playerId" value="${player.id}"/>
                     </spring:url>
                     <a href="${fn:escapeXml(playerUrl)}" class="btn btn-warning">Edit</a>
                 </td>
-                
-      
-<!--
-                <td> 
-                    <c:out value="${owner.user.username}"/> 
-                </td>
-                <td> 
-                   <c:out value="${owner.user.password}"/> 
-                </td> 
--->
                 
             </tr>
         </c:forEach>

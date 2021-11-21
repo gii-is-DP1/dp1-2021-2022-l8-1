@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -32,6 +33,7 @@ public class GameController {
     @Autowired
     private PlayerService playerService;
 
+    //Games createdByMe
     @GetMapping()
     public String myRooms(ModelMap modelMap) {
         String vista = "games/myRooms";
@@ -53,10 +55,50 @@ public class GameController {
                     int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL
                                                                                                // JUGADOR QUE ESTA AHORA
                                                                                                // MISMO CONECTADO
-                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); // ESTO BUSCA TODOS LOS JUEGOS
-                                                                                        // DE LOS QUE SOY DUEÑO
 
+                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); // ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO
+                    
+                    //List<Game> gameWhereIPlayed = gameService.findGamesWhereIPlayerByPlayerId(playerId);                                        
+
+                    modelMap.addAttribute("titletext", "Rooms created by me");
                     modelMap.addAttribute("games", games);
+                    //modelMap.addAttribute("games2", gameWhereIPlayed);
+                }
+                return vista;
+
+            } else
+                return "/welcome"; // da error creo que es por que request mapping de arriba
+        }
+
+        return vista;
+    }
+
+    
+    //Games whereIPlayed
+    @GetMapping("/playedByMe")
+    public String roomsPlayedByMe(ModelMap modelMap) {
+        String vista = "games/myRooms";
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
+                User currentUser = (User) authentication.getPrincipal();
+
+                if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                        .anyMatch(x -> x.toString().equals("admin"))) {
+
+                    Iterable<Game> games = gameService.findAll(); // ESTO BUSCA TODOS LOS JUEGOS, PORQUE SOY ADMIN
+                    modelMap.addAttribute("games", games);
+                    
+                } else {
+                    int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL
+                                                                                               // JUGADOR QUE ESTA AHORA
+                                                                                               // MISMO CONECTADO
+                    
+                    List<Game> gameWhereIPlayed = gameService.findGamesWhereIPlayerByPlayerId(playerId);                                                                    
+                    
+                    modelMap.addAttribute("titletext", "Rooms where I played");
+                    modelMap.addAttribute("games", gameWhereIPlayed);
                 }
                 return vista;
 
@@ -213,7 +255,7 @@ public class GameController {
                 // If the user has admin perms then:
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
-                    view = "games/publicRoomsAdmins"; // Hacer pagina
+                    view = "games/RoomsAdmins"; // Hacer pagina
                     games = gameService.findAll();
                     modelMap.addAttribute("games", games);
                 } else {
@@ -224,6 +266,24 @@ public class GameController {
             } else {
                 return "welcome"; // da error creo que es por que request mapping de arriba
             }
+        }
+        return view;
+    }
+
+    //Games by room code
+    @GetMapping(path = "/rooms/{code}")
+    public String gameByCode(@PathVariable("code") String code, ModelMap modelMap) {
+        String view = "/welcome"; // TODO Hacer pagina
+        Iterable<Game> games;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+
+            view = "games/publicRooms"; // Hacer pagina
+            games = gameService.findGamesByRoomCode(code);
+            modelMap.addAttribute("games", games);
+        
+        } else {
+            return "welcome"; // da error creo que es por que request mapping de arriba
         }
         return view;
     }

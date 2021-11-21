@@ -7,7 +7,38 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="games">
+    <script type="text/javascript">
+        function clearSearch() {
+            location.reload();
+        }
+        function doSearch(){
+            window.location="/games/rooms/"+document.getElementById("code").value;
+        }
+
+        //So it doesn't search when you hit enter, because enter produces an error url
+        document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('input[type=text]').forEach( node => node.addEventListener('keypress', e => {
+            if(e.keyCode == 13) {
+            e.preventDefault();
+            }
+        }))
+        });
+
+    </script>
+        
     <h2>Games</h2>
+
+    <br>
+    <br>
+    <div>
+        Room code: <input type="text" name="code" id="code" size="50" th:value="${code}" required />
+        &nbsp;
+        <input type="button" value="Search" onclick="doSearch()" />
+        &nbsp;
+        <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+    </div>
+    <br>
+    <br>
 
     <table id="gamesTable" class="table table-striped">
         <thead>

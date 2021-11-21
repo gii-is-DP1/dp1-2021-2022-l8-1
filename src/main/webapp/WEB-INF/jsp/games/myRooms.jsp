@@ -7,7 +7,27 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="games">
-    <h2>MyRooms</h2>
+
+    <script type="text/javascript">
+        function doSearch(){
+            window.
+            location="/games/"+document.getElementById("typeRoom").value;
+        }
+    </script>
+
+    <h2><c:out value="${titletext}"/></h2>    
+
+    <br>
+    <br>
+    <div>
+        <select class="selectpicker" id="typeRoom">
+            <option value="">Rooms created by me </option>
+            <option value="playedByMe">Rooms where I played</option>
+        </select>          
+        <input type="button" value="Search" onclick="doSearch()" />
+    </div>
+    <br>
+    <br>
 
     <table id="gamesTable" class="table table-striped">
         <thead>
@@ -19,30 +39,32 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${games}" var="game">
-            <tr>
-                <td>
-                    <c:out value="${game.name}"/>
-                </td>
-
-                <td>
-                    <c:out value="${game.startTime}"/>
-                </td> 
-
-                <td>
-                <c:forEach items ="${game.players}" var="p">
-                
-                <c:out value = "${p.user.username}"/>  <!--AQUI SE PUEDE PONER LO DE DIRECCIONAR A LA VISTA DE UN PERFIL DANDOLE EL ID-->
-                
-    
-                </c:forEach>  
-                </td>  
             
+        <c:forEach items="${games}" var="game">
+                <tr>
+                    <td>
+                        <c:out value="${game.name}"/>
+                    </td>
+    
+                    <td>
+                        <c:out value="${game.startTime}"/>
+                    </td> 
+    
+                    <td>
+                    <c:forEach items ="${game.players}" var="p">
+                    
+                    <c:out value = "${p.user.username}"/>  <!--AQUI SE PUEDE PONER LO DE DIRECCIONAR A LA VISTA DE UN PERFIL DANDOLE EL ID-->
+                    
+        
+                    </c:forEach>  
+                    </td>  
                 
-            </tr>
-        </c:forEach>
-        
-        
+                    
+                </tr>
+            </c:forEach>
+
+
         </tbody>
     </table>
+
 </SevenIslands:layout>
