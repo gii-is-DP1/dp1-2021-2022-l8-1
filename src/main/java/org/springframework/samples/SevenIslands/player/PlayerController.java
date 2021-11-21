@@ -1,14 +1,11 @@
 package org.springframework.samples.SevenIslands.player;
 
-import java.util.Collection;
 import java.util.Optional;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.SevenIslands.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -116,7 +113,6 @@ public class PlayerController {
             model.addAttribute("message", "Player not found");
             view = "/error"; //TODO: crear una vista de erro personalizada 
         }
-        //model.put("player", player);
         return view;
     }
 

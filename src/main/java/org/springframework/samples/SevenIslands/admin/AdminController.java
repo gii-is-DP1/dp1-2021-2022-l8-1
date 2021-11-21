@@ -7,11 +7,6 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -70,7 +65,7 @@ public class AdminController {
 
     @GetMapping(value = "/profile/edit/{adminId}")
     public String updateAdmin(@PathVariable("adminId") int adminId, ModelMap model) {
-        Admin admin = adminService.findAdminById(adminId).get(); // optional puede ser error el import
+        Admin admin = adminService.findAdminById(adminId).get();
         model.put("admin", admin);
         return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
     }

@@ -1,10 +1,8 @@
 package org.springframework.samples.SevenIslands.game;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -42,8 +40,6 @@ public class GameController {
         if (authentication != null) {
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
                 User currentUser = (User) authentication.getPrincipal();
-                // System.out.println(currentUser.getUsername());
-                // System.out.println(playerService.getIdPlayerByName(currentUser.getUsername()));
 
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
@@ -57,18 +53,15 @@ public class GameController {
                                                                                                // JUGADOR QUE ESTA AHORA
                                                                                                // MISMO CONECTADO
 
-                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); // ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO
-                    
-                    //List<Game> gameWhereIPlayed = gameService.findGamesWhereIPlayerByPlayerId(playerId);                                        
+                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); // ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO                               
 
                     modelMap.addAttribute("titletext", "Rooms created by me");
                     modelMap.addAttribute("games", games);
-                    //modelMap.addAttribute("games2", gameWhereIPlayed);
                 }
                 return vista;
 
             } else
-                return "/welcome"; // da error creo que es por que request mapping de arriba
+                return "/welcome";
         }
 
         return vista;
@@ -105,7 +98,7 @@ public class GameController {
                 return vista;
 
             } else
-                return "/welcome"; // da error creo que es por que request mapping de arriba
+                return "/welcome";
         }
 
         return vista;
@@ -113,7 +106,7 @@ public class GameController {
 
     @GetMapping(path = "/new")
     public String crearJuego(Player player, ModelMap modelMap) {
-        String view = "games/editarJuego"; // Hacer pagina
+        String view = "games/editarJuego"; 
         modelMap.addAttribute("game", new Game());
         return view;
     }
@@ -148,10 +141,6 @@ public class GameController {
                                                                                                                  // DICHA
                                                                                                                  // RELACIÓN
 
-            // int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
-            // gameService.insertGP(game.getId(), playerId);
-            // Game juego = gameService.findGameById(game.getId()).get();
-
             Game juego = game;
             Player jugador = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
 
@@ -159,10 +148,7 @@ public class GameController {
             jugador.addGameinGames(juego);
 
             gameService.save(juego);
-            //view = myRooms(modelMap);
-            //modelMap.addAttribute("message", "Game successfully saved!");
 
-            //Add
             modelMap.addAttribute("game", juego);
             modelMap.addAttribute("player", jugador);
 
@@ -172,7 +158,7 @@ public class GameController {
 
     @GetMapping(path = "/delete/{gameId}")
     public String borrarJuego(@PathVariable("gameId") int gameId, ModelMap modelMap) {
-        Optional<Game> game = gameService.findGameById(gameId); // optional puede ser error el import
+        Optional<Game> game = gameService.findGameById(gameId); 
         if (game.isPresent()) {
             gameService.delete(game.get());
             modelMap.addAttribute("message", "Game successfully deleted!");
@@ -187,7 +173,7 @@ public class GameController {
 
     @GetMapping(path = "/edit/{gameId}")
     public String actualizarJuego(@PathVariable("gameId") int gameId, ModelMap model) {
-        Game game = gameService.findGameById(gameId).get(); // optional puede ser error el import
+        Game game = gameService.findGameById(gameId).get(); 
         model.put("game", game);
         return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
     }
@@ -198,7 +184,7 @@ public class GameController {
         String view = "games/lobby";
 
         if (gameService.findGameById(gameId).isPresent()) {
-            Game game = gameService.findGameById(gameId).get(); // optional puede ser error el import
+            Game game = gameService.findGameById(gameId).get(); 
             model.addAttribute("game", game);
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -210,7 +196,7 @@ public class GameController {
 
             view = "games/lobby";
         } else {
-            view = "/errors"; // TO DO
+            view = "/errors"; // TODO
         }
 
         return view;
@@ -252,7 +238,7 @@ public class GameController {
     // ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
     public String publicRooms(ModelMap modelMap) {
-        String view = "/welcome"; // Hacer pagina
+        String view = "/welcome";
         Iterable<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -261,16 +247,16 @@ public class GameController {
                 // If the user has admin perms then:
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
-                    view = "games/RoomsAdmins"; // Hacer pagina
+                    view = "games/RoomsAdmins"; 
                     games = gameService.findAll();
                     modelMap.addAttribute("games", games);
                 } else {
-                    view = "games/publicRooms"; // Hacer pagina
+                    view = "games/publicRooms";
                     games = gameService.findAllPublic();
                     modelMap.addAttribute("games", games);
                 }
             } else {
-                return "welcome"; // da error creo que es por que request mapping de arriba
+                return "welcome"; 
             }
         }
         return view;
@@ -279,17 +265,17 @@ public class GameController {
     //Games by room code
     @GetMapping(path = "/rooms/{code}")
     public String gameByCode(@PathVariable("code") String code, ModelMap modelMap) {
-        String view = "/welcome"; // TODO Hacer pagina
+        String view = "/welcome";
         Iterable<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
 
-            view = "games/publicRooms"; // Hacer pagina
+            view = "games/publicRooms";
             games = gameService.findGamesByRoomCode(code);
             modelMap.addAttribute("games", games);
         
         } else {
-            return "welcome"; // da error creo que es por que request mapping de arriba
+            return "welcome"; 
         }
         return view;
     }
@@ -297,7 +283,7 @@ public class GameController {
     // Games currently playing
     @GetMapping(path = "/rooms/playing")
     public String currentlyPlaying(ModelMap modelMap) {
-        String res = "/welcome"; // Hacer pagina
+        String res = "/welcome"; 
         Collection<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
