@@ -6,6 +6,7 @@
 
 
 <SevenIslands:layout pageName="Games">
+    
     <jsp:attribute name="customScript">
         <script type="text/javascript">
             var result           = '';

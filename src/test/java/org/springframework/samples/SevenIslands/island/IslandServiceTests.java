@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class IslandServiceTest {
+public class IslandServiceTests {
 
     @Autowired
     private IslandService islandService;

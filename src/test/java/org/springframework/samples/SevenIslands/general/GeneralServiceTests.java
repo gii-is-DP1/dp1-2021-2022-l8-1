@@ -1,4 +1,4 @@
-package org.springframework.samples.SevenIslands.card;
+package org.springframework.samples.SevenIslands.general;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -9,21 +9,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class CardServiceTest {
-
+public class GeneralServiceTests {
+    
     @Autowired
-    private CardService cardService;
+    private GeneralService generalService;
     
     @Test
     public void testCountWithInitialData(){
-        int count = cardService.cardCount();
-        assertEquals(count,4);
+        int count = generalService.generalCount();
+        assertEquals(count,1);
     }
-
-    @Test
-    public void testGetByPlayerId() {
-        Iterable<Card> cards = cardService.getByPlayerId(1);
-        assertEquals(cards.spliterator().getExactSizeIfKnown(), 3);
-    }
-    
 }
