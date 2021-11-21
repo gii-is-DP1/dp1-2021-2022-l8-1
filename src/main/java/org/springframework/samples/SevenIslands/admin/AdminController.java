@@ -32,7 +32,7 @@ public class AdminController {
             modelMap.addAttribute("admin", admin.get());
         }else{
             modelMap.addAttribute("message", "admin not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
+            view = "/error"; //TODO: crear una vista de error personalizada 
         }
         return view;
     }
