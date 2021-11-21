@@ -118,7 +118,7 @@ public class GameController {
 
     @PostMapping(path = "/save")
     public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
-        String view = "games/myRooms";
+        String view = "games/lobby";
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
             return "games/editarJuego";
@@ -157,8 +157,12 @@ public class GameController {
             jugador.addGameinGames(juego);
 
             gameService.save(juego);
-            view = myRooms(modelMap);
-            modelMap.addAttribute("message", "Game successfully saved!");
+            //view = myRooms(modelMap);
+            //modelMap.addAttribute("message", "Game successfully saved!");
+
+            //Add
+            modelMap.addAttribute("game", juego);
+            modelMap.addAttribute("player", jugador);
 
         }
         return view;
