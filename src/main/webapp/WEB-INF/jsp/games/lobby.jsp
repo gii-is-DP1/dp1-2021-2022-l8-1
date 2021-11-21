@@ -51,12 +51,9 @@
                 <br><br><br><br>
                 <div class="row text-center">
 
-                    <spring:url value="/games" var="playerUrl">
-                    </spring:url>
-
-                    <a href="${fn:escapeXml(playerUrl)}" class="btn btn-default">Cancel</a>
+                    <a href="/games" class="btn btn-default">Cancel</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-default" type="submit">Create game</button>
+                    <button class="btn btn-default">Create game</button>
 
                 </div>
             </div>
