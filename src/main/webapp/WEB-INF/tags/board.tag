@@ -8,6 +8,17 @@
         var ctx = canvas.getContext("2d");
         var image = document.getElementById("source");
 
-        ctx.drawImage(image, 0, 0, ${board.width}, ${board.height});
+        ctx.drawImage(image, 0, 0);
+        // ctx.drawImage(image, 0, 0, ${board.width}, ${board.height});
     }
+</script>
+
+<script type="text/javascript">
+    var timeleft = 10;
+    var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementById("countdowntimer").textContent = timeleft;
+    if(timeleft <= 0)
+        clearInterval(downloadTimer);
+    },1000);
 </script>
