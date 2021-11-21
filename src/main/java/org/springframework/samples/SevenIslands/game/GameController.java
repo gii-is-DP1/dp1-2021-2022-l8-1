@@ -67,7 +67,7 @@ public class GameController {
                 return vista;
 
             } else
-                return "/welcome"; // da error creo que es por que request mapping de arriba
+                return "/welcome"; 
         }
 
         return vista;
@@ -127,24 +127,8 @@ public class GameController {
 
             User currentUser = (User) authentication.getPrincipal();
 
-            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); // ESTO
-                                                                                                                 // ES
-                                                                                                                 // PARA
-                                                                                                                 // QUE
-                                                                                                                 // EN
-                                                                                                                 // LA
-                                                                                                                 // TABLA
-                                                                                                                 // DE
-                                                                                                                 // QUIEN
-                                                                                                                 // ES
-                                                                                                                 // EL
-                                                                                                                 // CREADOR
-                                                                                                                 // DE
-                                                                                                                 // UN
-                                                                                                                 // JUEGO
-                                                                                                                 // SALGA
-                                                                                                                 // DICHA
-                                                                                                                 // RELACIÓN
+            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); 
+            // ESTO ES PARA QUE EN LA TABLA DE QUIEN ES EL CREADOR DE UN JUEGO SALGA DICHA RELACIÓN
 
             // int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
             // gameService.insertGP(game.getId(), playerId);
@@ -250,25 +234,24 @@ public class GameController {
     // ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
     public String publicRooms(ModelMap modelMap) {
-        String view = "/welcome"; // Hacer pagina
+        String view = "/welcome"; 
         Iterable<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            System.out.println("\n\n\n\n" + authentication.getPrincipal());
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
                 // If the user has admin perms then:
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
-                    view = "games/RoomsAdmins"; // Hacer pagina
+                    view = "games/RoomsAdmins"; 
                     games = gameService.findAll();
                     modelMap.addAttribute("games", games);
                 } else {
-                    view = "games/publicRooms"; // Hacer pagina
+                    view = "games/publicRooms"; 
                     games = gameService.findAllPublic();
                     modelMap.addAttribute("games", games);
                 }
             } else {
-                return "welcome"; // da error creo que es por que request mapping de arriba
+                return "redirect:/welcome"; 
             }
         }
         return view;
@@ -282,12 +265,12 @@ public class GameController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
 
-            view = "games/publicRooms"; // Hacer pagina
+            view = "games/publicRooms";
             games = gameService.findGamesByRoomCode(code);
             modelMap.addAttribute("games", games);
         
         } else {
-            return "welcome"; // da error creo que es por que request mapping de arriba
+            return "welcome"; 
         }
         return view;
     }
@@ -295,14 +278,11 @@ public class GameController {
     // Games currently playing
     @GetMapping(path = "/rooms/playing")
     public String currentlyPlaying(ModelMap modelMap) {
-        String res = "/welcome"; // Hacer pagina
         Collection<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            System.out.println("\n\n\n\n" + authentication.getPrincipal());
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
                 // If the user has admin perms then:
-                res = "games/currentlyPlaying"; 
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
                     games = gameService.findAllPlaying();
@@ -315,13 +295,11 @@ public class GameController {
                     // here we can see only the public games which are currently being played, in order to watch it by streaming
 
                 }
-
-
             }
 
         }
 
-        return res;
+        return "games/currentlyPlaying";  
 
     }
 

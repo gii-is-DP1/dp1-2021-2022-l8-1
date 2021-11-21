@@ -59,11 +59,11 @@ INSERT INTO cards(id,card_type) VALUES (3, 'RUBY');
 INSERT INTO cards(id,card_type) VALUES (4, 'DIAMOND');
 
  INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-     VALUES (1, 'Gold_points', 'Get 300 points.', './img/achiev_gold_points.png', 300, 'GOLD', 'POINTS');
+     VALUES (1, 'Gold_points', 'Get 300 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'POINTS');
  INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-     VALUES (2, 'Silver_loses', 'Loses 200 times.', './img/achiev_silver_loses.png', 200, 'SILVER', 'LOSES');
+     VALUES (2, 'Silver_loses', 'Loses 200 times.', 'https://www.pngall.com/wp-content/uploads/2017/03/Silver-Medal-PNG-HD.png', 200, 'SILVER', 'LOSES');
  INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-     VALUES (3, 'Gold_loses', 'Loses 300 times.', './img/achiev_gold_loses.png', 300, 'GOLD', 'LOSES');
+     VALUES (3, 'Gold_loses', 'Loses 300 times.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'LOSES');
 
 
 

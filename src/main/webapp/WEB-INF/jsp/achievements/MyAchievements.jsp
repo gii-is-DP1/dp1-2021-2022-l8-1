@@ -7,43 +7,39 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="achievement">
-    <h2>MyAchievements</h2>
+    <h2>My Achievements</h2>
 
-    <table id="archievementTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th style="width: 200px;">Logros</th>
-           
-        </tr>
-        </thead>
+    
 
-        <tbody>
+    <div class="achievements-container">
+        <c:forEach items="${conseguidos}" var="a">
         
-        <td>
-            <c:out value="CONSEGUIDOS"></c:out>   
-            <c:forEach items="${conseguidos}" var="a">
-                
-                <tr>
-                    <td>
-                    <c:out value="${a.name}"/>
-                    </td>         
-                
-                </tr>
-            </c:forEach>
-            <tr></tr>
-        </td> 
+        <div class="achievement">
+            <img src="${a.icon}" alt="${a.name}" style="width:100px;height:100px;">
         
-        <td>
-            <c:out value="NO CONSEGUIDOS"></c:out>  
-            <c:forEach items="${noc}" var="b">
-                <tr>
-                    <td>
-                    <c:out value="${b.name}"/>
-                    </td>         
-                </tr>
-            </c:forEach>
-        </td>
+            <span class="text-center"><c:out value="${a.name}"/></span>
+        </div>
         
-        </tbody>
-    </table>
+     
+        
+
+        </c:forEach>
+
+        <c:forEach items="${noc}" var="b">                 
+            
+            <div class="achievement non-acquired">
+                <img src="${b.icon}" alt="${b.name}" style="width:100px;height:100px;">
+            
+                <span class="text-center"><c:out value="${b.name}"/></span>
+            </div>
+            
+        </c:forEach>
+    </div>
+            
+    
+            
+
+
+
 </SevenIslands:layout>
+
