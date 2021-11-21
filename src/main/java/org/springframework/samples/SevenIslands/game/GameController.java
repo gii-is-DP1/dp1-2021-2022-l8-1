@@ -50,6 +50,7 @@ public class GameController {
 
                     Iterable<Game> games = gameService.findAll(); // ESTO BUSCA TODOS LOS JUEGOS, PORQUE SOY ADMIN
                     modelMap.addAttribute("games", games);
+                    vista = "games/RoomsAdmins";
                     
                 } else {
                     int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL
@@ -89,6 +90,7 @@ public class GameController {
 
                     Iterable<Game> games = gameService.findAll(); // ESTO BUSCA TODOS LOS JUEGOS, PORQUE SOY ADMIN
                     modelMap.addAttribute("games", games);
+                    vista = "games/RoomsAdmins";
                     
                 } else {
                     int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL
