@@ -6,8 +6,17 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="players">
-    <h2>Players</h2>
 
+    <h2>Players</h2>
+    <br>
+    <br>
+    <form>
+        <label for="filterName">Find by username:</label>
+        <input type="text" id="filterName" name="filterName"><br><br>
+        <input type="submit" value="Find">
+    </form>
+    <br>
+    <br>
     <table id="playersTable" class="table table-striped">
         <thead>
         <tr>
@@ -20,38 +29,41 @@
         </tr>
         </thead>
         <tbody>
+        <c:set var="filterName" value="${filterName}"></c:set>
         <c:forEach items="${players}" var="player">
-            <tr>
-                <td>
-                    <c:out value="${player.firstName}"/>
-                </td>
-                <td>
-                    <c:out value="${player.surname}"/>
-                </td>
-                
-                <td>
-                    <c:out value="${player.email}"/>
-                </td>
+            <c:if test="${fn:contains(player.user.username, filterName)}">
+                <tr>
+                    <td>
+                        <c:out value="${player.firstName}"/>
+                    </td>
+                    <td>
+                        <c:out value="${player.surname}"/>
+                    </td>
+                    
+                    <td>
+                        <c:out value="${player.email}"/>
+                    </td>
 
-                <td>
-                    <c:out value="${player.user.username}"/>
-                </td>
+                    <td>
+                        <c:out value="${player.user.username}"/>
+                    </td>
 
-                <td>
-                    <spring:url value="/players/delete/{playerId}" var="playerUrl">
-                        <spring:param name="playerId" value="${player.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(playerUrl)}" class="btn btn-danger">Delete</a>
-                </td>
+                    <td>
+                        <spring:url value="/players/delete/{playerId}" var="playerUrl">
+                            <spring:param name="playerId" value="${player.id}"/>
+                        </spring:url>
+                        <a href="${fn:escapeXml(playerUrl)}" class="btn btn-danger">Delete</a>
+                    </td>
 
-                <td>
-                    <spring:url value="/players/edit/{playerId}" var="playerUrl">
-                        <spring:param name="playerId" value="${player.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(playerUrl)}" class="btn btn-warning">Edit</a>
-                </td>
-                
-            </tr>
+                    <td>
+                        <spring:url value="/players/edit/{playerId}" var="playerUrl">
+                            <spring:param name="playerId" value="${player.id}"/>
+                        </spring:url>
+                        <a href="${fn:escapeXml(playerUrl)}" class="btn btn-warning">Edit</a>
+                    </td>
+                    
+                </tr>
+            </c:if>
         </c:forEach>
         </tbody>
     </table>

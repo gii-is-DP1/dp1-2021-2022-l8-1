@@ -69,9 +69,14 @@ public class AdminController {
     private static final String VIEWS_ADMINS_CREATE_OR_UPDATE_FORM = "admins/createOrUpdateAdminForm";
 
     @GetMapping(value = "/profile/edit/{adminId}")
-    public String updateAdmin(@PathVariable("adminId") int adminId, ModelMap model) {
-        Admin admin = adminService.findAdminById(adminId).get(); // optional puede ser error el import
-        model.put("admin", admin);
+    public String updateAdmin(@PathVariable("adminId") int adminId, ModelMap modelMap) {
+        Optional<Admin> admin = adminService.findAdminById(adminId); // optional puede ser error el import
+        if(admin.isPresent()){
+            modelMap.addAttribute("admin", admin.get());
+        }else{
+            modelMap.addAttribute("message", "admin not found");
+            return "/error"; //TODO: crear una vista de error personalizada 
+        }
         return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
     }
     
@@ -83,10 +88,14 @@ public class AdminController {
 			return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-            Admin adminToUpdate=this.adminService.findAdminById(adminId).get();
-			BeanUtils.copyProperties(admin, adminToUpdate,"id");                                                                                  
+            Optional<Admin> adminToUpdate=this.adminService.findAdminById(adminId);
+            if(!adminToUpdate.isPresent()){
+                model.addAttribute("message", "admin not found");
+                return "/error"; //TODO: crear una vista de error personalizada 
+            }
+			BeanUtils.copyProperties(admin, adminToUpdate.get(),"id");                                                                                  
                     try {                    
-                        this.adminService.save(adminToUpdate);                    
+                        this.adminService.save(adminToUpdate.get());                    
                     
                     } catch (Exception ex) {
                         result.rejectValue("name", "duplicate", "already exists");
