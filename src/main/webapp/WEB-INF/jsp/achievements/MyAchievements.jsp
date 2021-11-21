@@ -9,61 +9,37 @@
 <SevenIslands:layout pageName="achievement">
     <h2>My Achievements</h2>
 
-    <table id="acquiredAchievementTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th style="width: 200px;">Acquired</th>
-            <th style="width: 200px;">Description</th>
-           
-        </tr>
-        </thead>
-
-        <tbody>
-            <c:forEach items="${conseguidos}" var="a">
-                
-                <tr>
-                    <td>
-                    <c:out value="${a.name}"/>
-                    </td>     
-                    
-                    <td>
-                    <c:out value="${a.description}"/>
-                    </td>
-                
-
-                </tr>
-
-            </c:forEach>
-
-        </tbody>
-    </table>
-
-    <table id="nonAcquiredAchievementTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th style="width: 200px;">Non Acquired</th>
-            <th style="width: 200px;">Description</th>
-           
-        </tr>
-        </thead>
-
-        <tbody>
-            <c:forEach items="${noc}" var="b">
-                
-                <tr>
-                    <td>
-                    <c:out value="${b.name}"/>
-                    </td>     
-                    
-                    <td>
-                    <c:out value="${b.description}"/>
-                    </td>
     
-                </tr>
 
-            </c:forEach>
+    <div class="achievements-container">
+        <c:forEach items="${conseguidos}" var="a">
+        
+        <div class="achievement">
+            <img src="${a.icon}" alt="${a.name}" style="width:100px;height:100px;">
+        
+            <span class="text-center"><c:out value="${a.name}"/></span>
+        </div>
+        
+     
+        
 
-        </tbody>
-    </table>
+        </c:forEach>
+
+        <c:forEach items="${noc}" var="b">                 
+            
+            <div class="achievement non-acquired">
+                <img src="${b.icon}" alt="${b.name}" style="width:100px;height:100px;">
+            
+                <span class="text-center"><c:out value="${b.name}"/></span>
+            </div>
+            
+        </c:forEach>
+    </div>
+            
+    
+            
+
+
+
 </SevenIslands:layout>
 
