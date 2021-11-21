@@ -7,43 +7,63 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="achievement">
-    <h2>MyAchievements</h2>
+    <h2>My Achievements</h2>
 
-    <table id="archievementTable" class="table table-striped">
+    <table id="acquiredAchievementTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 200px;">Logros</th>
+            <th style="width: 200px;">Acquired</th>
+            <th style="width: 200px;">Description</th>
            
         </tr>
         </thead>
 
         <tbody>
-        
-        <td>
-            <c:out value="CONSEGUIDOS"></c:out>   
             <c:forEach items="${conseguidos}" var="a">
                 
                 <tr>
                     <td>
                     <c:out value="${a.name}"/>
-                    </td>         
+                    </td>     
+                    
+                    <td>
+                    <c:out value="${a.description}"/>
+                    </td>
                 
+
                 </tr>
+
             </c:forEach>
-            <tr></tr>
-        </td> 
-        
-        <td>
-            <c:out value="NO CONSEGUIDOS"></c:out>  
+
+        </tbody>
+    </table>
+
+    <table id="nonAcquiredAchievementTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th style="width: 200px;">Non Acquired</th>
+            <th style="width: 200px;">Description</th>
+           
+        </tr>
+        </thead>
+
+        <tbody>
             <c:forEach items="${noc}" var="b">
+                
                 <tr>
                     <td>
                     <c:out value="${b.name}"/>
-                    </td>         
+                    </td>     
+                    
+                    <td>
+                    <c:out value="${b.description}"/>
+                    </td>
+    
                 </tr>
+
             </c:forEach>
-        </td>
-        
+
         </tbody>
     </table>
 </SevenIslands:layout>
+
