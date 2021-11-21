@@ -14,7 +14,7 @@ import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class PlayerServiceTest {
+public class PlayerServiceTests {
 
     @Autowired
     private PlayerService playerService;
