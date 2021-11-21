@@ -53,7 +53,7 @@
 
                     <a href="/games" class="btn btn-default">Cancel</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-default">Create game</button>
+                    <a href="/games/${game.id}/lobby" class="btn btn-default">Start match</a>
 
                 </div>
             </div>
