@@ -168,7 +168,7 @@ public class AchievementController {
 
     //Vistas para jugadores
     @GetMapping(path = "/{id}") 
-    public String myArchievement(ModelMap modelMap, @PathVariable("id") int id) {
+    public String listMyAchievements(ModelMap modelMap, @PathVariable("id") int id) {
         
         String vista = "achievements/MyAchievements";
     
