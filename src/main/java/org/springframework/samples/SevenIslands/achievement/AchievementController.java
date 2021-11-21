@@ -78,10 +78,11 @@ public class AchievementController {
                         User currentUser = (User) authentication.getPrincipal();
                         
                         Achievement ach = achievement;
-                        Admin admin = adminService.getAdminByName(currentUser.getUsername()).stream().findFirst().get();
+                        Admin admin = adminService.getAdminByName(currentUser.getUsername()).stream().findFirst().get(); 
+                        // sé que el usuario es un admin, de otra forma no habría entrado en este bloque
 
-                        ach.addAdminInAchievements(admin);
-                        admin.addAchievementInAdmins(ach);
+                        ach.addAdminInAchievements(admin);  
+                        admin.addAchievementInAdmins(ach); 
 
                         achievementService.save(achievement);
                         modelMap.addAttribute("message", "Achievement succesfully saved!");
@@ -98,7 +99,7 @@ public class AchievementController {
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
-                    if(achievement.isPresent()){
+                    if(achievement.isPresent()){    // porque es un optional
                         achievementService.delete(achievement.get());
                         modelMap.addAttribute("message", "Achievement successfully deleted!");
                     }else{
@@ -152,7 +153,7 @@ public class AchievementController {
 			return VIEWS_ACHIEVEMENTS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-                    Achievement achievementToUpdate=this.achievementService.findAchievementById(achievementId).get();
+            Achievement achievementToUpdate=this.achievementService.findAchievementById(achievementId).get();
 			BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  
                     try {                    
                         this.achievementService.save(achievementToUpdate);                    
@@ -186,7 +187,7 @@ public class AchievementController {
 
 
         modelMap.addAttribute("conseguidos", conseguidos); 
-        modelMap.addAttribute("noc", sol);
+        modelMap.addAttribute("noc", sol);  
         
         return vista;
     }
