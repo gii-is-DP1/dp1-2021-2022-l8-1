@@ -53,7 +53,8 @@ public class AchievementController {
 
     @GetMapping(path="/new")
     public String createAchievement(ModelMap modelMap){
-        String view="achievements/editAchievement";
+        // String view="achievements/editAchievement";
+        String view= "achievements/createOrUpdateAchievementForm";
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     modelMap.addAttribute("achievement", new Achievement());
@@ -66,6 +67,7 @@ public class AchievementController {
     @PostMapping(path="/save")
     public String saveAchievement(@Valid Achievement achievement, BindingResult result, ModelMap modelMap){
         String view= "achievements/listAchievements";
+       
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     if(result.hasErrors()){
