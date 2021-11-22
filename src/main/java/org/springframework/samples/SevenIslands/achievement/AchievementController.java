@@ -76,15 +76,15 @@ public class AchievementController {
                         return "achievements/editAchievement";
                     }else{
 
-                        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                        User currentUser = (User) authentication.getPrincipal();
+                        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                        // User currentUser = (User) authentication.getPrincipal();
                         
-                        Achievement ach = achievement;
-                        Admin admin = adminService.getAdminByName(currentUser.getUsername()).stream().findFirst().get(); 
+                        // Achievement ach = achievement;
+                        // Admin admin = adminService.getAdminByName(currentUser.getUsername()).stream().findFirst().get(); 
                         // sé que el usuario es un admin, de otra forma no habría entrado en este bloque
 
-                        ach.addAdminInAchievements(admin);  
-                        admin.addAchievementInAdmins(ach); 
+                        //ach.addAdminInAchievements(admin);  
+                        //admin.addAchievementInAdmins(ach); 
 
                         achievementService.save(achievement);
                         modelMap.addAttribute("message", "Achievement succesfully saved!");
