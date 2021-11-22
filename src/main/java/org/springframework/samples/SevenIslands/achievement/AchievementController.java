@@ -76,15 +76,15 @@ public class AchievementController {
                         return "achievements/editAchievement";
                     }else{
 
-                        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                        User currentUser = (User) authentication.getPrincipal();
+                        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                        // User currentUser = (User) authentication.getPrincipal();
                         
-                        Achievement ach = achievement;
-                        Admin admin = adminService.getAdminByName(currentUser.getUsername()).stream().findFirst().get(); 
+                        // Achievement ach = achievement;
+                        // Admin admin = adminService.getAdminByName(currentUser.getUsername()).stream().findFirst().get(); 
                         // sé que el usuario es un admin, de otra forma no habría entrado en este bloque
 
-                        ach.addAdminInAchievements(admin);  
-                        admin.addAchievementInAdmins(ach); 
+                        //ach.addAdminInAchievements(admin);  
+                        //admin.addAchievementInAdmins(ach); 
 
                         achievementService.save(achievement);
                         modelMap.addAttribute("message", "Achievement succesfully saved!");
@@ -97,21 +97,23 @@ public class AchievementController {
     }
     @GetMapping(path="/delete/{achievementId}")
     public String deleteAchievement(@PathVariable("achievementId") int achievementId, ModelMap modelMap){
-        String view= "achievements/listAchievements";
+        
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
                     if(achievement.isPresent()){    // porque es un optional
                         achievementService.delete(achievement.get());
                         modelMap.addAttribute("message", "Achievement successfully deleted!");
+
+
                     }else{
                         modelMap.addAttribute("message", "Achievement not found");
-                        view=listAchievements(modelMap);
+                        listAchievements(modelMap);
                     }
         }else{
-            view="/errors";
+            return "/errors";
         }
-        return view;
+        return "redirect:/achievements";
 
     }
 

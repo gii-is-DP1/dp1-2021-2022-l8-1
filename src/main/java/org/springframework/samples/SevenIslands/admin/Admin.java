@@ -28,6 +28,8 @@ public class Admin extends Person{
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "username", referencedColumnName = "username")
 	  private User user;
+
+    /*
 	  
     @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "admins_achievements", joinColumns = @JoinColumn(name = "admin_id"),
@@ -46,6 +48,6 @@ public class Admin extends Person{
             this.setAchievements(l);
         }
     }
-
+    */
     
 }
