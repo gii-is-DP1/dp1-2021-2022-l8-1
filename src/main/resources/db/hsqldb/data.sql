@@ -50,7 +50,7 @@ VALUES ('Prueba0', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY, CR
 
 -- /*INSERT INTO person(first_Name,surname,password,user_Name,email) VALUES ('Pablo', 'Rivera','@Pablo1','pabrivjim','pabrivjim@alum.us.es');*/
 
-INSERT INTO boards(id,background,height,width) VALUES (1,'resources/images/board.jpg',800,800);
+INSERT INTO boards(id,background,height,width) VALUES (1,'/resources/images/board.jpg',644,527);
 
 
 INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
