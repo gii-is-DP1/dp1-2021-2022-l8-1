@@ -120,7 +120,7 @@ public class AchievementController {
         String view = VIEWS_ACHIEVEMENTS_CREATE_OR_UPDATE_FORM;
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
-                    Achievement achievement = achievementService.findAchievementById(achievementId).get(); // optional puede ser error el import
+                    Achievement achievement = achievementService.findAchievementById(achievementId).get();
                     model.put("achievement", achievement);
         }else{
             view = "/errors";

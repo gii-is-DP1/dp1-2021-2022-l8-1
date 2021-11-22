@@ -1,6 +1,5 @@
 package org.springframework.samples.SevenIslands.admin;
 
-import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;

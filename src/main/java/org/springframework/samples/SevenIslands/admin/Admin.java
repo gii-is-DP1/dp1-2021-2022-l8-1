@@ -11,7 +11,6 @@ import javax.persistence.JoinTable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.samples.SevenIslands.person.Person;
 import org.springframework.samples.SevenIslands.user.User;

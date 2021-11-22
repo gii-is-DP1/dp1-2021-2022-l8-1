@@ -26,15 +26,4 @@ public class PersonService {
     public Optional<Person> findPersonById(int id){
         return personRepo.findById(id);
     }
-
-    // @Transactional
-    // public void save(Person person){
-    //     personRepo.save(person);
-    // }
-
-    // @Transactional
-    // public void delete(Person person){
-    //     personRepo.delete(person);
-    // }
-
 }
