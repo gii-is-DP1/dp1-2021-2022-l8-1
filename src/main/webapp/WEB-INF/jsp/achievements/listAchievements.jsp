@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
+
 <petclinic:layout pageName="achievements">
     <h2>Achievements</h2>
 
@@ -34,14 +35,14 @@
                     <spring:url value="/achievements/delete/{achievementId}" var="achievementUrl">
                         <spring:param name="achievementId" value="${achievement.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(achievementUrl)}">Delete</a>
+                    <a class="btn btn-danger" href="${fn:escapeXml(achievementUrl)}">Delete</a>
                 </td>
 
                 <td>
                     <spring:url value="/achievements/edit/{achievementId}" var="achievementUrl">
                         <spring:param name="achievementId" value="${achievement.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(achievementUrl)}">Edit</a>
+                    <a class="btn btn-warning" href="${fn:escapeXml(achievementUrl)}">Edit</a>
                 </td>
                 
       
