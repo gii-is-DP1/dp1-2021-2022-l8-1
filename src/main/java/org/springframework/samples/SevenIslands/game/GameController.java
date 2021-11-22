@@ -118,7 +118,7 @@ public class GameController {
         String view = "games/lobby";
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
-            return "games/editarJuego";
+            return "games/createOrUpdateGameForm";
         } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

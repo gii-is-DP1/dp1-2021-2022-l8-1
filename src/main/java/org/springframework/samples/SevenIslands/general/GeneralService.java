@@ -18,12 +18,12 @@ public class GeneralService {
 
     @Transactional
     public int totalDurationAll(){
-        return (int) generalRepo.totalDurationAllGames();
+        return generalRepo.totalDurationAllGames();
     }
 
     @Transactional
     public int totalGamesCount(){
-        return (int) generalRepo.totalGames();
+        return generalRepo.totalGames();
     }
 
 

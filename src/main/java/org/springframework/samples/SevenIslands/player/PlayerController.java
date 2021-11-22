@@ -54,7 +54,7 @@ public class PlayerController {
         return view;
     }
 
-    @GetMapping(path="/all")
+    @GetMapping(path="")
     public String listadoPlayers(ModelMap modelMap, @PathParam("filterName") String filterName){        //For admins
         String view ="players/listPlayers";
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
@@ -189,7 +189,7 @@ public class PlayerController {
                     }
                     if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                     .anyMatch(x -> x.toString().equals("admin"))){
-                        return "redirect:/players/all";
+                        return "redirect:/players";
                     }else{
                         return "redirect:/players/profile/{playerId}";
                     }
