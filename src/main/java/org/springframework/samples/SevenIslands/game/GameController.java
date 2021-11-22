@@ -108,7 +108,7 @@ public class GameController {
 
     @GetMapping(path = "/new")
     public String crearJuego(Player player, ModelMap modelMap) {
-        String view = "games/editarJuego"; 
+        String view = "games/createOrUpdateGameForm"; 
         modelMap.addAttribute("game", new Game());
         return view;
     }
