@@ -7,7 +7,7 @@ import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -28,9 +28,13 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
+    @Autowired	
+	private GeneralService gService;
+
     @GetMapping(path="/profile/{playerId}")
     public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "/players/profile";
+        gService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
@@ -44,6 +48,7 @@ public class PlayerController {
     @GetMapping(path="/profile/{playerId}/moreStatistics")
     public String moreStatistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/moreStatistics";
+        gService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
@@ -57,6 +62,7 @@ public class PlayerController {
     @GetMapping(path="/all")
     public String listadoPlayers(ModelMap modelMap, @PathParam("filterName") String filterName){        //For admins
         String view ="players/listPlayers";
+        gService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     
@@ -75,6 +81,7 @@ public class PlayerController {
     @GetMapping(path="/new")
     public String createPlayer(ModelMap modelMap){
         String view="players/editPlayer";
+        gService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     modelMap.addAttribute("player", new Player());
@@ -103,6 +110,7 @@ public class PlayerController {
     @GetMapping(path="/delete/{playerId}")
     public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view= "players/listPlayers";
+        gService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Player> player = playerService.findPlayerById(playerId);
@@ -126,6 +134,7 @@ public class PlayerController {
     public String updatePlayer(@PathVariable("playerId") int playerId, ModelMap model) {
         Optional<Player> player = playerService.findPlayerById(playerId); // optional puede ser error el import
         String view = VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+        gService.insertIdUserModelMap(model);
         //Test if currentplayer is admin or the same id
         // TODO: Comprobar que sea o admin o q el usuer registrado tenga el mismo id q el de la url
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
