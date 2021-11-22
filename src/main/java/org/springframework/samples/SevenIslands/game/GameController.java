@@ -208,12 +208,12 @@ public class GameController {
             return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
         } else {
             Game gameToUpdate = this.gameService.findGameById(gameId).get();
-            BeanUtils.copyProperties(game, gameToUpdate, "id", "game", "games", "code");
+            BeanUtils.copyProperties(game, gameToUpdate, "id", "actualPlayer", "endTime", "starttime", "has_started", "code", "deck", "nameOfPlayers", "numberOfTurn", "player", "players", "points", "remainsCards");
             try {
                 this.gameService.save(gameToUpdate);
 
             } catch (Exception ex) {
-                result.rejectValue("name", "duplicate", "already exists");
+                //result.rejectValue("name", "duplicate", "already exists");
                 return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
             }
             return "redirect:/games";
