@@ -38,16 +38,15 @@ public class BoardController {
 		model.put("board",boardService.findById(1).get());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User currentUser = (User) authentication.getPrincipal();
-            int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // Id of player that is logged
+        User currentUser = (User) authentication.getPrincipal();
+        int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // Id of player that is logged
 
-            Player pay = playerService.findPlayerById(playerId).get();
-            model.put("player", pay);
+        Player pay = playerService.findPlayerById(playerId).get();
+        model.put("player", pay);
 
         //toArray()[0] because there is only going to be one game with that code as its UNIQUE
         model.put("game", gameService.findGamesByRoomCode(code).toArray()[0]);
-        // modelMap.addAttribute("board", boardService.findById(1).get());
-        // System.out.println(boardService.findById(1).get().toString());
+
         return vista;
     }
 

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
-<!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
+
 
 <SevenIslands:layout pageName="board">
     
