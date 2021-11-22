@@ -67,11 +67,6 @@ public class GameService {
     }
 
     @Transactional
-    public void insertGP(int game_id, int player_id){
-        gameRepo.insertGP(game_id,player_id);
-    }
-
-    @Transactional
     public Collection<Integer> getPlayersIdOnGame(int game_id){
         return gameRepo.findIdPlayersByGameId(game_id);
     }
