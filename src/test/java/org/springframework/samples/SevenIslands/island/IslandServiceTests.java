@@ -1,5 +1,9 @@
-package org.springframework.samples.SevenIslands.comment;
+package org.springframework.samples.SevenIslands.island;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +12,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class CommentServiceTest {
-    @Autowired
-    private CommentService commentService;
+public class IslandServiceTests {
 
+    @Autowired
+    private IslandService islandService;
+    
     @Test
     public void testCountWithInitialData(){
-        int count = commentService.commentCount();
-        assertEquals(count, 1);
+        int count = islandService.islandCount();
+        assertEquals(6, count);
     }
+
     
+   
 }

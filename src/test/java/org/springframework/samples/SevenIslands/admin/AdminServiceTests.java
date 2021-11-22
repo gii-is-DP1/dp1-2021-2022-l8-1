@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class AdminServiceTest {
+public class AdminServiceTests {
 
     @Autowired
     private AdminService adminService;

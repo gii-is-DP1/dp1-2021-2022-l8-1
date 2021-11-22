@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class BoardServiceTest {
+public class BoardServiceTests {
 
     @Autowired
     private BoardService boardService;

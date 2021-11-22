@@ -1,4 +1,5 @@
-package org.springframework.samples.SevenIslands.forum;
+package org.springframework.samples.SevenIslands.topic;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
@@ -7,20 +8,22 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class ForumServiceTest {
+public class TopicServiceTests {
     @Autowired
-    private ForumService forumService;
+    private TopicService topicService;
 
     @Test
     public void testCountWithInitialData(){
-        int count = forumService.forumCount();
-        assertEquals(count, 2);
+        int count = topicService.topicCount();
+        assertEquals(count, 1);
     }
 
     @Test
-    public void testFindByTopicId(){
-        Iterable<Forum> forums = forumService.findByTopicId(1);
-        assertEquals(forums.spliterator().getExactSizeIfKnown(), 1);
+    public void testFindByCommentId(){
+        Iterable<Topic> topics = topicService.findByCommentId(1);
+        assertEquals(topics.spliterator().getExactSizeIfKnown(), 1);
     }
+    
 }
