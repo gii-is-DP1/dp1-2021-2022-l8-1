@@ -42,10 +42,11 @@ public class AchievementService {
         return achievementRepo.getByPlayerId(id);
     }
 
-
+    /*
     @Transactional
     public Iterable<Achievement> findByAdminId(int id) {
         return achievementRepo.findByAdminId(id);
     }
+    */
     
 }

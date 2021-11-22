@@ -97,21 +97,23 @@ public class AchievementController {
     }
     @GetMapping(path="/delete/{achievementId}")
     public String deleteAchievement(@PathVariable("achievementId") int achievementId, ModelMap modelMap){
-        String view= "achievements/listAchievements";
+        
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
                     if(achievement.isPresent()){    // porque es un optional
                         achievementService.delete(achievement.get());
                         modelMap.addAttribute("message", "Achievement successfully deleted!");
+
+
                     }else{
                         modelMap.addAttribute("message", "Achievement not found");
-                        view=listAchievements(modelMap);
+                        listAchievements(modelMap);
                     }
         }else{
-            view="/errors";
+            return "/errors";
         }
-        return view;
+        return "redirect:/achievements";
 
     }
 
