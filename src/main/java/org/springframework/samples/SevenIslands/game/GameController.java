@@ -112,8 +112,7 @@ public class GameController {
 
     @GetMapping(path = "/new")
     public String crearJuego(Player player, ModelMap modelMap) {
-        String view = "games/editarJuego"; 
-        gService.insertIdUserModelMap(modelMap);
+        String view = "games/createOrUpdateGameForm"; 
         modelMap.addAttribute("game", new Game());
         return view;
     }
@@ -123,7 +122,7 @@ public class GameController {
         String view = "games/lobby";
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
-            return "games/editarJuego";
+            return "games/createOrUpdateGameForm";
         } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -215,12 +214,12 @@ public class GameController {
             return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
         } else {
             Game gameToUpdate = this.gameService.findGameById(gameId).get();
-            BeanUtils.copyProperties(game, gameToUpdate, "id", "game", "games", "code");
+            BeanUtils.copyProperties(game, gameToUpdate, "id", "actualPlayer", "endTime", "starttime", "has_started", "code", "deck", "nameOfPlayers", "numberOfTurn", "player", "players", "points", "remainsCards");
             try {
                 this.gameService.save(gameToUpdate);
 
             } catch (Exception ex) {
-                result.rejectValue("name", "duplicate", "already exists");
+                //result.rejectValue("name", "duplicate", "already exists");
                 return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
             }
             return "redirect:/games";
