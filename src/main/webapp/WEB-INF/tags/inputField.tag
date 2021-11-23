@@ -16,7 +16,7 @@
         <div class="col-sm-10">
             <c:choose>
                 <c:when test="${label == 'Password'}">
-                    <form:input type = "Password" class="form-control" path="${name}"/>
+                    <form:input type = "Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[ª@~$€!¡¿?|#º/\\<>{}+-])[A-Za-z\d@$!%*?&]{9,}$" title="Must contain at least one number and one uppercase and lowercase letter, and at least 9 or more characters" class="form-control" path="${name}"/>
                 </c:when>
                 <c:otherwise>
                     <form:input class="form-control" path="${name}"/>
