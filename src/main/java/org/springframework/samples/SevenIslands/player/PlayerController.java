@@ -1,6 +1,9 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
@@ -59,16 +62,28 @@ public class PlayerController {
         return view;
     }
 
-    @GetMapping(path="")
-    public String listadoPlayers(ModelMap modelMap, @PathParam("filterName") String filterName){        //For admins
+    @GetMapping()
+    public String listadoPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("begin") Integer begin, @PathParam("end") Integer end){        //For admins
         String view ="players/listPlayers";
         generalService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     
                     Iterable<Player> players = playerService.findAll();
-                    modelMap.addAttribute("players", players);
+                    if(filterName!=null){
+                        List<Player> listPlayersFiltered= StreamSupport.stream(players.spliterator(), false).filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
+                        modelMap.addAttribute("players", listPlayersFiltered);
+                    }else{
+                        modelMap.addAttribute("players", players);
+                    }
+                    if(end==null){
+                        end=9;
+                    }
+
+                    
                     modelMap.addAttribute("filterName", filterName);
+                    modelMap.addAttribute("begin", begin);
+                    modelMap.addAttribute("end", end);
             
         }else{
             view = "/errors";
@@ -102,7 +117,7 @@ public class PlayerController {
         }else{
             playerService.save(player);
             modelMap.addAttribute("message", "Player succesfully saved!");
-            view=listadoPlayers(modelMap, null);
+            view=listadoPlayers(modelMap, null, 0, 9);
         }
         return view;
     }
@@ -119,7 +134,7 @@ public class PlayerController {
                         modelMap.addAttribute("message", "Player successfully deleted!");
                     }else{
                         modelMap.addAttribute("message", "Player not found");
-                        view=listadoPlayers(modelMap, null);
+                        view=listadoPlayers(modelMap, null, 0, 9);
                     }
         }else{
             view = "/errors";
