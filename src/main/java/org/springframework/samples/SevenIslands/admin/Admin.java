@@ -25,7 +25,7 @@ import lombok.Setter;
 @Table (name = "admins")
 public class Admin extends Person{
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
 	@JoinColumn(name = "username", referencedColumnName = "username")
 	  private User user;
 

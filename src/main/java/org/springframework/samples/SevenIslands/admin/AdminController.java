@@ -6,7 +6,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.samples.SevenIslands.general.GeneralService;
+import org.springframework.samples.SevenIslands.user.UserService;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -22,11 +24,18 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired	
+	GeneralService gService;
+
+    @Autowired 
+    UserService uService;
+
 
     
     @GetMapping(path="/profile/{adminId}")
     public String profile(@PathVariable("adminId") int adminId, ModelMap modelMap){
         String view = "admins/myProfile";
+        gService.insertIdUserModelMap(modelMap);
         Optional<Admin> admin = adminService.findAdminById(adminId);
         if(admin.isPresent()){
             modelMap.addAttribute("admin", admin.get());
@@ -66,6 +75,7 @@ public class AdminController {
     @GetMapping(value = "/profile/edit/{adminId}")
 
     public String updateAdmin(@PathVariable("adminId") int adminId, ModelMap modelMap) {
+        gService.insertIdUserModelMap(modelMap);
         Optional<Admin> admin = adminService.findAdminById(adminId); // optional puede ser error el import
         if(admin.isPresent()){
             modelMap.addAttribute("admin", admin.get());
@@ -84,6 +94,7 @@ public class AdminController {
 			return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
+            
             Optional<Admin> adminToUpdate=this.adminService.findAdminById(adminId);
             if(!adminToUpdate.isPresent()){
                 model.addAttribute("message", "admin not found");
@@ -91,8 +102,8 @@ public class AdminController {
             }
 			BeanUtils.copyProperties(admin, adminToUpdate.get(),"id");                                                                                  
                     try {                    
-                        this.adminService.save(adminToUpdate.get());                    
-                    
+                        this.adminService.save(adminToUpdate.get());  
+                        
                     } catch (Exception ex) {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM ;

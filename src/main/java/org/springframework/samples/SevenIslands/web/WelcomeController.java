@@ -11,8 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.game.GameService;
+import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.person.Person;
 
+import org.springframework.samples.SevenIslands.player.PlayerService;
+import org.springframework.samples.SevenIslands.user.AuthoritiesService;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Controller
 public class WelcomeController {
@@ -20,6 +26,13 @@ public class WelcomeController {
 	//OJO QUE ESTO ES POR AHORA
 	@Autowired	
 	GameService gameService;
+
+	@Autowired	
+	GeneralService gService;
+
+	
+
+	
 	//HASTA AQUI 
 
 
@@ -59,18 +72,19 @@ public class WelcomeController {
 		f.setSurname("Salado");
 		persons.add(f);
 
+		gService.insertIdUser(model);
+		
+
 		model.put("persons", persons);
 		model.put("title", "Seven Islands");
 		model.put("group", "L8-1 a.k.a. Dream Team");
+		
 	
 
 		
 		
 		return "welcome";
 
-
-
-		
 	  }
 }
 
