@@ -5,15 +5,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
-<sevenislands:playerLayout pageName="moreStadistics">
-    
-        <div id="top-section">
-            <img id="profile-avatar" src="/resources/images/profile-photo.png">
-            <h2 id="title">
-                <c:out value="${player.user.username}"/>
-            </h2>
-            <h2 id="sub-title">More Statistics</h2>
-        </div>
+<sevenislands:playerLayout pageName="moreStadistics" subtitle="More Statistics">
+
         <div id="mid-section">
             <span id="center-section">
                 <div id="statistics-full">
