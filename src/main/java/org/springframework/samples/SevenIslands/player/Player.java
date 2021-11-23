@@ -157,7 +157,7 @@ public class Player extends Person{
 
 
   //RELACION CON USER
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 

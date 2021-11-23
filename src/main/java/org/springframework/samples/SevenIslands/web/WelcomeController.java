@@ -16,6 +16,7 @@ import org.springframework.samples.SevenIslands.person.Person;
 
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
+import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,9 @@ public class WelcomeController {
 
 	@Autowired	
 	GeneralService gService;
+
+	@Autowired	
+	UserService userService;
 
 	
 
@@ -79,8 +83,7 @@ public class WelcomeController {
 		model.put("title", "Seven Islands");
 		model.put("group", "L8-1 a.k.a. Dream Team");
 		
-	
-
+		model.put("user", userService.findUser("test1").get().getUsername());
 		
 		
 		return "welcome";

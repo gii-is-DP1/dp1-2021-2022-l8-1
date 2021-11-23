@@ -7,6 +7,7 @@
 
 <SevenIslands:layout pageName="home">
     <h2><fmt:message key="welcome"/></h2>
+    
 
     <p>
     <h2><c:out value="${now}"/></h2>
