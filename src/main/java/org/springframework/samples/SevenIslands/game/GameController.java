@@ -272,6 +272,10 @@ public class GameController {
             view = "games/publicRooms";
             games = gameService.findGamesByRoomCode(code);
             modelMap.addAttribute("games", games);
+            if(games.spliterator().getExactSizeIfKnown()==0l){
+                modelMap.addAttribute("message", "Game not found");
+            }
+            
         
         } else {
             return "welcome"; 
