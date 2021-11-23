@@ -64,9 +64,9 @@ public class PlayerController {
         return view;
     }
 
-    @GetMapping(path="/profile/{playerId}/games")
+    @GetMapping(path="/profile/{playerId}/rooms")
     public String games(@PathVariable("playerId") int playerId, ModelMap modelMap){
-        String view = "players/games";
+        String view = "players/rooms";
         generalService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){

@@ -15,6 +15,8 @@
         }
     </script>
 
+    <h2><c:out value="${titletext}"/></h2>    
+
     <br>
     <br>
     <div>
