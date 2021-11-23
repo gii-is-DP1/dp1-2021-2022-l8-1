@@ -26,7 +26,7 @@
                 </button>
                 <button id="stats-btn" 
                         class="btn btn-default"
-                        onclick="location.href = '/players/profile/${player.id}/moreStatistics';">
+                        onclick="location.href = '/players/profile/${player.id}/statistics';">
                     More statistics
                 </button>
                 <button id="edit-prof-btn" 

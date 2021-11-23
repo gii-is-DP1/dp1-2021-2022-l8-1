@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
-<sevenislands:playerLayout pageName="moreStadistics" subtitle="More Statistics">
+<sevenislands:playerLayout pageName="statistics" subtitle="Statistics">
 
         <div id="mid-section">
             <span id="center-section">
