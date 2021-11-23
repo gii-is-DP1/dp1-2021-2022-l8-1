@@ -21,9 +21,9 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th style="width: 200px;">Games</th>
-                    <th style="width: 200px;">Date</th>
-                    <th style="width: 200px;">Players</th>
+                    <th>Games</th>
+                    <th>Date</th>
+                    <th>Players</th>
                    
                 </tr>
                 </thead>
@@ -59,6 +59,8 @@
     </div>
 
     <script type="text/javascript">
+        // FIXME: Hay que modificar el metodo para que te redirija a la pagina correcta
+
         function doSearch(){
             window.
             location="/games/"+document.getElementById("typeRoom").value;
