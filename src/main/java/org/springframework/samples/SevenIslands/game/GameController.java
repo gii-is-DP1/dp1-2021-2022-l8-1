@@ -35,34 +35,30 @@ public class GameController {
     @Autowired	
 	private GeneralService gService;
 
-    //Games createdByMe
     @GetMapping()
     public String myRooms(ModelMap modelMap) {
-        String vista = "games/myRooms";
         gService.insertIdUserModelMap(modelMap);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
                 User currentUser = (User) authentication.getPrincipal();
 
+                // ADMIN
                 if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                         .anyMatch(x -> x.toString().equals("admin"))) {
 
-                    Iterable<Game> games = gameService.findAll(); // ESTO BUSCA TODOS LOS JUEGOS, PORQUE SOY ADMIN
+                    Iterable<Game> games = gameService.findAll();
                     modelMap.addAttribute("games", games);
                     vista = "games/RoomsAdmins";
                     
-                } else {
-                    int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL
-                                                                                               // JUGADOR QUE ESTA AHORA
-                                                                                               // MISMO CONECTADO
-
-                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); // ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO                               
-
-                    modelMap.addAttribute("titletext", "Rooms created by me");
+                }
+                // PLAYER
+                else {
+                    int currentPlayerId = playerService.getIdPlayerByName(currentUser.getUsername());
+                    Collection<Game> games = gameService.findGamesByPlayerId(currentPlayerId);
                     modelMap.addAttribute("games", games);
                 }
-                return vista;
+                return "games/games";
 
             } else
               

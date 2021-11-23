@@ -14,10 +14,10 @@
                     <h3><c:out value="${player.surname}"/></h3>
                 </div>
         
-                <button id="my-games-btn" 
-                        class="btn btn-default" 
-                        onclick="location.href = '/games';"> 
-                    My games
+                <button id="my-games-btn"
+                        class="btn btn-default"
+                        onclick="location.href = '/games';">
+                    Games
                 </button>
                 <button id="social-btn"
                         class="btn btn-default"
