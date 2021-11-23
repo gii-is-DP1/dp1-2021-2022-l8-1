@@ -95,8 +95,8 @@ INSERT INTO comments(id, message) VALUES (1, 'I agree');
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1); --ESTA TABLA ME DA LOS LOGROS QUE TENGO COMPLETADOS
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
 
-INSERT INTO admins_achievements(admin_id, achievement_id) VALUES (1, 1);
-INSERT INTO admins_achievements(admin_id, achievement_id) VALUES (1, 2);
+-- INSERT INTO admins_achievements(admin_id, achievement_id) VALUES (1, 1);
+-- INSERT INTO admins_achievements(admin_id, achievement_id) VALUES (1, 2);
 
 INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
 INSERT INTO players_invitations(invitation_id, invited_id) VALUES (3, 2);

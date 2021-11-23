@@ -33,6 +33,7 @@ public class AchievementService {
 
     @Transactional
     public void delete(Achievement achievement){
+        achievement.getPlayers().forEach(player -> player.getAchievements().remove(achievement));
         achievementRepo.delete(achievement);
     }
 
@@ -41,10 +42,11 @@ public class AchievementService {
         return achievementRepo.getByPlayerId(id);
     }
 
-
+    /*
     @Transactional
     public Iterable<Achievement> findByAdminId(int id) {
         return achievementRepo.findByAdminId(id);
     }
+    */
     
 }
