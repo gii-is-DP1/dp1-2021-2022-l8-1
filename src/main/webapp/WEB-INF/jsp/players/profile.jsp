@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
-<sevenislands:playerLayout pageName="profile">
+<sevenislands:playerLayout pageName="profile"> 
 
         <div id="mid-section">
             <span id="left-section">
@@ -27,7 +27,7 @@
                 <button id="stats-btn" 
                         class="btn btn-default"
                         onclick="location.href = '/players/player/profile/${player.id}/moreStatistics';">
-                    More Statistics
+                    More statistics
                 </button>
                 <button id="edit-prof-btn" 
                         class="btn btn-default"
