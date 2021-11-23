@@ -33,11 +33,11 @@ public class GameController {
     private PlayerService playerService;
 
     @Autowired	
-	private GeneralService gService;
+	private GeneralService generalService;
 
     @GetMapping()
     public String myRooms(ModelMap modelMap) {
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
@@ -49,7 +49,7 @@ public class GameController {
 
                     Iterable<Game> games = gameService.findAll();
                     modelMap.addAttribute("games", games);
-                    vista = "games/RoomsAdmins";
+                    return "games/RoomsAdmins";
                     
                 }
                 // PLAYER
@@ -57,8 +57,8 @@ public class GameController {
                     int currentPlayerId = playerService.getIdPlayerByName(currentUser.getUsername());
                     Collection<Game> games = gameService.findGamesByPlayerId(currentPlayerId);
                     modelMap.addAttribute("games", games);
+                    return "games/games";
                 }
-                return "games/games";
 
             } else
               
@@ -74,7 +74,7 @@ public class GameController {
     @GetMapping("/playedByMe")
     public String roomsPlayedByMe(ModelMap modelMap) {
         String vista = "games/myRooms";
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
@@ -145,7 +145,7 @@ public class GameController {
     @GetMapping(path = "/delete/{gameId}")
     public String borrarJuego(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Optional<Game> game = gameService.findGameById(gameId); 
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         if (game.isPresent()) {
             gameService.delete(game.get());
             modelMap.addAttribute("message", "Game successfully deleted!");
@@ -161,7 +161,7 @@ public class GameController {
     @GetMapping(path = "/edit/{gameId}")
     public String actualizarJuego(@PathVariable("gameId") int gameId, ModelMap model) {
         Game game = gameService.findGameById(gameId).get();
-        gService.insertIdUserModelMap(model); 
+        generalService.insertIdUserModelMap(model); 
         model.put("game", game);
         return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
     }
@@ -170,7 +170,7 @@ public class GameController {
     public String salaJuego(@PathVariable("gameId") int gameId, ModelMap model) {
 
         String view = "games/lobby";
-        gService.insertIdUserModelMap(model);
+        generalService.insertIdUserModelMap(model);
         if (gameService.findGameById(gameId).isPresent()) {
             Game game = gameService.findGameById(gameId).get(); 
             model.addAttribute("game", game);
@@ -228,7 +228,7 @@ public class GameController {
     public String publicRooms(ModelMap modelMap) {
 
         String view = "/welcome";
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
 
         Iterable<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -260,7 +260,7 @@ public class GameController {
     @GetMapping(path = "/rooms/{code}")
     public String gameByCode(@PathVariable("code") String code, ModelMap modelMap) {
         String view = "/welcome";
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         Iterable<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -279,7 +279,7 @@ public class GameController {
     @GetMapping(path = "/rooms/playing")
     public String currentlyPlaying(ModelMap modelMap) {
 
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         Collection<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
