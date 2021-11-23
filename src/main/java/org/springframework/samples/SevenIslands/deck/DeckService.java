@@ -3,7 +3,6 @@ package org.springframework.samples.SevenIslands.deck;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.stereotype.Service;
 
 @Service

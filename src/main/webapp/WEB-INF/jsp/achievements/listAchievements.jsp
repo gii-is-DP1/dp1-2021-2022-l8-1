@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
+
 <petclinic:layout pageName="achievements">
     <h2>Achievements</h2>
 
@@ -13,11 +14,12 @@
         <tr>
             <th style="width: 150px;">Name</th>
             <th style="width: 150px;">Description</th>
-            <th>Delete Achievement</th>
             <th>Edit Achievement</th>
+            <th>Delete Achievement</th>
         </tr>
         </thead>
         <tbody>
+            
         <c:forEach items="${achievements}" var="achievement">
             <tr>
 
@@ -30,28 +32,18 @@
                 </td>
 
                 <td>
-                    <spring:url value="/achievements/achievementsAdmins/delete/{achievementId}" var="achievementUrl">
+                    <spring:url value="/achievements/edit/{achievementId}" var="achievementUrl">
                         <spring:param name="achievementId" value="${achievement.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(achievementUrl)}">Delete</a>
+                    <a class="btn btn-warning" href="${fn:escapeXml(achievementUrl)}">Edit</a>
                 </td>
 
                 <td>
-                    <spring:url value="/achievements/achievementsAdmins/edit/{achievementId}" var="achievementUrl">
+                    <spring:url value="/achievements/delete/{achievementId}" var="achievementUrl">
                         <spring:param name="achievementId" value="${achievement.id}"/>
                     </spring:url>
-                    <a href="${fn:escapeXml(achievementUrl)}">Edit</a>
+                    <a class="btn btn-danger" href="${fn:escapeXml(achievementUrl)}">Delete</a>
                 </td>
-                
-      
-<!--
-                <td> 
-                    <c:out value="${owner.user.username}"/> 
-                </td>
-                <td> 
-                   <c:out value="${owner.user.password}"/> 
-                </td> 
--->
                 
             </tr>
         </c:forEach>

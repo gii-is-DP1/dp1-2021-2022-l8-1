@@ -7,36 +7,22 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="admins">
-    <h2>Admin Profile</h2>
-
-    <table id="gamesTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th style="width: 200px;">Games</th>
-            <th style="width: 200px;">Date</th>
-            <th>Players</th>
-            <th>Delete game</th>
-            <th>Update game</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${admins}" var="admin">
-            <tr>
-                <td>
-                    <c:out value="${admin.user.username}"/>
-                </td>
-                <td>
-                    <c:out value="${admin.firstName}"/>
-                </td>
-                <td>
-                    <c:out value="${admin.surname}"/>
-                </td>
-                <td>
-                    <c:out value="${admin.email}"/>
-                </td>
-                
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+    <h2 style="display:middle;">Admin Profile</h2>
+        
+    <div id="top-section">
+        <img id="profile-avatar" src="/resources/images/profile-photo.png">
+        <h2><c:out value="${admin.user.username}"/></h2>
+    </div>
+    <div id="mid-section">
+        <span id="left-section">
+            <div id="profile-details">
+                <h3>Username: </h3><h4><c:out value="${admin.user.username}"/></h4>
+                <h3>First Name: </h3><h4><c:out value="${admin.firstName}"/></h4>
+                <h3>Surname: </h3><h4><c:out value="${admin.surname}"/></h4>
+                <h3>Email: </h3><h4><c:out value="${admin.email}"/></h4>
+            </div>
+            <button class="btn btn-default" onclick="location.href='/admins/profile/edit/${admin.id}'">Edit profile</button>
+        
+        </span>
+    </div>
 </SevenIslands:layout>

@@ -1,8 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, owners, vets or error"%>
@@ -21,10 +20,11 @@
 					class="icon-bar"></span>
 			</button>
 		</div>
+
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<sevenislands:menuItem active="${name eq 'rooms'}" url="#"
+				<sevenislands:menuItem active="${name eq 'rooms'}" url="/games"
 					title="Enter rooms page">
 					<span>Rooms</span>
 				</sevenislands:menuItem>
@@ -84,31 +84,20 @@
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>
 											</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="divider"></li>
-<!-- 							
-                            <li> 
-								<div class="navbar-login navbar-login-session">
-									<div class="row">
-										<div class="col-lg-12">
 											<p>
-												<a href="#" class="btn btn-primary btn-block">My Profile</a>
-												<a href="#" class="btn btn-danger btn-block">Change
-													Password</a>
+												<a href="/players/profile/${id}" class="btn btn-primary btn-block">My Profile</a>
 											</p>
 										</div>
 									</div>
 								</div>
 							</li>
--->
+							<li class="divider"></li>
+
 						</ul></li>
 				</sec:authorize>
 			</ul>
 		</div>
-
+	
 
 
 	</div>

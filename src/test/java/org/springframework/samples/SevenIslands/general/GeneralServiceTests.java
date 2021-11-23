@@ -1,4 +1,4 @@
-package org.springframework.samples.SevenIslands.board;
+package org.springframework.samples.SevenIslands.general;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -9,15 +9,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class BoardServiceTest {
-
+public class GeneralServiceTests {
+    
     @Autowired
-    private BoardService boardService;
-
+    private GeneralService generalService;
+    
     @Test
     public void testCountWithInitialData(){
-        int count = boardService.boardCount();
-        assertEquals(count, 1);
+        int count = generalService.generalCount();
+        assertEquals(count,1);
     }
-    
 }

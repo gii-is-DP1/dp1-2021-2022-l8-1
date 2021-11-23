@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Positive;
 
@@ -30,9 +29,9 @@ public class Board extends BaseEntity{
 
     public Board(){
 
-        this.background="resources/images/board.jpg";
-        this.width=800;
-        this.height=800;
+        this.background="/resources/images/board.jpg";
+        this.width=527;
+        this.height=644;
     }
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "board",fetch = FetchType.EAGER)

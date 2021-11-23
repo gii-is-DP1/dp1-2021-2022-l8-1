@@ -101,6 +101,16 @@ public class Player extends Person{
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
 
+  public void addAchievement(Achievement a){
+    this.achievements.add(a);
+    a.getPlayers().add(this);
+  }
+
+  public void deleteAchievement(Achievement a) {
+    this.achievements.remove(a);
+    a.getPlayers().remove(this);
+  }
+
   //RELACION CON CARTAS
   @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),

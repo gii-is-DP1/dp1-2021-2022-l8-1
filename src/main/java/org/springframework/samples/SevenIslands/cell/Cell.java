@@ -12,7 +12,6 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.samples.SevenIslands.board.Board;
 import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 import org.springframework.samples.SevenIslands.model.BaseEntity;
-import org.springframework.samples.SevenIslands.model.NamedEntity;
 
 
 import lombok.Getter;

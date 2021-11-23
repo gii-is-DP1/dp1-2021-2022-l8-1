@@ -9,7 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.samples.SevenIslands.person.Person;
 import org.springframework.samples.SevenIslands.user.User;
@@ -24,14 +25,29 @@ import lombok.Setter;
 @Table (name = "admins")
 public class Admin extends Person{
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
 	@JoinColumn(name = "username", referencedColumnName = "username")
 	  private User user;
+
+    /*
 	  
     @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "admins_achievements", joinColumns = @JoinColumn(name = "admin_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-	private Set<Achievement> achievements;
+	private List<Achievement> achievements;
 
+
+	public void addAchievementInAdmins(Achievement achi){
+        if(this.getAchievements()==null){
+            List<Achievement> l = new ArrayList<>();
+            l.add(achi);
+            this.setAchievements(l);     
+        }else{
+            List<Achievement> l = this.getAchievements();
+            l.add(achi);
+            this.setAchievements(l);
+        }
+    }
+    */
     
 }

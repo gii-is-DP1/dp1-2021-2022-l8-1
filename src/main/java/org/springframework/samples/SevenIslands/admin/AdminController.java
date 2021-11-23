@@ -1,16 +1,20 @@
 package org.springframework.samples.SevenIslands.admin;
 
+import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.samples.SevenIslands.general.GeneralService;
+import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -20,30 +24,95 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @GetMapping()
-    public String myProfile(ModelMap modelMap) {
-        String vista = "admins/myProfile";
+    @Autowired	
+	GeneralService gService;
+
+    @Autowired 
+    UserService uService;
+
+
+    
+    @GetMapping(path="/profile/{adminId}")
+    public String profile(@PathVariable("adminId") int adminId, ModelMap modelMap){
+        String view = "admins/myProfile";
+        gService.insertIdUserModelMap(modelMap);
+        Optional<Admin> admin = adminService.findAdminById(adminId);
+        if(admin.isPresent()){
+            modelMap.addAttribute("admin", admin.get());
+        }else{
+            modelMap.addAttribute("message", "admin not found");
+            view = "/error"; //TODO: crear una vista de error personalizada 
+        }
+        return view;
+    }
+
+    // @GetMapping()
+    // public String myProfile(ModelMap modelMap) {
+    //     String vista = "admins/myProfile";
         
-        Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
-        if(authetication != null){
-            if(authetication.isAuthenticated() && authetication.getPrincipal() instanceof User){
-                User currentUser = (User)authetication.getPrincipal();
+    //     Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
+    //     if(authetication != null){
+    //         if(authetication.isAuthenticated() && authetication.getPrincipal() instanceof User){
+    //             User currentUser = (User)authetication.getPrincipal();
                 
-                Iterable<Admin> admin = adminService.getAdminByName(currentUser.getUsername());
+    //             Optional<Admin> admin = adminService.getAdminByName(currentUser.getUsername());
 
-                System.out.println("\n\n\n\n" + admin.toString());
+    //             // System.out.println("\n\n\n\n" + admin.toString());
                 
-                modelMap.addAttribute("admins", admin);
+    //             modelMap.addAttribute("admin", admin.get());
 
-                return vista;
+    //             return vista;
 
-        }else
-               return "/welcome"; //da error creo que es por que request mapping de arriba
+    //     }else
+    //            return "/welcome"; //da error creo que es por que request mapping de arriba
+    // }
+
+    //     return vista;
+    // }
+
+    private static final String VIEWS_ADMINS_CREATE_OR_UPDATE_FORM = "admins/createOrUpdateAdminForm";
+
+    @GetMapping(value = "/profile/edit/{adminId}")
+
+    public String updateAdmin(@PathVariable("adminId") int adminId, ModelMap modelMap) {
+        gService.insertIdUserModelMap(modelMap);
+        Optional<Admin> admin = adminService.findAdminById(adminId); // optional puede ser error el import
+        if(admin.isPresent()){
+            modelMap.addAttribute("admin", admin.get());
+        }else{
+            modelMap.addAttribute("message", "admin not found");
+            return "/error"; //TODO: crear una vista de error personalizada 
+        }
+        return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
     }
+    
+    @PostMapping(value = "/profile/edit/{adminId}")
+	public String processUpdateForm(@Valid Admin admin, BindingResult result,@PathVariable("adminId") int adminId, ModelMap model) {
+		if (result.hasErrors()) {
+            System.out.print(result.getAllErrors());
+			model.put("player", admin);
+			return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+            
+            Optional<Admin> adminToUpdate=this.adminService.findAdminById(adminId);
+            if(!adminToUpdate.isPresent()){
+                model.addAttribute("message", "admin not found");
+                return "/error"; //TODO: crear una vista de error personalizada 
+            }
+			BeanUtils.copyProperties(admin, adminToUpdate.get(),"id");                                                                                  
+                    try {                    
+                        this.adminService.save(adminToUpdate.get());  
+                        
+                    } catch (Exception ex) {
+                        result.rejectValue("name", "duplicate", "already exists");
+                        return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM ;
+                    }
+			return "redirect:/admins/profile/" + adminId;
+		}
+	}
 
-        return vista;
-    }
-
+    
     // @GetMapping(path = "/new")
     // public String crearJuego(Player player,ModelMap modelMap) {
     //     String view = "games/editarJuego"; // Hacer pagina

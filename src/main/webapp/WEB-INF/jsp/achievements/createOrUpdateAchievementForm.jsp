@@ -6,54 +6,133 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
+
 <SevenIslands:layout pageName="achievements">
+
     <h2>
-        <c:if test="${achievement['new']}">New </c:if> Achievement
+        <c:if test="${achievement['new']}">New </c:if> Achievement 
     </h2>
-    <form:form modelAttribute="achievement" class="form-horizontal" id="add-achievement-form">
-        <div class="form-group has-feedback">
-            <div class="row">
-                <SevenIslands:inputField label="MinValue" name="minValue"/>
-                <SevenIslands:inputField label="Name" name="name"/>
-                <SevenIslands:inputField label="Description" name="description"/>
-                <SevenIslands:inputField label="Icon" name="icon"/>
-            </div>
-            <br>
-            <div class="row">
-                <label class="col-sm-2 control-label"
-                    for="type-input">Achivement Type</label>
-                <div class="col-sm-4">
-                    <select id="type-input" name="achievementType" class="selectpicker">
-                        <option value="GOLD">Gold</option>
-                        <option value="SILVER">Silver</option>
-                        <option value="BRONZE">Bronze</option>
-                    </select>
+    
+    <c:choose>
+
+        <c:when test="${achievement['new']}">
+            
+            <form:form modelAttribute="achievement" class="form-horizontal" id="add-achievement-form" action="/achievements/save">
+            <div class="form-group has-feedback">
+             <div class="row">
+                    <SevenIslands:inputField label="MinValue" name="minValue"/>
+                    <SevenIslands:inputField label="Name" name="name"/>
+                    <SevenIslands:inputField label="Description" name="description"/>
+                    <SevenIslands:inputField label="Icon" name="icon"/>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-sm-2 control-label"
+                        for="type-input">Achivement Type</label>
+                    <div class="col-sm-4">
+                        <select id="type-input" name="achievementType" class="selectpicker">
+                            <option value="GOLD">Gold</option>
+                            <option value="SILVER">Silver</option>
+                            <option value="BRONZE">Bronze</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label"
+                        for="parameter-input">Achievement Parameter</label>
+                    <div class="col-sm-4">
+                        <select id="parameter-input" name="parameter" class="selectpicker">
+                            <option value="POINTS">Points</option>
+                            <option value="WINS">Wins</option>
+                            <option value="LOSES">Loses</option>
+                            <option value="GAMES_PLAYED">Games Played</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <label class="col-sm-2 control-label"
-                    for="parameter-input">Achievement Parameter</label>
-                <div class="col-sm-4">
-                    <select id="parameter-input" name="parameter" class="selectpicker">
-                        <option value="POINTS">Points</option>
-                        <option value="WINS">Wins</option>
-                        <option value="LOSES">Loses</option>
-                        <option value="GAMES_PLAYED">Games Played</option>
-                    </select>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-default" type="submit">Add Achievement</button>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <c:choose>
-                    <c:when test="${achievement['new']}">
-                        <button class="btn btn-default" type="submit">Add Achievement</button>
-                    </c:when>
-                    <c:otherwise>
+        </form:form>
+        </c:when>
+
+        <c:otherwise>
+            <form:form modelAttribute="achievement" class="form-horizontal" id="add-achievement-form">
+            <div class="form-group has-feedback">
+                <div class="row">
+                    <SevenIslands:inputField label="MinValue" name="minValue"/>
+                    <SevenIslands:inputField label="Name" name="name"/>
+                    <SevenIslands:inputField label="Description" name="description"/>
+                    <SevenIslands:inputField label="Icon" name="icon"/>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-sm-2 control-label"
+                        for="type-input">Achivement Type</label>
+                    <div class="col-sm-4">
+                     <select id="type-input1" name="achievementType" class="selectpicker">
+                            <option value="GOLD">Gold</option>
+                            <option value="SILVER">Silver</option>
+                            <option value="BRONZE">Bronze</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2 control-label"
+                        for="parameter-input">Achievement Parameter</label>
+                    <div class="col-sm-4">
+                        <select id="parameter-input1" name="parameter" class="selectpicker">
+                            <option value="POINTS">Points</option>
+                            <option value="WINS">Wins</option>
+                            <option value="LOSES">Loses</option>
+                            <option value="GAMES_PLAYED">Games Played</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
                         <button class="btn btn-default" type="submit">Update Achievement</button>
-                    </c:otherwise>
-                </c:choose>
+                </div>
             </div>
-        </div>
-    </form:form>
+        </form:form>
+
+        </c:otherwise>
+    
+    </c:choose>
+    
+     <script type="text/javascript">
+        console.log("${achievement.achievementType}");
+        var l = document.getElementById("type-input1");
+           if("${achievement.achievementType}" == "GOLD"){
+               l.value="GOLD";
+           }else if("${achievement.achievementType}"  =="SILVER"){
+               console.log("hola");
+               l.value="SILVER";
+           }else{
+            l.value="BRONZE"
+           }
+        
+    </script>
+
+    <script type="text/javascript">
+        console.log("${achievement.parameter}");
+        var f = document.getElementById("parameter-input1");
+        if("${achievement.parameter}" == "POINTS"){
+           f.value="POINTS";
+        }else if("${achievement.parameter}"  =="WINS"){
+           console.log("hola");
+           f.value="POINTS";
+       
+        }else if("${achievement.parameter}"  =="LOSES"){
+           console.log("hola");
+           f.value="LOSES";
+        }else{
+        f.value="GAMES_PLAYED";
+        }
+    
+        </script>
+    
 </SevenIslands:layout>

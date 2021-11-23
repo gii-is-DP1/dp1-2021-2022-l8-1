@@ -1,6 +1,5 @@
 package org.springframework.samples.SevenIslands.player;
 
-import java.util.Collection;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -8,7 +7,11 @@ import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.SevenIslands.user.User;
+import org.springframework.samples.SevenIslands.general.GeneralService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +28,13 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @GetMapping(path="/player/profile/{playerId}")
+    @Autowired	
+	private GeneralService gService;
+
+    @GetMapping(path="/profile/{playerId}")
     public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "/players/profile";
+        gService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
@@ -38,9 +45,10 @@ public class PlayerController {
         return view;
     }
 
-    @GetMapping(path="/player/profile/{playerId}/moreStatistics")
+    @GetMapping(path="/profile/{playerId}/moreStatistics")
     public String moreStatistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/moreStatistics";
+        gService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
@@ -51,25 +59,40 @@ public class PlayerController {
         return view;
     }
 
-    @GetMapping(path="/playerAdmins/all")
-    public String listadoPlayers(ModelMap modelMap){        //For admins
-        String vista ="players/listPlayers";
-        Iterable<Player> players = playerService.findAll();
-        modelMap.addAttribute("players", players);
-        return vista;
+    @GetMapping(path="/all")
+    public String listadoPlayers(ModelMap modelMap, @PathParam("filterName") String filterName){        //For admins
+        String view ="players/listPlayers";
+        gService.insertIdUserModelMap(modelMap);
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(x -> x.toString().equals("admin"))) {
+                    
+                    Iterable<Player> players = playerService.findAll();
+                    modelMap.addAttribute("players", players);
+                    modelMap.addAttribute("filterName", filterName);
+            
+        }else{
+            view = "/errors";
+        }
+        return view;
 
     }
 
     //COMPROBAR
-    @GetMapping(path="/playerAdmins/new")
+    @GetMapping(path="/new")
     public String createPlayer(ModelMap modelMap){
         String view="players/editPlayer";
-        modelMap.addAttribute("player", new Player());
+        gService.insertIdUserModelMap(modelMap);
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(x -> x.toString().equals("admin"))) {
+                    modelMap.addAttribute("player", new Player());
+        }else{
+            view = "/errors";
+        }
         return view;
     }
 
     //COMPROBAR
-    @PostMapping(path="/playerAdmins/save")
+    @PostMapping(path="/save")
     public String savePlayer(@Valid Player player, BindingResult result, ModelMap modelMap){
         String view= "players/listPlayers";
         if(result.hasErrors()){
@@ -79,21 +102,27 @@ public class PlayerController {
         }else{
             playerService.save(player);
             modelMap.addAttribute("message", "Player succesfully saved!");
-            view=listadoPlayers(modelMap);
+            view=listadoPlayers(modelMap, null);
         }
         return view;
     }
 
-    @GetMapping(path="/playerAdmins/delete/{playerId}")
+    @GetMapping(path="/delete/{playerId}")
     public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view= "players/listPlayers";
-        Optional<Player> player = playerService.findPlayerById(playerId);
-        if(player.isPresent()){
-            playerService.delete(player.get());
-            modelMap.addAttribute("message", "Player successfully deleted!");
+        gService.insertIdUserModelMap(modelMap);
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(x -> x.toString().equals("admin"))) {
+                    Optional<Player> player = playerService.findPlayerById(playerId);
+                    if(player.isPresent()){
+                        playerService.delete(player.get());
+                        modelMap.addAttribute("message", "Player successfully deleted!");
+                    }else{
+                        modelMap.addAttribute("message", "Player not found");
+                        view=listadoPlayers(modelMap, null);
+                    }
         }else{
-            modelMap.addAttribute("message", "Player not found");
-            view=listadoPlayers(modelMap);
+            view = "/errors";
         }
         return view;
 
@@ -101,22 +130,38 @@ public class PlayerController {
 
     private static final String VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM = "players/createOrUpdatePlayerForm";
 
-    @GetMapping(path="/playerAdmins/edit/{playerId}")
+    @GetMapping(path="/edit/{playerId}")
     public String updatePlayer(@PathVariable("playerId") int playerId, ModelMap model) {
         Optional<Player> player = playerService.findPlayerById(playerId); // optional puede ser error el import
         String view = VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-
+        gService.insertIdUserModelMap(model);
         //Test if currentplayer is admin or the same id
-        // TODO: Comprobar que sea o admin o q el usuer registrado tenga el mismo id q el de la url 
-
-        //Test if player is present
-        if(player.isPresent()){
-            model.addAttribute("player", player.get());
+        // TODO: Comprobar que sea o admin o q el usuer registrado tenga el mismo id q el de la url
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.getAuthorities().stream()
+            .anyMatch(x -> x.toString().equals("admin"))){
+            if(player.isPresent()){
+                model.addAttribute("player", player.get());
+            }else{
+                model.addAttribute("message", "Player not found");
+                view = "/error"; //TODO: crear una vista de erro personalizada 
+            }
+        }else if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
+            User currentUser = (User) authentication.getPrincipal();
+            int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
+            if(playerId==playerLoggedId){
+                if(player.isPresent()){
+                    model.addAttribute("player", player.get());
+                }else{
+                    model.addAttribute("message", "Player not found");
+                    view = "/error"; //TODO: crear una vista de erro personalizada 
+                }
+            }else{
+                view= "/error";
+            }
         }else{
-            model.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
+            view = "/errors";
         }
-        model.put("player", player);
         return view;
     }
 
@@ -134,7 +179,7 @@ public class PlayerController {
      * @return
      */
 
-    @PostMapping(value = "/playerAdmins/edit/{playerId}")
+    @PostMapping(value = "/edit/{playerId}")
 	public String processUpdateForm(@Valid Player player, BindingResult result,@PathVariable("playerId") int playerId, ModelMap model) {
 		if (result.hasErrors()) {
             System.out.print(result.getAllErrors());
@@ -143,7 +188,7 @@ public class PlayerController {
 		}
 		else {
                     Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-			BeanUtils.copyProperties(player, playerToUpdate,"id");                                                                                  
+			BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
                     try {                    
                         this.playerService.save(playerToUpdate);                    
                     
@@ -151,7 +196,12 @@ public class PlayerController {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
                     }
-			return "redirect:/players/playerAdmins/all";
+                    if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                    .anyMatch(x -> x.toString().equals("admin"))){
+                        return "redirect:/players/all";
+                    }else{
+                        return "redirect:/players/profile/{playerId}";
+                    }
 		}
 	}
 

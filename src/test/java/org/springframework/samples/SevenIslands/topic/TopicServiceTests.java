@@ -1,4 +1,4 @@
-package org.springframework.samples.SevenIslands.game;
+package org.springframework.samples.SevenIslands.topic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,23 +8,22 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class GameServiceTest {
-    
+public class TopicServiceTests {
     @Autowired
-    private GameService gameService;
-    
+    private TopicService topicService;
+
     @Test
     public void testCountWithInitialData(){
-        int count = gameService.gameCount();
-        assertEquals(5, count);
+        int count = topicService.topicCount();
+        assertEquals(count, 1);
     }
-    
+
     @Test
-    public void testFindGamesByPlayerId(){  // counts the games of a player
-        Iterable<Game> games = gameService.findGamesByPlayerId(2);
-        long count = games.spliterator().getExactSizeIfKnown();
-        assertEquals(0, count);
+    public void testFindByCommentId(){
+        Iterable<Topic> topics = topicService.findByCommentId(1);
+        assertEquals(topics.spliterator().getExactSizeIfKnown(), 1);
     }
     
 }
