@@ -12,8 +12,8 @@
     <br>
     <form>
         <label for="filterName">Find by username:</label>
-        <input type="text" id="filterName" name="filterName"><br><br>
-        <input type="submit" value="Find">
+        <input type="text" id="filterName" name="filterName">
+        <input type="submit" value="Find"> 
     </form>
     <br>
     <br>
@@ -30,8 +30,8 @@
         </thead>
         <tbody>
         <c:set var="filterName" value="${filterName}"></c:set>
-        <c:forEach items="${players}" var="player">
-            <c:if test="${fn:contains(player.user.username, filterName)}">
+        <c:forEach items="${players}" var="player" begin="${begin}" end="${end}">
+
                 <tr>
                     <td>
                         <c:out value="${player.firstName}"/>
@@ -63,8 +63,19 @@
                     </td>
                     
                 </tr>
-            </c:if>
+
         </c:forEach>
+
+        
         </tbody>
     </table>
+    <div class="row text-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="/players?begin=0&end=9&filterName=${filterName}">1</a></li>
+              <li class="page-item"><a class="page-link" href="/players?begin=10&end=19&filterName=${filterName}">2</a></li>
+              <li class="page-item"><a class="page-link" href="/players?begin=20&end=29&filterName=${filterName}">3</a></li>
+            </ul>
+        </nav>
+    </div>
 </sevenislands:layout>
