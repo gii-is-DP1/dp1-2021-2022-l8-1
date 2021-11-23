@@ -37,6 +37,7 @@ public class GameController {
 
     @GetMapping()
     public String myRooms(ModelMap modelMap) {
+        String vista = "games/games";
         generalService.insertIdUserModelMap(modelMap);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -50,7 +51,6 @@ public class GameController {
                     Iterable<Game> games = gameService.findAll();
                     modelMap.addAttribute("games", games);
                     return "games/RoomsAdmins";
-                    
                 }
                 // PLAYER
                 else {
@@ -63,7 +63,6 @@ public class GameController {
             } else
               
                 return "/welcome";
-
         }
 
         return vista;

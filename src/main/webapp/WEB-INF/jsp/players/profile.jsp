@@ -16,12 +16,12 @@
         
                 <button id="my-games-btn"
                         class="btn btn-default"
-                        onclick="location.href = '/games';">
+                        onclick="location.href = '/players/profile/${player.id}/games';">
                     Games
                 </button>
                 <button id="social-btn"
                         class="btn btn-default"
-                        onclick="location.href = '/social';">
+                        onclick="location.href = '/players/profile/${player.id}/social';">
                     Social
                 </button>
                 <button id="stats-btn" 
