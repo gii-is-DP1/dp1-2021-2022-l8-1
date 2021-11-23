@@ -2,9 +2,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
-<SevenIslands:layout pageName="players">
+<sevenislands:layout pageName="players">
 
     <h2>Player Information</h2>
 
@@ -52,7 +52,7 @@
                         <dt>Name</dt>
                         <dd><c:out value="${pet.name}"/></dd>
                         <dt>Birth Date</dt>
-                        <dd><SevenIslands:localDate date="${pet.birthDate}" pattern="yyyy-MM-dd"/></dd>
+                        <dd><sevenislands:localDate date="${pet.birthDate}" pattern="yyyy-MM-dd"/></dd>
                         <dt>Type</dt>
                         <dd><c:out value="${pet.type.name}"/></dd>
                     </dl>
@@ -67,7 +67,7 @@
                         </thead>
                         <c:forEach var="visit" items="${pet.visits}">
                             <tr>
-                                <td><SevenIslands:localDate date="${visit.date}" pattern="yyyy-MM-dd"/></td>
+                                <td><sevenislands:localDate date="${visit.date}" pattern="yyyy-MM-dd"/></td>
                                 <td><c:out value="${visit.description}"/></td>
                             </tr>
                         </c:forEach>
@@ -94,4 +94,4 @@
         </c:forEach>
     </table>
 
-</SevenIslands:layout>
+</sevenislands:layout>

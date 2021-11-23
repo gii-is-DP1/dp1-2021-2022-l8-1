@@ -3,12 +3,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 
-<SevenIslands:layout pageName="players">
+<sevenislands:layout pageName="players">
 
     <h2>Find Players</h2>
 
@@ -37,4 +37,4 @@
 		<a class="btn btn-default" href='<spring:url value="/players/new" htmlEscape="true"/>'>Add Player</a>
 	</sec:authorize>
 	
-</SevenIslands:layout>
+</sevenislands:layout>
