@@ -11,9 +11,9 @@
     <div id="mid-section">
         <div id="table-options">
             <select class="selectpicker" id="typeRoom">
-                <option value="">Created </option>
-                <option value="playedByMe">Played</option>
-            </select>          
+                <option value="created">Created</option>
+                <option value="played" selected="selected">Played</option>
+            </select>
             <input type="button" value="Search" onclick="doSearch()" />
         </div>
 
@@ -24,7 +24,6 @@
                     <th>Games</th>
                     <th>Date</th>
                     <th>Players</th>
-                   
                 </tr>
                 </thead>
                 <tbody>
@@ -40,15 +39,12 @@
                             </td> 
             
                             <td>
-                            <c:forEach items ="${game.players}" var="p">
-                            
-                            <c:out value = "${p.user.username}"/>  <!--AQUI SE PUEDE PONER LO DE DIRECCIONAR A LA VISTA DE UN PERFIL DANDOLE EL ID-->
-                            
-                
-                            </c:forEach>  
-                            </td>  
-                        
-                            
+                                <c:forEach items ="${game.players}" var="player">
+                                    <a href="/players/profile/${player.id}">
+                                        <c:out value = "${player.user.username}"/>
+                                    </a>
+                                </c:forEach>  
+                            </td>
                         </tr>
                     </c:forEach>
         
@@ -59,11 +55,14 @@
     </div>
 
     <script type="text/javascript">
-        // FIXME: Hay que modificar el metodo para que te redirija a la pagina correcta
-
         function doSearch(){
-            window.
-            location="/games/"+document.getElementById("typeRoom").value;
+            optionValue = document.getElementById("typeRoom").value;
+            
+            if(optionValue == "created") {
+                window.location = "/players/profile/${player.id}/rooms/created";
+            } else {
+                window.location = "/players/profile/${player.id}/rooms/played";
+            }
         }
     </script>
 

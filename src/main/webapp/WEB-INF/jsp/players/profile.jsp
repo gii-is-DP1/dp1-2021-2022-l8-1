@@ -15,7 +15,7 @@
 
         <button id="my-rooms-btn"
                 class="btn btn-default"
-                onclick="location.href = '/players/profile/${player.id}/rooms';">
+                onclick="location.href = '/players/profile/${player.id}/rooms/created';">
             Rooms
         </button>
         <button id="social-btn"

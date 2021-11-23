@@ -39,50 +39,6 @@ public class PlayerController {
     @Autowired
     private GameService gameService;
 
-    @GetMapping(path="/profile/{playerId}")
-    public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
-        String view = "/players/profile";
-        generalService.insertIdUserModelMap(modelMap);
-        Optional<Player> player = playerService.findPlayerById(playerId);
-        if(player.isPresent()){
-            modelMap.addAttribute("player", player.get());
-        }else{
-            modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
-        }
-        return view;
-    }
-
-    @GetMapping(path="/profile/{playerId}/statistics")
-    public String statistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
-        String view = "players/statistics";
-        generalService.insertIdUserModelMap(modelMap);
-        Optional<Player> player = playerService.findPlayerById(playerId);
-        if(player.isPresent()){
-            modelMap.addAttribute("player", player.get());
-        }else{
-            modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
-        }
-        return view;
-    }
-
-    @GetMapping(path="/profile/{playerId}/rooms")
-    public String games(@PathVariable("playerId") int playerId, ModelMap modelMap){
-        String view = "players/rooms";
-        generalService.insertIdUserModelMap(modelMap);
-        Optional<Player> player = playerService.findPlayerById(playerId);
-        if(player.isPresent()){
-            Collection<Game> games = gameService.findGamesByPlayerId(player.get().getId());
-            modelMap.addAttribute("games", games);
-            modelMap.addAttribute("player", player.get());
-        }else{
-            modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
-        }
-        return view;
-    }
-
     @GetMapping()
     public String listadoPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("begin") Integer begin, @PathParam("end") Integer end){        //For admins
         String view ="players/listPlayers";
@@ -111,6 +67,66 @@ public class PlayerController {
         }
         return view;
 
+    }
+
+    @GetMapping(path="/profile/{playerId}")
+    public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "/players/profile";
+        generalService.insertIdUserModelMap(modelMap);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error"; //TODO: crear una vista de erro personalizada 
+        }
+        return view;
+    }
+
+    @GetMapping(path="/profile/{playerId}/statistics")
+    public String statistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "players/statistics";
+        generalService.insertIdUserModelMap(modelMap);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error"; //TODO: crear una vista de erro personalizada 
+        }
+        return view;
+    }
+
+    @GetMapping(path="/profile/{playerId}/rooms/created")
+    public String gamesCreated(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "players/roomsCreated";
+        generalService.insertIdUserModelMap(modelMap);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            Collection<Game> games = gameService.findGamesByPlayerId(player.get().getId());
+            modelMap.addAttribute("games", games);
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error"; //TODO: crear una vista de erro personalizada 
+        }
+        return view;
+    }
+
+    @GetMapping(path="/profile/{playerId}/rooms/played")
+    public String gamesPlayed(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "players/roomsPlayed";
+        generalService.insertIdUserModelMap(modelMap);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            Collection<Game> games = gameService.findGamesWhereIPlayerByPlayerId(player.get().getId());
+            modelMap.addAttribute("games", games);
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error"; //TODO: crear una vista de erro personalizada 
+        }
+        return view;
     }
 
     //COMPROBAR
