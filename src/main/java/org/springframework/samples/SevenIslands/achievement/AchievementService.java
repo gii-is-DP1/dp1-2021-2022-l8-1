@@ -33,7 +33,9 @@ public class AchievementService {
 
     @Transactional
     public void delete(Achievement achievement){
-        achievement.getPlayers().forEach(player -> player.getAchievements().remove(achievement));
+        if(achievement.getPlayers()!= null){
+            achievement.getPlayers().forEach(player -> player.getAchievements().remove(achievement));
+        }
         achievementRepo.delete(achievement);
     }
 
