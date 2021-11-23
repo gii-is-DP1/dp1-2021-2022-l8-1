@@ -5,12 +5,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
-<sevenislands:playerLayout pageName="profile">
-    
-        <div id="top-section">
-            <img id="profile-avatar" src="/resources/images/profile-photo.png">
-            <h2><c:out value="${player.user.username}"/></h2>
-        </div>
+<sevenislands:playerLayout pageName="profile"> 
+
         <div id="mid-section">
             <span id="left-section">
                 <div id="profile-details">
@@ -31,7 +27,7 @@
                 <button id="stats-btn" 
                         class="btn btn-default"
                         onclick="location.href = '/players/profile/${player.id}/moreStatistics';">
-                    More Statistics
+                    More statistics
                 </button>
                 <button id="edit-prof-btn" 
                         class="btn btn-default"

@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
+import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.stereotype.Controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,10 +33,14 @@ public class AchievementController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired	
+	GeneralService gService;
+
     //Vistas solo para admins:
     @GetMapping()
     public String listAchievements(ModelMap modelMap){
         String view = "achievements/listAchievements";
+        gService.insertIdUserModelMap(modelMap);
         //si accede un admin:
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
@@ -55,6 +60,7 @@ public class AchievementController {
     public String createAchievement(ModelMap modelMap){
         // String view="achievements/editAchievement";
         String view= "achievements/createOrUpdateAchievementForm";
+        gService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     modelMap.addAttribute("achievement", new Achievement());
@@ -97,7 +103,8 @@ public class AchievementController {
     }
     @GetMapping(path="/delete/{achievementId}")
     public String deleteAchievement(@PathVariable("achievementId") int achievementId, ModelMap modelMap){
-        
+        String view= "achievements/listAchievements";
+        gService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
@@ -122,6 +129,7 @@ public class AchievementController {
     @GetMapping(path="/edit/{achievementId}")
     public String updateAchievement(@PathVariable("achievementId") int achievementId, ModelMap model) {
         String view = VIEWS_ACHIEVEMENTS_CREATE_OR_UPDATE_FORM;
+        gService.insertIdUserModelMap(model);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Achievement achievement = achievementService.findAchievementById(achievementId).get();
@@ -175,6 +183,7 @@ public class AchievementController {
     public String listMyAchievements(ModelMap modelMap, @PathVariable("id") int id) {
         
         String vista = "achievements/MyAchievements";
+        gService.insertIdUserModelMap(modelMap);
     
         Iterable<Achievement> arch = achievementService.findByPlayerId(id);//logros completados
         Iterable<Achievement> arch2 = achievementService.findAll();//logros totales
