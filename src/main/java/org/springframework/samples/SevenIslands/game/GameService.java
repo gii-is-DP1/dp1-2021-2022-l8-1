@@ -65,12 +65,7 @@ public class GameService {
     public List<Game> findGamesWhereIPlayerByPlayerId(int id){
         return gameRepo.findGamesWhereIPlayedByPlayerId(id);
     }
-
-    @Transactional
-    public Collection<Integer> getPlayersIdOnGame(int game_id){
-        return gameRepo.findIdPlayersByGameId(game_id);
-    }
-
+    
     @Transactional
     public Collection<Game> findGamesByRoomCode(String code){
         return gameRepo.findGamesByRoomCode(code);

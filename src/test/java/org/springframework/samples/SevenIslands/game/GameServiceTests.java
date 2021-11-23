@@ -4,16 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Iterator;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +34,30 @@ public class GameServiceTests {
         assertThat(game.getName()).isEqualTo("Prueba0");
         assertThat(game.getCode()).isEqualTo("ABCD124");
 
+    }
+
+    @Test
+    public void testFindAll(){
+        long count = gameService.findAll().spliterator().getExactSizeIfKnown();
+        assertEquals(5, count);
+    }
+
+    @Test
+    public void testFindAllPublic(){
+        long count = gameService.findAllPublic().spliterator().getExactSizeIfKnown();
+        assertEquals(3, count);
+    }
+    
+    @Test
+    public void testFindAllPlaying(){
+        int count = gameService.findAllPlaying().size();
+        assertEquals(2, count);
+    }
+
+    @Test
+    public void testFindAllPublicPlaying(){
+        int count = gameService.findAllPublicPlaying().size();
+        assertEquals(1, count);
     }
     
     @Test

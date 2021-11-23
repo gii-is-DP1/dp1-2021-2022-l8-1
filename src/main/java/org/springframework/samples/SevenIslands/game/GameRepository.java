@@ -29,9 +29,6 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
   @Query("SELECT g FROM Game g INNER JOIN g.players p WHERE p.id =:id")
   List<Game> findGamesWhereIPlayedByPlayerId(@Param("id") int id);
 
-  @Query(value = "SELECT PLAYER_ID FROM GAMES_PLAYERS WHERE GAME_ID LIKE ?1", nativeQuery = true)
-  Collection<Integer> findIdPlayersByGameId(int id);
-
   @Query("SELECT P from Game P WHERE P.code = :code")
   Collection<Game> findGamesByRoomCode(String code) throws DataAccessException;
 
