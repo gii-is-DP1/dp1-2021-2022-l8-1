@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.StreamSupport;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -42,50 +44,70 @@ public class PlayerServiceTests {
         player.setEmail("antoniogar@gmail.com");
         player.setProfilePhoto("www.foto.png");
 
+        Player player1 = new Player();
+        player1.setFirstName("Antonio1");
+        player1.setSurname("García1");
+        player1.setEmail("antonio1gar@gmail.com");
+        player1.setProfilePhoto("www.foto.png");
+
         User user = new User();
         user.setUsername("antoniog11");
         user.setPassword("4G4rc14");
         user.setEnabled(true);
 
-        player.setUser(user);
-    
-        playerService.savePlayer(player);
+        User user1 = new User();
+        user1.setUsername("antoniog111");
+        user1.setPassword("4G4rc14");
+        user1.setEnabled(true);
 
+        player.setUser(user);
+        player1.setUser(user1);
+    
+        
+        playerService.save(player);
+        playerService.savePlayer(player1);
+
+        Player p  = playerService.findPlayerById(4).get();
+        Player p2  = playerService.findPlayerById(5).get();
+
+        assertThat(p.getFirstName().equals("Antonio"));
+        assertThat(p2.getFirstName().equals("Antonio1"));
         assertThat(player.getId().longValue()).isNotEqualTo(0);
 
 
     }
 
-    /*@Test
-    public void shouldDeletePlayer(){
+    // @Test
+    // public void shouldDeletePlayer(){
 
-        Player player = new Player();
-        player.setFirstName("Antonio");
-        player.setSurname("García");
-        player.setEmail("antoniogar@gmail.com");
-        player.setProfilePhoto("www.foto.png");
+    //     Player player = new Player();
+    //     player.setFirstName("Antonio");
+    //     player.setSurname("García");
+    //     player.setEmail("antoniogar@gmail.com");
+    //     player.setProfilePhoto("www.foto.png");
 
-        User user = new User();
-        user.setUsername("antoniog11");
-        user.setPassword("4G4rc14");
-        user.setEnabled(true);
+    //     User user = new User();
+    //     user.setUsername("antoniog11");
+    //     user.setPassword("4G4rc14");
+    //     user.setEnabled(true);
 
-        player.setUser(user);
+    //     player.setUser(user);
     
-        //Similar to .savePlayer(player)
-        playerService.save(player);
-        userService.saveUser(player.getUser());
-        authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
+    //     //Similar to .savePlayer(player)
+    //     playerService.savePlayer(player);
+    //     //userService.saveUser(player.getUser());
+    //     //authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
 
-        int countBefore = playerService.playerCount();
+    //     int countBefore = playerService.playerCount();
         
-        playerService.delete(player);
+    //     playerService.delete(player);
 
-        int countAfter = playerService.playerCount();
+    //     int countAfter = playerService.playerCount();
 
-        assertNotEquals(countBefore, countAfter);
 
-    }*/
+    //     assertNotEquals(countBefore, countAfter);
+
+    // }
 
     @Test
     public void testFindPlayersByGameId() {

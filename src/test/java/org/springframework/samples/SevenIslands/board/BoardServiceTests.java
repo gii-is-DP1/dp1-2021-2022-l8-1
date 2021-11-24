@@ -19,5 +19,12 @@ public class BoardServiceTests {
         int count = boardService.boardCount();
         assertEquals(count, 1);
     }
+
+    @Test
+    public void testBoardById(){ 
+        Board board = boardService.findById(1).get();
+        assertEquals(board.getHeight(),644);
+    
+    }
     
 }

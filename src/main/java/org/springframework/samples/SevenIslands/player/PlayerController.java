@@ -11,6 +11,7 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.general.GeneralService;
+import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -33,6 +34,9 @@ public class PlayerController {
 
     @Autowired	
 	private GeneralService generalService;
+
+    @Autowired	
+	private UserService userService;
 
     @GetMapping(path="/profile/{playerId}")
     public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
@@ -203,10 +207,16 @@ public class PlayerController {
 		}
 		else {
                     Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
+                    //borrar user antes de grabarlo en playerToUpdate
+                    //validador
 			BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
                     try {                    
-                        this.playerService.save(playerToUpdate);                    
-                    
+                        // this.playerService.savePlayer(playerToUpdate);
+                        playerService.save(playerToUpdate);		
+		                //creating user
+		                userService.saveUser(playerToUpdate.getUser());
+		                               
+                        
                     } catch (Exception ex) {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
