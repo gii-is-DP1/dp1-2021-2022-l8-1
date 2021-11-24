@@ -8,50 +8,48 @@
 
 <sevenislands:profileLayout pageName="rooms" subtitle="Rooms">
 
-    <div id="mid-section">
-        <div id="table-options">
-            <select class="selectpicker" id="typeRoom">
-                <option value="created">Created</option>
-                <option value="played" selected="selected">Played</option>
-            </select>
-            <input type="button" value="Search" onclick="doSearch()" />
-        </div>
+    <div id="table-options">
+        <select class="selectpicker" id="typeRoom">
+            <option value="created">Created</option>
+            <option value="played" selected="selected">Played</option>
+        </select>
+        <input type="button" value="Search" onclick="doSearch()" />
+    </div>
 
-        <div id="games">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Games</th>
-                    <th>Date</th>
-                    <th>Players</th>
-                </tr>
-                </thead>
-                <tbody>
-                    
-                <c:forEach items="${games}" var="game">
-                        <tr>
-                            <td>
-                                <c:out value="${game.name}"/>
-                            </td>
-            
-                            <td>
-                                <c:out value="${game.startTime}"/>
-                            </td> 
-            
-                            <td>
-                                <c:forEach items ="${game.players}" var="player">
-                                    <a href="/players/profile/${player.id}">
-                                        <c:out value = "${player.user.username}"/>
-                                    </a>
-                                </c:forEach>  
-                            </td>
-                        </tr>
-                    </c:forEach>
+    <div id="games">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Games</th>
+                <th>Date</th>
+                <th>Players</th>
+            </tr>
+            </thead>
+            <tbody>
+                
+            <c:forEach items="${games}" var="game">
+                    <tr>
+                        <td>
+                            <c:out value="${game.name}"/>
+                        </td>
         
+                        <td>
+                            <c:out value="${game.startTime}"/>
+                        </td> 
         
-                </tbody>
-            </table>
-        </div>
+                        <td>
+                            <c:forEach items ="${game.players}" var="player">
+                                <a href="/players/profile/${player.id}">
+                                    <c:out value = "${player.user.username}"/>
+                                </a>
+                            </c:forEach>  
+                        </td>
+                    </tr>
+                </c:forEach>
+    
+    
+            </tbody>
+        </table>
     </div>
 
     <script type="text/javascript">

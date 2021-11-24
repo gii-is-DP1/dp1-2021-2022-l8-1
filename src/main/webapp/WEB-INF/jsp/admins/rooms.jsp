@@ -6,42 +6,48 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
-<sevenislands:layout pageName="games">
-    <h2>Games</h2>
+<sevenislands:adminLayout pageName="games" subtitle="games">
 
-    <table id="gamesTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th style="width: 200px;">Games</th>
-            <th style="width: 200px;">Date</th>
-            <th style="width: 200px;">Players</th>
-            <th style="width: 200px;">Delete game</th>
-           
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${games}" var="game">
+    <div id="games">
+
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>
-                    <c:out value="${game.name}"/>
-                </td>
-                <td>
-                    <c:out value="${game.startTime}"/>
-                </td>
-                <td>
-                    <c:forEach  items="${game.players}" var="p"> 
-                        <c:out value="${p.user.username}"/> 
-                    </c:forEach>
-                </td>
-                <td>
-                    <spring:url value="/games/delete/{gameId}" var="gameUrl">
-                        <spring:param name="gameId" value="${game.id}"/>
-                    </spring:url>
-                    <a class="btn btn-danger" href="${fn:escapeXml(gameUrl)}">Delete</a>
-                </td>
-                
+                <th>Games</th>
+                <th>Date</th>
+                <th>Players</th>
+                <th>Delete game</th>
+            
             </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-</sevenislands:layout>
+            </thead>
+            <tbody>
+            <c:forEach items="${games}" var="game">
+                <tr>
+                    <td>
+                        <c:out value="${game.name}"/>
+                    </td>
+                    <td>
+                        <c:out value="${game.startTime}"/>
+                    </td>
+                    <td>
+                        <c:forEach  items="${game.players}" var="player"> 
+                            <a href="/players/profile/${player.id}">
+                                <c:out value = "${player.user.username}"/>
+                            </a>
+                        </c:forEach>
+                    </td>
+                    <td>
+                        <spring:url value="/games/delete/{gameId}" var="gameUrl">
+                            <spring:param name="gameId" value="${game.id}"/>
+                        </spring:url>
+                        <a class="btn btn-danger" href="${fn:escapeXml(gameUrl)}">Delete</a>
+                    </td>
+                    
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+
+    </div>
+
+</sevenislands:adminLayout>

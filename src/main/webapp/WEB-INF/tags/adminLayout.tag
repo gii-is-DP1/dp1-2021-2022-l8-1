@@ -25,13 +25,6 @@
     </c:if>
 
     <div id="top-section">
-        <a href="/players/profile/${player.id}">
-            <img id="profile-avatar" src="/resources/images/profile-photo.png">
-        </a>
-        <a href="/players/profile/${player.id}">
-            <h2><c:out value="${player.user.username}"/></h2>
-        </a>
-
         <h2 id="sub-title"><c:out value="${subtitle}"></c:out></h2>
     </div>
 
