@@ -19,4 +19,16 @@ public class GeneralServiceTests {
         int count = generalService.generalCount();
         assertEquals(count,1);
     }
+
+    @Test
+    public void testTotalDurationAll(){
+        int count = generalService.totalDurationAll();
+        assertEquals(count,300);
+    }
+
+    @Test
+    public void testGamesCount(){
+        int count = generalService.totalGamesCount();
+        assertEquals(count,200);
+    }
 }
