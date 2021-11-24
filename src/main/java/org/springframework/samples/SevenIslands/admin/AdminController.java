@@ -6,9 +6,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.game.Game;
+import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.user.UserService;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,17 +26,15 @@ public class AdminController {
     private AdminService adminService;
 
     @Autowired	
-	GeneralService gService;
+	private GeneralService generalService;
 
-    @Autowired 
-    UserService uService;
-
-
+    @Autowired	
+	private GameService gameService;
     
     @GetMapping(path="/profile/{adminId}")
     public String profile(@PathVariable("adminId") int adminId, ModelMap modelMap){
         String view = "admins/myProfile";
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         Optional<Admin> admin = adminService.findAdminById(adminId);
         if(admin.isPresent()){
             modelMap.addAttribute("admin", admin.get());
@@ -44,6 +43,14 @@ public class AdminController {
             view = "/error"; //TODO: crear una vista de error personalizada 
         }
         return view;
+    }
+
+    @GetMapping(path="/rooms")
+    public String myRooms(ModelMap modelMap) {
+        String vista = "admins/rooms";
+        Iterable<Game> games = gameService.findAll();
+        modelMap.addAttribute("games", games);
+        return vista;
     }
 
     // @GetMapping()
@@ -75,7 +82,7 @@ public class AdminController {
     @GetMapping(value = "/profile/edit/{adminId}")
 
     public String updateAdmin(@PathVariable("adminId") int adminId, ModelMap modelMap) {
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         Optional<Admin> admin = adminService.findAdminById(adminId); // optional puede ser error el import
         if(admin.isPresent()){
             modelMap.addAttribute("admin", admin.get());
@@ -127,14 +134,14 @@ public class AdminController {
     //         modelMap.addAttribute("game", game);
     //         return "games/editarJuego";
     //     } else {
-    //         gameService.save(game);
+    //         generalService.save(game);
             
     //         view = myRooms(modelMap);
 
     //         Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
     //         User currentUser = (User)authetication.getPrincipal();
     //         int playerId=playerService.getIdPlayerByName(currentUser.getUsername());
-    //         gameService.insertGP(game.getId(), playerId);
+    //         generalService.insertGP(game.getId(), playerId);
 
     //         modelMap.addAttribute("message", "Game successfully saved!");
             
@@ -144,9 +151,9 @@ public class AdminController {
 
     // @GetMapping(path = "/delete/{gameId}")
     // public String borrarJuego(@PathVariable("gameId") int gameId, ModelMap modelMap) {
-    //     Optional<Game> game = gameService.findGameById(gameId); // optional puede ser error el import
+    //     Optional<Game> game = generalService.findGameById(gameId); // optional puede ser error el import
     //     if (game.isPresent()) {
-    //         gameService.delete(game.get());
+    //         generalService.delete(game.get());
     //         modelMap.addAttribute("message", "Game successfully deleted!");
     //     } else {
     //         modelMap.addAttribute("message", "Game not Found!");
@@ -159,7 +166,7 @@ public class AdminController {
 
     // @GetMapping(path = "/edit/{gameId}")
     // public String actualizarJuego(@PathVariable("gameId") int gameId, ModelMap model) {
-    //     Game game = gameService.findGameById(gameId).get(); // optional puede ser error el import
+    //     Game game = generalService.findGameById(gameId).get(); // optional puede ser error el import
     //     model.put("game", game);
     //     return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
     // }
@@ -183,10 +190,10 @@ public class AdminController {
 	// 		return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
 	// 	}
 	// 	else {
-    //                 Game gameToUpdate=this.gameService.findGameById(gameId).get();
+    //                 Game gameToUpdate=this.generalService.findGameById(gameId).get();
 	// 		BeanUtils.copyProperties(game, gameToUpdate, "id","game","games","code");                                                                                  
     //                 try {                    
-    //                     this.gameService.save(gameToUpdate);                    
+    //                     this.generalService.save(gameToUpdate);                    
                     
     //                 } catch (Exception ex) {
     //                     result.rejectValue("name", "duplicate", "already exists");
@@ -220,7 +227,7 @@ public class AdminController {
     //         return "welcome"; //da error creo que es por que request mapping de arriba
     //     }    
     //     }       
-    //     Iterable<Game> games = gameService.findAllPublic();
+    //     Iterable<Game> games = generalService.findAllPublic();
     //     modelMap.addAttribute("games", games);
     //     return view;
     // }

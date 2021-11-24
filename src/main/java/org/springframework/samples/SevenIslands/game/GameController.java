@@ -34,40 +34,6 @@ public class GameController {
 
     @Autowired	
 	private GeneralService generalService;
-
-    @GetMapping()
-    public String myRooms(ModelMap modelMap) {
-        String vista = "games/games";
-        generalService.insertIdUserModelMap(modelMap);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-                User currentUser = (User) authentication.getPrincipal();
-
-                // ADMIN
-                if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                        .anyMatch(x -> x.toString().equals("admin"))) {
-
-                    Iterable<Game> games = gameService.findAll();
-                    modelMap.addAttribute("games", games);
-                    return "games/RoomsAdmins";
-                }
-                // PLAYER
-                else {
-                    int currentPlayerId = playerService.getIdPlayerByName(currentUser.getUsername());
-                    Collection<Game> games = gameService.findGamesByPlayerId(currentPlayerId);
-                    modelMap.addAttribute("games", games);
-                    return "games/games";
-                }
-
-            } else
-              
-                return "/welcome";
-        }
-
-        return vista;
-    }
-
     
     //Games whereIPlayed
     @GetMapping("/playedByMe")
