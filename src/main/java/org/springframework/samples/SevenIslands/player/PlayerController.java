@@ -78,7 +78,7 @@ public class PlayerController {
             modelMap.addAttribute("player", player.get());
         }else{
             modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
+            view = "/error";
         }
         return view;
     }
@@ -92,7 +92,7 @@ public class PlayerController {
             modelMap.addAttribute("player", player.get());
         }else{
             modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
+            view = "/error";
         }
         return view;
     }
@@ -108,7 +108,7 @@ public class PlayerController {
             modelMap.addAttribute("player", player.get());
         }else{
             modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
+            view = "/error";
         }
         return view;
     }
@@ -125,7 +125,7 @@ public class PlayerController {
             modelMap.addAttribute("player", player.get());
         }else{
             modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
+            view = "/error";
         }
         return view;
     }
@@ -197,7 +197,7 @@ public class PlayerController {
                 model.addAttribute("player", player.get());
             }else{
                 model.addAttribute("message", "Player not found");
-                view = "/error"; //TODO: crear una vista de erro personalizada 
+                view = "/error";
             }
         }else if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
             User currentUser = (User) authentication.getPrincipal();
@@ -207,7 +207,7 @@ public class PlayerController {
                     model.addAttribute("player", player.get());
                 }else{
                     model.addAttribute("message", "Player not found");
-                    view = "/error"; //TODO: crear una vista de erro personalizada 
+                    view = "/error";
                 }
             }else{
                 view= "/error";
