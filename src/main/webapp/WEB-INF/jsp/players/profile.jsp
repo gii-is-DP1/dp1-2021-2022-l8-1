@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
-<sevenislands:profileLayout pageName="profile"> 
+<sevenislands:playerProfileLayout pageName="profile"> 
 
     <span id="left-section">
         <div id="profile-details">
@@ -62,4 +62,4 @@
         </div>
     </span>
 
-</sevenislands:profileLayout>
+</sevenislands:playerProfileLayout>

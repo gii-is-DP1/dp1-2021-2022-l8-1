@@ -33,7 +33,7 @@ public class AdminController {
     
     @GetMapping(path="/profile/{adminId}")
     public String profile(@PathVariable("adminId") int adminId, ModelMap modelMap){
-        String view = "admins/myProfile";
+        String view = "admins/profile";
         generalService.insertIdUserModelMap(modelMap);
         Optional<Admin> admin = adminService.findAdminById(adminId);
         if(admin.isPresent()){
