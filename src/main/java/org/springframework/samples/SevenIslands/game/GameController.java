@@ -39,7 +39,7 @@ public class GameController {
     @Autowired
     private AdminController adminController;
     
-    //Games whereIPlayed
+    
     @GetMapping("/playedByMe")
     public String roomsPlayedByMe(ModelMap modelMap) {
         String vista = "games/myRooms";
@@ -76,38 +76,9 @@ public class GameController {
     }
 
     @GetMapping(path = "/new")
-    public String crearJuego(Player player, ModelMap modelMap) {
+    public String createGame(Player player, ModelMap modelMap) {
         String view = "games/createOrUpdateGameForm"; 
         modelMap.addAttribute("game", new Game());
-        return view;
-    }
-
-    @PostMapping(path = "/save")
-    public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
-        String view = "games/lobby";
-        if (result.hasErrors()) {
-            modelMap.addAttribute("game", game);
-            return "games/createOrUpdateGameForm";
-        } else {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-            User currentUser = (User) authentication.getPrincipal();
-
-            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); 
-            // ESTO ES PARA QUE EN LA TABLA DE QUIEN ES EL CREADOR DE UN JUEGO SALGA DICHA RELACIÓN
-
-            Game juego = game;
-            Player jugador = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
-
-            juego.addPlayerinPlayers(jugador);
-            jugador.addGameinGames(juego);
-
-            gameService.save(juego);
-
-            modelMap.addAttribute("game", juego);
-            modelMap.addAttribute("player", jugador);
-
-        }
         return view;
     }
 
@@ -129,7 +100,7 @@ public class GameController {
     private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
 
     @GetMapping(path = "/edit/{gameId}")
-    public String actualizarJuego(@PathVariable("gameId") int gameId, ModelMap model) {
+    public String updateGame(@PathVariable("gameId") int gameId, ModelMap model) {
         Game game = gameService.findGameById(gameId).get();
         generalService.insertIdUserModelMap(model); 
         model.put("game", game);
@@ -137,7 +108,7 @@ public class GameController {
     }
 
     @GetMapping(path = "/{gameId}/lobby")
-    public String salaJuego(@PathVariable("gameId") int gameId, ModelMap model) {
+    public String lobby(@PathVariable("gameId") int gameId, ModelMap model) {
 
         String view = "games/lobby";
         generalService.insertIdUserModelMap(model);

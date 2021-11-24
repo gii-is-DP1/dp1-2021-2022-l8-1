@@ -96,7 +96,7 @@ public class AdminController {
 
     
     // @GetMapping(path = "/new")
-    // public String crearJuego(Player player,ModelMap modelMap) {
+    // public String createGame(Player player,ModelMap modelMap) {
     //     String view = "games/editarJuego"; // Hacer pagina
     //     modelMap.addAttribute("game", new Game());
     //     return view;
@@ -140,7 +140,7 @@ public class AdminController {
     // private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
 
     // @GetMapping(path = "/edit/{gameId}")
-    // public String actualizarJuego(@PathVariable("gameId") int gameId, ModelMap model) {
+    // public String updateGame(@PathVariable("gameId") int gameId, ModelMap model) {
     //     Game game = generalService.findGameById(gameId).get(); // optional puede ser error el import
     //     model.put("game", game);
     //     return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
