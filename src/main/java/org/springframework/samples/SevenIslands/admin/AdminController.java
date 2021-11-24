@@ -40,7 +40,7 @@ public class AdminController {
             modelMap.addAttribute("admin", admin.get());
         }else{
             modelMap.addAttribute("message", "admin not found");
-            view = "/error"; //TODO: crear una vista de error personalizada 
+            view = "/error";
         }
         return view;
     }
@@ -53,34 +53,9 @@ public class AdminController {
         return vista;
     }
 
-    // @GetMapping()
-    // public String myProfile(ModelMap modelMap) {
-    //     String vista = "admins/myProfile";
-        
-    //     Authentication authetication = SecurityContextHolder.getContext().getAuthentication();
-    //     if(authetication != null){
-    //         if(authetication.isAuthenticated() && authetication.getPrincipal() instanceof User){
-    //             User currentUser = (User)authetication.getPrincipal();
-                
-    //             Optional<Admin> admin = adminService.getAdminByName(currentUser.getUsername());
-
-    //             // System.out.println("\n\n\n\n" + admin.toString());
-                
-    //             modelMap.addAttribute("admin", admin.get());
-
-    //             return vista;
-
-    //     }else
-    //            return "/welcome"; //da error creo que es por que request mapping de arriba
-    // }
-
-    //     return vista;
-    // }
-
     private static final String VIEWS_ADMINS_CREATE_OR_UPDATE_FORM = "admins/createOrUpdateAdminForm";
 
     @GetMapping(value = "/profile/edit/{adminId}")
-
     public String updateAdmin(@PathVariable("adminId") int adminId, ModelMap modelMap) {
         generalService.insertIdUserModelMap(modelMap);
         Optional<Admin> admin = adminService.findAdminById(adminId); // optional puede ser error el import
@@ -88,7 +63,7 @@ public class AdminController {
             modelMap.addAttribute("admin", admin.get());
         }else{
             modelMap.addAttribute("message", "admin not found");
-            return "/error"; //TODO: crear una vista de error personalizada 
+            return "/error";
         }
         return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
     }
@@ -104,8 +79,8 @@ public class AdminController {
             
             Optional<Admin> adminToUpdate=this.adminService.findAdminById(adminId);
             if(!adminToUpdate.isPresent()){
-                model.addAttribute("message", "admin not found");
-                return "/error"; //TODO: crear una vista de error personalizada 
+                model.addAttribute("message", "Admin not found");
+                return "/error";
             }
 			BeanUtils.copyProperties(admin, adminToUpdate.get(),"id");                                                                                  
                     try {                    
