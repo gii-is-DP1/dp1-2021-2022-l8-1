@@ -33,7 +33,7 @@ public class BoardController {
 
     @GetMapping(path = "/{code}")
     public String board(@PathVariable("code") String code, ModelMap modelMap, HttpServletResponse response) {
-        String vista = "boards/board";
+        String view = "boards/board";
         gService.insertIdUserModelMap(modelMap);
         // modelMap.put("now", new Date());
 		modelMap.addAttribute("board",boardService.findById(1).get());
@@ -48,7 +48,7 @@ public class BoardController {
         //toArray()[0] because there is only going to be one game with that code as its UNIQUE
         modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).toArray()[0]);
 
-        return vista;
+        return view;
     }
 
     

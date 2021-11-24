@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
-import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -28,7 +27,7 @@ public class AdminController {
     @Autowired	
 	private GeneralService generalService;
 
-    @Autowired	
+    @Autowired
 	private GameService gameService;
     
     @GetMapping(path="/profile/{adminId}")
@@ -39,7 +38,7 @@ public class AdminController {
         if(admin.isPresent()){
             modelMap.addAttribute("admin", admin.get());
         }else{
-            modelMap.addAttribute("message", "admin not found");
+            modelMap.addAttribute("message", "Admin not found");
             view = "/error";
         }
         return view;
@@ -47,10 +46,10 @@ public class AdminController {
 
     @GetMapping(path="/rooms")
     public String rooms(ModelMap modelMap) {
-        String vista = "admins/rooms";
+        String view = "admins/rooms";
         Iterable<Game> games = gameService.findAll();
         modelMap.addAttribute("games", games);
-        return vista;
+        return view;
     }
 
     private static final String VIEWS_ADMINS_CREATE_OR_UPDATE_FORM = "admins/createOrUpdateAdminForm";
