@@ -118,6 +118,7 @@ public class PlayerController {
         String view = "players/roomsPlayed";
         generalService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
+
         if(player.isPresent()){
             Collection<Game> games = gameService.findGamesWhereIPlayerByPlayerId(player.get().getId());
             modelMap.addAttribute("games", games);

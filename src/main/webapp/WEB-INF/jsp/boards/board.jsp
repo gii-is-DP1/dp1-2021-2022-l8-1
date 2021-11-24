@@ -2,11 +2,11 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
 
-<SevenIslands:layout pageName="board">
+<sevenislands:layout pageName="board">
     
     
     <div id="top-section">
@@ -26,11 +26,11 @@
             </div>
         </div>
         <div class="col-md-8 playersList">
-            <SevenIslands:board board="${board}"/>
+            <sevenislands:board board="${board}"/>
             <!-- <c:forEach items="${chessBoard.pieces}" var="piece">
             	<game:piece size="100" piece="${piece}"/>
             	
             </c:forEach>  -->
         </div>
     </div>
-</SevenIslands:layout>
+</sevenislands:layout>

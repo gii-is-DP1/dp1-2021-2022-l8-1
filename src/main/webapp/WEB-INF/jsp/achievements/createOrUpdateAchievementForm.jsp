@@ -4,10 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
-<SevenIslands:layout pageName="achievements">
+<sevenislands:layout pageName="achievements">
 
     <h2>
         <c:if test="${achievement['new']}">New </c:if> Achievement 
@@ -20,10 +20,10 @@
             <form:form modelAttribute="achievement" class="form-horizontal" id="add-achievement-form" action="/achievements/save">
             <div class="form-group has-feedback">
              <div class="row">
-                    <SevenIslands:inputField label="MinValue" name="minValue"/>
-                    <SevenIslands:inputField label="Name" name="name"/>
-                    <SevenIslands:inputField label="Description" name="description"/>
-                    <SevenIslands:inputField label="Icon" name="icon"/>
+                    <sevenislands:inputField label="MinValue" name="minValue"/>
+                    <sevenislands:inputField label="Name" name="name"/>
+                    <sevenislands:inputField label="Description" name="description"/>
+                    <sevenislands:inputField label="Icon" name="icon"/>
                 </div>
                 <br>
                 <div class="row">
@@ -62,10 +62,10 @@
             <form:form modelAttribute="achievement" class="form-horizontal" id="add-achievement-form">
             <div class="form-group has-feedback">
                 <div class="row">
-                    <SevenIslands:inputField label="MinValue" name="minValue"/>
-                    <SevenIslands:inputField label="Name" name="name"/>
-                    <SevenIslands:inputField label="Description" name="description"/>
-                    <SevenIslands:inputField label="Icon" name="icon"/>
+                    <sevenislands:inputField label="MinValue" name="minValue"/>
+                    <sevenislands:inputField label="Name" name="name"/>
+                    <sevenislands:inputField label="Description" name="description"/>
+                    <sevenislands:inputField label="Icon" name="icon"/>
                 </div>
                 <br>
                 <div class="row">
@@ -135,4 +135,4 @@
     
         </script>
     
-</SevenIslands:layout>
+</sevenislands:layout>

@@ -2,9 +2,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
-<SevenIslands:layout pageName="games">
+<sevenislands:layout pageName="games">
     <jsp:attribute name="customScript">
         <script type="text/javascript">
             var result           = '';
@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="row">
-                                <SevenIslands:inputField label="Name of room" name="name" />
+                                <sevenislands:inputField label="Name of room" name="name" />
                                 <input type="hidden" name="code" id="roomCode"/>
                             </div>
                             <br>
@@ -77,7 +77,7 @@
                                 <c:out value="Name: ${game.name} - Room code: ${game.code} - Jugador Actual: ${game.actualPlayer}"/>
                             </div>
                         </div>
-                        <SevenIslands:inputField label="Name" name="name"/>
+                        <sevenislands:inputField label="Name" name="name"/>
                         <div class="row">
                             <label class="col-sm-2 control-label"
                                 for="privacity-input">Privacity
@@ -107,4 +107,4 @@
         </c:choose>
         
     </jsp:body>
-</SevenIslands:layout>
+</sevenislands:layout>
