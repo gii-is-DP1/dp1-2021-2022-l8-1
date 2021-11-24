@@ -125,7 +125,7 @@ public class AdminController {
     // }
 
     // @GetMapping(path = "/delete/{gameId}")
-    // public String borrarJuego(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+    // public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
     //     Optional<Game> game = generalService.findGameById(gameId); // optional puede ser error el import
     //     if (game.isPresent()) {
     //         generalService.delete(game.get());

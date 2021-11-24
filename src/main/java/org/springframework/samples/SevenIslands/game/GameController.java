@@ -48,7 +48,7 @@ public class GameController {
     }
 
     @GetMapping(path = "/delete/{gameId}")
-    public String borrarJuego(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+    public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Optional<Game> game = gameService.findGameById(gameId); 
         generalService.insertIdUserModelMap(modelMap);
         if (game.isPresent()) {
