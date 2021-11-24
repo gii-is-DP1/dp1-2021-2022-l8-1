@@ -18,11 +18,11 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
 	Collection<Player> findByGameId(@Param("gameId") int gameId) throws DataAccessException;
 
 
-	@Query("SELECT A FROM Player A INNER JOIN A.invitations P WHERE P.id = :playerId")
-	Collection<Player> findInvitationsByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
+	// @Query("SELECT A FROM Player A INNER JOIN A.invitations P WHERE P.id = :playerId")
+	// Collection<Player> findInvitationsByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 
-	@Query("SELECT A FROM Player A INNER JOIN A.friend_requests P WHERE P.id = :playerId")
-	Collection<Player> findRequestsByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
+	// @Query("SELECT A FROM Player A INNER JOIN A.friend_requests P WHERE P.id = :playerId")
+	// Collection<Player> findRequestsByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 
 	@Query("SELECT P FROM Player P WHERE P.id = :playerId")
 	Collection<Player> findWatchGameByPlayerId(@Param("playerId") int playerId) throws DataAccessException;

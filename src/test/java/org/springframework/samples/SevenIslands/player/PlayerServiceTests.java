@@ -77,37 +77,37 @@ public class PlayerServiceTests {
 
     }
 
-    @Test
-    public void shouldDeletePlayer(){
+    // @Test
+    // public void shouldDeletePlayer(){
 
-        Player player = new Player();
-        player.setFirstName("Antonio");
-        player.setSurname("García");
-        player.setEmail("antoniogar@gmail.com");
-        player.setProfilePhoto("www.foto.png");
+    //     Player player = new Player();
+    //     player.setFirstName("Antonio");
+    //     player.setSurname("García");
+    //     player.setEmail("antoniogar@gmail.com");
+    //     player.setProfilePhoto("www.foto.png");
 
-        User user = new User();
-        user.setUsername("antoniog11");
-        user.setPassword("4G4rc14");
-        user.setEnabled(true);
+    //     User user = new User();
+    //     user.setUsername("antoniog11");
+    //     user.setPassword("4G4rc14");
+    //     user.setEnabled(true);
 
-        player.setUser(user);
+    //     player.setUser(user);
     
-        //Similar to .savePlayer(player)
-        playerService.savePlayer(player);
-        //userService.saveUser(player.getUser());
-        //authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
+    //     //Similar to .savePlayer(player)
+    //     playerService.savePlayer(player);
+    //     //userService.saveUser(player.getUser());
+    //     //authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
 
-        int countBefore = playerService.playerCount();
+    //     int countBefore = playerService.playerCount();
         
-        playerService.delete(player);
+    //     playerService.delete(player);
 
-        int countAfter = playerService.playerCount();
+    //     int countAfter = playerService.playerCount();
 
 
-        assertNotEquals(countBefore, countAfter);
+    //     assertNotEquals(countBefore, countAfter);
 
-    }
+    // }
 
     @Test
     public void testFindPlayersByGameId() {

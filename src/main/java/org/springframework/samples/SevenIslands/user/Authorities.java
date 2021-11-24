@@ -18,7 +18,7 @@ import lombok.Setter;
 @Table(name = "authorities")
 public class Authorities extends BaseEntity{
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "username")
 	User user;
 	

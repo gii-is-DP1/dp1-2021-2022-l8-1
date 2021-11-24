@@ -79,16 +79,16 @@ public class PlayerService {
     }
 
     //Return invitations of a player with playerId=id
-    @Transactional
-    public Iterable<Player> findInvitationsByPlayerId(int id) {
-        return playerRepo.findInvitationsByPlayerId(id);
-    }
+    // @Transactional
+    // public Iterable<Player> findInvitationsByPlayerId(int id) {
+    //     return playerRepo.findInvitationsByPlayerId(id);
+    // }
 
-    //Return requests of a player with playerId=id
-    @Transactional
-    public Iterable<Player> findRequestsByPlayerId(int id) {
-        return playerRepo.findRequestsByPlayerId(id);
-    }
+    // //Return requests of a player with playerId=id
+    // @Transactional
+    // public Iterable<Player> findRequestsByPlayerId(int id) {
+    //     return playerRepo.findRequestsByPlayerId(id);
+    // }
 
      //Return watchGame of a player with playerId=id
      @Transactional
