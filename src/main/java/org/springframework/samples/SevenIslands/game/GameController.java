@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.admin.AdminController;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
@@ -34,6 +35,9 @@ public class GameController {
 
     @Autowired	
 	private GeneralService generalService;
+
+    @Autowired
+    private AdminController adminController;
     
     //Games whereIPlayed
     @GetMapping("/playedByMe")
@@ -117,7 +121,8 @@ public class GameController {
         } else {
             modelMap.addAttribute("message", "Game not Found!");
         }
-        String view = myRooms(modelMap);
+
+        String view = adminController.rooms(modelMap);
         return view;
     }
 

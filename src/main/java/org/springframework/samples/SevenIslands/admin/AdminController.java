@@ -46,7 +46,7 @@ public class AdminController {
     }
 
     @GetMapping(path="/rooms")
-    public String myRooms(ModelMap modelMap) {
+    public String rooms(ModelMap modelMap) {
         String vista = "admins/rooms";
         Iterable<Game> games = gameService.findAll();
         modelMap.addAttribute("games", games);
