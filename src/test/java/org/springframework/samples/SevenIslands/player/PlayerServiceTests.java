@@ -116,20 +116,20 @@ public class PlayerServiceTests {
         assertEquals(2, count);
     }
 
-    @Test
-    public void testFindInvitationsByPlayerId(){
-        Iterable<Player> players = playerService.findInvitationsByPlayerId(2);
-        long count = players.spliterator().getExactSizeIfKnown();
-        assertEquals(2, count);
-    }
+    // @Test
+    // public void testFindInvitationsByPlayerId(){
+    //     Iterable<Player> players = playerService.findInvitationsByPlayerId(2);
+    //     long count = players.spliterator().getExactSizeIfKnown();
+    //     assertEquals(2, count);
+    // }
 
-    @Test
-    public void testFindRequestsByPlayerId(){
-        Iterable<Player> players = playerService.findRequestsByPlayerId(3);
-        long count = players.spliterator().getExactSizeIfKnown();
-        assertEquals(1, count);
+    // @Test
+    // public void testFindRequestsByPlayerId(){
+    //     Iterable<Player> players = playerService.findRequestsByPlayerId(3);
+    //     long count = players.spliterator().getExactSizeIfKnown();
+    //     assertEquals(1, count);
 
-    }
+    // }
 
     @Test
     public void testFinPlayerByUsername(){

@@ -5,24 +5,33 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.general.GeneralService;
+import org.springframework.samples.SevenIslands.user.Authorities;
+import org.springframework.samples.SevenIslands.user.AuthoritiesService;
+// import org.springframework.samples.SevenIslands.user.User;
+
 import org.springframework.samples.SevenIslands.user.UserService;
+import org.springframework.samples.SevenIslands.web.CurrentUserController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.validation.BindingResult;
+
 
 @Controller
 @RequestMapping("/players")
@@ -37,11 +46,16 @@ public class PlayerController {
 
     @Autowired	
 	private UserService userService;
+    
+    @Autowired
+    private AuthoritiesService authoritiesService;
+
+    
 
     @GetMapping(path="/profile/{playerId}")
     public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "/players/profile";
-        generalService.insertIdUserModelMap(modelMap);
+        
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
@@ -49,6 +63,7 @@ public class PlayerController {
             modelMap.addAttribute("message", "Player not found");
             view = "/error"; //TODO: crear una vista de erro personalizada 
         }
+        generalService.insertIdUserModelMap(modelMap);
         return view;
     }
 
@@ -206,15 +221,34 @@ public class PlayerController {
 			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
+                    
                     Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
+                    int a = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
+                    String n = playerToUpdate.getUser().getUsername();
+ 
                     //borrar user antes de grabarlo en playerToUpdate
                     //validador
 			BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
                     try {                    
-                        // this.playerService.savePlayer(playerToUpdate);
-                        playerService.save(playerToUpdate);		
-		                //creating user
-		                userService.saveUser(playerToUpdate.getUser());
+                        //this.playerService.savePlayer(playerToUpdate);
+                        this.playerService.savePlayer(playerToUpdate);
+                        authoritiesService.deleteAuthorities(a);
+                        if(n != playerToUpdate.getUser().getUsername()){
+                           
+                            userService.delete(n);
+                        }
+
+                        
+                        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                        // User currentUser = (User) authentication.getPrincipal();
+				        // int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
+
+                        // System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa " + currentUser);
+                        // System.out.println("TUS MURTOSSSSSSSSSSSSSSSSSSSSSSSSS " + playerLoggedId);
+
+                      	
+		                // //creating user
+		                //userService.saveUser(playerToUpdate.getUser());                        
 		                               
                         
                     } catch (Exception ex) {
@@ -225,11 +259,15 @@ public class PlayerController {
                     .anyMatch(x -> x.toString().equals("admin"))){
                         return "redirect:/players";
                     }else{
+                        if(n != playerToUpdate.getUser().getUsername()){
+                            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+                            return "redirect:/welcome";
+                        }
                         return "redirect:/players/profile/{playerId}";
+                        
                     }
 		}
 	}
-
-
+    
     
 }
