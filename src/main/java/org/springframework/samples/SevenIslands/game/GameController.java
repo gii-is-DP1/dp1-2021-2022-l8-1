@@ -39,41 +39,6 @@ public class GameController {
     @Autowired
     private AdminController adminController;
     
-    
-    @GetMapping("/playedByMe")
-    public String roomsPlayedByMe(ModelMap modelMap) {
-        String vista = "games/myRooms";
-        generalService.insertIdUserModelMap(modelMap);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-                User currentUser = (User) authentication.getPrincipal();
-
-                if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                        .anyMatch(x -> x.toString().equals("admin"))) {
-
-                    Iterable<Game> games = gameService.findAll(); // ESTO BUSCA TODOS LOS JUEGOS, PORQUE SOY ADMIN
-                    modelMap.addAttribute("games", games);
-                    vista = "games/RoomsAdmins";
-                    
-                } else {
-                    int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL
-                                                                                               // JUGADOR QUE ESTA AHORA
-                                                                                               // MISMO CONECTADO
-                    
-                    List<Game> gameWhereIPlayed = gameService.findGamesWhereIPlayerByPlayerId(playerId);                                                                    
-                    
-                    modelMap.addAttribute("titletext", "Rooms where I played");
-                    modelMap.addAttribute("games", gameWhereIPlayed);
-                }
-                return vista;
-
-            } else
-                return "/welcome";
-        }
-
-        return vista;
-    }
 
     @GetMapping(path = "/new")
     public String createGame(Player player, ModelMap modelMap) {
