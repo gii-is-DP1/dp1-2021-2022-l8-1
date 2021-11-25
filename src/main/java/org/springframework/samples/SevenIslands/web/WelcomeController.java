@@ -83,7 +83,7 @@ public class WelcomeController {
 		model.put("title", "Seven Islands");
 		model.put("group", "L8-1 a.k.a. Dream Team");
 		
-		model.put("user", userService.findUser("test1").get().getUsername());
+		
 		
 		
 		return "welcome";
