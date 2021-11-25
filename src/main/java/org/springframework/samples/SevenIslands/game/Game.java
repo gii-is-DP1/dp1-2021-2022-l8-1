@@ -40,7 +40,7 @@ public class Game extends NamedEntity {
     
     @Column(name = "end_time") 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime endTime; //HABRIA QUE HACERLO CON UNA RESTA
+    private LocalDateTime endTime; //Do with a substraction
     
     @Column(name = "number_of_players")   
     private Integer numberOfPlayers;
@@ -70,7 +70,7 @@ public class Game extends NamedEntity {
     @Column(name="has_started")
     private boolean has_started;
     
-    //RELACION CON PLAYERS 
+    //RELATION WITH PLAYERS 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "games_players", joinColumns = @JoinColumn(name="game_id"), 
                 inverseJoinColumns = @JoinColumn(name="player_id"))

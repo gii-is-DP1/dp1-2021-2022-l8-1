@@ -62,11 +62,11 @@ public class GameController {
 
             User currentUser = (User) authentication.getPrincipal();
 
-            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); 
-            // ESTO ES PARA QUE EN LA TABLA DE QUIEN ES EL CREADOR DE UN JUEGO SALGA DICHA RELACIÓN
+            game.setPlayer(playerService.getPlayerByUsername(currentUser.getUsername()).stream().findFirst().get()); 
+            
 
             Game juego = game;
-            Player jugador = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
+            Player jugador = playerService.getPlayerByUsername(currentUser.getUsername()).stream().findFirst().get();
 
             juego.addPlayerinPlayers(jugador);
             jugador.addGameinGames(juego);
@@ -123,7 +123,7 @@ public class GameController {
 
             view = "games/lobby";
         } else {
-            view = "/errors"; // TODO
+            view = "/errors"; 
         }
 
         return view;

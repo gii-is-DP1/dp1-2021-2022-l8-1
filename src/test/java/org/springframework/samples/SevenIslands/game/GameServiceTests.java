@@ -61,8 +61,8 @@ public class GameServiceTests {
     }
     
     @Test
-    public void testFindGamesByPlayerId(){  // counts the games where the player as created
-        Iterable<Game> games = gameService.findGamesByPlayerId(1);
+    public void testfindByOwnerId(){  // counts the games where the player as created
+        Iterable<Game> games = gameService.findByOwnerId(1);
         long count = games.spliterator().getExactSizeIfKnown();
         assertEquals(4, count);
     }
@@ -112,8 +112,8 @@ public class GameServiceTests {
 
      
     @Test
-    public void testFindGamesWherePlayerPlayed(){  // HU7 counts the games where the player played
-        Iterable<Game> games = gameService.findGamesWhereIPlayerByPlayerId(1);
+    public void testFindGamesWhereIPlayedByPlayedId(){  // HU7 counts the games where the player played
+        Iterable<Game> games = gameService.findGamesByPlayerId(1);
         long count = games.spliterator().getExactSizeIfKnown();
         assertEquals(5, count);
     }
