@@ -14,9 +14,9 @@
         <div class="form-group has-feedback">
             <sevenislands:inputField label="First Name" name="firstName"/>
             <sevenislands:inputField label="Surname" name="surname"/>
-            <sevenislands:inputField label="Password" name="user.password"/>
             <sevenislands:inputField label="Email" name="email"/>
             <sevenislands:inputField label="Username" name="user.username"/>
+            <sevenislands:inputField label="Password" name="user.password"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

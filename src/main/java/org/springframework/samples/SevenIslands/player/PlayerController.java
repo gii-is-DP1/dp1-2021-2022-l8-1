@@ -280,9 +280,9 @@ public class PlayerController {
                         this.playerService.savePlayer(playerToUpdate);
                         authoritiesService.deleteAuthorities(a);
                         if(n != playerToUpdate.getUser().getUsername()){
-                           
+                        
                             userService.delete(n);
-                        }
+                        }      
 
                     } catch (Exception ex) {
                         result.rejectValue("name", "duplicate", "already exists");
