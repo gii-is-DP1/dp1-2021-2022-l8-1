@@ -70,6 +70,11 @@ public class AuthoritiesService {
 		authoritiesRepository.deleteById(id);
 	}
 
+	@Transactional
+	public long count(){
+		return authoritiesRepository.count();
+	}
+
 
 	
 

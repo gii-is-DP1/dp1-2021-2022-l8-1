@@ -117,5 +117,6 @@ public class GameServiceTests {
         long count = games.spliterator().getExactSizeIfKnown();
         assertEquals(5, count);
     }
+
     
 }

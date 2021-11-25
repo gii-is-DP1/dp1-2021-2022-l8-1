@@ -2,6 +2,7 @@ package org.springframework.samples.SevenIslands.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
@@ -212,30 +213,6 @@ public class PlayerServiceTests {
        
     }
 
-    // @Test
-    // public void testUpdateUsername(){ //HISTORIA DE USUARIO H17 CASO DE USO NEGATIVO 2
-    //     try{
-    //         Player p = playerService.findPlayerById(1).get();
-    //         p.getUser().setUsername("test2");
-            
-    //     }
-    //     catch(Exception e){
-           
-    //     }
-        
-        
-       
-    // }
-
-    // @Test
-    // public void deleteUser(){ //HISTORIA DE USUARIO H17 CASO DE USO POSITIVO 3
-    //     Player p = playerService.findPlayerById(1).get();
-    //     playerService.delete(p);
-        
-    //     assertTrue(playerService.findPlayerById(1)==null);
-       
-    // }
-
 
     @Test
     public void shouldDeleteUser(){
@@ -256,6 +233,39 @@ public class PlayerServiceTests {
     
         assertNotEquals(countBefore, countAfter);
 
+    }
+
+    
+    @Test
+    public void testAuthorities(){
+
+        long countBefore = authoritiesService.count();
+
+        Authorities a = new Authorities();
+        a.setAuthority("player");
+        authoritiesService.saveAuthorities(a);
+
+       
+
+        authoritiesService.deleteAuthorities(a.getId());
+        long countAfter = authoritiesService.count();
+
+        assertEquals(countBefore, countAfter);
+
+    }
+
+    @Test
+    public void testAuthorities2(){
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            authoritiesService.saveAuthorities("pepito", "player");
+        });
+    
+        String expectedMessage = "pepito not found";
+        String actualMessage = exception.getMessage();
+    
+        assertThat(actualMessage.contains(expectedMessage));
+        
     }
 
 }
