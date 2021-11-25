@@ -115,7 +115,7 @@ public class GameServiceTests {
     public void testFindGamesWherePlayerPlayed(){  // HU7 counts the games where the player played
         Iterable<Game> games = gameService.findGamesWhereIPlayerByPlayerId(1);
         long count = games.spliterator().getExactSizeIfKnown();
-        assertEquals(4, count);
+        assertEquals(5, count);
     }
     
 }
