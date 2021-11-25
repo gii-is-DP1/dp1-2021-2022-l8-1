@@ -1,21 +1,16 @@
 package org.springframework.samples.SevenIslands.achievement;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.model.NamedEntity;
 import org.springframework.samples.SevenIslands.player.Player;
 
