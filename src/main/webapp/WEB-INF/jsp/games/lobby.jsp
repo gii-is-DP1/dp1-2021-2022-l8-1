@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
-<SevenIslands:layout pageName="Lobby">
+<sevenislands:layout pageName="Lobby">
     <jsp:body>
 
         <div class="row text-center"><h2>Lobby</h2></div>
@@ -67,4 +67,4 @@
         </form:form>
     </jsp:body>
 
-</SevenIslands:layout>
+</sevenislands:layout>

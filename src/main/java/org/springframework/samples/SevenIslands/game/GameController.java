@@ -8,8 +8,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.admin.AdminController;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.player.Player;
+import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,85 +35,17 @@ public class GameController {
     private PlayerService playerService;
 
     @Autowired	
-	private GeneralService gService;
+	private GeneralService generalService;
 
-    //Games createdByMe
-    @GetMapping()
-    public String myRooms(ModelMap modelMap) {
-        String vista = "games/myRooms";
-        gService.insertIdUserModelMap(modelMap);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-                User currentUser = (User) authentication.getPrincipal();
+    @Autowired
+    private AdminController adminController;
 
-                if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                        .anyMatch(x -> x.toString().equals("admin"))) {
-
-                    Iterable<Game> games = gameService.findAll(); // ESTO BUSCA TODOS LOS JUEGOS, PORQUE SOY ADMIN
-                    modelMap.addAttribute("games", games);
-                    vista = "games/RoomsAdmins";
-                    
-                } else {
-                    int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL
-                                                                                               // JUGADOR QUE ESTA AHORA
-                                                                                               // MISMO CONECTADO
-
-                    Collection<Game> games = gameService.findGamesByPlayerId(playerId); // ESTO BUSCA TODOS LOS JUEGOS DE LOS QUE SOY DUEÑO                               
-
-                    modelMap.addAttribute("titletext", "Rooms created by me");
-                    modelMap.addAttribute("games", games);
-                }
-                return vista;
-
-            } else
-              
-                return "/welcome";
-
-        }
-
-        return vista;
-    }
-
+    @Autowired
+    private PlayerController playerController;
     
-    //Games whereIPlayed
-    @GetMapping("/playedByMe")
-    public String roomsPlayedByMe(ModelMap modelMap) {
-        String vista = "games/myRooms";
-        gService.insertIdUserModelMap(modelMap);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-                User currentUser = (User) authentication.getPrincipal();
-
-                if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                        .anyMatch(x -> x.toString().equals("admin"))) {
-
-                    Iterable<Game> games = gameService.findAll(); // ESTO BUSCA TODOS LOS JUEGOS, PORQUE SOY ADMIN
-                    modelMap.addAttribute("games", games);
-                    vista = "games/RoomsAdmins";
-                    
-                } else {
-                    int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // AQUI CONSIGO EL ID DEL
-                                                                                               // JUGADOR QUE ESTA AHORA
-                                                                                               // MISMO CONECTADO
-                    
-                    List<Game> gameWhereIPlayed = gameService.findGamesWhereIPlayerByPlayerId(playerId);                                                                    
-                    
-                    modelMap.addAttribute("titletext", "Rooms where I played");
-                    modelMap.addAttribute("games", gameWhereIPlayed);
-                }
-                return vista;
-
-            } else
-                return "/welcome";
-        }
-
-        return vista;
-    }
 
     @GetMapping(path = "/new")
-    public String crearJuego(Player player, ModelMap modelMap) {
+    public String createGame(Player player, ModelMap modelMap) {
         String view = "games/createOrUpdateGameForm"; 
         modelMap.addAttribute("game", new Game());
         return view;
@@ -147,34 +81,35 @@ public class GameController {
     }
 
     @GetMapping(path = "/delete/{gameId}")
-    public String borrarJuego(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+    public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Optional<Game> game = gameService.findGameById(gameId); 
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         if (game.isPresent()) {
             gameService.delete(game.get());
             modelMap.addAttribute("message", "Game successfully deleted!");
         } else {
             modelMap.addAttribute("message", "Game not Found!");
         }
-        String view = myRooms(modelMap);
+
+        String view = adminController.rooms(modelMap);
         return view;
     }
 
     private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
 
     @GetMapping(path = "/edit/{gameId}")
-    public String actualizarJuego(@PathVariable("gameId") int gameId, ModelMap model) {
+    public String updateGame(@PathVariable("gameId") int gameId, ModelMap model) {
         Game game = gameService.findGameById(gameId).get();
-        gService.insertIdUserModelMap(model); 
+        generalService.insertIdUserModelMap(model); 
         model.put("game", game);
         return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
     }
 
     @GetMapping(path = "/{gameId}/lobby")
-    public String salaJuego(@PathVariable("gameId") int gameId, ModelMap model) {
+    public String lobby(@PathVariable("gameId") int gameId, ModelMap model) {
 
         String view = "games/lobby";
-        gService.insertIdUserModelMap(model);
+        generalService.insertIdUserModelMap(model);
         if (gameService.findGameById(gameId).isPresent()) {
             Game game = gameService.findGameById(gameId).get(); 
             model.addAttribute("game", game);
@@ -232,24 +167,16 @@ public class GameController {
     public String publicRooms(ModelMap modelMap) {
 
         String view = "/welcome";
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
 
-        Iterable<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-                // If the user has admin perms then:
-                if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                        .anyMatch(x -> x.toString().equals("admin"))) {
-                    view = "games/RoomsAdmins"; 
-                    games = gameService.findAll();
-                    modelMap.addAttribute("games", games);
+                boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x -> x.toString().equals("admin"));
+                if (isAdmin) {
+                    view = adminController.rooms(modelMap);
                 } else {
-
-                    view = "games/publicRooms";
-
-                    games = gameService.findAllPublic();
-                    modelMap.addAttribute("games", games);
+                    view = playerController.games(modelMap);
                 }
             } else {
 
@@ -264,7 +191,7 @@ public class GameController {
     @GetMapping(path = "/rooms/{code}")
     public String gameByCode(@PathVariable("code") String code, ModelMap modelMap) {
         String view = "/welcome";
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         Iterable<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -287,7 +214,7 @@ public class GameController {
     @GetMapping(path = "/rooms/playing")
     public String currentlyPlaying(ModelMap modelMap) {
 
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         Collection<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {

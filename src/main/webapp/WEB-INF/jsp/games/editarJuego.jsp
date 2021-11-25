@@ -2,10 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
-<SevenIslands:layout pageName="Games">
+<sevenislands:layout pageName="Games">
     
     <jsp:attribute name="customScript">
         <script type="text/javascript">
@@ -33,7 +33,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="row">
-                            <SevenIslands:inputField label="Name of room" name="name" />
+                            <sevenislands:inputField label="Name of room" name="name" />
                             <input type="hidden" name="code" id="roomCode"/>
                         </div>
                         <br>
@@ -62,4 +62,4 @@
         </form:form>
     </jsp:body>
 
-</SevenIslands:layout>
+</sevenislands:layout>

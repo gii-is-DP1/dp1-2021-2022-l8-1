@@ -1,5 +1,5 @@
 <%@ tag trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="SevenIslandsCss" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ attribute name="pageName" required="true" %>
@@ -8,10 +8,10 @@
 
 <!doctype html>
 <html>
-<SevenIslandsCss:htmlHeader/>
+<sevenislands:htmlHeader/>
 
 <body>
-<SevenIslandsCss:bodyHeader menuName="${pageName}"/>
+<sevenislands:bodyHeader menuName="${pageName}"/>
 
 
 <div id="body-section">
@@ -25,23 +25,26 @@
     </c:if>
 
     <div id="top-section">
-        <a href="/players/player/profile/${player.id}">
+        <a href="/admins/profile/${admin.id}">
             <img id="profile-avatar" src="/resources/images/profile-photo.png">
         </a>
-        <a href="/players/player/profile/${player.id}">
-            <h2><c:out value="${player.user.username}"/></h2>
+        <a href="/admins/profile/${admin.id}">
+            <h2><c:out value="${admin.user.username}"/></h2>
         </a>
+        <h2 id="admin-tag">Admin</h2>
 
-        <h2 id="sub-title"><c:out value="${subtitle}"></c:out></h2>
+        <h2 id="sub-title"><c:out value="${subtitle}"/></h2>
     </div>
 
-    <jsp:doBody/>
+    <div id="mid-section">
+        <jsp:doBody/>
+    </div>
 
     <div id="bottom-section"></div>
 
 </div>
 
-<SevenIslandsCss:footer/>
+<sevenislands:footer/>
 <jsp:invoke fragment="customScript" />
 
 </body>

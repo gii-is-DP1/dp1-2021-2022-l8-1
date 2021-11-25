@@ -182,7 +182,7 @@ public class AchievementController {
     @GetMapping(path = "/{id}") 
     public String listMyAchievements(ModelMap modelMap, @PathVariable("id") int id) {
         
-        String vista = "achievements/MyAchievements";
+        String view = "achievements/MyAchievements";
         gService.insertIdUserModelMap(modelMap);
     
         Iterable<Achievement> arch = achievementService.findByPlayerId(id);//logros completados
@@ -202,7 +202,7 @@ public class AchievementController {
         modelMap.addAttribute("conseguidos", conseguidos); 
         modelMap.addAttribute("noc", sol);  
         
-        return vista;
+        return view;
     }
 }
         

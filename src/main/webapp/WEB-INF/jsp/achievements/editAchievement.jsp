@@ -2,10 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
-<SevenIslands:layout pageName="Achievements">
+<sevenislands:layout pageName="Achievements">
     <jsp:attribute name="customScript">
         <script>
             $(function () {
@@ -20,10 +20,10 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="row">
-                            <SevenIslands:inputField label="Name" name="name"/>
-                            <SevenIslands:inputField label="Description" name="description"/>
-                            <SevenIslands:inputField label="MinValue" name="minValue"/>
-                            <SevenIslands:inputField label="Icon" name="icon"/>
+                            <sevenislands:inputField label="Name" name="name"/>
+                            <sevenislands:inputField label="Description" name="description"/>
+                            <sevenislands:inputField label="MinValue" name="minValue"/>
+                            <sevenislands:inputField label="Icon" name="icon"/>
                         </div>
                         <br>
                         <div class="row">
@@ -66,4 +66,4 @@
 
     </jsp:body>
 
-</SevenIslands:layout>
+</sevenislands:layout>

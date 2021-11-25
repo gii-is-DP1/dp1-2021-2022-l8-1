@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,6 +13,8 @@ import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.game.Game;
+import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
@@ -22,15 +25,14 @@ import org.springframework.samples.SevenIslands.web.CurrentUserController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.validation.BindingResult;
 
 
 @Controller
@@ -42,44 +44,16 @@ public class PlayerController {
     private PlayerService playerService;
 
     @Autowired	
-	private GeneralService generalService;
+	  private GeneralService generalService;
+
+    @Autowired
+    private GameService gameService;
 
     @Autowired	
-	private UserService userService;
+	  private UserService userService;
     
     @Autowired
     private AuthoritiesService authoritiesService;
-
-    
-
-    @GetMapping(path="/profile/{playerId}")
-    public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
-        String view = "/players/profile";
-        
-        Optional<Player> player = playerService.findPlayerById(playerId);
-        if(player.isPresent()){
-            modelMap.addAttribute("player", player.get());
-        }else{
-            modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
-        }
-        generalService.insertIdUserModelMap(modelMap);
-        return view;
-    }
-
-    @GetMapping(path="/profile/{playerId}/moreStatistics")
-    public String moreStatistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
-        String view = "players/moreStatistics";
-        generalService.insertIdUserModelMap(modelMap);
-        Optional<Player> player = playerService.findPlayerById(playerId);
-        if(player.isPresent()){
-            modelMap.addAttribute("player", player.get());
-        }else{
-            modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
-        }
-        return view;
-    }
 
     @GetMapping()
     public String listadoPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("begin") Integer begin, @PathParam("end") Integer end){        //For admins
@@ -109,6 +83,76 @@ public class PlayerController {
         }
         return view;
 
+    }
+  
+    @GetMapping(path="/profile/{playerId}")
+    public String profile(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "/players/profile";
+        
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error"; //TODO: crear una vista de erro personalizada 
+        }
+        generalService.insertIdUserModelMap(modelMap);
+        return view;
+    }
+
+    @GetMapping(path="/profile/{playerId}/statistics")
+    public String statistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "players/statistics";
+        generalService.insertIdUserModelMap(modelMap);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error";
+        }
+        return view;
+    }
+
+    @GetMapping(path="/rooms")
+    public String games(ModelMap modelMap) {
+        String view = "games/publicRooms";
+        Iterable<Game> games = gameService.findAllPublic();
+        modelMap.addAttribute("games", games);
+        return view;
+    }
+
+    @GetMapping(path="/profile/{playerId}/rooms/created")
+    public String gamesCreated(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "players/roomsCreated";
+        generalService.insertIdUserModelMap(modelMap);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            Collection<Game> games = gameService.findGamesByPlayerId(player.get().getId());
+            modelMap.addAttribute("games", games);
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error";
+        }
+        return view;
+    }
+
+    @GetMapping(path="/profile/{playerId}/rooms/played")
+    public String gamesPlayed(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "players/roomsPlayed";
+        generalService.insertIdUserModelMap(modelMap);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+
+        if(player.isPresent()){
+            Collection<Game> games = gameService.findGamesWhereIPlayerByPlayerId(player.get().getId());
+            modelMap.addAttribute("games", games);
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error";
+        }
+        return view;
     }
 
     //COMPROBAR
@@ -178,7 +222,7 @@ public class PlayerController {
                 model.addAttribute("player", player.get());
             }else{
                 model.addAttribute("message", "Player not found");
-                view = "/error"; //TODO: crear una vista de erro personalizada 
+                view = "/error";
             }
         }else if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
             User currentUser = (User) authentication.getPrincipal();
@@ -188,7 +232,7 @@ public class PlayerController {
                     model.addAttribute("player", player.get());
                 }else{
                     model.addAttribute("message", "Player not found");
-                    view = "/error"; //TODO: crear una vista de erro personalizada 
+                    view = "/error";
                 }
             }else{
                 view= "/error";
