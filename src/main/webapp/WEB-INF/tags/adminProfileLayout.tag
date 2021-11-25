@@ -31,6 +31,7 @@
         <a href="/admins/profile/${admin.id}">
             <h2><c:out value="${admin.user.username}"/></h2>
         </a>
+        <h2 id="admin-tag">Admin</h2>
 
         <h2 id="sub-title"><c:out value="${subtitle}"/></h2>
     </div>
