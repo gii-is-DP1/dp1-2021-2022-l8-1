@@ -51,6 +51,35 @@ public class GameController {
         return view;
     }
 
+    @PostMapping(path = "/save")
+    public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
+        String view = "games/lobby";
+        if (result.hasErrors()) {
+            modelMap.addAttribute("game", game);
+            return "games/createOrUpdateGameForm";
+        } else {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            User currentUser = (User) authentication.getPrincipal();
+
+            game.setPlayer(playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get()); 
+            // ESTO ES PARA QUE EN LA TABLA DE QUIEN ES EL CREADOR DE UN JUEGO SALGA DICHA RELACIÓN
+
+            Game juego = game;
+            Player jugador = playerService.getPlayerByName(currentUser.getUsername()).stream().findFirst().get();
+
+            juego.addPlayerinPlayers(jugador);
+            jugador.addGameinGames(juego);
+
+            gameService.save(juego);
+
+            modelMap.addAttribute("game", juego);
+            modelMap.addAttribute("player", jugador);
+
+        }
+        return view;
+    }
+
     @GetMapping(path = "/delete/{gameId}")
     public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Optional<Game> game = gameService.findGameById(gameId); 
