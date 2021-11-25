@@ -39,9 +39,7 @@
                             <p><strong><u>Friends</strong></u></p>
                             <br>
                             <br>
-                            <c:forEach items="${player.players_friends}" var="friend">
-                                <c:out value="${friend.user.username}"></c:out><br>
-                            </c:forEach>
+                            
                         </div>
 
                     </div>
@@ -60,7 +58,7 @@
                 <br><br><br><br>
                 <div class="row text-center">
 
-                    <a href="/games" class="btn btn-default">Cancel</a>
+                    <a href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="/boards/${game.code}" class="btn btn-default">Start match</a>
 
