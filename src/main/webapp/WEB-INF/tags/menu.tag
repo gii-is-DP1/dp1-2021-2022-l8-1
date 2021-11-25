@@ -197,13 +197,7 @@
 				</ul>
 			</div>
 		</sec:authorize>
-
-
 	</div>
-
-	
-
-	
 </nav>
 
 
