@@ -4,14 +4,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.SevenIslands.game.Game;
+import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
 import org.springframework.samples.SevenIslands.user.UserService;
@@ -77,37 +83,31 @@ public class PlayerServiceTests {
 
     }
 
-    // @Test
-    // public void shouldDeletePlayer(){
+    @Test
+    public void shouldDeletePlayer(){
 
-    //     Player player = new Player();
-    //     player.setFirstName("Antonio");
-    //     player.setSurname("García");
-    //     player.setEmail("antoniogar@gmail.com");
-    //     player.setProfilePhoto("www.foto.png");
+        int playerId=1;
 
-    //     User user = new User();
-    //     user.setUsername("antoniog11");
-    //     user.setPassword("4G4rc14");
-    //     user.setEnabled(true);
+        int countBefore=playerService.playerCount();
 
-    //     player.setUser(user);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            Player p = player.get();
+            Collection<Game> lg = p.getGames();
+            Collection<Game> col = lg.stream().filter(x->x.getPlayer().getId()!=playerId).collect(Collectors.toCollection(ArrayList::new));
+            col.stream().forEach(x->x.deletePlayerOfGame(p));
+
+            p.deleteGames(col);
     
-    //     //Similar to .savePlayer(player)
-    //     playerService.savePlayer(player);
-    //     //userService.saveUser(player.getUser());
-    //     //authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
+            playerService.delete(player.get());
+        }
 
-    //     int countBefore = playerService.playerCount();
-        
-    //     playerService.delete(player);
-
-    //     int countAfter = playerService.playerCount();
+        int countAfter=playerService.playerCount();
 
 
-    //     assertNotEquals(countBefore, countAfter);
+        assertNotEquals(countBefore, countAfter);
 
-    // }
+    }
 
     @Test
     public void testFindPlayersByGameId() {
@@ -235,4 +235,29 @@ public class PlayerServiceTests {
     //     assertTrue(playerService.findPlayerById(1)==null);
        
     // }
+
+
+    @Test
+    public void shouldDeleteUser(){
+
+        User user = new User();
+        user.setUsername("antoniog11");
+        user.setPassword("4G4rc14");
+        user.setEnabled(true);
+
+        userService.saveUser(user);
+
+        int countBefore = userService.userCount();
+
+        userService.delete(user.getUsername());
+
+        int countAfter = userService.userCount();
+
+    
+        assertNotEquals(countBefore, countAfter);
+
+    }
+
 }
+
+
