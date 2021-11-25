@@ -1,27 +1,21 @@
 package org.springframework.samples.SevenIslands.achievement;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
-import org.springframework.stereotype.Controller;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.security.core.userdetails.User;
 
 @Controller
 @RequestMapping("/achievements")
@@ -31,16 +25,13 @@ public class AchievementController {
     private AchievementService achievementService;
 
     @Autowired
-    private AdminService adminService;
-
-    @Autowired	
-	GeneralService gService;
+	private GeneralService generalService;
 
     //Vistas solo para admins:
     @GetMapping()
     public String listAchievements(ModelMap modelMap){
         String view = "achievements/listAchievements";
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         //si accede un admin:
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
@@ -60,7 +51,7 @@ public class AchievementController {
     public String createAchievement(ModelMap modelMap){
         // String view="achievements/editAchievement";
         String view= "achievements/createOrUpdateAchievementForm";
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     modelMap.addAttribute("achievement", new Achievement());
@@ -104,7 +95,7 @@ public class AchievementController {
     @GetMapping(path="/delete/{achievementId}")
     public String deleteAchievement(@PathVariable("achievementId") int achievementId, ModelMap modelMap){
         String view= "achievements/listAchievements";
-        gService.insertIdUserModelMap(modelMap);
+        generalService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
@@ -129,7 +120,7 @@ public class AchievementController {
     @GetMapping(path="/edit/{achievementId}")
     public String updateAchievement(@PathVariable("achievementId") int achievementId, ModelMap model) {
         String view = VIEWS_ACHIEVEMENTS_CREATE_OR_UPDATE_FORM;
-        gService.insertIdUserModelMap(model);
+        generalService.insertIdUserModelMap(model);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Achievement achievement = achievementService.findAchievementById(achievementId).get();
@@ -178,31 +169,5 @@ public class AchievementController {
 		}
 	}
 
-    //Vistas para jugadores
-    @GetMapping(path = "/{id}") 
-    public String listMyAchievements(ModelMap modelMap, @PathVariable("id") int id) {
-        
-        String view = "achievements/myAchievements";
-        gService.insertIdUserModelMap(modelMap);
-    
-        Iterable<Achievement> arch = achievementService.findByPlayerId(id);//logros completados
-        Iterable<Achievement> arch2 = achievementService.findAll();//logros totales
-        
-        List<Achievement> totales = new ArrayList<>();
-        List<Achievement> conseguidos = new ArrayList<>();
-        for(Achievement a : arch2){
-            totales.add(a);
-        }
-        for(Achievement a : arch){
-            conseguidos.add(a);
-        }
-        List<Achievement> sol = totales.stream().filter(x->!conseguidos.contains(x)).collect(Collectors.toList());
-
-
-        modelMap.addAttribute("conseguidos", conseguidos); 
-        modelMap.addAttribute("noc", sol);  
-        
-        return view;
-    }
 }
         
