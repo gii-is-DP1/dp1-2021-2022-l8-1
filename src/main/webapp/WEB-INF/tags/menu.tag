@@ -24,7 +24,7 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<sevenislands:menuItem url="/games"
+				<sevenislands:menuItem url="/games/rooms"
 					title="Enter rooms page">
 					<span>Rooms</span>
 				</sevenislands:menuItem>

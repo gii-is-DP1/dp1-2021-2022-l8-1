@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.player.Player;
+import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,6 +39,9 @@ public class GameController {
 
     @Autowired
     private AdminController adminController;
+
+    @Autowired
+    private PlayerController playerController;
     
 
     @GetMapping(path = "/new")
@@ -136,26 +140,18 @@ public class GameController {
         String view = "/welcome";
         generalService.insertIdUserModelMap(modelMap);
 
-        Iterable<Game> games;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-                // If the user has admin perms then:
-                if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                        .anyMatch(x -> x.toString().equals("admin"))) {
-                    view = "games/RoomsAdmins"; 
-                    games = gameService.findAll();
-                    modelMap.addAttribute("games", games);
+                Boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x -> x.toString().equals("admin"));
+                if (isAdmin) {
+                    adminController.rooms(modelMap);
                 } else {
-
-                    view = "games/publicRooms";
-
-                    games = gameService.findAllPublic();
-                    modelMap.addAttribute("games", games);
+                    playerController.games(modelMap);
                 }
             } else {
 
-                return "redirect:/welcome"; 
+                return "/welcome"; 
 
             }
         }

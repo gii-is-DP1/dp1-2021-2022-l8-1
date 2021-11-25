@@ -97,6 +97,14 @@ public class PlayerController {
         return view;
     }
 
+    @GetMapping(path="/rooms")
+    public String games(ModelMap modelMap) {
+        String view = "games/publicRooms";
+        Iterable<Game> games = gameService.findAllPublic();
+        modelMap.addAttribute("games", games);
+        return view;
+    }
+
     @GetMapping(path="/profile/{playerId}/rooms/created")
     public String gamesCreated(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/roomsCreated";
