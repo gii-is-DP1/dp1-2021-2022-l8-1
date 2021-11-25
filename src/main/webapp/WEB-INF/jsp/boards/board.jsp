@@ -27,9 +27,8 @@
         </div>
         <div class="col-md-8 playersList">
             <sevenislands:board board="${board}"/>
-            <!-- <c:forEach items="${chessBoard.pieces}" var="piece">
-            	<game:piece size="100" piece="${piece}"/>
-            	
+            <!-- <c:forEach items="${board.cells}" var="cell">
+            	<game:cell size="100" cell="${cell}"/>
             </c:forEach>  -->
         </div>
     </div>

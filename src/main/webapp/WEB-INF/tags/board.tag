@@ -2,6 +2,17 @@
  description="Board to be rendered" %>
 <canvas id="canvas" width="${board.width}" height="${board.height}"> your browser does not support canvas</canvas>
 <img id="source" src="${board.background}" style="display:none">
+<img id="BOAT" src="/resources/images/cards/Boat.png" style="display:none">
+<img id="DOUBLON" src="/resources/images/cards/Doublon.png" style="display:none">
+<img id="GOLDEN_CUP" src="/resources/images/cards/GoldeCup.png" style="display:none">
+<img id="RUBY" src="/resources/images/cards/Ruby.png" style="display:none">
+<img id="DIAMOND" src="/resources/images/cards/Diamond.png" style="display:none">
+<img id="PEARL_NECKLACE" src="/resources/images/cards/PearlNecklace.png" style="display:none">
+<img id="CROWN" src="/resources/images/cards/Crown.png" style="display:none">
+<img id="MESSAGE_BOTTLE" src="/resources/images/cards/MessageBottle.png" style="display:none">
+<img id="BARREL_OF_RUM" src="/resources/images/cards/BarrelOfRum.png" style="display:none">
+<img id="STIR" src="/resources/images/cards/Stir.png" style="display:none">
+<img id="SWORD" src="/resources/images/cards/Sword.png" style="display:none">
 <script type="text/javascript">
     window.onload = function() {
         var canvas = document.getElementById("canvas");

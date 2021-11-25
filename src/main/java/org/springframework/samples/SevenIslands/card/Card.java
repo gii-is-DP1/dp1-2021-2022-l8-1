@@ -28,6 +28,7 @@ public class Card extends BaseEntity {
     @NotEmpty
     private CARD_TYPE cardType;
 
+
     @ManyToMany(mappedBy = "cards")
 	private Set<Player> players;
     

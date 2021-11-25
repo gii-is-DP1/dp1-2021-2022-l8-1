@@ -57,6 +57,7 @@ INSERT INTO achievements(id, name, description, icon, min_value, achievement_typ
 
 -- CELLS
 INSERT INTO cells(id, x_position, y_position, card) VALUES (1,'0','0','DOUBLON');
+INSERT INTO cells(id, x_position, y_position, card) VALUES (2,'0','0','CROWN');
 
 -- ISLANDS
 INSERT INTO islands(id,island_num) VALUES (1,1);
