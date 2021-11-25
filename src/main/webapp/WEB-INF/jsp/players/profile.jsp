@@ -30,6 +30,11 @@
         </button>
         <button id="edit-prof-btn" 
                 class="btn btn-default"
+                onclick="location.href = '/players/profile/${player.id}/achievements';">
+            Achievements
+        </button>
+        <button id="edit-prof-btn" 
+                class="btn btn-default"
                 onclick="location.href = '/players/edit/${player.id}';">
             Edit profile
         </button>

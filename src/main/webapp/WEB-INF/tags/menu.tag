@@ -53,12 +53,19 @@
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					<span>New game</span>
 				</sevenislands:menuItem>
-			</sec:authorize>
+				</sec:authorize>
 			
-			<sec:authorize access="hasAuthority('admin')">
-				<sevenislands:menuItem url="/players" title="Create new room for playing">
+				<sec:authorize access="hasAuthority('admin')">
+				<sevenislands:menuItem url="/players" title="View list of players">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					<span>Players</span>
+				</sevenislands:menuItem>
+				</sec:authorize>
+
+				<sec:authorize access="hasAuthority('admin')">
+				<sevenislands:menuItem url="/achievements" title="View list of achievements">
+					<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+					<span>Achievements</span>
 				</sevenislands:menuItem>
 				</sec:authorize>
 			</ul>
