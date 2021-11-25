@@ -17,6 +17,6 @@ public class CellServiceTests {
     @Test
     public void testCountWithInitialData(){
         int count = cellService.cellCount();
-        assertEquals(count,1);
+        assertEquals(count,2);
     }
 }
