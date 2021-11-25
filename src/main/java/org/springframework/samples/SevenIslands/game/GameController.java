@@ -143,15 +143,15 @@ public class GameController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-                Boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x -> x.toString().equals("admin"));
+                boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x -> x.toString().equals("admin"));
                 if (isAdmin) {
-                    adminController.rooms(modelMap);
+                    view = adminController.rooms(modelMap);
                 } else {
-                    playerController.games(modelMap);
+                    view = playerController.games(modelMap);
                 }
             } else {
 
-                return "/welcome"; 
+                return "redirect:/welcome"; 
 
             }
         }
