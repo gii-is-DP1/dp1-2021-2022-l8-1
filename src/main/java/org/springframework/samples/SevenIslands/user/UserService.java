@@ -32,12 +32,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
+	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	public UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	// @Autowired
+	// public UserService(UserRepository userRepository) {
+	// 	this.userRepository = userRepository;
+	// }
 
 	@Transactional
 	public void saveUser(User user) throws DataAccessException {
@@ -45,7 +46,13 @@ public class UserService {
 		userRepository.save(user);
 	}
 	
+	@Transactional
 	public Optional<User> findUser(String username) {
 		return userRepository.findById(username);
+	}
+
+	@Transactional
+	public void delete(String username){
+		userRepository.deleteUser(username);
 	}
 }

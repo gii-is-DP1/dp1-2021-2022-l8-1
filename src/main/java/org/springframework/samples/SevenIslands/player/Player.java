@@ -101,16 +101,6 @@ public class Player extends Person{
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
 
-  public void addAchievement(Achievement a){
-    this.achievements.add(a);
-    a.getPlayers().add(this);
-  }
-
-  public void deleteAchievement(Achievement a) {
-    this.achievements.remove(a);
-    a.getPlayers().remove(this);
-  }
-
   //RELACION CON CARTAS
   @ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
@@ -128,7 +118,7 @@ public class Player extends Person{
 	private Set<Forum> forums;
 
   //RELACION CON GAMES 
-	@ManyToMany(mappedBy = "players")
+	@ManyToMany(mappedBy = "players",cascade = CascadeType.ALL) //PROBLEMA AQUI
 	private Collection<Game> games;
 
   public void addGameinGames(Game game){
@@ -137,23 +127,24 @@ public class Player extends Person{
     this.setGames(g);
   }
 
-  //RELACION CON PLAYER (Invitaciones)
-  @ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
-	 		inverseJoinColumns = @JoinColumn(name = "invited_id"))
-  private Collection<Player> invitations;
+  // //RELACION CON PLAYER (Invitaciones)
+  // @ManyToMany(fetch = FetchType.LAZY)
+	// @JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
+	//  		inverseJoinColumns = @JoinColumn(name = "invited_id"))
+  // private Collection<Player> invitations;
 
-  //RELACION CON PLAYER DE REQUEST
-  @ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
-			inverseJoinColumns = @JoinColumn(name = "requested_id"))
-  private Collection<Player> friend_requests;
+  // //RELACION CON PLAYER DE REQUEST
+  // @ManyToMany(fetch = FetchType.LAZY)
+	// @JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
+	// 		inverseJoinColumns = @JoinColumn(name = "requested_id"))
+  // private Collection<Player> friend_requests;
 
-  //RELACION CON PLAYER (Amigos)
-  @ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "players_friends", joinColumns = @JoinColumn(name = "friend_id"),
-			inverseJoinColumns = @JoinColumn(name = "friend_identifier"))
-  private List<Player> players_friends;
+  // //RELACION CON PLAYER (Amigos)
+  // @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	// @JoinTable(name = "players_friends", joinColumns = @JoinColumn(name = "friend_id"),
+	// 		inverseJoinColumns = @JoinColumn(name = "friend_identifier"))
+  // private List<Player> players_friends;
+
 
 
   //RELACION CON USER
