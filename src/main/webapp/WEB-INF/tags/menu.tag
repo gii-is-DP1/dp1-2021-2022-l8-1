@@ -24,169 +24,42 @@
 		
 		
 		<sec:authorize access="hasAuthority('player')">
-		<div class="navbar-collapse collapse" id="main-navbar">
-
-			<sec:authorize access="hasAnyAuthority('admin', 'player')">
-			<ul class="nav navbar-nav">
-
-				<sevenislands:menuItem url="/games/rooms"
-					title="Enter rooms page">
-					<span>Rooms</span>
-				</sevenislands:menuItem>
-
-				<sevenislands:menuItem url="#"
-					title="Enter ranking page">
-					<span>Ranking</span>
-				</sevenislands:menuItem>
-
-				<sevenislands:menuItem url="#"
-					title="Enter forum page">
-					<span>Forum</span>
-				</sevenislands:menuItem>
-
-				<sevenislands:menuItem url="#"
-					title="Enter viewer mode page">
-					<span>Viewer Mode</span>
-				</sevenislands:menuItem>
-
-				<sec:authorize access="hasAuthority('player')">
-					<sevenislands:menuItem url="/games/new" title="Create new room for playing">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						<span>New game</span>
-					</sevenislands:menuItem>
-				</sec:authorize>
-
-			</ul>
-			</sec:authorize>
-
-			<ul class="nav navbar-nav navbar-right">
-				<sec:authorize access="!isAuthenticated()">
-					<li><a href="<c:url value="/login" />">Login</a></li>
-					<li><a href="<c:url value="/users/new" />">Register</a></li>
-				</sec:authorize>
-				<sec:authorize access="isAuthenticated()">
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
-							<strong><sec:authentication property="name" /></strong> <span
-							class="glyphicon glyphicon-chevron-down"></span>
-					</a>
-						<ul class="dropdown-menu">
-							<li>
-								<div class="navbar-login">
-									<div class="row">
-										<div class="col-lg-4">
-											<p class="text-center">
-												<span class="glyphicon glyphicon-user icon-size"></span>
-											</p>
-										</div>
-										<div class="col-lg-8">
-											<p class="text-left">
-												<strong><sec:authentication property="name" /></strong>
-											</p>
-											<p class="text-left">
-												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm">Logout</a>
-											</p>
-											<p>
-												<a href="/players/profile/${id}" class="btn btn-primary btn-block">My Profile</a>
-											</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="divider"></li>
-
-						</ul></li>
-				</sec:authorize>
-			</ul>
-		</div>
-		</sec:authorize>
-
-		<sec:authorize access="hasAuthority('admin')">
-		<div class="navbar-collapse collapse" id="main-navbar">
-			<ul class="nav navbar-nav">
-				
-				<sevenislands:menuItem active="${name eq 'rooms'}" url="/games"
-					title="Enter rooms page">
-					<span>Rooms</span>
-				</sevenislands:menuItem>
-
-				<sevenislands:menuItem active="${name eq 'ranking'}" url="#"
-					title="Enter ranking page">
-					<span>Ranking</span>
-				</sevenislands:menuItem>
-
-				<sevenislands:menuItem active="${name eq 'forum'}" url="#"
-					title="Enter forum page">
-					<span>Forum</span>
-				</sevenislands:menuItem>
-
-				<sevenislands:menuItem active="${name eq 'viewerMode'}" url="#"
-					title="Enter viewer mode page">
-					<span>Viewer Mode</span>
-				</sevenislands:menuItem>
-
-				<sevenislands:menuItem active="${name eq 'newgame'}" url="/games/new"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-					<span>New game</span>
-				</sevenislands:menuItem>
-				
-
-			</ul>
-
-
-
-			<ul class="nav navbar-nav navbar-right">
-				<sec:authorize access="!isAuthenticated()">
-					<li><a href="<c:url value="/login" />">Login</a></li>
-					<li><a href="<c:url value="/users/new" />">Register</a></li>
-				</sec:authorize>
-				<sec:authorize access="isAuthenticated()">
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
-							<strong><sec:authentication property="name" /></strong> <span
-							class="glyphicon glyphicon-chevron-down"></span>
-					</a>
-						<ul class="dropdown-menu">
-							<li>
-								<div class="navbar-login">
-									<div class="row">
-										<div class="col-lg-4">
-											<p class="text-center">
-												<span class="glyphicon glyphicon-user icon-size"></span>
-											</p>
-										</div>
-										<div class="col-lg-8">
-											<p class="text-left">
-												<strong><sec:authentication property="name" /></strong>
-											</p>
-											<p class="text-left">
-												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm">Logout</a>
-											</p>
-											<p>
-												<a href="/players/profile/${id}" class="btn btn-primary btn-block">My Profile</a>
-											</p>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li class="divider"></li>
-
-						</ul></li>
-				</sec:authorize>
-			</ul>
-		</div>
-		</sec:authorize>
-
-		<sec:authorize access="!isAuthenticated()">
 			<div class="navbar-collapse collapse" id="main-navbar">
+
+				<sec:authorize access="hasAnyAuthority('admin', 'player')">
+					<ul class="nav navbar-nav">
+
+						<sevenislands:menuItem url="/games/rooms"
+							title="Enter rooms page">
+							<span>Rooms</span>
+						</sevenislands:menuItem>
+
+						<sevenislands:menuItem url="#"
+							title="Enter ranking page">
+							<span>Ranking</span>
+						</sevenislands:menuItem>
+
+						<sevenislands:menuItem url="#"
+							title="Enter forum page">
+							<span>Forum</span>
+						</sevenislands:menuItem>
+
+						<sevenislands:menuItem url="#"
+							title="Enter viewer mode page">
+							<span>Viewer Mode</span>
+						</sevenislands:menuItem>
+
+						<sec:authorize access="hasAuthority('player')">
+							<sevenislands:menuItem url="/games/new" title="Create new room for playing">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								<span>New game</span>
+							</sevenislands:menuItem>
+						</sec:authorize>
+
+					</ul>
+				</sec:authorize>
+
 				<ul class="nav navbar-nav navbar-right">
-					<sec:authorize access="!isAuthenticated()">
-						<li><a href="<c:url value="/login" />">Login</a></li>
-						<li><a href="<c:url value="/users/new" />">Register</a></li>
-					</sec:authorize>
 					<sec:authorize access="isAuthenticated()">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
@@ -210,16 +83,117 @@
 													<a href="<c:url value="/logout" />"
 														class="btn btn-primary btn-block btn-sm">Logout</a>
 												</p>
-												<p>
-													<a href="/players/profile/${id}" class="btn btn-primary btn-block">My Profile</a>
-												</p>
+												<sec:authorize access="hasAuthority('admin')">
+													<p>
+														<a href="/admins/profile/${id}" class="btn btn-primary btn-block">My Profile</a>	
+													</p>
+												</sec:authorize>
+												<sec:authorize access="hasAuthority('player')">
+													<p>
+														<a href="/players/profile/${id}" class="btn btn-primary btn-block">My Profile</a>	
+													</p>
+												</sec:authorize>
+												
 											</div>
 										</div>
 									</div>
 								</li>
 								<li class="divider"></li>
+
 							</ul></li>
 					</sec:authorize>
+				</ul>
+			</div>
+		</sec:authorize>
+
+		<sec:authorize access="hasAuthority('admin')">
+			<div class="navbar-collapse collapse" id="main-navbar">
+				<ul class="nav navbar-nav">
+					
+					<sevenislands:menuItem active="${name eq 'rooms'}" url="/games/rooms"
+						title="Enter rooms page">
+						<span>Rooms</span>
+					</sevenislands:menuItem>
+
+					<sevenislands:menuItem active="${name eq 'ranking'}" url="#"
+						title="Enter ranking page">
+						<span>Ranking</span>
+					</sevenislands:menuItem>
+
+					<sevenislands:menuItem active="${name eq 'forum'}" url="#"
+						title="Enter forum page">
+						<span>Forum</span>
+					</sevenislands:menuItem>
+
+					<sevenislands:menuItem active="${name eq 'viewerMode'}" url="#"
+						title="Enter viewer mode page">
+						<span>Viewer Mode</span>
+					</sevenislands:menuItem>
+
+					<sevenislands:menuItem active="${name eq 'newgame'}" url="/games/new"
+						title="trigger a RuntimeException to see how it is handled">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						<span>New game</span>
+					</sevenislands:menuItem>
+					
+
+				</ul>
+
+
+
+				<ul class="nav navbar-nav navbar-right">
+					<sec:authorize access="isAuthenticated()">
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
+								<strong><sec:authentication property="name" /></strong> <span
+								class="glyphicon glyphicon-chevron-down"></span>
+						</a>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="navbar-login">
+										<div class="row">
+											<div class="col-lg-4">
+												<p class="text-center">
+													<span class="glyphicon glyphicon-user icon-size"></span>
+												</p>
+											</div>
+											<div class="col-lg-8">
+												<p class="text-left">
+													<strong><sec:authentication property="name" /></strong>
+												</p>
+												<p class="text-left">
+													<a href="<c:url value="/logout" />"
+														class="btn btn-primary btn-block btn-sm">Logout</a>
+												</p>		
+
+												<sec:authorize access="hasAuthority('admin')">
+													<p>
+														<a href="/admins/profile/${id}" class="btn btn-primary btn-block">My Profile</a>	
+													</p>
+												</sec:authorize>
+												<sec:authorize access="hasAuthority('player')">
+													<p>
+														<a href="/players/profile/${id}" class="btn btn-primary btn-block">My Profile</a>	
+													</p>
+												</sec:authorize>
+						
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="divider"></li>
+
+							</ul></li>
+					</sec:authorize>
+				</ul>
+			</div>
+		</sec:authorize>
+
+		<sec:authorize access="!isAuthenticated()">
+			<div class="navbar-collapse collapse" id="main-navbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="<c:url value="/login" />">Login</a></li>
+					<li><a href="<c:url value="/users/new" />">Register</a></li>
 				</ul>
 			</div>
 		</sec:authorize>
