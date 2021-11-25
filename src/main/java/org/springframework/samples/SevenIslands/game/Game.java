@@ -89,6 +89,10 @@ public class Game extends NamedEntity {
         
     }
 
+    public void deletePlayerOfGame(Player player){
+        this.players.remove(player);
+    }
+
     @ManyToOne(optional=false)
     private Player player;
    

@@ -127,6 +127,10 @@ public class Player extends Person{
     this.setGames(g);
   }
 
+  public void deleteGames(Collection<Game> g){
+    this.games.removeAll(g);
+  }
+
   // //RELACION CON PLAYER (Invitaciones)
   // @ManyToMany(fetch = FetchType.LAZY)
 	// @JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
