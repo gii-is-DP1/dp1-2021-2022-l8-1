@@ -54,7 +54,7 @@ public class PlayerController {
     private AchievementService achievementService;
 
     @GetMapping()
-    public String listadoPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("begin") Integer begin, @PathParam("end") Integer end){        //For admins
+    public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("begin") Integer begin, @PathParam("end") Integer end){        //For admins
         String view ="players/listPlayers";
         generalService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
@@ -91,7 +91,7 @@ public class PlayerController {
             modelMap.addAttribute("player", player.get());
         }else{
             modelMap.addAttribute("message", "Player not found");
-            view = "/error"; //TODO: crear una vista de erro personalizada 
+            view = "/error"; 
         }
         generalService.insertIdUserModelMap(modelMap);
         return view;
@@ -148,7 +148,7 @@ public class PlayerController {
         generalService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
-            Collection<Game> games = gameService.findGamesByPlayerId(player.get().getId());
+            Collection<Game> games = gameService.findByOwnerId(player.get().getId());
             modelMap.addAttribute("games", games);
             modelMap.addAttribute("player", player.get());
         }else{
@@ -165,7 +165,7 @@ public class PlayerController {
         Optional<Player> player = playerService.findPlayerById(playerId);
 
         if(player.isPresent()){
-            Collection<Game> games = gameService.findGamesWhereIPlayerByPlayerId(player.get().getId());
+            Collection<Game> games = gameService.findGamesByPlayerId(player.get().getId());
             modelMap.addAttribute("games", games);
             modelMap.addAttribute("player", player.get());
         }else{
@@ -175,35 +175,7 @@ public class PlayerController {
         return view;
     }
 
-    //COMPROBAR
-    @GetMapping(path="/new")
-    public String createPlayer(ModelMap modelMap){
-        String view="players/editPlayer";
-        generalService.insertIdUserModelMap(modelMap);
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
-                    modelMap.addAttribute("player", new Player());
-        }else{
-            view = "/errors";
-        }
-        return view;
-    }
-
-    //COMPROBAR
-    @PostMapping(path="/save")
-    public String savePlayer(@Valid Player player, BindingResult result, ModelMap modelMap){
-        String view= "players/listPlayers";
-        if(result.hasErrors()){
-            System.out.print(result.getAllErrors());
-            modelMap.addAttribute("player", player);
-            return "players/editPlayer";
-        }else{
-            playerService.save(player);
-            modelMap.addAttribute("message", "Player succesfully saved!");
-            view=listadoPlayers(modelMap, null, 0, 9);
-        }
-        return view;
-    }
+  
 
     @GetMapping(path="/delete/{playerId}")
     public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap){
@@ -223,11 +195,11 @@ public class PlayerController {
                         playerService.delete(player.get());
                         modelMap.addAttribute("message", "Player successfully deleted!");
 
-                        return listadoPlayers(modelMap, null, 0, 9);
+                        return listPlayers(modelMap, null, 0, 9);
 
                     }else{
                         modelMap.addAttribute("message", "Player not found");
-                        view=listadoPlayers(modelMap, null, 0, 9);
+                        view=listPlayers(modelMap, null, 0, 9);
                     }
         }else{
             view = "/errors";
@@ -308,9 +280,9 @@ public class PlayerController {
                         this.playerService.savePlayer(playerToUpdate);
                         authoritiesService.deleteAuthorities(a);
                         if(n != playerToUpdate.getUser().getUsername()){
-                           
+                        
                             userService.delete(n);
-                        }
+                        }      
 
                     } catch (Exception ex) {
                         result.rejectValue("name", "duplicate", "already exists");

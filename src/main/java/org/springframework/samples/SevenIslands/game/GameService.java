@@ -56,14 +56,14 @@ public class GameService {
     }
 
     @Transactional
-    public Collection<Game> findGamesByPlayerId(int id){
-        return gameRepo.findGamesByPlayerId(id);
+    public Collection<Game> findByOwnerId(int id){ //Find games where im a owner
+        return gameRepo.findByOwnerId(id);
     }
 
     
     @Transactional
-    public List<Game> findGamesWhereIPlayerByPlayerId(int id){
-        return gameRepo.findGamesWhereIPlayedByPlayerId(id);
+    public List<Game> findGamesByPlayerId(int id){ //Find games where the player with this Id have played
+        return gameRepo.findGamesByPlayerId(id);
     }
     
     @Transactional

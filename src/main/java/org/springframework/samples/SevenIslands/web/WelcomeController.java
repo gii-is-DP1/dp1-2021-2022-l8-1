@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WelcomeController {
 	
-	//OJO QUE ESTO ES POR AHORA
+	
 	@Autowired	
 	GameService gameService;
 
@@ -30,7 +30,7 @@ public class WelcomeController {
 	
 
 	
-	//HASTA AQUI 
+	 
 
 
 	  @GetMapping({"/","/welcome"})

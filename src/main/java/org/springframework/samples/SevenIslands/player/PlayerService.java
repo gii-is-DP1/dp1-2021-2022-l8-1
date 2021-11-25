@@ -127,8 +127,8 @@ public class PlayerService {
     }
 
     @Transactional(readOnly = true)
-    public Collection<Player> getPlayerByName(String n) {
-        return playerRepo.findPlayerByName(n); //PUESTO DE PRUEBA
+    public Collection<Player> getPlayerByUsername(String n) {
+        return playerRepo.findPlayerByUsername(n); //PUESTO DE PRUEBA
 
     }
 

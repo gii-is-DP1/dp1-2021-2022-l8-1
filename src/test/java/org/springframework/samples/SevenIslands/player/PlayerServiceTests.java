@@ -134,7 +134,7 @@ public class PlayerServiceTests {
 
     @Test
     public void testFinPlayerByUsername(){
-        int count = playerService.getPlayerByName("test2").size();
+        int count = playerService.getPlayerByUsername("test2").size();
         assertEquals(1,count);
     }
 
@@ -175,23 +175,23 @@ public class PlayerServiceTests {
         assertEquals(1, players.spliterator().getExactSizeIfKnown());
     }
 
-    //Historias de usuario
+    //USER´S HISTORIES
 
     @Test
-    public void testCountAllPlayers() { //HISTORIA DE USUARIO H16 CASO DE USO POSITIVO
+    public void testCountAllPlayers() { // H16 - POSITIVE 1
         long count = playerService.findAll().spliterator().getExactSizeIfKnown();
         assertEquals(count, 3);
     }
 
     @Test
-    public void testCountPlayerWithEspecificWordInUsername() { //HISTORIA DE USUARIO H17 CASO DE USO POSITIVO 2
+    public void testCountPlayerWithEspecificWordInUsername() { //H17 -POSITIVE 2
         Iterable<Player> a = playerService.findAll();
         long n = StreamSupport.stream(a.spliterator(), false).filter(x->x.getUser().getUsername().contains("test")).count();
         assertEquals(n, 3);
     }
 
     @Test
-    public void testUpdateUserFirstName(){ //HISTORIA DE USUARIO H17 CASO DE USO POSITIVO 3
+    public void testUpdateUserFirstName(){ //H17 - POSITIVE 3
         Player p = playerService.findPlayerById(1).get();
         String n = p.getFirstName();
         
@@ -203,7 +203,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testUpdateUserSurName(){ //HISTORIA DE USUARIO H17 CASO DE USO POSITIVO 3
+    public void testUpdateUserSurName(){ //H17 - POSITIVE 3
         Player p = playerService.findPlayerById(1).get();
         String m = p.getSurname();
         p.setSurname("Diaz Salgado");
