@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
+import org.springframework.samples.SevenIslands.user.AuthoritiesService;
+import org.springframework.samples.SevenIslands.user.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -29,6 +32,12 @@ public class AdminController {
 
     @Autowired
 	private GameService gameService;
+
+    @Autowired
+    private AuthoritiesService authoritiesService;
+
+    @Autowired	
+    private UserService userService;
     
     @GetMapping(path="/profile/{adminId}")
     public String profile(@PathVariable("adminId") int adminId, ModelMap modelMap){
@@ -77,17 +86,35 @@ public class AdminController {
 		else {
             
             Optional<Admin> adminToUpdate=this.adminService.findAdminById(adminId);
+        
+            
             if(!adminToUpdate.isPresent()){
                 model.addAttribute("message", "Admin not found");
                 return "/error";
             }
+            int a = adminToUpdate.get().getUser().getAuthorities().iterator().next().getId();
+            String n = adminToUpdate.get().getUser().getUsername();
+
 			BeanUtils.copyProperties(admin, adminToUpdate.get(),"id");                                                                                  
                     try {                    
-                        this.adminService.save(adminToUpdate.get());  
+                        this.adminService.save(adminToUpdate.get());
+                        userService.saveUser(adminToUpdate.get().getUser());
+		                
+		                authoritiesService.saveAuthorities(adminToUpdate.get().getUser().getUsername(), "admin");  
+                        authoritiesService.deleteAuthorities(a);
+                        if(n != adminToUpdate.get().getUser().getUsername()){
+                           
+                            userService.delete(n);
+                        }
                         
                     } catch (Exception ex) {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM ;
+                    }
+
+                    if(n != adminToUpdate.get().getUser().getUsername()){
+                        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+                        return "redirect:/welcome";
                     }
 			return "redirect:/admins/profile/" + adminId;
 		}
