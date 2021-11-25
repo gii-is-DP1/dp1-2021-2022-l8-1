@@ -36,7 +36,7 @@ VALUES ('Prueba0', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY, CR
 
  INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity,has_started, start_time) 
  VALUES ('Prueba4', 'ABCD120', '3,2,1', 3, 1, 1 ,49,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','1,3,9', 2, 'PRIVATE', true, '2021-11-18 23:01:00');
--- TODO: AQUI HAY QUE AÑADIR ATRIBUTOS NUEVOS METIDOS
+-- TODO: AQUI HAY QUE QUITAR ATRIBUTOS NUEVOS METIDOS
 
 -- BOARDS
 INSERT INTO boards(id,background,height,width) VALUES (1,'/resources/images/board.jpg',644,527);
@@ -88,15 +88,8 @@ INSERT INTO comments(id, message) VALUES (1, 'I agree');
 -- PLAYERS-ACHIEVEMENTS
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1); --ESTA TABLA ME DA LOS LOGROS QUE TENGO COMPLETADOS
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
-
--- -- PLAYERS-INVITATIONS
--- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
--- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (3, 2);
--- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (2, 3);
-
--- -- PLAYERS-REQUESTS
--- INSERT INTO players_requests(friend_request_id, requested_id) VALUES (1, 2);
--- INSERT INTO players_requests(friend_request_id, requested_id) VALUES (2, 3);
+INSERT INTO players_achievements(player_id, achievement_id) VALUES (2, 1);
+INSERT INTO players_achievements(player_id, achievement_id) VALUES (3, 2);
 
 -- PLAYERS-CARDS
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 1);
@@ -121,11 +114,25 @@ INSERT INTO topics_comments(topic_id, comment_id) VALUES (1, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (1, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (1, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (2, 2);
+INSERT INTO games_players(game_id, player_id) VALUES (2, 3);
+INSERT INTO games_players(game_id, player_id) VALUES (2, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (3, 3);
 INSERT INTO games_players(game_id, player_id) VALUES (4, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (4, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 1);
+INSERT INTO games_players(game_id, player_id) VALUES (5, 2);
+
+
+
+-- -- PLAYERS-INVITATIONS
+-- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
+-- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (3, 2);
+-- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (2, 3);
+
+-- -- PLAYERS-REQUESTS
+-- INSERT INTO players_requests(friend_request_id, requested_id) VALUES (1, 2);
+-- INSERT INTO players_requests(friend_request_id, requested_id) VALUES (2, 3);
 
 -- -- PLAYERS-FRIENDS
 -- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 2);

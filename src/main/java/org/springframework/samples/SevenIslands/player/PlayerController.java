@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +73,6 @@ public class PlayerController {
                     if(end==null){
                         end=9;
                     }
-
                     
                     modelMap.addAttribute("filterName", filterName);
                     modelMap.addAttribute("begin", begin);
@@ -193,8 +193,18 @@ public class PlayerController {
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Player> player = playerService.findPlayerById(playerId);
                     if(player.isPresent()){
+                        Player p = player.get();
+                        Collection<Game> lg = p.getGames();
+                        Collection<Game> col = lg.stream().filter(x->x.getPlayer().getId()!=playerId).collect(Collectors.toCollection(ArrayList::new));
+                        col.stream().forEach(x->x.deletePlayerOfGame(p));
+
+                        p.deleteGames(col);
+                
                         playerService.delete(player.get());
                         modelMap.addAttribute("message", "Player successfully deleted!");
+
+                        return listadoPlayers(modelMap, null, 0, 9);
+
                     }else{
                         modelMap.addAttribute("message", "Player not found");
                         view=listadoPlayers(modelMap, null, 0, 9);
@@ -282,19 +292,6 @@ public class PlayerController {
                             userService.delete(n);
                         }
 
-                        
-                        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                        // User currentUser = (User) authentication.getPrincipal();
-				        // int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
-
-                        // System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa " + currentUser);
-                        // System.out.println("TUS MURTOSSSSSSSSSSSSSSSSSSSSSSSSS " + playerLoggedId);
-
-                      	
-		                // //creating user
-		                //userService.saveUser(playerToUpdate.getUser());                        
-		                               
-                        
                     } catch (Exception ex) {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
