@@ -1,20 +1,32 @@
 package org.springframework.samples.SevenIslands.configuration;
+import java.util.List;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.boot.autoconfigure.web.ErrorProperties;
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class CustomErrorController implements ErrorController {
-    
+public class CustomErrorController extends BasicErrorController{
+
+
+    public CustomErrorController(ErrorAttributes errorAttributes, ErrorProperties errorProperties) {
+        super(errorAttributes, errorProperties);
+        //TODO Auto-generated constructor stub
+    }
+
     @Override
     public String getErrorPath() {
-    return "/error";
+        return "/error";
     }
-    /*
+
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request) {
         // get error status
@@ -25,12 +37,14 @@ public class CustomErrorController implements ErrorController {
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "errors/error-404";
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return "error-500";
+                return "errors/error-500";
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
-                return "error-403";
+                return "errors/error-403";
             }
         }
         // display generic error
-        return "error";
-    }*/
+        return "errors/error";
+    }
+
+
 }

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ExceptionHandlerConfiguration 
 {
-	@Autowired
+	@Autowired(required = true)
 	private BasicErrorController errorController;
     // add any exceptions/validations/binding problems
 
