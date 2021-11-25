@@ -89,14 +89,14 @@ INSERT INTO comments(id, message) VALUES (1, 'I agree');
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1); --ESTA TABLA ME DA LOS LOGROS QUE TENGO COMPLETADOS
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
 
--- PLAYERS-INVITATIONS
-INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
-INSERT INTO players_invitations(invitation_id, invited_id) VALUES (3, 2);
-INSERT INTO players_invitations(invitation_id, invited_id) VALUES (2, 3);
+-- -- PLAYERS-INVITATIONS
+-- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
+-- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (3, 2);
+-- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (2, 3);
 
--- PLAYERS-REQUESTS
-INSERT INTO players_requests(friend_request_id, requested_id) VALUES (1, 2);
-INSERT INTO players_requests(friend_request_id, requested_id) VALUES (2, 3);
+-- -- PLAYERS-REQUESTS
+-- INSERT INTO players_requests(friend_request_id, requested_id) VALUES (1, 2);
+-- INSERT INTO players_requests(friend_request_id, requested_id) VALUES (2, 3);
 
 -- PLAYERS-CARDS
 INSERT INTO players_cards(player_id, card_id) VALUES (1, 1);
@@ -127,10 +127,10 @@ INSERT INTO games_players(game_id, player_id) VALUES (4, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (4, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 1);
 
--- PLAYERS-FRIENDS
-INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 2);
-INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 3);
-INSERT INTO players_friends(friend_id, friend_identifier) VALUES (2, 1);
-INSERT INTO players_friends(friend_id, friend_identifier) VALUES (2, 3);
-INSERT INTO players_friends(friend_id, friend_identifier) VALUES (3, 1);
-INSERT INTO players_friends(friend_id, friend_identifier) VALUES (3, 2);
+-- -- PLAYERS-FRIENDS
+-- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 2);
+-- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 3);
+-- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (2, 1);
+-- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (2, 3);
+-- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (3, 1);
+-- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (3, 2);

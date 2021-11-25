@@ -7,6 +7,7 @@
 
 <SevenIslands:layout pageName="home">
     <h2><fmt:message key="welcome"/></h2>
+    
 
     <p>
     <h2><c:out value="${now}"/></h2>
@@ -28,4 +29,34 @@
             <img class="img-responsive" src="${petsImage}"/>
         </div>
     </div>
+
+    <script>
+        var face0=new Image()
+        face0.src="https://www.lawebdelprogramador.com/usr/147000/147685/527560a9ce32f-dado1.png"
+        var face1=new Image()
+        face1.src="https://www.lawebdelprogramador.com/usr/147000/147685/527560a9d15f6-dado2.png"
+        var face2=new Image()
+        face2.src="https://www.lawebdelprogramador.com/usr/147000/147685/527560a9d48bd-dado3.png"
+        var face3=new Image()
+        face3.src="https://www.lawebdelprogramador.com/usr/147000/147685/527560a9d7bc5-dado4.png"
+        var face4=new Image()
+        face4.src="https://www.lawebdelprogramador.com/usr/147000/147685/527560a9daa7f-dado5.png"
+        var face5=new Image()
+        face5.src="https://www.lawebdelprogramador.com/usr/147000/147685/527560a9ddd30-dado6.png"
+    </script>
+ 
+ 
+    <img src="" name="mydice">
+ 
+    <form>
+    <input type="button" value="Lanza dado" onClick="lanzar()">
+    </form>
+ 
+    <script>
+    function lanzar()
+    {
+        var randomdice=Math.round(Math.random()*5);
+        document.images["mydice"].src=eval("face"+randomdice+".src");
+    }
+    </script>
 </SevenIslands:layout>

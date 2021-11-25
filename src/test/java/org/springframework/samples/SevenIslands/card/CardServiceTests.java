@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.card;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,18 @@ public class CardServiceTests {
     public void testCountWithInitialData(){
         int count = cardService.cardCount();
         assertEquals(count,4);
+    }
+
+    @Test
+    public void testFindAll(){
+        long count = cardService.findAll().spliterator().getExactSizeIfKnown();
+        assertEquals(4, count);
+    }
+
+    @Test
+    public void testFindCardById(){
+        Card card = cardService.findCardById(1).get();
+        assertThat(card.getCardType()).isEqualTo(CARD_TYPE.DOUBLON);
     }
 
     @Test
