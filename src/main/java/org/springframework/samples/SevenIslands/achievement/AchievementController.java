@@ -27,22 +27,13 @@ public class AchievementController {
     @Autowired
 	private GeneralService generalService;
 
-    //Vistas solo para admins:
     @GetMapping()
     public String listAchievements(ModelMap modelMap){
-        String view = "achievements/listAchievements";
+        String view = "achievements/achievements";
         generalService.insertIdUserModelMap(modelMap);
-        //si accede un admin:
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
-                    Iterable<Achievement> achievements = achievementService.findAll();
-                    modelMap.addAttribute("achievements", achievements);
-            
-        }else{
-            view = "/errors";
-        }
         
-        
+        Iterable<Achievement> achievements = achievementService.findAll();
+        modelMap.addAttribute("achievements", achievements);
         
         return view;
     }
