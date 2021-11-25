@@ -4,15 +4,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
-<sevenislands:layout pageName="players">
+<SevenIslands:layout pageName="players">
     <h2>
         <c:if test="${player['new']}">New </c:if> Player
     </h2>
     <form:form modelAttribute="player" class="form-horizontal" id="add-player-form">
         <div class="form-group has-feedback">
-            <SevenIslands:inputField label="Profile Photo" name="profilePhoto"/>
             <SevenIslands:inputField label="First Name" name="firstName"/>
             <SevenIslands:inputField label="Surname" name="surname"/>
             <SevenIslands:inputField label="Email" name="email"/>
@@ -32,4 +31,4 @@
             </div>
         </div>
     </form:form>
-</sevenislands:layout>
+</SevenIslands:layout>
