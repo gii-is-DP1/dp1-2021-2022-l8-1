@@ -193,6 +193,22 @@ public class PlayerController {
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Player> player = playerService.findPlayerById(playerId);
                     if(player.isPresent()){
+                        Player p = player.get();
+                        Collection<Game> lg = p.getGames();
+                        //for(Game g:p.getGames()){
+                        for (int i = 0;i<lg.size();i++){
+                            Game g = lg.stream().collect(Collectors.toList()).get(i);
+                            
+                            List<Player> lp = g.getPlayers();
+                            if(g.getPlayer().getId()!=playerId){
+                                lp.remove(p);
+                                g.setPlayers(lp);
+                                gameService.save(g);
+
+                                p.getGames().remove(g);
+                                playerService.save(p);
+                            }
+                        }
                         playerService.delete(player.get());
                         modelMap.addAttribute("message", "Player successfully deleted!");
                     }else{
