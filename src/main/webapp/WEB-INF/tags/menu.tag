@@ -106,7 +106,7 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 				
-				<sevenislands:menuItem active="${name eq 'rooms'}" url="/games"
+				<sevenislands:menuItem active="${name eq 'rooms'}" url="/games/rooms"
 					title="Enter rooms page">
 					<span>Rooms</span>
 				</sevenislands:menuItem>
