@@ -14,7 +14,7 @@ SevenIslandsCss :: a Spring Framework demonstration
     <spring:url value="/resources/images/favicon.png" var="favicon"/>
     <link rel="shortcut icon" type="image/x-icon" href="${favicon}">
 
-    <title>Seven Island</title>
+    <title>Seven Islands</title>
 
     <%-- CSS generated from LESS --%>
 

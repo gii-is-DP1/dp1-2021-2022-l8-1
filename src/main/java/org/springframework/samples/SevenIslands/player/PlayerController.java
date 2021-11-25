@@ -7,27 +7,22 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.achievement.Achievement;
+import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
-import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
-// import org.springframework.samples.SevenIslands.user.User;
-
 import org.springframework.samples.SevenIslands.user.UserService;
-import org.springframework.samples.SevenIslands.web.CurrentUserController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/players")
 public class PlayerController {
-
 
     @Autowired
     private PlayerService playerService;
@@ -55,6 +49,9 @@ public class PlayerController {
     
     @Autowired
     private AuthoritiesService authoritiesService;
+
+    @Autowired
+    private AchievementService achievementService;
 
     @GetMapping()
     public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("begin") Integer begin, @PathParam("end") Integer end){        //For admins
@@ -97,6 +94,29 @@ public class PlayerController {
             view = "/error"; 
         }
         generalService.insertIdUserModelMap(modelMap);
+        return view;
+    }
+
+    @GetMapping(path="/profile/{playerId}/achievements")
+    public String achievements(@PathVariable("playerId") int playerId, ModelMap modelMap){
+        String view = "players/achievements";
+        generalService.insertIdUserModelMap(modelMap);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            generalService.insertIdUserModelMap(modelMap);
+        
+            List<Achievement> achieved = StreamSupport.stream(achievementService.findByPlayerId(player.get().getId()).spliterator(), false).collect(Collectors.toList());
+            List<Achievement> achievements = StreamSupport.stream(achievementService.findAll().spliterator(), false).collect(Collectors.toList());
+    
+            List<Achievement> notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
+    
+            modelMap.addAttribute("achieved", achieved); 
+            modelMap.addAttribute("notAchieved", notAchieved);
+            modelMap.addAttribute("player", player.get());
+        }else{
+            modelMap.addAttribute("message", "Player not found");
+            view = "/error";
+        }
         return view;
     }
 
