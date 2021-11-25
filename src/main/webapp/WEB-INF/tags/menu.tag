@@ -28,31 +28,38 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 
 			<ul class="nav navbar-nav">
-				<sevenislands:menuItem url="/games/rooms"
-					title="Enter rooms page">
+				<sevenislands:menuItem url="/games/rooms" title="Enter rooms page">
+					<span class="glyphicon glyphicon-th" aria-hidden="true"></span>
 					<span>Rooms</span>
 				</sevenislands:menuItem>
 
-				<sevenislands:menuItem url="#"
-					title="Enter ranking page">
+				<sevenislands:menuItem url="#" title="Enter ranking page">
+					<span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span>
 					<span>Ranking</span>
 				</sevenislands:menuItem>
 
-				<sevenislands:menuItem url="#"
-					title="Enter forum page">
+				<sevenislands:menuItem url="#" title="Enter forum page">
+					<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 					<span>Forum</span>
 				</sevenislands:menuItem>
 
-				<sevenislands:menuItem url="#"
-					title="Enter viewer mode page">
+				<sevenislands:menuItem url="#" title="Enter viewer mode page">
+					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 					<span>Viewer Mode</span>
 				</sevenislands:menuItem>
 
 				<sec:authorize access="hasAuthority('player')">
-					<sevenislands:menuItem url="/games/new" title="Create new room for playing">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-						<span>New game</span>
-					</sevenislands:menuItem>
+				<sevenislands:menuItem url="/games/new" title="Create new room for playing">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					<span>New game</span>
+				</sevenislands:menuItem>
+			</sec:authorize>
+			
+			<sec:authorize access="hasAuthority('admin')">
+				<sevenislands:menuItem url="/players" title="Create new room for playing">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Players</span>
+				</sevenislands:menuItem>
 				</sec:authorize>
 			</ul>
 
