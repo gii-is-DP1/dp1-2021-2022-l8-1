@@ -22,6 +22,8 @@
 		</div>
 
 		<div class="navbar-collapse collapse" id="main-navbar">
+
+			<sec:authorize access="hasAnyAuthority('admin', 'player')">
 			<ul class="nav navbar-nav">
 
 				<sevenislands:menuItem url="/games/rooms"
@@ -44,16 +46,15 @@
 					<span>Viewer Mode</span>
 				</sevenislands:menuItem>
 
-				<sevenislands:menuItem url="/games/new"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-					<span>New game</span>
-				</sevenislands:menuItem>
-				
+				<sec:authorize access="hasAuthority('player')">
+					<sevenislands:menuItem url="/games/new" title="Create new room for playing">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						<span>New game</span>
+					</sevenislands:menuItem>
+				</sec:authorize>
 
 			</ul>
-
-
+			</sec:authorize>
 
 
 			<ul class="nav navbar-nav navbar-right">
