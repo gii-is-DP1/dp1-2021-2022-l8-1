@@ -2,6 +2,9 @@ package org.springframework.samples.SevenIslands.util;
 
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.samples.SevenIslands.player.Player;
@@ -20,27 +23,32 @@ public class SecurityService {
     @Autowired
     private PlayerService playerService;
 
+    @Transactional
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
-
+    
+    @Transactional
     public User getCurrentUser() {
         return (User) getAuthentication().getPrincipal();
     }
 
+    @Transactional
     public int getCurrentUserId() {
         return playerService.getIdPlayerByName(getCurrentUser().getUsername());
     }
 
+    @Transactional
     public Player getCurrentPlayer() {
         return playerService.getPlayerByUsername(getCurrentUser().getUsername()).stream().findFirst().get();
     }
 
-
+    @Transactional
     public boolean isAdmin() {
         return getAuthentication().getAuthorities().stream().anyMatch(x -> x.toString().equals("admin"));
     }
 
+    @Transactional
     public boolean isAuthenticatedUser() {
         Authentication authentication = getAuthentication();
         if(authentication != null) {
@@ -49,13 +57,13 @@ public class SecurityService {
         return false;
     }
 
+    @Transactional
     public boolean authenticationNotNull() {
         Authentication authentication = getAuthentication();
         return authentication != null;
     }
 
-    
-
+    @Transactional
     public void insertIdUser(Map<String, Object> model){
 		
 		Authentication authentication = getAuthentication();
@@ -75,6 +83,7 @@ public class SecurityService {
 		
 	}
 
+    @Transactional
     public void insertIdUserModelMap(ModelMap model){
 		
 		Authentication authentication = getAuthentication();
