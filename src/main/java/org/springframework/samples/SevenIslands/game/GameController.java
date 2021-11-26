@@ -38,9 +38,6 @@ public class GameController {
     @Autowired
     private PlayerService playerService;
 
-    @Autowired	
-	private GeneralService generalService;
-
     @Autowired
     private AdminController adminController;
 
@@ -65,8 +62,6 @@ public class GameController {
             Player currentPlayer = securityService.getCurrentPlayer();
 
             game.setPlayer(currentPlayer); 
-
-
             game.addPlayerinPlayers(currentPlayer);
             currentPlayer.addGameinGames(game);
 
@@ -82,12 +77,24 @@ public class GameController {
     @GetMapping(path = "/delete/{gameId}")
     public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Optional<Game> game = gameService.findGameById(gameId); 
-        generalService.insertIdUserModelMap(modelMap);
-        if (game.isPresent()) {
+        securityService.insertIdUserModelMap(modelMap);
+        int currentPlayerId = securityService.getCurrentUserId();
+
+        if(securityService.isAdmin() && game.isPresent()) {
             gameService.delete(game.get());
             modelMap.addAttribute("message", "Game successfully deleted!");
+
+        } else if(securityService.isAuthenticatedUser() && gameService.isOwner(currentPlayerId, gameId) && game.isPresent()) {
+            gameService.delete(game.get());
+            modelMap.addAttribute("message", "Game successfully deleted!");
+            return "redirect:/games/rooms";
+        
+            
+        } else if(!securityService.isAuthenticatedUser() || gameService.isOwner(currentPlayerId, gameId)) {
+            modelMap.addAttribute("message", "You don't have enough privileges to do such action.");
+        
         } else {
-            modelMap.addAttribute("message", "Game not Found!");
+            modelMap.addAttribute("message", "Game not found.");
         }
 
         return adminController.rooms(modelMap);
