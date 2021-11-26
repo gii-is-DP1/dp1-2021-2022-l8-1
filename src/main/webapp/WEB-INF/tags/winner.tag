@@ -10,9 +10,9 @@
         ${position} ${position == 1 ? "st" : ""}${position == 2 ? "nd" : ""}${position == 3 ? "rd" : ""}
     </h2>
 
-    <a href="/players/profile/${player.id}" htmlEscape="true" />
-        <img src="${player.profilePhoto}" alt="Foto de perfil">
-        <p>${player.user.username}</p>
+    <a href="" htmlEscape="true" /> <!-- /players/profile/{player.id} -->
+        <img src="/resources/images/profile-photo.png" alt="Foto de perfil" style="width: 20px;"> <!-- {player.profilePhoto} -->
+        <p>playerusername</p> <!-- {player.user.username} -->
     </a>
 
 </div>

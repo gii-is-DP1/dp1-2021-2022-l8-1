@@ -12,9 +12,9 @@
 
         <h2>Winners</h2>
 
-        <sevenislands:winner position="1" player="${players[0]}"/>
-        <sevenislands:winner position="2" player="${players[1]}"/>
-        <sevenislands:winner position="3" player="${players[2]}"/>
+        <sevenislands:winner position="1" player=""/> <!-- ${players[2]} -->
+        <sevenislands:winner position="2" player=""/>
+        <sevenislands:winner position="3" player=""/>
 
     </div>
 

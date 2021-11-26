@@ -8,22 +8,20 @@
 
     <table>
         <thead>
-            <th>
-                <td></td>
-                <td>Player</td>
-                <td>${parameter}</td>
-            </th>
+            <th></th>
+            <th>Player</th>
+            <th>${parameter}</th>
         </thead>
         <tbody>
-            <th>
+            <tr>
                 <td>1</td> <td>J1</td> <td>00000</td>
-            </th>
-            <th>
+            </tr>
+            <tr>
                 <td>2</td> <td>J2</td> <td>00010</td>
-            </th>
-            <th>
+            </tr>
+            <tr>
                 <td>3</td> <td>J3</td> <td>00300</td>
-            </th>
+            </tr>
         </tbody>
     </table>
 
