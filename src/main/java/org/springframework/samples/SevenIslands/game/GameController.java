@@ -13,6 +13,7 @@ import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
+import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -27,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/games")
 public class GameController {
+
+    @Autowired
+    private SecurityService securityService;
 
     @Autowired
     private GameService gameService;
@@ -58,23 +62,18 @@ public class GameController {
             modelMap.addAttribute("game", game);
             return "games/createOrUpdateGameForm";
         } else {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Player currentPlayer = securityService.getCurrentPlayer();
 
-            User currentUser = (User) authentication.getPrincipal();
+            game.setPlayer(currentPlayer); 
 
-            game.setPlayer(playerService.getPlayerByUsername(currentUser.getUsername()).stream().findFirst().get()); 
-            
 
-            Game juego = game;
-            Player jugador = playerService.getPlayerByUsername(currentUser.getUsername()).stream().findFirst().get();
+            game.addPlayerinPlayers(currentPlayer);
+            currentPlayer.addGameinGames(game);
 
-            juego.addPlayerinPlayers(jugador);
-            jugador.addGameinGames(juego);
+            gameService.save(game);
 
-            gameService.save(juego);
-
-            modelMap.addAttribute("game", juego);
-            modelMap.addAttribute("player", jugador);
+            modelMap.addAttribute("game", game);
+            modelMap.addAttribute("player", currentPlayer);
 
         }
         return view;
@@ -91,8 +90,7 @@ public class GameController {
             modelMap.addAttribute("message", "Game not Found!");
         }
 
-        String view = adminController.rooms(modelMap);
-        return view;
+        return adminController.rooms(modelMap);
     }
 
     private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
@@ -100,7 +98,7 @@ public class GameController {
     @GetMapping(path = "/edit/{gameId}")
     public String updateGame(@PathVariable("gameId") int gameId, ModelMap model) {
         Game game = gameService.findGameById(gameId).get();
-        generalService.insertIdUserModelMap(model); 
+        securityService.insertIdUserModelMap(model); 
         model.put("game", game);
         return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
     }
@@ -108,15 +106,13 @@ public class GameController {
     @GetMapping(path = "/{gameId}/lobby")
     public String lobby(@PathVariable("gameId") int gameId, ModelMap model) {
 
-        String view = "games/lobby";
-        generalService.insertIdUserModelMap(model);
+        String view;
+        securityService.insertIdUserModelMap(model);
         if (gameService.findGameById(gameId).isPresent()) {
             Game game = gameService.findGameById(gameId).get(); 
             model.addAttribute("game", game);
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User currentUser = (User) authentication.getPrincipal();
-            int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // Id of player that is logged
+            int playerId = securityService.getCurrentUserId(); // Id of player that is logged
 
             Player pay = playerService.findPlayerById(playerId).get();
             model.addAttribute("player", pay);
@@ -167,13 +163,12 @@ public class GameController {
     public String publicRooms(ModelMap modelMap) {
 
         String view = "/welcome";
-        generalService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-                boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(x -> x.toString().equals("admin"));
-                if (isAdmin) {
+        if (securityService.authenticationNotNull()) {
+            if (securityService.isAuthenticatedUser()) {
+                
+                if (securityService.isAdmin()) {
                     view = adminController.rooms(modelMap);
                 } else {
                     view = playerController.games(modelMap);
@@ -190,12 +185,10 @@ public class GameController {
     //Games by room code
     @GetMapping(path = "/rooms/{code}")
     public String gameByCode(@PathVariable("code") String code, ModelMap modelMap) {
-        String view = "/welcome";
-        generalService.insertIdUserModelMap(modelMap);
+        String view;
+        securityService.insertIdUserModelMap(modelMap);
         Iterable<Game> games;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-
+        if (securityService.authenticationNotNull()) {
             view = "games/publicRooms";
             games = gameService.findGamesByRoomCode(code);
             modelMap.addAttribute("games", games);
@@ -214,14 +207,12 @@ public class GameController {
     @GetMapping(path = "/rooms/playing")
     public String currentlyPlaying(ModelMap modelMap) {
 
-        generalService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         Collection<Game> games;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
+
+        if(securityService.isAuthenticatedUser()) {
                 // If the user has admin perms then:
-                if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                        .anyMatch(x -> x.toString().equals("admin"))) {
+                if (securityService.isAdmin()) {
                     games = gameService.findAllPlaying();
                     modelMap.addAttribute("games", games);
                     // here we can see all the games currently being played, both public and private
@@ -232,11 +223,10 @@ public class GameController {
                     // here we can see only the public games which are currently being played, in order to watch it by streaming
 
                 }
-            }
-
         }
 
-        return "games/currentlyPlaying";  
+        return "games/currentlyPlaying";
+
 
     }
 
