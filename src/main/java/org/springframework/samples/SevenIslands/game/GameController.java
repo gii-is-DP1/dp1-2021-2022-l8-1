@@ -80,7 +80,7 @@ public class GameController {
         securityService.insertIdUserModelMap(modelMap);
         int currentPlayerId = securityService.getCurrentUserId();
 
-        if(securityService.isAdmin() && game.isPresent()) {
+        if(securityService.isAdmin() && game.isPresent()) { // For some reason, an admin can't delete any game
             gameService.delete(game.get());
             modelMap.addAttribute("message", "Game successfully deleted!");
 
