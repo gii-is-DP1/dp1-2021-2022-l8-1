@@ -8,28 +8,32 @@
 
 <sevenislands:adminLayout pageName="ranking" subtitle="Ranking">
 
-    <div id="ranking-winners">
+    <div id="ranking">
+        <span id="ranking-winners" class="ranking-section">
 
-        <h2>Winners</h2>
-
-        <sevenislands:winner position="1" player=""/> <!-- ${players[2]} -->
-        <sevenislands:winner position="2" player=""/>
-        <sevenislands:winner position="3" player=""/>
-
-    </div>
-
-    <div id="ranking-wins">
-
-        <h2>Wins</h2>
-        <sevenislands:rankingTable parameter="Wins" players=""/>
-
-    </div>
-
-    <div id="ranking-points">
-
-        <h2>Points</h2>
-        <sevenislands:rankingTable parameter="Points" players=""/>
-
+            <h2>Winners</h2>
+    
+            <div id="winners">
+                <sevenislands:winner position="1" player=""/> <!-- ${players[2]} -->
+                <sevenislands:winner position="2" player=""/>
+                <sevenislands:winner position="3" player=""/>
+            </div>
+    
+        </span>
+    
+        <span id="ranking-wins" class="ranking-section">
+    
+            <h2>Wins</h2>
+            <sevenislands:rankingTable parameter="Wins" players=""/>
+    
+        </span>
+    
+        <span id="ranking-points" class="ranking-section">
+    
+            <h2>Points</h2>
+            <sevenislands:rankingTable parameter="Points" players=""/>
+    
+        </span>
     </div>
 
 </sevenislands:adminLayout>

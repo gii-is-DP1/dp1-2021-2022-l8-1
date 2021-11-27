@@ -1,0 +1,149 @@
+
+#ranking {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+
+    > span {
+        width: 325px;
+        height: 380px;
+        margin: 20px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #838789;
+
+        > h2 {
+            border-bottom: 1px solid @spring-brown;
+            width: 80%;
+            text-align: center;
+        }
+
+    }
+
+}
+
+#winners,
+.ranking-table {
+    height: 85%;
+    width: 80%;
+}
+
+#winners {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    .winner {
+        width: 100%;
+        height: 33%;
+        margin: 3px;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        background-color: @spring-brown;
+
+        a {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        
+            img {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+            }
+
+            p {
+                color: @spring-light-grey;
+            }
+        }
+    }
+}
+
+#winners {
+    .winner-1 {
+        h1 {color : @spring-gold;}
+        
+        img {border: 5px solid @spring-gold;}
+    }
+    
+    .winner-2 { 
+        h1 {color: @spring-silver;}
+
+        img {border: 5px solid @spring-silver;}
+    }
+    
+    .winner-3 { 
+        h1 {color: @spring-bronze;}
+
+        img {border: 5px solid @spring-bronze;}
+    }
+}
+
+.ranking-table {
+
+    .table-header {
+        display: flex;
+        align-items: center;
+        font-size: larger;
+        font-weight: bold;
+        height: 35px;
+
+        > p {
+            width: 20px;
+            text-align: center;
+            font-size: larger;
+            font-weight: bold;
+        }
+    }
+
+
+    .table-body {
+        overflow-y: scroll;
+        height: 85%;
+        border: 2px solid @spring-brown;
+
+        table {
+            width: 100%;
+        }
+    
+        td {
+            height: 40px;
+            font-size: large;
+            text-align: center;
+        }
+
+        .value-col {
+            border-left: 1px solid @spring-grey;
+        }
+    }
+
+    
+}
+
+@media screen and (max-width: 1020px) and (min-width: 768px) {
+    
+    #ranking > #ranking-winners {
+        width: 85%;
+        
+        #winners {
+            flex-direction: row;
+        }
+
+    }
+}
+
+@media screen and (max-width: 768px){
+
+    #ranking > span {
+        width: 90%;
+    }
+}

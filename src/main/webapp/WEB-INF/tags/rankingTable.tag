@@ -6,23 +6,24 @@
 
 <div class="ranking-table">
 
-    <table>
-        <thead>
-            <th></th>
-            <th>Player</th>
-            <th>${parameter}</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td> <td>J1</td> <td>00000</td>
-            </tr>
-            <tr>
-                <td>2</td> <td>J2</td> <td>00010</td>
-            </tr>
-            <tr>
-                <td>3</td> <td>J3</td> <td>00300</td>
-            </tr>
-        </tbody>
-    </table>
+
+    <div class="table-header">
+        <p style="width: 31px"></p>
+        <p style="width: 70px">Player</p>
+        <p style="width: 150px">${parameter}</p>
+    </div>
+
+    <div class="table-body">
+        <table>
+            <tbody>
+                <c:forEach items="${[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]}" var="position">
+                <tr>
+                    <td>${position}</td> <td>J1</td> <td class="value-col">00000</td>
+                </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
+
 
 </div>
