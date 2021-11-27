@@ -8,9 +8,9 @@
 
 
     <div class="table-header">
-        <p style="width: 31px"></p>
-        <p style="width: 70px">Player</p>
-        <p style="width: 150px">${parameter}</p>
+        <p style="width: 33px"></p>
+        <p style="width: 94px">Player</p>
+        <p>${parameter}</p>
     </div>
 
     <div class="table-body">
@@ -18,7 +18,7 @@
             <tbody>
                 <c:forEach items="${[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]}" var="position">
                 <tr>
-                    <td>${position}</td> <td>J1</td> <td class="value-col">00000</td>
+                    <td class="pos-col">${position}</td> <td>J1</td> <td>00000</td>
                 </tr>
                 </c:forEach>
             </tbody>
