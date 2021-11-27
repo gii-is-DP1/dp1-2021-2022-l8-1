@@ -33,7 +33,7 @@
 					<span>Rooms</span>
 				</sevenislands:menuItem>
 
-				<sevenislands:menuItem url="#" title="Enter ranking page">
+				<sevenislands:menuItem url="/ranking" title="Enter ranking page">
 					<span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span>
 					<span>Ranking</span>
 				</sevenislands:menuItem>
