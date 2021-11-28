@@ -74,6 +74,7 @@ public class GameController {
         return view;
     }
 
+    //FIXME: This method is not working properly
     @GetMapping(path = "/delete/{gameId}")
     public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Optional<Game> game = gameService.findGameById(gameId); 
