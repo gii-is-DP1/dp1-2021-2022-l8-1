@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.context.annotation.Bean;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
@@ -14,13 +15,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class CustomErrorController extends BasicErrorController{
+public class CustomErrorController implements ErrorController{
+
+    /* @Bean
+    public ErrorProperties errorProperties(){
+        return new ErrorProperties();
+    }
+
+    public ErrorAttributes errorAttributes = null;
+    public ErrorProperties errorProperties = null;
+
+    @Bean
+    public BasicErrorController basicErrorController(){
+        return new BasicErrorController(errorAttributes, errorProperties);
+    }
 
 
-    public CustomErrorController(ErrorAttributes errorAttributes, ErrorProperties errorProperties) {
+    /* public CustomErrorController(ErrorAttributes errorAttributes, ErrorProperties errorProperties) {
         super(errorAttributes, errorProperties);
         //TODO Auto-generated constructor stub
-    }
+    } */
 
     @Override
     public String getErrorPath() {
