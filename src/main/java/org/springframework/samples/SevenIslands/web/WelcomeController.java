@@ -1,30 +1,23 @@
 package org.springframework.samples.SevenIslands.web;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.person.Person;
-
-import org.springframework.samples.SevenIslands.player.PlayerService;
-import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class WelcomeController {
 	
-	//OJO QUE ESTO ES POR AHORA
+	
 	@Autowired	
 	GameService gameService;
 
@@ -37,7 +30,7 @@ public class WelcomeController {
 	
 
 	
-	//HASTA AQUI 
+	 
 
 
 	  @GetMapping({"/","/welcome"})

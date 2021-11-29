@@ -22,9 +22,7 @@ import lombok.Setter;
 @Table(name="cells")
 @Entity
 public class Cell extends BaseEntity {
-    // @Column(name="position")
-    // private Integer position;
-
+   
     @Column(name="x_position")
     private String xPosition;
     

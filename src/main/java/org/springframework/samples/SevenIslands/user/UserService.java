@@ -40,6 +40,11 @@ public class UserService {
 	// 	this.userRepository = userRepository;
 	// }
 
+	@Transactional(readOnly = true)
+    public int userCount(){
+        return (int) userRepository.count();
+    }
+
 	@Transactional
 	public void saveUser(User user) throws DataAccessException {
 		user.setEnabled(true);

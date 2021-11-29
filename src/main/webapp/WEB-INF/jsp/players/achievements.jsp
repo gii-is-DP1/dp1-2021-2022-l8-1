@@ -6,18 +6,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
-<sevenislands:layout pageName="achievement">
-    <h2>My Achievements</h2>
-
-    
+<sevenislands:playerProfileLayout pageName="achievement" subtitle="Achievements">
 
     <div class="achievements-container">
-        <c:forEach items="${conseguidos}" var="a">
+        <c:forEach items="${achieved}" var="achievement">
         
         <div class="achievement">
-            <img src="${a.icon}" alt="${a.name}" style="width:100px;height:100px;">
+            <img src="${achievement.icon}" alt="${achievement.name}" style="width:100px;height:100px;">
         
-            <span class="text-center"><c:out value="${a.name}"/></span>
+            <span class="text-center"><c:out value="${achievement.name}"/></span>
         </div>
         
      
@@ -25,12 +22,12 @@
 
         </c:forEach>
 
-        <c:forEach items="${noc}" var="b">                 
+        <c:forEach items="${notAchieved}" var="achievement">                 
             
             <div class="achievement non-acquired">
-                <img src="${b.icon}" alt="${b.name}" style="width:100px;height:100px;">
+                <img src="${achievement.icon}" alt="${achievement.name}" style="width:100px;height:100px;">
             
-                <span class="text-center"><c:out value="${b.name}"/></span>
+                <span class="text-center"><c:out value="${achievement.name}"/></span>
             </div>
             
         </c:forEach>
@@ -41,5 +38,5 @@
 
 
 
-</sevenislands:layout>
+</sevenislands:playerProfileLayout>
 
