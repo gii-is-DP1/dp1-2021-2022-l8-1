@@ -3,10 +3,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
+import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
+import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +37,8 @@ public class BoardController {
     @Autowired	
 	private AdminService adminService;
     
+    @Autowired
+    private SecurityService securityService;
 
     @GetMapping(path = "/{code}")
     public String board(@PathVariable("code") String code, ModelMap modelMap, HttpServletResponse response) {
@@ -43,6 +47,25 @@ public class BoardController {
         // modelMap.put("now", new Date());
 		modelMap.addAttribute("board",boardService.findById(1).get()); 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+
+        Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
+        int n =  game.getPlayers().size();
+        
+        if(n==1){
+
+            //TODO Mirar como se puede juntar este código con el de lobby en GameController 
+
+            modelMap.addAttribute("message", "The game cannot start, there is only one player in the room");
+            modelMap.addAttribute("game", game);
+            
+            int playerId = securityService.getCurrentUserId(); // Id of player that is logged
+
+            Player pay = playerService.findPlayerById(playerId).get();
+            modelMap.addAttribute("player", pay);
+            modelMap.addAttribute("totalplayers", n);
+            return "games/lobby";
+        }
 
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
         .anyMatch(x -> x.toString().equals("admin"))) {
