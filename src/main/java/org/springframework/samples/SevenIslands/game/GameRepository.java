@@ -28,4 +28,6 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
   @Query("SELECT P from Game P WHERE P.code = :code")
   Collection<Game> findGamesByRoomCode(String code) throws DataAccessException;
 
+
+
 }
