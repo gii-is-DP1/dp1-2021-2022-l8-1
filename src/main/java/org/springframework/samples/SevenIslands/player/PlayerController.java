@@ -76,7 +76,7 @@ public class PlayerController {
                     modelMap.addAttribute("end", end);
             
         }else{
-            view = "/errors";
+            view = "/error";
         }
         return view;
 
@@ -202,7 +202,7 @@ public class PlayerController {
                         view=listPlayers(modelMap, null, 0, 9);
                     }
         }else{
-            view = "/errors";
+            view = "/error";
         }
         return view;
 
@@ -240,7 +240,7 @@ public class PlayerController {
                 view= "/error";
             }
         }else{
-            view = "/errors";
+            view = "/error";
         }
         return view;
     }

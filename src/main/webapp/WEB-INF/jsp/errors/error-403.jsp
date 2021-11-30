@@ -5,11 +5,11 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
-<SevenIslands:layout pageName="error-404">
+<SevenIslands:layout pageName="error-403">
     
     <div class="row">
         <h1>Oops!</h1>
-        <h2>There seems to be no trace of the page you are looking for...</h2>
+        <h2>It seems that you are not allowed to do this...</h2>
     </div>
 
     <div class="row">
