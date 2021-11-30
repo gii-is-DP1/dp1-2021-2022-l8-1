@@ -106,7 +106,7 @@ public class GameController {
         
         } else if(securityService.isAuthenticatedUser()){
             securityService.insertIdUserModelMap(modelMap); 
-            int currentPlayerId = securityService.getCurrentUserId();   // not working when the user is an admin
+            int currentPlayerId = securityService.getCurrentUserId();   
 
             if(gameService.isOwner(currentPlayerId, gameId)) { // if the user is the owner of the game, the game is obviously present
                 gameService.delete(game.get());
