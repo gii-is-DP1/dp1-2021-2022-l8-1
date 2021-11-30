@@ -1,17 +1,12 @@
 package org.springframework.samples.SevenIslands.game;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.SevenIslands.admin.AdminController;
-import org.springframework.samples.SevenIslands.player.PlayerController;
-import org.springframework.samples.SevenIslands.util.SecurityService;
-import org.springframework.samples.SevenIslands.web.WelcomeController;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,20 +14,6 @@ public class GameService {
    
     @Autowired
     private GameRepository gameRepo;
-
-    @Autowired
-    private SecurityService securityService;
-
-    @Autowired
-    private PlayerController playerController;
-
-    @Autowired
-    private AdminController adminController;
-
-    @Autowired
-    private WelcomeController welcomeController;
-
-    
 
     @Transactional
     public int gameCount(){
@@ -98,41 +79,6 @@ public class GameService {
     @Transactional
     public Collection<Game> findGamesByRoomCode(String code){
         return gameRepo.findGamesByRoomCode(code);
-    }
-
-    @Transactional
-    public String deleteGame(Optional<Game> game, int gameId, ModelMap modelMap) {
-        if(securityService.isAdmin()) {
-            securityService.insertIdUserModelMap(modelMap); 
-
-            if(game.isPresent()) {
-                delete(game.get());
-                modelMap.addAttribute("message", "Game successfully deleted");
-                
-            } else {
-                modelMap.addAttribute("message", "Game not found");
-            }
-            return adminController.rooms(modelMap);
-        
-        } else if(securityService.isAuthenticatedUser()){
-            securityService.insertIdUserModelMap(modelMap); 
-            int currentPlayerId = securityService.getCurrentUserId();   // not working when the user is an admin
-
-            if(isOwner(currentPlayerId, gameId)) { // if the user is the owner of the game, the game is obviously present
-                delete(game.get());
-                modelMap.addAttribute("message", "Game successfully deleted!");
-                
-            } else {
-                modelMap.addAttribute("message", "You are not allowed to delete this game!");
-                
-            }
-
-            return playerController.games(modelMap);
-
-        } else {
-            modelMap.addAttribute("message", "Please, first sign in!");
-            return welcomeController.welcome(modelMap);
-        }
     }
 
 }

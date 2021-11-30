@@ -30,6 +30,10 @@ public class WelcomeController {
 
 	
 
+	
+	 
+
+
 	  @GetMapping({"/","/welcome"})
 	  public String welcome(ModelMap modelMap) {
 		  
@@ -68,11 +72,10 @@ public class WelcomeController {
 
 		gService.insertIdUser(modelMap);
 		
+
 		modelMap.addAttribute("persons", persons);
 		modelMap.addAttribute("title", "Seven Islands");
 		modelMap.addAttribute("group", "L8-1 a.k.a. Dream Team");
-
-
 		
 		
 		

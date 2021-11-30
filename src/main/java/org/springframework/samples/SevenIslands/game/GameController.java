@@ -73,7 +73,6 @@ public class GameController {
         }
         return view;
     }
-
     
     @GetMapping(path = "/exit/{gameId}")
     public String joinGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
@@ -86,13 +85,44 @@ public class GameController {
         playerService.save(pay);
         return "redirect:/games/rooms";
     }
-
-    
+  
+  
     @GetMapping(path = "/delete/{gameId}")
     public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+
         Optional<Game> game = gameService.findGameById(gameId); 
-        return gameService.deleteGame(game, gameId, modelMap);
+
+        if(securityService.isAdmin()) {
+            securityService.insertIdUserModelMap(modelMap); 
+
+            if(game.isPresent()) {
+                gameService.delete(game.get());
+                modelMap.addAttribute("message", "Game successfully deleted");
+                
+            } else {
+                modelMap.addAttribute("message", "Game not found");
+            }
+            return adminController.rooms(modelMap);
         
+        } else if(securityService.isAuthenticatedUser()){
+            securityService.insertIdUserModelMap(modelMap); 
+            int currentPlayerId = securityService.getCurrentUserId();   // not working when the user is an admin
+
+            if(gameService.isOwner(currentPlayerId, gameId)) { // if the user is the owner of the game, the game is obviously present
+                gameService.delete(game.get());
+                modelMap.addAttribute("message", "Game successfully deleted!");
+                
+            } else {
+                modelMap.addAttribute("message", "You are not allowed to delete this game!");
+                
+            }
+
+            return playerController.games(modelMap);
+
+        } else {
+            modelMap.addAttribute("message", "Please, first sign in!");
+            return welcomeController.welcome(modelMap);
+        }
     }
 
     private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
