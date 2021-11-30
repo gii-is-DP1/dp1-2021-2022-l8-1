@@ -1,6 +1,8 @@
 package org.springframework.samples.SevenIslands.board;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.admin.Admin;
+import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.player.Player;
@@ -29,6 +31,9 @@ public class BoardController {
 
     @Autowired	
 	private GeneralService gService;
+
+    @Autowired	
+	private AdminService adminService;
     
 
     @GetMapping(path = "/{code}")
@@ -36,14 +41,24 @@ public class BoardController {
         String view = "boards/board";
         gService.insertIdUserModelMap(modelMap);
         // modelMap.put("now", new Date());
-		modelMap.addAttribute("board",boardService.findById(1).get());
-
+		modelMap.addAttribute("board",boardService.findById(1).get()); 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-        int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // Id of player that is logged
 
-        Player pay = playerService.findPlayerById(playerId).get();
-        modelMap.addAttribute("player", pay);
+        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+        .anyMatch(x -> x.toString().equals("admin"))) {
+
+            User currentUser = (User) authentication.getPrincipal();
+            int adminId = adminService.getIdAdminByName(currentUser.getUsername()); // Id of admin that is logged
+            Admin a = adminService.findAdminById(adminId).get();
+            modelMap.addAttribute("player", a);
+
+        }else{
+            User currentUser = (User) authentication.getPrincipal();
+            int playerId = playerService.getIdPlayerByName(currentUser.getUsername()); // Id of player that is logged
+            Player pay = playerService.findPlayerById(playerId).get();
+            modelMap.addAttribute("player", pay);
+        }
+        
 
         //toArray()[0] because there is only going to be one game with that code as its UNIQUE
         modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).toArray()[0]);

@@ -2,19 +2,13 @@ package org.springframework.samples.SevenIslands.admin;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.springframework.samples.SevenIslands.person.Person;
 import org.springframework.samples.SevenIslands.user.User;
-import org.springframework.samples.SevenIslands.achievement.Achievement;
 
 import lombok.Getter;
 import lombok.Setter;

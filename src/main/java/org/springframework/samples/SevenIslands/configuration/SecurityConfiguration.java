@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -40,8 +41,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/welcome").permitAll()
 				.antMatchers("/games").permitAll()
 				.antMatchers("/boards/**").hasAnyAuthority("player","admin")
-				.antMatchers("/achievements").hasAnyAuthority("player","admin")
-        		.antMatchers("/achievements/**").hasAnyAuthority("player", "admin")
+				.antMatchers("/achievements").hasAnyAuthority("admin")
+        		.antMatchers("/achievements/**").hasAnyAuthority("admin")
 				.antMatchers("/players").permitAll()
 				.antMatchers("/players/**").permitAll()
 				.antMatchers("/games/**").permitAll()
@@ -76,6 +77,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	        + "from authorities "
 	        + "where username = ?")	      	      
 	      .passwordEncoder(passwordEncoder());	
+	}
+
+	@Bean 
+	public SecurityService securityService() {
+		return new SecurityService();
 	}
 	
 	@Bean

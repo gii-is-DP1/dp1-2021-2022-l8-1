@@ -4,9 +4,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
-<sevenislands:layout pageName="players">
+<SevenIslands:layout pageName="players">
     <h2>
         <c:if test="${player['new']}">New </c:if> Player
     </h2>
@@ -32,4 +32,4 @@
             </div>
         </div>
     </form:form>
-</sevenislands:layout>
+</SevenIslands:layout>

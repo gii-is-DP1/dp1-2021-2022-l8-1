@@ -15,15 +15,10 @@
  */
 package org.springframework.samples.SevenIslands.user;
 
-
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.SevenIslands.player.PlayerService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +63,11 @@ public class AuthoritiesService {
 	@Transactional
 	public void deleteAuthorities(int id){
 		authoritiesRepository.deleteById(id);
+	}
+
+	@Transactional
+	public long count(){
+		return authoritiesRepository.count();
 	}
 
 

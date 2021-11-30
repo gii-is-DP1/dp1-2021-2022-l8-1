@@ -8,7 +8,7 @@
 
 <sevenislands:playerProfileLayout pageName="rooms" subtitle="Rooms">
 
-    <div id="mid-section">
+    <div id="center-section">
         <div id="table-options">
             <select class="selectpicker" id="typeRoom">
                 <option value="created" selected="selected">Created</option>

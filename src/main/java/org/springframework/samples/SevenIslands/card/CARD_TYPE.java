@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.card;
 
 public enum CARD_TYPE {
+    BOAT,
     DOUBLON,
     GOLDEN_CUP,
     RUBY,
