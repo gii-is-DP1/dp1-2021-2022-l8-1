@@ -9,15 +9,11 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
-import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.samples.SevenIslands.web.WelcomeController;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -79,6 +75,19 @@ public class GameController {
     }
 
     
+    @GetMapping(path = "/exit/{gameId}")
+    public String joinGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+        Game game = gameService.findGameById(gameId).get();
+        int playerId = securityService.getCurrentUserId(); // Id of player that is logged
+        Player pay = playerService.findPlayerById(playerId).get();
+        game.deletePlayerOfGame(pay);
+        gameService.save(game);
+        pay.getGames().remove(game);
+        playerService.save(pay);
+        return "redirect:/games/rooms";
+    }
+
+    
     @GetMapping(path = "/delete/{gameId}")
     public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Optional<Game> game = gameService.findGameById(gameId); 
@@ -110,9 +119,21 @@ public class GameController {
             Player pay = playerService.findPlayerById(playerId).get();
             model.addAttribute("player", pay);
 
+            if(!game.getPlayers().contains(pay) && game.getPlayers().size()<4){
+                game.addPlayerinPlayers(pay);
+                gameService.save(game);
+                pay.addGameinGames(game);
+                playerService.save(pay);
+            }else if(game.getPlayers().contains(pay)){
+                view = "games/lobby";
+            }else{
+                return "redirect:/welcome"; //Need to change
+            }
+            
+            model.addAttribute("totalplayers", game.getPlayers().size());
             view = "games/lobby";
         } else {
-            view = "/errors"; 
+            return "redirect:/games/rooms"; 
         }
 
         return view;
