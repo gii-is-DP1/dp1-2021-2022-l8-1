@@ -12,6 +12,7 @@ import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.person.Person;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -34,7 +35,7 @@ public class WelcomeController {
 
 
 	  @GetMapping({"/","/welcome"})
-	  public String welcome(Map<String, Object> model, HttpServletResponse response) {
+	  public String welcome(ModelMap modelMap) {
 		  
 		List<Person> persons = new ArrayList<Person>();
 		Person a = new Person();
@@ -69,12 +70,12 @@ public class WelcomeController {
 		f.setSurname("Salado");
 		persons.add(f);
 
-		gService.insertIdUser(model);
+		gService.insertIdUser(modelMap);
 		
 
-		model.put("persons", persons);
-		model.put("title", "Seven Islands");
-		model.put("group", "L8-1 a.k.a. Dream Team");
+		modelMap.addAttribute("persons", persons);
+		modelMap.addAttribute("title", "Seven Islands");
+		modelMap.addAttribute("group", "L8-1 a.k.a. Dream Team");
 		
 		
 		

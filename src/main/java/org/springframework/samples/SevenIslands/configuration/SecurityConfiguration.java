@@ -79,10 +79,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	      .passwordEncoder(passwordEncoder());	
 	}
 
-	@Bean 
-	public SecurityService securityService() {
-		return new SecurityService();
-	}
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {	    
