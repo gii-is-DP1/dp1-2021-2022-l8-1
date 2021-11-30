@@ -14,6 +14,7 @@ import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
+import org.springframework.samples.SevenIslands.web.WelcomeController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -43,6 +44,9 @@ public class GameController {
 
     @Autowired
     private PlayerController playerController;
+
+    @Autowired
+    private WelcomeController welcomeController;
     
 
     @GetMapping(path = "/new")
@@ -74,31 +78,12 @@ public class GameController {
         return view;
     }
 
-    //FIXME: This method is not working properly
+    
     @GetMapping(path = "/delete/{gameId}")
     public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Optional<Game> game = gameService.findGameById(gameId); 
-        securityService.insertIdUserModelMap(modelMap);
-        int currentPlayerId = securityService.getCurrentUserId();
-
-        if(securityService.isAdmin() && game.isPresent()) { // For some reason, an admin can't delete any game
-            gameService.delete(game.get());
-            modelMap.addAttribute("message", "Game successfully deleted!");
-
-        } else if(securityService.isAuthenticatedUser() && gameService.isOwner(currentPlayerId, gameId) && game.isPresent()) {
-            gameService.delete(game.get());
-            modelMap.addAttribute("message", "Game successfully deleted!");
-            return "redirect:/games/rooms";
+        return gameService.deleteGame(game, gameId, modelMap);
         
-            
-        } else if(!securityService.isAuthenticatedUser() || gameService.isOwner(currentPlayerId, gameId)) {
-            modelMap.addAttribute("message", "You don't have enough privileges to do such action.");
-        
-        } else {
-            modelMap.addAttribute("message", "Game not found.");
-        }
-
-        return adminController.rooms(modelMap);
     }
 
     private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
