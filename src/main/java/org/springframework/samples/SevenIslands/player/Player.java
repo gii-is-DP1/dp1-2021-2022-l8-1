@@ -94,6 +94,14 @@ public class Player extends Person{
     // @NotEmpty
     private Integer minPointsOfGames;
 
+    @Column(name="total_wins")
+    // @NotEmpty
+    private Integer totalWins;
+
+    @Column(name="avg_wins")
+    // @NotEmpty
+    private Integer avgWins;
+
 
   //RELACION CON LOGROS
 	@ManyToMany(fetch = FetchType.LAZY)
