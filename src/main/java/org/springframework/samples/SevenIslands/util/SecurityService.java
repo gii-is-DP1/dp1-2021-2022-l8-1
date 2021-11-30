@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
-import org.springframework.samples.SevenIslands.web.WelcomeController;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -22,9 +22,6 @@ public class SecurityService {
 
     @Autowired
     private PlayerService playerService;
-
-    @Autowired
-    private WelcomeController welcomeController;
 
     @Transactional
     public Authentication getAuthentication() {
@@ -87,26 +84,22 @@ public class SecurityService {
 	}
 
     @Transactional
-    public void insertIdUserModelMap(ModelMap model){ 
+    public void insertIdUserModelMap(ModelMap model){
 		
 		Authentication authentication = getAuthentication();
 		
         if (authentication.isAuthenticated()){
-            User currentUser = (User) authentication.getPrincipal();
-            int playerLoggedId;
-
             if (isAdmin()) {
-                playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());
-            
-            } else {                
-                playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
+                User currentUser = (User) authentication.getPrincipal();
+                int playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());
+                model.put("id",playerLoggedId);
                 
+            } else {
+                User currentUser = (User) authentication.getPrincipal();
+                int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
+                model.put("id",playerLoggedId);
             }
-            model.put("id",playerLoggedId);
-
         }
-        
-      
 		
 	}
 
