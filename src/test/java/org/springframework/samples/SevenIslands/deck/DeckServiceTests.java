@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.deck;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,13 @@ public class DeckServiceTests {
         Iterable<Integer> cards = deckService.getCardsOnDeck(1);
         assertEquals(cards.spliterator().getExactSizeIfKnown(), 2);
     }
+
+    @Test
+    public void testGetDeckById(){
+        Deck deck = deckService.getDeck(1);
+        assertThat(deck.getName()=="Mazo");
+    }
+  
 
     
     

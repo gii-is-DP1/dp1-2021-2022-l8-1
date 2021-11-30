@@ -1,4 +1,3 @@
--- USERS
 INSERT INTO users(username,password,enabled) VALUES ('ISMP15','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'ISMP15','admin');
 
@@ -11,6 +10,38 @@ INSERT INTO authorities(id,username,authority) VALUES (6,'test2','player');
 INSERT INTO users(username,password,enabled) VALUES ('test3','test3',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (7,'test3','player');
 
+-- DECKS
+INSERT INTO deck(name) VALUES ('Mazo');
+-- INSERT INTO deck(id) VALUES (2);
+-- INSERT INTO deck(id) VALUES (3);
+-- INSERT INTO deck(id) VALUES (4);
+-- INSERT INTO deck(id) VALUES (5);
+-- INSERT INTO deck(id) VALUES (6);
+
+-- CARDS
+INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type) VALUES (3, 'RUBY');
+INSERT INTO cards(id,card_type) VALUES (4, 'DIAMOND');
+INSERT INTO cards(id,card_type) VALUES (5, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (6, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type) VALUES (7, 'RUBY');
+INSERT INTO cards(id,card_type) VALUES (8, 'DIAMOND');
+INSERT INTO cards(id,card_type) VALUES (9, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (10, 'GOLDEN_CUP');
+
+-- DECKS-CARDS
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (1, 1);
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (1, 2);
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (2, 1);
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (2, 2);
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (3, 1);
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (3, 2);
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (4, 3);
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (4, 4);
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (5, 5);
+-- INSERT INTO decks_cards(deck_id, card_id) VALUES (5, 1);
+
 -- PLAYERS
 INSERT INTO players(id, first_name, surname, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
     VALUES (1,'Paco', 'Alonso', 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56, 'test1');
@@ -22,30 +53,24 @@ INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_g
     VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test3');
 
 -- GAMES
-INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points, player_id, privacity,has_started) 
-VALUES ('Prueba0', 'ABCD124', '5,8,2', 3, 7, 5 ,34,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,4,7', 1, 'PUBLIC', false);
+INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time) 
+VALUES ('Prueba0', 'ABCD124', 7, 5, 1, 1,'PUBLIC', false, '2021-11-18 23:00:00');
 
- INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity,has_started) 
- VALUES ('Prueba1', 'ABCD123', '1,8,3', 3, 4, 2 ,27,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','2,4,9',1, 'PUBLIC', false);
+ INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
+ VALUES ('Prueba1', 'ABCD123', 4, 2,1, 1,'PUBLIC', false, '2021-11-18 23:00:00');
 
- INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity,has_started) 
- VALUES ('Prueba2', 'ABCD122', '4,1,3', 3, 2, 1 ,29,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','3,2,7',1, 'PRIVATE', false);
+ INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
+ VALUES ('Prueba2', 'ABCD122', 2, 1,1, 1,'PRIVATE', false, '2021-11-18 23:00:00');
 
- INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points, player_id, privacity,has_started, start_time) 
- VALUES ('Prueba3', 'ABCD121', '1,4,2', 3, 3, 2 ,37,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','2,2,1', 1, 'PUBLIC', true, '2021-11-18 23:00:00');
+ INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started, start_time) 
+ VALUES ('Prueba3', 'ABCD121', 3, 2, 1, 1,'PUBLIC', true, '2021-11-18 23:00:00');
 
- INSERT INTO games(name,code,name_of_players, number_of_players, number_of_turn, actual_player,remains_cards, deck, points,player_id, privacity,has_started, start_time) 
- VALUES ('Prueba4', 'ABCD120', '3,2,1', 3, 1, 1 ,49,'DOUBLON, GOLDEN_CUP,RUBY, CROWN,STIR, SWORD,DIAMOND','1,3,9', 2, 'PRIVATE', true, '2021-11-18 23:01:00');
+ INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started, start_time) 
+ VALUES ('Prueba4', 'ABCD120', 1, 1, 2, 1,'PRIVATE', true, '2021-11-18 23:01:00');
 -- TODO: AQUI HAY QUE QUITAR ATRIBUTOS NUEVOS METIDOS
 
 -- BOARDS
 INSERT INTO boards(id,background,height,width) VALUES (1,'/resources/images/board.jpg',644,527);
-
--- BOARDS
-INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
-INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
-INSERT INTO cards(id,card_type) VALUES (3, 'RUBY');
-INSERT INTO cards(id,card_type) VALUES (4, 'DIAMOND');
 
 -- ACHIEVEMENTS
 INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
@@ -77,9 +102,6 @@ INSERT INTO topics(id, name, description) VALUES(1, 'Rival players', 'do you wan
 -- GENERALS
 INSERT INTO generals(id, total_games, total_duration_all_games) VALUES (1, 200, 300);
 
--- DECKS
-INSERT INTO deck(id) VALUES (1);
-
 -- ADMINS
 INSERT INTO admins(first_name, surname, email, username) VALUES ('Ismael', 'Perez', 'ismperort@alum.us.es', 'ISMP15');
 
@@ -92,18 +114,14 @@ INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (2, 1);
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (3, 2);
 
--- PLAYERS-CARDS
-INSERT INTO players_cards(player_id, card_id) VALUES (1, 1);
-INSERT INTO players_cards(player_id, card_id) VALUES (1, 2);
-INSERT INTO players_cards(player_id, card_id) VALUES (1, 3);
+-- -- PLAYERS-CARDS
+-- INSERT INTO players_cards(player_id, card_id) VALUES (1, 1);
+-- INSERT INTO players_cards(player_id, card_id) VALUES (1, 2);
+-- INSERT INTO players_cards(player_id, card_id) VALUES (1, 3);
 
 -- PLAYERS-FORUMS
 INSERT INTO players_forums(player_id, forum_id) VALUES (1, 1);
 INSERT INTO players_forums(player_id, forum_id) VALUES (1, 2);
-
--- DECKS-CARDS
-INSERT INTO decks_cards(deck_id, card_id) VALUES (1, 1);
-INSERT INTO decks_cards(deck_id, card_id) VALUES (1, 2);
 
 -- FORUMS-TOPICS
 INSERT INTO forums_topics(forum_id, topic_id) VALUES (1, 1);

@@ -25,4 +25,16 @@ public class DeckService {
     public Iterable<Integer> getCardsOnDeck(int deckId) {  
         return deckRepo.findCardsInDeck(deckId);
     }
+
+    @Transactional
+    public void save(Deck deck) {  
+        deckRepo.save(deck);
+    }
+
+    @Transactional
+    public Deck getDeck(int id) {  
+        return deckRepo.findDeckById(id);
+    }
+
+
 }
