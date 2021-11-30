@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.game;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +10,9 @@ import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
+import org.springframework.samples.SevenIslands.card.Card;
+import org.springframework.samples.SevenIslands.deck.Deck;
+import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
@@ -43,6 +47,9 @@ public class GameController {
 
     @Autowired
     private WelcomeController welcomeController;
+
+    @Autowired
+    private DeckService deckService;
     
 
     @GetMapping(path = "/new")
@@ -54,18 +61,28 @@ public class GameController {
 
     @PostMapping(path = "/save")
     public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
+        Deck deck = deckService.getDeck(1); //TODO PREGUNTARLE AL PAREJO, ESTA EN ESPAÑOL PORQUE ES IMPORTANTE, PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO
         String view = "games/lobby";
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
             return "games/createOrUpdateGameForm";
         } else {
-            Player currentPlayer = securityService.getCurrentPlayer();
 
+            //RELATION GAME-PLAYERS
+            Player currentPlayer = securityService.getCurrentPlayer();
             game.setPlayer(currentPlayer); 
             game.addPlayerinPlayers(currentPlayer);
             currentPlayer.addGameinGames(game);
+            
 
+            //RELATION DECK-GAME
+            
+            //System.out.println(deck.getId());
+            game.setDeck(deck);
+
+            
             gameService.save(game);
+
 
             modelMap.addAttribute("game", game);
             modelMap.addAttribute("player", currentPlayer);

@@ -111,10 +111,10 @@ public class PlayerService {
 		authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
 	}
 
-    @Transactional(readOnly = true)
-    public Iterable<Card> getCardsByPlayerId(int id) {
-        return cardRepo.getByPlayerId(id);
-    }
+    // @Transactional(readOnly = true)
+    // public Iterable<Card> getCardsByPlayerId(int id) {
+    //     return cardRepo.getByPlayerId(id);
+    // }
 
     @Transactional(readOnly = true)
     public Iterable<Achievement> getAchievementsByPlayerId(int id) {

@@ -8,9 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.model.BaseEntity;
 import org.springframework.samples.SevenIslands.player.Player;
 
@@ -29,7 +31,10 @@ public class Card extends BaseEntity {
     private CARD_TYPE cardType;
 
 
-    @ManyToMany(mappedBy = "cards")
-	private Set<Player> players;
+    // @ManyToMany(mappedBy = "cards")
+	// private Set<Player> players;
+
+    @ManyToOne
+	private Deck deck;
     
 }

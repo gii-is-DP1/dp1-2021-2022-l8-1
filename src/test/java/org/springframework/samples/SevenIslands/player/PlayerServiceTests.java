@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -156,11 +157,12 @@ public class PlayerServiceTests {
         assertEquals(2,count);
     }
 
-    @Test
-    public void testGetCardsByPlayerId(){
-        long count = playerService.getCardsByPlayerId(1).spliterator().getExactSizeIfKnown();
-        assertEquals(3,count);
-    }
+    // @Disabled
+    // @Test
+    // public void testGetCardsByPlayerId(){
+    //     long count = playerService.getCardsByPlayerId(1).spliterator().getExactSizeIfKnown();
+    //     assertEquals(3,count);
+    // }
 
     @Test
     public void testWatchGameByPlayerId(){
