@@ -103,8 +103,8 @@ public class Player extends Person{
 
   //RELACION CON CARTAS
   @ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
-			inverseJoinColumns = @JoinColumn(name = "card_id"))
+	// @JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
+	// 		inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;
 
   //RELACION CON ESPECTADOR

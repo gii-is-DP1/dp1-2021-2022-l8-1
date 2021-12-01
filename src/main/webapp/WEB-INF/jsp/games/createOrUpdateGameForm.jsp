@@ -67,8 +67,6 @@
                    class="form-horizontal">
                     <input type="hidden" name="id" value="${game.id}"/>
                     <input type="hidden" name="actualPlayer" value="${game.actualPlayer}"/>
-                    <input type="hidden" name="numberOfPlayers" value="${game.numberOfPlayers}"/>
-                    <input type="hidden" name="cartsRemain" value="${game.remainsCards}"/>
                     <input type="hidden" name="numberOfTurn" value="${game.numberOfTurn}"/>
                     <div class="form-group has-feedback">
                         <div class="form-group">
