@@ -21,13 +21,13 @@ public class CardServiceTests {
     @Test
     public void testCountWithInitialData(){
         int count = cardService.cardCount();
-        assertEquals(count,10);
+        assertEquals(count,66);
     }
 
     @Test
     public void testFindAll(){
         long count = cardService.findAll().spliterator().getExactSizeIfKnown();
-        assertEquals(10, count);
+        assertEquals(66, count);
     }
 
     @Test

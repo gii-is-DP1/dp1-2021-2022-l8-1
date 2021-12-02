@@ -21,7 +21,7 @@ public class DeckServiceTests {
     @Test
     public void testCountWithInitialData() {
         int count = deckService.getDecksNumber();
-        assertEquals(1, count);
+        assertEquals(5, count);
     }
 
     @Test
