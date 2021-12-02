@@ -65,10 +65,10 @@ public class PlayerController {
         if(pageNumber!= null){
             //this method takes the page number pageNumber of two elements
             //Ex, if pageNumber=3, it takes the third page of two elements
-            page = PageRequest.of(pageNumber, 2);
+            page = PageRequest.of(pageNumber, 5);
         }else{
             pageNumber=0;
-            page = PageRequest.of(0, 2);
+            page = PageRequest.of(0, 5);
         }
 
         //to pass it to the view:
@@ -87,10 +87,11 @@ public class PlayerController {
                     //Iterable<Player> players = playerService.findAll();
                     Iterable<Player> playersPaginated = playerService.findAll(page);
                     if(filterName!=null){
+                        Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
                         //List<Player> listPlayersFiltered= StreamSupport.stream(players.spliterator(), false).filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
-                        List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
+                        List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
                         //modelMap.addAttribute("players", listPlayersFiltered);
-                        modelMap.addAttribute("players", listPlayersPaginated);
+                        modelMap.addAttribute("players", listPlayersPaginatedAndFiltered);
                     }else{
                         //modelMap.addAttribute("players", players);
                         List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());

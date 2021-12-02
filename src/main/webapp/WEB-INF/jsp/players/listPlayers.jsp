@@ -94,9 +94,11 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                     <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=${previousPageNumber}">Previous Page</a></li>
+                    <!--
                     <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=0">1</a></li>
                     <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=1">2</a></li>
                     <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=2">3</a></li>
+                    -->
                     <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=${nextPageNumber}">Next Page</a></li>
                     </ul>
                 </nav>

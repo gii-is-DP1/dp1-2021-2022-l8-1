@@ -178,10 +178,6 @@
 		</sec:authorize>
 		
 	</div>
-<<<<<<< HEAD
-</nav>
-=======
 </nav>
 
 
->>>>>>> 5d09e2f71fbe60da96e4ac2940335392932515dd

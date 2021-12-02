@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
 
 
 public interface PlayerRepository extends PagingAndSortingRepository<Player, Integer>{
@@ -34,5 +35,11 @@ public interface PlayerRepository extends PagingAndSortingRepository<Player, Int
 
 	@Query(value = "SELECT * FROM Players where id LIKE ?1", nativeQuery = true) 
 	Optional<Player> findPlayerById(int id);
+
+	//@Query("SELECT P FROM Player P INNER JOIN P.user U WHERE ( P.surname LIKE %:data% or U.username LIKE %:data% or P.firstName LIKE %:data%)")
+	//Iterable<Player> findIfPlayerContains(@Param("data") String data, @Param("pageable") Pageable pageable)
+
+	@Query("SELECT P FROM Player P INNER JOIN P.user U WHERE ( LOWER(P.surname) LIKE %:data% or LOWER(U.username) LIKE %:data% or LOWER(P.firstName) LIKE %:data%)")
+	Page<Player> findIfPlayerContains(@Param("data") String data, Pageable pageable);
 
 }
