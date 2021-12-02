@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -50,11 +51,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
-				 	/*.loginPage("/login1")*/
+				 	.loginPage("/login").permitAll()
 				 	.failureUrl("/login-error")
 				.and()
-					.logout()
-						.logoutSuccessUrl("/"); 
+					.logout().permitAll()
+					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));; 
                 // Configuración para que funcione la consola de administración 
                 // de la BD H2 (deshabilitar las cabeceras de protección contra
                 // ataques de tipo csrf y habilitar los framesets si su contenido
