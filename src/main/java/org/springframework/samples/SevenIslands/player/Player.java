@@ -102,7 +102,7 @@ public class Player extends Person{
 	private Set<Achievement> achievements;
 
   //RELACION CON CARTAS
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
 	// @JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
 	// 		inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;

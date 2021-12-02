@@ -11,4 +11,7 @@ public interface CardRepository extends CrudRepository<Card, Integer>{
 
     // @Query("SELECT C FROM Card C INNER JOIN C.players P WHERE P.id = :playerId")
     // Collection<Card> getByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
+
+    // @Query(value="SELECT * FROM CARDS", nativeQuery = true)
+    // Collection<Card> findAllCards();
 }

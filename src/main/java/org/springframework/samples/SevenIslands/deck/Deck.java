@@ -1,14 +1,12 @@
 package org.springframework.samples.SevenIslands.deck;
 
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
@@ -27,10 +25,10 @@ public class Deck extends BaseEntity {
     @Column(name="name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deck")
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     // @JoinTable(name = "decks_cards", joinColumns = @JoinColumn(name = "deck_id"),
 	// 		inverseJoinColumns = @JoinColumn(name = "card_id"))
-	private Collection<Card> cards;
+	private List<Card> cards;
 
     public void deleteCards(Card card){
         cards.remove(card);

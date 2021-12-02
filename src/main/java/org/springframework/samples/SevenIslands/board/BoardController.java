@@ -1,4 +1,7 @@
 package org.springframework.samples.SevenIslands.board;
+import java.util.Collections;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
@@ -12,7 +15,9 @@ import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -46,12 +51,23 @@ public class BoardController {
         gService.insertIdUserModelMap(modelMap);
         // modelMap.put("now", new Date());
 		modelMap.addAttribute("board",boardService.findById(1).get()); 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
         Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
-        int n =  game.getPlayers().size();
         
+        if(!game.isHas_started()){
+            List<Player> p = game.getPlayers();
+            Collections.shuffle(p);
+            game.setPlayers(p);
+            game.setNumberOfTurn(0);
+            game.setActualPlayer(0);
+            game.setHas_started(true);
+        }else if(game.getActualPlayer()!=(game.getNumberOfTurn()%game.getPlayers().size())){ //para que aunque refresque uno que no es su turno no incremente el turno
+            game.setNumberOfTurn(game.getNumberOfTurn()+1);
+        }
+        gameService.save(game);
+        modelMap.addAttribute("id_playing", game.getPlayers().get(game.getActualPlayer()).getId());
+
+        int n =  game.getPlayers().size();     
         if(n==1){
 
             //TODO Mirar como se puede juntar este código con el de lobby en GameController 
@@ -87,6 +103,20 @@ public class BoardController {
         modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).toArray()[0]);
 
         return view;
+    }
+
+    @GetMapping(path = "/{gameId}/changeTurn")
+    public String changeTurn(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+
+        Game game = gameService.findGameById(gameId).stream().findFirst().get();
+        String code = game.getCode();
+
+        Integer n = game.getPlayers().size();
+
+        game.setActualPlayer((game.getActualPlayer()+1)%n);
+        gameService.save(game);
+
+        return "redirect:/boards/"+ code;
     }
 
     
