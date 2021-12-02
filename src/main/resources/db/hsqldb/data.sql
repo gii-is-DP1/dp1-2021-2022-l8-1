@@ -12,23 +12,90 @@ INSERT INTO authorities(id,username,authority) VALUES (7,'test3','player');
 
 -- DECKS
 INSERT INTO deck(name) VALUES ('Mazo');
--- INSERT INTO deck(id) VALUES (2);
--- INSERT INTO deck(id) VALUES (3);
--- INSERT INTO deck(id) VALUES (4);
--- INSERT INTO deck(id) VALUES (5);
--- INSERT INTO deck(id) VALUES (6);
+INSERT INTO deck(name) VALUES ('Mazo');
+INSERT INTO deck(name) VALUES ('Mazo');
+INSERT INTO deck(name) VALUES ('Mazo');
+INSERT INTO deck(name) VALUES ('Mazo');
+
 
 -- CARDS
 INSERT INTO cards(id,card_type) VALUES (1, 'DOUBLON');
-INSERT INTO cards(id,card_type) VALUES (2, 'GOLDEN_CUP');
-INSERT INTO cards(id,card_type) VALUES (3, 'RUBY');
-INSERT INTO cards(id,card_type) VALUES (4, 'DIAMOND');
+INSERT INTO cards(id,card_type) VALUES (2, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (3, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (4, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (5, 'DOUBLON');
-INSERT INTO cards(id,card_type) VALUES (6, 'GOLDEN_CUP');
-INSERT INTO cards(id,card_type) VALUES (7, 'RUBY');
-INSERT INTO cards(id,card_type) VALUES (8, 'DIAMOND');
+INSERT INTO cards(id,card_type) VALUES (6, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (7, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (8, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (9, 'DOUBLON');
-INSERT INTO cards(id,card_type) VALUES (10, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type) VALUES (10, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (11, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (12, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (13, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (14, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (15, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (16, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (17, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (18, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (19, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (20, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (21, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (22, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (23, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (24, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (25, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (26, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (27, 'DOUBLON');
+
+INSERT INTO cards(id,card_type) VALUES (28, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type) VALUES (29, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type) VALUES (30, 'GOLDEN_CUP');
+
+INSERT INTO cards(id,card_type) VALUES (31, 'RUBY');
+INSERT INTO cards(id,card_type) VALUES (32, 'RUBY');
+INSERT INTO cards(id,card_type) VALUES (33, 'RUBY');
+
+
+INSERT INTO cards(id,card_type) VALUES (34, 'DIAMOND');
+INSERT INTO cards(id,card_type) VALUES (35, 'DIAMOND');
+INSERT INTO cards(id,card_type) VALUES (36, 'DIAMOND');
+
+INSERT INTO cards(id,card_type) VALUES (37, 'PEARL_NECKLACE');
+INSERT INTO cards(id,card_type) VALUES (38, 'PEARL_NECKLACE');
+INSERT INTO cards(id,card_type) VALUES (39, 'PEARL_NECKLACE');
+INSERT INTO cards(id,card_type) VALUES (40, 'PEARL_NECKLACE');
+
+INSERT INTO cards(id,card_type) VALUES (41, 'CROWN');
+INSERT INTO cards(id,card_type) VALUES (42, 'CROWN');
+INSERT INTO cards(id,card_type) VALUES (43, 'CROWN');
+INSERT INTO cards(id,card_type) VALUES (44, 'CROWN');
+
+INSERT INTO cards(id,card_type) VALUES (45, 'MESSAGE_BOTTLE');
+INSERT INTO cards(id,card_type) VALUES (46, 'MESSAGE_BOTTLE');
+INSERT INTO cards(id,card_type) VALUES (47, 'MESSAGE_BOTTLE');
+INSERT INTO cards(id,card_type) VALUES (48, 'MESSAGE_BOTTLE');
+
+INSERT INTO cards(id,card_type) VALUES (49, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (50, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (51, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (52, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (53, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (54, 'BARREL_OF_RUM');
+
+INSERT INTO cards(id,card_type) VALUES (55, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (56, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (57, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (58, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (59, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (60, 'STIR');
+
+INSERT INTO cards(id,card_type) VALUES (61, 'SWORD');
+INSERT INTO cards(id,card_type) VALUES (62, 'SWORD');
+INSERT INTO cards(id,card_type) VALUES (63, 'SWORD');
+INSERT INTO cards(id,card_type) VALUES (64, 'SWORD');
+INSERT INTO cards(id,card_type) VALUES (65, 'SWORD');
+INSERT INTO cards(id,card_type) VALUES (66, 'SWORD');
+
 
 -- DECKS-CARDS
 -- INSERT INTO decks_cards(deck_id, card_id) VALUES (1, 1);
@@ -57,16 +124,16 @@ INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, 
 VALUES ('Prueba0', 'ABCD124', 7, 5, 1, 1,'PUBLIC', false, '2021-11-18 23:00:00');
 
  INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
- VALUES ('Prueba1', 'ABCD123', 4, 2,1, 1,'PUBLIC', false, '2021-11-18 23:00:00');
+ VALUES ('Prueba1', 'ABCD123', 4, 2,1, 2,'PUBLIC', false, '2021-11-18 23:00:00');
 
  INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
- VALUES ('Prueba2', 'ABCD122', 2, 1,1, 1,'PRIVATE', false, '2021-11-18 23:00:00');
+ VALUES ('Prueba2', 'ABCD122', 2, 1,1, 3,'PRIVATE', false, '2021-11-18 23:00:00');
 
  INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started, start_time) 
- VALUES ('Prueba3', 'ABCD121', 3, 2, 1, 1,'PUBLIC', true, '2021-11-18 23:00:00');
+ VALUES ('Prueba3', 'ABCD121', 3, 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00');
 
  INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started, start_time) 
- VALUES ('Prueba4', 'ABCD120', 1, 1, 2, 1,'PRIVATE', true, '2021-11-18 23:01:00');
+ VALUES ('Prueba4', 'ABCD120', 1, 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00');
 -- TODO: AQUI HAY QUE QUITAR ATRIBUTOS NUEVOS METIDOS
 
 -- BOARDS

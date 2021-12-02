@@ -74,9 +74,9 @@ public class GameServiceTests {
 
     @Test
     public void shouldInsertGame(){
-        Deck deck = deckService.getDeck(1);
         Game game = new Game();
         game.setName("Partida 1");
+        Deck deck = deckService.init(game.getName());
         game.setCode("AAAABBBB1");
         game.setPrivacity(PRIVACITY.PUBLIC);
         game.setHas_started(false);
@@ -95,9 +95,9 @@ public class GameServiceTests {
 
     @Test
     public void shouldDeleteGame(){
-        Deck deck = deckService.getDeck(1);
         Game game = new Game();
         game.setName("Partida 1");
+        Deck deck = deckService.init(game.getName());
         game.setCode("AAAABBBB1");
         game.setPrivacity(PRIVACITY.PUBLIC);
         game.setHas_started(false);

@@ -61,7 +61,9 @@ public class GameController {
 
     @PostMapping(path = "/save")
     public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
-        Deck deck = deckService.getDeck(1); //TODO PREGUNTARLE AL PAREJO, ESTA EN ESPAÑOL PORQUE ES IMPORTANTE, PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO
+        //TODO PREGUNTARLE AL PAREJO, ESTA EN ESPAÑOL PORQUE ES IMPORTANTE, PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
+        Deck deck = deckService.init(game.getName());
+
         String view = "games/lobby";
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
@@ -73,12 +75,8 @@ public class GameController {
             game.setPlayer(currentPlayer); 
             game.addPlayerinPlayers(currentPlayer);
             currentPlayer.addGameinGames(game);
-            
-
-            //RELATION DECK-GAME
-            
-            //System.out.println(deck.getId());
             game.setDeck(deck);
+            
 
             
             gameService.save(game);
@@ -159,6 +157,10 @@ public class GameController {
         securityService.insertIdUserModelMap(model);
         if (gameService.findGameById(gameId).isPresent()) {
             Game game = gameService.findGameById(gameId).get(); 
+            if(game.isHas_started()){
+                String code = game.getCode();
+                return "redirect:/boards/" + code;
+            }
             model.addAttribute("game", game);
 
             int playerId = securityService.getCurrentUserId(); // Id of player that is logged

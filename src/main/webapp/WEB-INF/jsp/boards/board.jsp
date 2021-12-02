@@ -13,14 +13,22 @@
         <img id="profile-avatar" src="/resources/images/profile-photo.png">
         <h2><c:out value="${game.name}"/></h2>
     </div>
-    <p> Your will lose your turn in <span id="countdowntimer"> 10 </span> Seconds</p>
+    <!--<p> Your will lose your turn in <span id="countdowntimer"> 10 </span> Seconds</p>-->
     <div>
         <div class="col-md-4">
             <div class="playersList">
-                <h3 class="text-center">Player List:</h3>
+                <h3 class="text-center">Order of Turns:</h3>
                 <c:forEach items ="${game.players}" var="p">
                     <div class="row text-center">
-                        <c:out value = "${p.user.username}"/><br>
+                        <c:choose>
+                            <c:when test="${id_playing==p.id}">
+                                <span style="background-color: yellow;"><c:out value = "${p.user.username}"/></span><br>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value = "${p.user.username}"/><br>
+                            </c:otherwise>
+                        </c:choose>
+                        
                     </div>
                 </c:forEach> 
             </div>
@@ -32,6 +40,16 @@
             </c:forEach>  -->
         </div>
     </div>
+
+    <c:if test="${id_playing==id}">
+     
+        <a href="/boards/${game.id}/changeTurn" class="btn btn-default">Finish Turn</a>
+    
+    </c:if>
+
+   
+    
+    
 
     <!-- DICE -->
     <script>

@@ -34,7 +34,7 @@ public class Card extends BaseEntity {
     // @ManyToMany(mappedBy = "cards")
 	// private Set<Player> players;
 
-    @ManyToOne
-	private Deck deck;
+    // @ManyToOne
+	// private Deck deck;
     
 }

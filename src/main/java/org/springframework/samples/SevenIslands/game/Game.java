@@ -98,7 +98,7 @@ public class Game extends NamedEntity {
     @ManyToOne(optional=false)
     private Player player;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, optional=false)
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, optional=false)
     private Deck deck;
 
     public Deck getDeck() {
