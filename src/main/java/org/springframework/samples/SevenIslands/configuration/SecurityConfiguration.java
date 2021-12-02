@@ -52,7 +52,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 				 	.formLogin()
 				 	.loginPage("/login").permitAll()
-				 	.failureUrl("/login-error")
 				.and()
 					.logout().permitAll()
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));; 
