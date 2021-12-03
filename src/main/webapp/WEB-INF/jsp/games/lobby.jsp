@@ -57,14 +57,24 @@
                 </div>
                 <br><br><br><br>
                 <div class="row text-center">
-
-                    <a href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/boards/${game.code}" class="btn btn-default">Start match</a>
-
+                    <c:choose>
+                        <c:when test="${game.player.id==player.id}">
+                            <a href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <c:if test="${totalplayers>1}">
+                                <a href="/boards/${game.code}" class="btn btn-default">Start match</a>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="/games/exit/${game.id}" class="btn btn-default">Exit</a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </form:form>
     </jsp:body>
+
+    
+
 
 </sevenislands:layout>

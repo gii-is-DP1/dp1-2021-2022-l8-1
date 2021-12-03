@@ -15,6 +15,11 @@
 
 
 <div id="body-section">
+  
+    <div id="top-section">
+        <h2 id="title"><c:out value="${subtitle}"></c:out></h2>
+    </div>
+
     <c:if test="${not empty message}" >
         <div class="alert alert-${not empty messageType ? messageType : 'info'}" role="alert">
             <c:out value="${message}"></c:out>
@@ -23,10 +28,6 @@
             </button> 
         </div>
     </c:if>
-
-    <div id="top-section">
-        <h2 id="sub-title"><c:out value="${subtitle}"></c:out></h2>
-    </div>
 
     <div id="mid-section">
         <jsp:doBody/>

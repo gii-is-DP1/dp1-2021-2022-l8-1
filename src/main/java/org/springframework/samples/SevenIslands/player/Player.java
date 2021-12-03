@@ -102,9 +102,9 @@ public class Player extends Person{
 	private Set<Achievement> achievements;
 
   //RELACION CON CARTAS
-  @ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
-			inverseJoinColumns = @JoinColumn(name = "card_id"))
+  @ManyToMany(fetch = FetchType.EAGER)
+	// @JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
+	// 		inverseJoinColumns = @JoinColumn(name = "card_id"))
 	private Set<Card> cards;
 
   //RELACION CON ESPECTADOR
@@ -125,6 +125,10 @@ public class Player extends Person{
     List<Game> g = new ArrayList<>(this.getGames());
     g.add(game);
     this.setGames(g);
+  }
+
+  public void deleteGames(Collection<Game> g){
+    this.games.removeAll(g);
   }
 
   // //RELACION CON PLAYER (Invitaciones)

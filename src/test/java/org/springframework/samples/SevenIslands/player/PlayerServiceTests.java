@@ -2,16 +2,24 @@ package org.springframework.samples.SevenIslands.player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
-
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.SevenIslands.game.Game;
+import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
 import org.springframework.samples.SevenIslands.user.UserService;
@@ -77,37 +85,31 @@ public class PlayerServiceTests {
 
     }
 
-    // @Test
-    // public void shouldDeletePlayer(){
+    @Test
+    public void shouldDeletePlayer(){
 
-    //     Player player = new Player();
-    //     player.setFirstName("Antonio");
-    //     player.setSurname("García");
-    //     player.setEmail("antoniogar@gmail.com");
-    //     player.setProfilePhoto("www.foto.png");
+        int playerId=1;
 
-    //     User user = new User();
-    //     user.setUsername("antoniog11");
-    //     user.setPassword("4G4rc14");
-    //     user.setEnabled(true);
+        int countBefore=playerService.playerCount();
 
-    //     player.setUser(user);
+        Optional<Player> player = playerService.findPlayerById(playerId);
+        if(player.isPresent()){
+            Player p = player.get();
+            Collection<Game> lg = p.getGames();
+            Collection<Game> col = lg.stream().filter(x->x.getPlayer().getId()!=playerId).collect(Collectors.toCollection(ArrayList::new));
+            col.stream().forEach(x->x.deletePlayerOfGame(p));
+
+            p.deleteGames(col);
     
-    //     //Similar to .savePlayer(player)
-    //     playerService.savePlayer(player);
-    //     //userService.saveUser(player.getUser());
-    //     //authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
+            playerService.delete(player.get());
+        }
 
-    //     int countBefore = playerService.playerCount();
-        
-    //     playerService.delete(player);
-
-    //     int countAfter = playerService.playerCount();
+        int countAfter=playerService.playerCount();
 
 
-    //     assertNotEquals(countBefore, countAfter);
+        assertNotEquals(countBefore, countAfter);
 
-    // }
+    }
 
     @Test
     public void testFindPlayersByGameId() {
@@ -133,7 +135,7 @@ public class PlayerServiceTests {
 
     @Test
     public void testFinPlayerByUsername(){
-        int count = playerService.getPlayerByName("test2").size();
+        int count = playerService.getPlayerByUsername("test2").size();
         assertEquals(1,count);
     }
 
@@ -155,11 +157,12 @@ public class PlayerServiceTests {
         assertEquals(2,count);
     }
 
-    @Test
-    public void testGetCardsByPlayerId(){
-        long count = playerService.getCardsByPlayerId(1).spliterator().getExactSizeIfKnown();
-        assertEquals(3,count);
-    }
+    // @Disabled
+    // @Test
+    // public void testGetCardsByPlayerId(){
+    //     long count = playerService.getCardsByPlayerId(1).spliterator().getExactSizeIfKnown();
+    //     assertEquals(3,count);
+    // }
 
     @Test
     public void testWatchGameByPlayerId(){
@@ -174,23 +177,23 @@ public class PlayerServiceTests {
         assertEquals(1, players.spliterator().getExactSizeIfKnown());
     }
 
-    //Historias de usuario
+    //USER´S HISTORIES
 
     @Test
-    public void testCountAllPlayers() { //HISTORIA DE USUARIO H16 CASO DE USO POSITIVO
+    public void testCountAllPlayers() { // H16 - POSITIVE 1
         long count = playerService.findAll().spliterator().getExactSizeIfKnown();
         assertEquals(count, 3);
     }
 
     @Test
-    public void testCountPlayerWithEspecificWordInUsername() { //HISTORIA DE USUARIO H17 CASO DE USO POSITIVO 2
+    public void testCountPlayerWithEspecificWordInUsername() { //H17 -POSITIVE 2
         Iterable<Player> a = playerService.findAll();
         long n = StreamSupport.stream(a.spliterator(), false).filter(x->x.getUser().getUsername().contains("test")).count();
         assertEquals(n, 3);
     }
 
     @Test
-    public void testUpdateUserFirstName(){ //HISTORIA DE USUARIO H17 CASO DE USO POSITIVO 3
+    public void testUpdateUserFirstName(){ //H17 - POSITIVE 3
         Player p = playerService.findPlayerById(1).get();
         String n = p.getFirstName();
         
@@ -202,7 +205,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testUpdateUserSurName(){ //HISTORIA DE USUARIO H17 CASO DE USO POSITIVO 3
+    public void testUpdateUserSurName(){ //H17 - POSITIVE 3
         Player p = playerService.findPlayerById(1).get();
         String m = p.getSurname();
         p.setSurname("Diaz Salgado");
@@ -212,27 +215,61 @@ public class PlayerServiceTests {
        
     }
 
-    // @Test
-    // public void testUpdateUsername(){ //HISTORIA DE USUARIO H17 CASO DE USO NEGATIVO 2
-    //     try{
-    //         Player p = playerService.findPlayerById(1).get();
-    //         p.getUser().setUsername("test2");
-            
-    //     }
-    //     catch(Exception e){
-           
-    //     }
-        
-        
-       
-    // }
 
-    // @Test
-    // public void deleteUser(){ //HISTORIA DE USUARIO H17 CASO DE USO POSITIVO 3
-    //     Player p = playerService.findPlayerById(1).get();
-    //     playerService.delete(p);
-        
-    //     assertTrue(playerService.findPlayerById(1)==null);
+    @Test
+    public void shouldDeleteUser(){
+
+        User user = new User();
+        user.setUsername("antoniog11");
+        user.setPassword("4G4rc14");
+        user.setEnabled(true);
+
+        userService.saveUser(user);
+
+        int countBefore = userService.userCount();
+
+        userService.delete(user.getUsername());
+
+        int countAfter = userService.userCount();
+
+    
+        assertNotEquals(countBefore, countAfter);
+
+    }
+
+    
+    @Test
+    public void testAuthorities(){
+
+        long countBefore = authoritiesService.count();
+
+        Authorities a = new Authorities();
+        a.setAuthority("player");
+        authoritiesService.saveAuthorities(a);
+
        
-    // }
+
+        authoritiesService.deleteAuthorities(a.getId());
+        long countAfter = authoritiesService.count();
+
+        assertEquals(countBefore, countAfter);
+
+    }
+
+    @Test
+    public void testAuthorities2(){
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            authoritiesService.saveAuthorities("pepito", "player");
+        });
+    
+        String expectedMessage = "pepito not found";
+        String actualMessage = exception.getMessage();
+    
+        assertThat(actualMessage.contains(expectedMessage));
+        
+    }
+
 }
+
+
