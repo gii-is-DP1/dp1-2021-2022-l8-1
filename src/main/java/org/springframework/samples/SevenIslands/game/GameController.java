@@ -225,24 +225,24 @@ public class GameController {
     @GetMapping(path = "/rooms")
     public String publicRooms(ModelMap modelMap) {
 
-        String view = "/welcome";
-        securityService.insertIdUserModelMap(modelMap);
+        String view;
 
-        if (securityService.authenticationNotNull()) {
-            if (securityService.isAuthenticatedUser()) {
-                
-                if (securityService.isAdmin()) {
-                    view = adminController.rooms(modelMap);
-                } else {
-                    view = playerController.games(modelMap);
-                }
+        if (securityService.isAuthenticatedUser()) {
+            securityService.insertIdUserModelMap(modelMap);
+             
+            if (securityService.isAdmin()) {
+                view = adminController.rooms(modelMap);
             } else {
-
-                return "redirect:/welcome"; 
-
+                view = playerController.games(modelMap);
             }
+            return view;
+
+        } else {
+            return securityService.redirectToLogin(modelMap);
+
+            // how can we redirect to the welcome page and maintain the message in the model?
         }
-        return view;
+        
     }
 
     //Games by room code
@@ -252,6 +252,7 @@ public class GameController {
         securityService.insertIdUserModelMap(modelMap);
         Iterable<Game> games;
         if (securityService.authenticationNotNull()) {
+            securityService.insertIdUserModelMap(modelMap);
             view = "games/publicRooms";
             games = gameService.findGamesByRoomCode(code);
             modelMap.addAttribute("games", games);
@@ -259,7 +260,6 @@ public class GameController {
                 modelMap.addAttribute("message", "Game not found");
             }
             
-        
         } else {
             return "welcome"; 
         }
@@ -270,10 +270,11 @@ public class GameController {
     @GetMapping(path = "/rooms/playing")
     public String currentlyPlaying(ModelMap modelMap) {
 
-        securityService.insertIdUserModelMap(modelMap);
         Collection<Game> games;
 
         if(securityService.isAuthenticatedUser()) {
+            securityService.insertIdUserModelMap(modelMap); //FIXME: this is not working
+            
                 // If the user has admin perms then:
                 if (securityService.isAdmin()) {
                     games = gameService.findAllPlaying();
@@ -286,9 +287,12 @@ public class GameController {
                     // here we can see only the public games which are currently being played, in order to watch it by streaming
 
                 }
+            
+                return "games/currentlyPlaying";
         }
 
-        return "games/currentlyPlaying";
+        return securityService.redirectToLogin(modelMap);
+        // how can we redirect to the welcome page and maintain the message in the model?
 
 
     }
