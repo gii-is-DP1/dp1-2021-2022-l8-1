@@ -14,6 +14,7 @@
         <h2><c:out value="${game.name}"/></h2>
     </div>
     <!--<p> Your will lose your turn in <span id="countdowntimer"> 10 </span> Seconds</p>-->
+    <c:out value="${tempo}"></c:out>
     <div>
         <div class="col-md-4">
             <div class="playersList">

@@ -61,7 +61,7 @@ public class GameController {
 
     @PostMapping(path = "/save")
     public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
-        //TODO PREGUNTARLE AL PAREJO, ESTA EN ESPAÑOL PORQUE ES IMPORTANTE, PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
+        //TODO PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
         Deck deck = deckService.init(game.getName());
 
         String view = "games/lobby";

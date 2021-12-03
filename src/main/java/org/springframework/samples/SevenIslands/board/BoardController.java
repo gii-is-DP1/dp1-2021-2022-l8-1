@@ -49,10 +49,12 @@ public class BoardController {
     public String board(@PathVariable("code") String code, ModelMap modelMap, HttpServletResponse response) {
         String view = "boards/board";
         gService.insertIdUserModelMap(modelMap);
+        
         // modelMap.put("now", new Date());
 		modelMap.addAttribute("board",boardService.findById(1).get()); 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
         Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
+        
         
         if(!game.isHas_started()){
             List<Player> p = game.getPlayers();
@@ -60,13 +62,17 @@ public class BoardController {
             game.setPlayers(p);
             game.setNumberOfTurn(0);
             game.setActualPlayer(0);
+            game.setTempo(18);
             game.setHas_started(true);
-        }else if(game.getActualPlayer()!=(game.getNumberOfTurn()%game.getPlayers().size())){ //para que aunque refresque uno que no es su turno no incremente el turno
+        }else if(game.getActualPlayer()!=(game.getNumberOfTurn()%game.getPlayers().size()) || game.getTempo()==0){ //para que aunque refresque uno que no es su turno no incremente el turno
             game.setNumberOfTurn(game.getNumberOfTurn()+1);
+        }else if(game.getActualPlayer()==(game.getNumberOfTurn()%game.getPlayers().size())){
+            game.setTempo(game.getTempo()-2);
         }
+        
         gameService.save(game);
         modelMap.addAttribute("id_playing", game.getPlayers().get(game.getActualPlayer()).getId());
-
+        modelMap.addAttribute("tempo", game.getTempo());
         int n =  game.getPlayers().size();     
         if(n==1){
 

@@ -53,6 +53,9 @@ public class Game extends NamedEntity {
     @Column(name = "number_of_turn")   
     private Integer numberOfTurn;
 
+    @Column(name = "tempo")   
+    private Integer tempo;
+
     // @Column(name = "remains_cards")   
     // private Integer remainsCards;
 
