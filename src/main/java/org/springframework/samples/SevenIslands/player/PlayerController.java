@@ -269,19 +269,27 @@ public class PlayerController {
 		else {
                     
                     Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-                    int a = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
-                    String n = playerToUpdate.getUser().getUsername();
- 
+                    int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
+                    String username = playerToUpdate.getUser().getUsername();
+                    Iterable<Player> players = playerService.findAll();
+                    List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
                     //borrar user antes de grabarlo en playerToUpdate
                     //validador
 			BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
                     try {                    
                         //this.playerService.savePlayer(playerToUpdate);
-                        this.playerService.savePlayer(playerToUpdate);
-                        authoritiesService.deleteAuthorities(a);
-                        if(n != playerToUpdate.getUser().getUsername()){
                         
-                            userService.delete(n);
+                        //If the username is already in the DB and it's was edited then it means that
+                        //we are overwritting another user
+                        if(usernames.stream().anyMatch(x->x.equals(playerToUpdate.getUser().getUsername()))&&
+                        !playerToUpdate.getUser().getUsername().equals(username)){
+                            return "errors/error-500";
+                        }
+
+                        this.playerService.savePlayer(playerToUpdate);
+                        authoritiesService.deleteAuthorities(id);
+                        if(username != playerToUpdate.getUser().getUsername()){
+                            userService.delete(username);
                         }      
 
                     } catch (Exception ex) {
@@ -292,7 +300,7 @@ public class PlayerController {
                     .anyMatch(x -> x.toString().equals("admin"))){
                         return "redirect:/players";
                     }else{
-                        if(n != playerToUpdate.getUser().getUsername()){
+                        if(username != playerToUpdate.getUser().getUsername()){
                             SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
                             return "redirect:/welcome";
                         }
@@ -300,7 +308,5 @@ public class PlayerController {
                         
                     }
 		}
-	}
-    
-    
+	}  
 }
