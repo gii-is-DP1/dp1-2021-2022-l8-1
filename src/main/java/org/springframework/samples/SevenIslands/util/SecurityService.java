@@ -2,6 +2,8 @@ package org.springframework.samples.SevenIslands.util;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -25,8 +27,6 @@ public class SecurityService {
     @Autowired
     private PlayerService playerService;
 
-    @Autowired
-    private WelcomeController welcomeController;
 
     @Transactional
     public Authentication getAuthentication() {
@@ -108,12 +108,11 @@ public class SecurityService {
 		
 	}
 
-    @Transactional
-    public String redirectToLogin(ModelMap modelMap) {
-        modelMap.addAttribute("message", "Please, first sign in!");
-        return welcomeController.welcome(modelMap);
-    }
 
-    
+    @Transactional
+    public String redirectToWelcome(HttpServletRequest request) {      
+        request.getSession().setAttribute("message", "Please, first sign in!");
+        return "redirect:/welcome";
+    }
 
 }

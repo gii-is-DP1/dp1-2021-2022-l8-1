@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -103,41 +104,11 @@ public class GameController {
   
   
     @GetMapping(path = "/delete/{gameId}")
-    public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+    public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap, HttpServletRequest request) {
 
         Optional<Game> game = gameService.findGameById(gameId); 
 
-        if(securityService.isAdmin()) {
-            securityService.insertIdUserModelMap(modelMap); 
-
-            if(game.isPresent()) {
-                gameService.delete(game.get());
-                modelMap.addAttribute("message", "Game successfully deleted");
-                
-            } else {
-                modelMap.addAttribute("message", "Game not found");
-            }
-            return adminController.rooms(modelMap);
-        
-        } else if(securityService.isAuthenticatedUser()){
-            securityService.insertIdUserModelMap(modelMap); 
-            int currentPlayerId = securityService.getCurrentUserId();   
-
-            if(gameService.isOwner(currentPlayerId, gameId)) { // if the user is the owner of the game, the game is obviously present
-                gameService.delete(game.get());
-                modelMap.addAttribute("message", "Game successfully deleted!");
-                
-            } else {
-                modelMap.addAttribute("message", "You are not allowed to delete this game!");
-                
-            }
-
-            return playerController.games(modelMap);
-
-        } else {
-            modelMap.addAttribute("message", "Please, first sign in!");
-            return welcomeController.welcome(modelMap);
-        }
+        return gameService.deleteGame(game, gameId, modelMap, request);
     }
 
     private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
@@ -223,7 +194,7 @@ public class GameController {
 
     // ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
-    public String publicRooms(ModelMap modelMap) {
+    public String publicRooms(ModelMap modelMap, HttpServletRequest request) {
 
         String view;
 
@@ -238,42 +209,44 @@ public class GameController {
             return view;
 
         } else {
-            return securityService.redirectToLogin(modelMap);
 
-            // how can we redirect to the welcome page and maintain the message in the model?
+            return securityService.redirectToWelcome(request);
+
         }
         
     }
 
     //Games by room code
     @GetMapping(path = "/rooms/{code}")
-    public String gameByCode(@PathVariable("code") String code, ModelMap modelMap) {
-        String view;
-        securityService.insertIdUserModelMap(modelMap);
+    public String gameByCode(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
+        
         Iterable<Game> games;
-        if (securityService.authenticationNotNull()) {
+        if (securityService.isAuthenticatedUser()) {
             securityService.insertIdUserModelMap(modelMap);
-            view = "games/publicRooms";
+
             games = gameService.findGamesByRoomCode(code);
-            modelMap.addAttribute("games", games);
-            if(games.spliterator().getExactSizeIfKnown()==0l){
+    
+            if(games.spliterator().getExactSizeIfKnown()==0l){ //If there are no games with this code
                 modelMap.addAttribute("message", "Game not found");
+            } else {
+                modelMap.addAttribute("games", games);
             }
             
+            return  "games/publicRooms";
         } else {
-            return "welcome"; 
+            return securityService.redirectToWelcome(request);
         }
-        return view;
+        
     }
 
     // Games currently playing
     @GetMapping(path = "/rooms/playing")
-    public String currentlyPlaying(ModelMap modelMap) {
+    public String currentlyPlaying(ModelMap modelMap, HttpServletRequest request) {
 
         Collection<Game> games;
 
         if(securityService.isAuthenticatedUser()) {
-            securityService.insertIdUserModelMap(modelMap); //FIXME: this is not working
+            securityService.insertIdUserModelMap(modelMap); 
             
                 // If the user has admin perms then:
                 if (securityService.isAdmin()) {
@@ -289,11 +262,10 @@ public class GameController {
                 }
             
                 return "games/currentlyPlaying";
+        
+        } else {
+            return securityService.redirectToWelcome(request);
         }
-
-        return securityService.redirectToLogin(modelMap);
-        // how can we redirect to the welcome page and maintain the message in the model?
-
 
     }
 
