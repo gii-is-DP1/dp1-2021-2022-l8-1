@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 
 @Controller
@@ -54,29 +56,56 @@ public class PlayerController {
     private AchievementService achievementService;
 
     @GetMapping()
-    public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("begin") Integer begin, @PathParam("end") Integer end){        //For admins
+    public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){        //For admins
         String view ="players/listPlayers";
         generalService.insertIdUserModelMap(modelMap);
+
+        //if pageNumber== null, we takes page number 0
+        Pageable page;
+        if(pageNumber!= null){
+            //this method takes the page number pageNumber of two elements
+            //Ex, if pageNumber=3, it takes the third page of two elements
+            page = PageRequest.of(pageNumber, 5);
+        }else{
+            pageNumber=0;
+            page = PageRequest.of(0, 5);
+        }
+
+        //to pass it to the view:
+        Integer nextPageNumber;
+        Integer previousPageNumber;
+        nextPageNumber= pageNumber+1;
+        if(pageNumber==0){
+            previousPageNumber=0;
+        }else{
+            previousPageNumber=pageNumber-1;
+        }
+
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     
-                    Iterable<Player> players = playerService.findAll();
+                    //Iterable<Player> players = playerService.findAll();
+                    Iterable<Player> playersPaginated = playerService.findAll(page);
                     if(filterName!=null){
-                        List<Player> listPlayersFiltered= StreamSupport.stream(players.spliterator(), false).filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
-                        modelMap.addAttribute("players", listPlayersFiltered);
+                        Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
+                        //List<Player> listPlayersFiltered= StreamSupport.stream(players.spliterator(), false).filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
+                        List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
+                        //modelMap.addAttribute("players", listPlayersFiltered);
+                        modelMap.addAttribute("players", listPlayersPaginatedAndFiltered);
                     }else{
-                        modelMap.addAttribute("players", players);
-                    }
-                    if(end==null){
-                        end=9;
+                        //modelMap.addAttribute("players", players);
+                        List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
+                        modelMap.addAttribute("players", listPlayersPaginated);
                     }
                     
                     modelMap.addAttribute("filterName", filterName);
-                    modelMap.addAttribute("begin", begin);
-                    modelMap.addAttribute("end", end);
+                    modelMap.addAttribute("pageNumber", pageNumber);
+                    modelMap.addAttribute("nextPageNumber", nextPageNumber);
+                    modelMap.addAttribute("previousPageNumber", previousPageNumber);
+
             
         }else{
-            view = "/errors";
+            view = "/error";
         }
         return view;
 
@@ -195,14 +224,14 @@ public class PlayerController {
                         playerService.delete(player.get());
                         modelMap.addAttribute("message", "Player successfully deleted!");
 
-                        return listPlayers(modelMap, null, 0, 9);
+                        return listPlayers(modelMap, null, 0);
 
                     }else{
                         modelMap.addAttribute("message", "Player not found");
-                        view=listPlayers(modelMap, null, 0, 9);
+                        view=listPlayers(modelMap, null, 0);
                     }
         }else{
-            view = "/errors";
+            view = "/error";
         }
         return view;
 
@@ -240,7 +269,7 @@ public class PlayerController {
                 view= "/error";
             }
         }else{
-            view = "/errors";
+            view = "/error";
         }
         return view;
     }

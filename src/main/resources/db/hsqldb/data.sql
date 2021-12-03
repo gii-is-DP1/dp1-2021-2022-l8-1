@@ -10,6 +10,29 @@ INSERT INTO authorities(id,username,authority) VALUES (6,'test2','player');
 INSERT INTO users(username,password,enabled) VALUES ('test3','test3',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (7,'test3','player');
 
+INSERT INTO users(username,password,enabled) VALUES ('test4','test4',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (8,'test4','player');
+
+INSERT INTO users(username,password,enabled) VALUES ('test5','test5',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (9,'test5','player');
+
+INSERT INTO users(username,password,enabled) VALUES ('test6','test6',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (10,'test6','player');
+
+INSERT INTO users(username,password,enabled) VALUES ('test7','test7',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (11,'test7','player');
+
+INSERT INTO users(username,password,enabled) VALUES ('test8','test8',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (12,'test8','player');
+
+INSERT INTO users(username,password,enabled) VALUES ('test9','test9',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (13,'test9','player');
+
+INSERT INTO users(username,password,enabled) VALUES ('test10','test10',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (14,'test10','player');
+
+INSERT INTO users(username,password,enabled) VALUES ('test11','test11',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (15,'test11','player');
 -- DECKS
 INSERT INTO deck(name) VALUES ('Mazo');
 INSERT INTO deck(name) VALUES ('Mazo');
@@ -119,6 +142,29 @@ INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_g
 INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
     VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test3');
 
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
+VALUES (4, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test4');
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
+VALUES (5, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test5');
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
+VALUES (6, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test6');
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
+VALUES (7, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test7');
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
+VALUES (8, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test8');
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
+VALUES (9, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test9');
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
+VALUES (10, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test10');
+
+INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games,username) 
+VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47,'test11');
 -- GAMES
 INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time) 
 VALUES ('Prueba0', 'ABCD124', 7, 5, 1, 1,'PUBLIC', false, '2021-11-18 23:00:00');
