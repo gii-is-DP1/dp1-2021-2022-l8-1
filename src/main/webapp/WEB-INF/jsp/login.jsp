@@ -5,10 +5,20 @@ prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
   <c:url value="/login" var="loginUrl" />
   <form action="${loginUrl}" class="form-horizontal" method="post">
     <c:if test="${param.error != null}">
-      <p>Invalid username and password.</p>
+      <div class="alert alert-danger" role="alert">
+        Invalid username and password.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </c:if>
     <c:if test="${param.logout != null}">
-      <p>You have been logged out.</p>
+      <div class="alert alert-success" role="alert">
+        You have been logged out.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </c:if>
     <div class="form-group has-feedback">
       <div class="form-group">
