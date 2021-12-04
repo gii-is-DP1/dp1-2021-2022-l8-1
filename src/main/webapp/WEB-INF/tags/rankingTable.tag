@@ -20,7 +20,15 @@
                 <tr>
                     <td class="pos-col"> <c:out value = "${players.indexOf(player) + 1}"/> </td>
                     <td> <a href="/players/profile/${player.id}" htmlEscape="true" /> <c:out value = "${player.user.username}"/> </a> </td>
-                    <td> <c:out value = "${player.totalPointsAllGames}"/> </td>
+                    <td> 
+                        <c:if test="${parameter == 'Wins'}">
+                            <c:out value = "${player.totalWins}"/>
+                        </c:if>
+
+                        <c:if test="${parameter == 'Points'}">
+                            <c:out value = "${player.totalPointsAllGames}"/>
+                        </c:if>
+                    </td>
                 </tr>
                 </c:forEach>
             </tbody>
