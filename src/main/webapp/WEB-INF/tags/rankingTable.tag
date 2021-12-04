@@ -1,24 +1,26 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ attribute name="players" required="false"%>
 <%@ attribute name="parameter" required="true"%>
+<%@ attribute name="players" required="false" rtexprvalue="true" type="java.util.ArrayList" %>
 
 <div class="ranking-table">
 
 
     <div class="table-header">
-        <p style="width: 33px"></p>
-        <p style="width: 94px">Player</p>
-        <p>${parameter}</p>
+        <p style="width: 23%"></p>
+        <p style="width: 40%">Player</p>
+        <p style="width: 33%">${parameter}</p>
     </div>
 
     <div class="table-body">
         <table>
             <tbody>
-                <c:forEach items="${[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]}" var="position">
+                <c:forEach items="${players}" var="player">
                 <tr>
-                    <td class="pos-col">${position}</td> <td>J1</td> <td>00000</td>
+                    <td class="pos-col"> <c:out value = "${players.indexOf(player) + 1}"/> </td>
+                    <td> <a href="/players/profile/${player.id}" htmlEscape="true" /> <c:out value = "${player.user.username}"/> </a> </td>
+                    <td> <c:out value = "${player.totalPointsAllGames}"/> </td>
                 </tr>
                 </c:forEach>
             </tbody>

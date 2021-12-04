@@ -11,6 +11,12 @@ import org.springframework.data.repository.query.Param;
 
 public interface PlayerRepository extends CrudRepository<Player, Integer>{
 
+	@Query("SELECT P FROM Player P ORDER BY totalWins")
+	Collection<Player> findByPlayerIdOrderedByWins() throws DataAccessException;
+
+	@Query("SELECT P FROM Player P ORDER BY totalPointsAllGames")
+	Collection<Player> findByPlayerIdOrderedByPoints() throws DataAccessException;
+
 	@Query("SELECT P FROM Player P INNER JOIN P.forums F WHERE F.id = :forumId")
 	Collection<Player> findByForumId(@Param("forumId") int forumId) throws DataAccessException;
 
