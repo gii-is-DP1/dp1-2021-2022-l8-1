@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.game;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,9 @@ public class Game extends NamedEntity {
     @Column(name = "end_time") 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endTime; //Do with a substraction
+
+    @Column(name="duration")
+    private Duration duration = (endTime == null || startTime == null ? Duration.ofSeconds(0) : Duration.between(startTime, endTime));
     
     // @Column(name = "number_of_players")   
     // private Integer numberOfPlayers;

@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -17,22 +15,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
-import org.springframework.samples.SevenIslands.card.CARD_TYPE;
-
 import org.springframework.samples.SevenIslands.card.Card;
-
-
 import org.springframework.samples.SevenIslands.forum.Forum;
-
 import org.springframework.samples.SevenIslands.game.Game;
-
 import org.springframework.samples.SevenIslands.person.Person;
+import org.springframework.samples.SevenIslands.statistic.Statistic;
 import org.springframework.samples.SevenIslands.user.User;
 
 import lombok.Getter;
@@ -43,66 +35,20 @@ import lombok.Setter;
 @Entity
 @Table(name="players")
 public class Player extends Person{
+
+  @Autowired
+  public Player() {
+    new Statistic(this);
+  }
   
-    @Column(name="profile_photo")
-    // @NotEmpty
-    private String profilePhoto;
+  @Column(name="profile_photo")
+  // @NotEmpty
+  private String profilePhoto;
 
-    @Column(name="total_games")
-    // @NotEmpty
-    private Integer totalGames = 0;
-    
-    @Column(name="total_time_games")
-    // @NotEmpty
-    private Integer totalTimeGames = 0;  //In seconds
-
-    @Column(name="avg_time_games")
-    // @NotEmpty
-    private Double avgTimeGames = 0.0;  //In seconds
-
-    @Column(name="max_time_game")
-    // @NotEmpty
-    private Integer maxTimeGame = 0;  //In seconds
-
-    @Column(name="min_time_game")
-    // @NotEmpty
-    private Integer minTimeGame;  //In seconds
-
-    @Column(name="total_points_all_games")
-    // @NotEmpty
-    private Integer totalPointsAllGames = 0; 
-    
-    @Column(name="avg_total_points")
-    // @NotEmpty
-    private Double avgTotalPoints = 0.0;
-    
-    @Column(name="favorite_island")
-    // @NotEmpty
-    @Min(value = 1)
-    @Max(value = 7)
-    private Integer favoriteIsland;
-
-    @Column(name="favorite_treasure")
-    @Enumerated(EnumType.STRING)
-    // @NotEmpty
-    private CARD_TYPE favoriteTreasure;
-
-    @Column(name="max_points_of_games")
-    // @NotEmpty
-    private Integer maxPointsOfGames = 0;
-
-    @Column(name="min_points_of_games")
-    // @NotEmpty
-    private Integer minPointsOfGames = 0;
-
-    @Column(name="total_wins")
-    // @NotEmpty
-    private Integer totalWins = 0;
-
-    @Column(name="avg_wins")
-    // @NotEmpty
-    private Double avgWins = 0.0;
-
+  // RELACION CON STATISTIC
+  @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, optional=false)
+  @PrimaryKeyJoinColumn
+  private Statistic statistic;
 
   //RELACION CON LOGROS
 	@ManyToMany(fetch = FetchType.LAZY)
