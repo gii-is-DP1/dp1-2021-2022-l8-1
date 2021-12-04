@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.SevenIslands.deck.Deck;
+import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,9 @@ public class GameServiceTests {
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private DeckService deckService;
     
     @Test
     public void testCountWithInitialData(){
@@ -69,13 +74,14 @@ public class GameServiceTests {
 
     @Test
     public void shouldInsertGame(){
-
         Game game = new Game();
         game.setName("Partida 1");
+        Deck deck = deckService.init(game.getName());
         game.setCode("AAAABBBB1");
         game.setPrivacity(PRIVACITY.PUBLIC);
         game.setHas_started(false);
         game.setPlayer(playerService.findPlayerById(1).get());
+        game.setDeck(deck);
 
         
         gameService.save(game);
@@ -89,13 +95,14 @@ public class GameServiceTests {
 
     @Test
     public void shouldDeleteGame(){
-
         Game game = new Game();
         game.setName("Partida 1");
+        Deck deck = deckService.init(game.getName());
         game.setCode("AAAABBBB1");
         game.setPrivacity(PRIVACITY.PUBLIC);
         game.setHas_started(false);
         game.setPlayer(playerService.findPlayerById(1).get());
+        game.setDeck(deck);
 
         
         gameService.save(game);

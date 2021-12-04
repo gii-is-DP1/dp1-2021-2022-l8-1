@@ -16,9 +16,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.model.NamedEntity;
 import org.springframework.samples.SevenIslands.player.Player;
 
@@ -42,8 +44,8 @@ public class Game extends NamedEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endTime; //Do with a substraction
     
-    @Column(name = "number_of_players")   
-    private Integer numberOfPlayers;
+    // @Column(name = "number_of_players")   
+    // private Integer numberOfPlayers;
 
     @Column(name = "actual_player")   
     private Integer actualPlayer;
@@ -51,17 +53,17 @@ public class Game extends NamedEntity {
     @Column(name = "number_of_turn")   
     private Integer numberOfTurn;
 
-    @Column(name = "remains_cards")   
-    private Integer remainsCards;
+    // @Column(name = "remains_cards")   
+    // private Integer remainsCards;
 
-    @Column(name = "deck")   
-    private String deck;
+    // @Column(name = "deck")   
+    // private String deck;
 
-    @Column(name = "name_of_players")   
-    private String nameOfPlayers;
+    // @Column(name = "name_of_players")   
+    // private String nameOfPlayers;
 
-    @Column(name = "points")   
-    private String points; //pointsOfPlayers
+    // @Column(name = "points")   
+    // private String points; //pointsOfPlayers
 
     @Column(name = "privacity")   
     @Enumerated(EnumType.STRING)
@@ -95,5 +97,12 @@ public class Game extends NamedEntity {
 
     @ManyToOne(optional=false)
     private Player player;
+
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, optional=false)
+    private Deck deck;
+
+    public Deck getDeck() {
+		return deck;
+  }
    
 }

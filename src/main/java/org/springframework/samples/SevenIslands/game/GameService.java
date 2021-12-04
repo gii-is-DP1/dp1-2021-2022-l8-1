@@ -60,6 +60,16 @@ public class GameService {
         return gameRepo.findByOwnerId(id);
     }
 
+    @Transactional
+    public boolean isOwner(int playerId, int gameId){ //Check if im the owner of the game
+        Collection<Game> games = findByOwnerId(playerId);
+        if(games.contains(findGameById(gameId).get())){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     
     @Transactional
     public List<Game> findGamesByPlayerId(int id){ //Find games where the player with this Id have played

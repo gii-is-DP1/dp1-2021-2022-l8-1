@@ -170,6 +170,13 @@
 		<!-- NOT AUTHENTICATED -->
 		<sec:authorize access="!isAuthenticated()">
 			<div class="navbar-collapse collapse" id="main-navbar">
+				<ul class="nav navbar-nav">
+					<sevenislands:menuItem active="${name eq 'Home'}" url="/"
+					title="Enter welcome page">
+					<span>Home</span>
+					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+					</sevenislands:menuItem>
+				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="<c:url value='/login' />">Login</a></li>
 					<li><a href="<c:url value='/users/new' />">Register</a></li>
@@ -179,6 +186,5 @@
 		
 	</div>
 </nav>
-
 
 
