@@ -139,4 +139,15 @@ public class GameService {
         }
     }
 
+
+    @Transactional
+    public void addGamesToModelMap(Iterable<Game> games, ModelMap modelMap) {
+        if(games.spliterator().getExactSizeIfKnown()==0l){ //If there are no games with this code
+            modelMap.addAttribute("message", "Game not found");
+        } else {
+            modelMap.addAttribute("games", games);
+        }
+    }   
+
+   
 }

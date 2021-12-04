@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.game;
 
+import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -113,47 +114,60 @@ public class GameController {
 
     private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
 
-    @GetMapping(path = "/edit/{gameId}")
-    public String updateGame(@PathVariable("gameId") int gameId, ModelMap model) {
-        Game game = gameService.findGameById(gameId).get();
-        securityService.insertIdUserModelMap(model); 
-        model.put("game", game);
-        return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
-    }
+    // @GetMapping(path = "/edit/{gameId}")
+    // public String updateGame(@PathVariable("gameId") int gameId, ModelMap model) {
+    //     Game game = gameService.findGameById(gameId).get();
+    //     securityService.insertIdUserModelMap(model); 
+    //     model.put("game", game);
+    //     return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+    // }
 
     @GetMapping(path = "/{gameId}/lobby")
     public String lobby(@PathVariable("gameId") int gameId, ModelMap model) {
 
-        String view;
-        securityService.insertIdUserModelMap(model);
-        if (gameService.findGameById(gameId).isPresent()) {
-            Game game = gameService.findGameById(gameId).get(); 
-            if(game.isHas_started()){
-                String code = game.getCode();
-                return "redirect:/boards/" + code;
-            }
-            model.addAttribute("game", game);
+        String view = "games/lobby";
+        
 
-            int playerId = securityService.getCurrentUserId(); // Id of player that is logged
+        if(securityService.authenticationNotNull()) {
+            securityService.insertIdUserModelMap(model);
 
-            Player pay = playerService.findPlayerById(playerId).get();
-            model.addAttribute("player", pay);
+            Optional<Game> gameOpt = gameService.findGameById(gameId);
 
-            if(!game.getPlayers().contains(pay) && game.getPlayers().size()<4){
-                game.addPlayerinPlayers(pay);
-                gameService.save(game);
-                pay.addGameinGames(game);
-                playerService.save(pay);
-            }else if(game.getPlayers().contains(pay)){
+            if(gameOpt.isPresent()) {
+                Game game = gameOpt.get();
+                
+                if(game.isHas_started()) {
+                    return "redirect:/boards/" + game.getCode();
+                } 
+                
+                model.addAttribute("game", game);
+
+                int playerId = securityService.getCurrentUserId(); // Id of player that is logged
+
+                Player player = playerService.findPlayerById(playerId).get();
+                model.addAttribute("player", player);
+
+                if(!game.getPlayers().contains(player) && game.getPlayers().size()<4) {
+                    game.addPlayerinPlayers(player);
+                    gameService.save(game);
+                    player.addGameinGames(game);
+                    playerService.save(player);
+                   
+                } else if(game.getPlayers().contains(player)) {
+                    view = "games/lobby";
+                } else {
+                    return "redirect:/welcome"; //Need to change
+                }
+
+                model.addAttribute("totalplayers", game.getPlayers().size());
                 view = "games/lobby";
-            }else{
-                return "redirect:/welcome"; //Need to change
+
+            } else {
+                return "redirect:/games/rooms";
+                
             }
+
             
-            model.addAttribute("totalplayers", game.getPlayers().size());
-            view = "games/lobby";
-        } else {
-            return "redirect:/games/rooms"; 
         }
 
         return view;
@@ -171,43 +185,42 @@ public class GameController {
      * @return
      */
 
-    @PostMapping(value = "/edit/{gameId}")
-    public String processUpdateForm(@Valid Game game, BindingResult result, @PathVariable("gameId") int gameId,
-            ModelMap model) {
-        if (result.hasErrors()) {
-            model.put("game", game);
-            return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
-        } else {
-            Game gameToUpdate = this.gameService.findGameById(gameId).get();
-            BeanUtils.copyProperties(game, gameToUpdate, "id", "actualPlayer", "endTime", "starttime", "has_started", "code", "deck", "nameOfPlayers", "numberOfTurn", "player", "players", "points", "remainsCards");
-            try {
-                this.gameService.save(gameToUpdate);
 
-            } catch (Exception ex) {
-                //result.rejectValue("name", "duplicate", "already exists");
-                return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
-            }
-            return "redirect:/games";
-        }
+    // @PostMapping(value = "/edit/{gameId}")
+    // public String processUpdateForm(@Valid Game game, BindingResult result, @PathVariable("gameId") int gameId, ModelMap model, HttpServletRequest request) {
+    //     if (result.hasErrors()) {
+    //         model.addAttribute("game", game);
+    //         return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+    //     } else {
+    //         Game gameToUpdate = this.gameService.findGameById(gameId).get();
+    //         BeanUtils.copyProperties(game, gameToUpdate, "id", "actualPlayer", "endTime", "starttime", "has_started", "code", "deck", "nameOfPlayers", "numberOfTurn", "player", "players", "points", "remainsCards");
+    //         try {
+    //             this.gameService.save(gameToUpdate);
 
-    }
+    //         } catch (Exception ex) {
+    //             request.getSession().setAttribute("errorMessage", ex.getMessage());
+    //             //result.rejectValue("name", "duplicate", "already exists");
+    //             return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+    //         }
+    //         return "redirect:/games";
+    //     }
+
+    // }
 
     // ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
     public String publicRooms(ModelMap modelMap, HttpServletRequest request) {
 
-        String view;
 
         if (securityService.isAuthenticatedUser()) {
             securityService.insertIdUserModelMap(modelMap);
              
             if (securityService.isAdmin()) {
-                view = adminController.rooms(modelMap);
+                return adminController.rooms(modelMap);
             } else {
-                view = playerController.games(modelMap);
+                return playerController.games(modelMap);
             }
-            return view;
-
+            
         } else {
 
             return securityService.redirectToWelcome(request);
@@ -220,23 +233,19 @@ public class GameController {
     @GetMapping(path = "/rooms/{code}")
     public String gameByCode(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
         
-        Iterable<Game> games;
         if (securityService.isAuthenticatedUser()) {
             securityService.insertIdUserModelMap(modelMap);
 
-            games = gameService.findGamesByRoomCode(code);
-    
-            if(games.spliterator().getExactSizeIfKnown()==0l){ //If there are no games with this code
-                modelMap.addAttribute("message", "Game not found");
-            } else {
-                modelMap.addAttribute("games", games);
-            }
+            Iterable<Game> games = gameService.findGamesByRoomCode(code);
+            
+            gameService.addGamesToModelMap(games, modelMap);
+
             
             return  "games/publicRooms";
         } else {
             return securityService.redirectToWelcome(request);
         }
-        
+
     }
 
     // Games currently playing
