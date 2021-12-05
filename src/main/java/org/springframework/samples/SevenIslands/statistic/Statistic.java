@@ -28,13 +28,13 @@ public class Statistic extends BaseEntity {
 
     @ManyToOne(optional=false)
     private Game game;
-    
+
 
     @Column(name="points")
     public Integer points;
     
     @Column(name="had_won")
-    public Integer hadWon;
+    public Boolean hadWon;
 
     @Column(name="islands_count")
     public Map<Island,Integer> islandsCount;
