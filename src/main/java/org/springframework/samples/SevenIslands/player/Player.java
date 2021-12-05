@@ -36,9 +36,8 @@ import lombok.Setter;
 @Table(name="players")
 public class Player extends Person{
 
-  @Autowired
   public Player() {
-    new Statistic(this);
+    this.statistic = new Statistic(this);
   }
   
   @Column(name="profile_photo")

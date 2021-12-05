@@ -21,7 +21,6 @@ import lombok.Setter;
 @Table(name="statistics")
 public class Statistic extends BaseEntity {
 
-    @Autowired
 	public Statistic(Player player) {
         this.player = player;
     }
@@ -31,12 +30,10 @@ public class Statistic extends BaseEntity {
     @JoinColumn(name = "player_id")
     private Player player;
 
-    @Column(name="games_count")
     @Formula("SELECT COUNT(G) FROM Games G WHERE G.player.statistic.id = id")
     private Integer gamesCount = 0; // In seconds
 
-    @Column(name="games_count")
-    @Formula("SELECT AVG(G) FROM Games G WHERE G.player.statistic.id = id GROUP BY ")
+    @Formula("SELECT AVG(G) FROM Games G WHERE G.player.statistic.id = id GROUP BY G.duration")
     private Double avgGameTime = 0.0; // In seconds
   
     // @Column(name="avg_time_games")

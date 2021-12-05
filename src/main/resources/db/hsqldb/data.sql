@@ -143,28 +143,31 @@ INSERT INTO players(id, profile_photo, username)
     VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test3');
 
 INSERT INTO players(id, profile_photo, username) 
-VALUES (4, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test4');
+    VALUES (4, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test4');
 
 INSERT INTO players(id, profile_photo, username) 
-VALUES (5, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test5');
+    VALUES (5, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test5');
 
 INSERT INTO players(id, profile_photo, username) 
-VALUES (6, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test6');
+    VALUES (6, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test6');
 
 INSERT INTO players(id, profile_photo, username) 
-VALUES (7, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test7');
+    VALUES (7, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test7');
 
 INSERT INTO players(id, profile_photo, username) 
-VALUES (8, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test8');
+    VALUES (8, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test8');
 
 INSERT INTO players(id, profile_photo, username) 
-VALUES (9, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test9');
+    VALUES (9, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test9');
 
 INSERT INTO players(id, profile_photo, username) 
-VALUES (10, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test10');
+    VALUES (10, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test10');
 
 INSERT INTO players(id, profile_photo, username) 
-VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11');
+    VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11');
+
+-- STATISTICS
+INSERT INTO statistics(player_id) VALUES (1);
 
 -- GAMES
 INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time) 
