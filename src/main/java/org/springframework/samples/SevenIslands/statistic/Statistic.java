@@ -29,38 +29,12 @@ public class Statistic extends BaseEntity {
     @MapsId
     @JoinColumn(name = "player_id")
     private Player player;
-
-    @Formula("SELECT COUNT(G) FROM Games G WHERE G.player.statistic.id = id")
-    private Integer gamesCount = 0; // In seconds
-
-    @Formula("SELECT AVG(G) FROM Games G WHERE G.player.statistic.id = id GROUP BY G.duration")
-    private Double avgGameTime = 0.0; // In seconds
-  
-    // @Column(name="avg_time_games")
-    // // @NotEmpty
-    // private Double avgTimeGames = 0.0;  //In seconds
-  
-    // @Column(name="max_time_game")
-    // // @NotEmpty
-    // private Integer maxTimeGame = 0;  //In seconds
-  
-    // @Column(name="min_time_game")
-    // // @NotEmpty
-    // private Integer minTimeGame;  //In seconds
-  
-    // @Column(name="total_points_all_games")
-    // // @NotEmpty
-    // private Integer totalPointsAllGames = 0; 
     
-    // @Column(name="avg_total_points")
-    // // @NotEmpty
-    // private Double avgTotalPoints = 0.0;
-    
-    // @Column(name="favorite_island")
-    // // @NotEmpty
-    // @Min(value = 1)
-    // @Max(value = 7)
-    // private Integer favoriteIsland;
+    @Column(name="favorite_island")
+    // @NotEmpty
+    @Min(value = 1)
+    @Max(value = 7)
+    private Integer favoriteIsland;
   
     // @Column(name="favorite_treasure")
     // @Enumerated(EnumType.STRING)
