@@ -1,14 +1,16 @@
 package org.springframework.samples.SevenIslands.statistic;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Formula;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.card.Card;
+import org.springframework.samples.SevenIslands.game.Game;
+import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.model.BaseEntity;
 import org.springframework.samples.SevenIslands.player.Player;
 
@@ -21,39 +23,22 @@ import lombok.Setter;
 @Table(name="statistics")
 public class Statistic extends BaseEntity {
 
-	public Statistic(Player player) {
-        this.player = player;
-    }
-
     @OneToOne
-    @MapsId
-    @JoinColumn(name = "player_id")
     private Player player;
+
+    @ManyToOne(optional=false)
+    private Game game;
     
-    @Column(name="favorite_island")
-    // @NotEmpty
-    @Min(value = 1)
-    @Max(value = 7)
-    private Integer favoriteIsland;
-  
-    // @Column(name="favorite_treasure")
-    // @Enumerated(EnumType.STRING)
-    // // @NotEmpty
-    // private CARD_TYPE favoriteTreasure;
-  
-    // @Column(name="max_points_of_games")
-    // // @NotEmpty
-    // private Integer maxPointsOfGames = 0;
-  
-    // @Column(name="min_points_of_games")
-    // // @NotEmpty
-    // private Integer minPointsOfGames = 0;
-  
-    // @Column(name="total_wins")
-    // // @NotEmpty
-    // private Integer totalWins = 0;
-  
-    // @Column(name="avg_wins")
-    // // @NotEmpty
-    // private Double avgWins = 0.0;
+
+    @Column(name="points")
+    public Integer points;
+    
+    @Column(name="had_won")
+    public Integer hadWon;
+
+    @Column(name="islands_count")
+    public Map<Island,Integer> islandsCount;
+    
+    @Column(name="cards_count")
+    public Map<Card,Integer> cardsCount;
 }

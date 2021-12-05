@@ -35,10 +35,6 @@ import lombok.Setter;
 @Entity
 @Table(name="players")
 public class Player extends Person{
-
-  public Player() {
-    this.statistic = new Statistic(this);
-  }
   
   @Column(name="profile_photo")
   // @NotEmpty
@@ -46,7 +42,6 @@ public class Player extends Person{
 
   // RELACION CON STATISTIC
   @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, optional=false)
-  @PrimaryKeyJoinColumn
   private Statistic statistic;
 
   //RELACION CON LOGROS
