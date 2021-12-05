@@ -2,9 +2,12 @@ package org.springframework.samples.SevenIslands.statistic;
 
 import java.util.Map;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -23,7 +26,7 @@ import lombok.Setter;
 @Table(name="statistics")
 public class Statistic extends BaseEntity {
 
-    @OneToOne
+    @OneToOne(optional=false)
     private Player player;
 
     @ManyToOne(optional=false)
@@ -36,9 +39,15 @@ public class Statistic extends BaseEntity {
     @Column(name="had_won")
     public Boolean hadWon;
 
-    @Column(name="islands_count")
+    @Column(name="island_count")
+    @ElementCollection
+    @MapKeyJoinColumn(name="island_id")
+    @CollectionTable(name="statistic_islands_count")
     public Map<Island,Integer> islandsCount;
     
-    @Column(name="cards_count")
+    @Column(name="card_count")
+    @ElementCollection
+    @MapKeyJoinColumn(name="card_id")
+    @CollectionTable(name="statistic_cards_count")
     public Map<Card,Integer> cardsCount;
 }

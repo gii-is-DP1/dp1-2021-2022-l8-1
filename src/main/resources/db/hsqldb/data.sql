@@ -167,7 +167,6 @@ INSERT INTO players(id, profile_photo, username)
     VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11');
 
 -- STATISTICS
-INSERT INTO statistics(player_id) VALUES (1);
 
 -- GAMES
 INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time) 

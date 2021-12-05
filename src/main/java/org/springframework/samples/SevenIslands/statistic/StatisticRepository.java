@@ -5,17 +5,14 @@ import java.util.Collection;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.samples.SevenIslands.player.Player;
 
 public interface StatisticRepository extends CrudRepository<Statistic, String>{
 
+    @Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, COUNT(P.statistic.hadWon)) FROM Player P WHERE P.statistic.hadWon = true GROUP BY P.id ORDER BY COUNT(P.statistic.hadWon) DESC")
+	Collection<PlayerWithStatistics> findPlayersOrderedByWins() throws DataAccessException;
 
-    @Query("SELECT P FROM Player P ORDER BY COUNT(P.statistic.hadWon) DESC")
-	Collection<Player> findPlayersOrderedByWins() throws DataAccessException;
-
-	@Query("SELECT P FROM Player P ORDER BY SUM(P.statistic.points) DESC")
-	Collection<Player> findPlayersOrderedByPoints() throws DataAccessException;
+	@Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, SUM(P.statistic.points)) FROM Player P GROUP BY P.id ORDER BY SUM(P.statistic.points) DESC")
+	Collection<PlayerWithStatistics> findPlayersOrderedByPoints() throws DataAccessException;
     
 
     // //  WINS (SUM, AVG)

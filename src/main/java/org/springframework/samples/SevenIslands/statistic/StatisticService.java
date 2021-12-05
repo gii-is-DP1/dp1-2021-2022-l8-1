@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.statistic;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.player.Player;
@@ -18,36 +19,38 @@ public class StatisticService {
     public PlayerRepository playerRepo;
 
     @Autowired
-	public StatisticService(StatisticRepository satisticRepo, PlayerRepository playerRepo) {
+	public StatisticService(StatisticRepository statisticRepo, PlayerRepository playerRepo) {
         this.statisticRepo = statisticRepo;
         this.playerRepo = playerRepo;
 	}
 
     @Transactional(readOnly = true)
-    public Collection<Player> getTwentyBestPlayersByWins() {
-        Collection<Player> players = statisticRepo.findPlayersOrderedByWins();
+    public Collection<PlayerWithStatistics> getTwentyBestPlayersByWins() {
+        Collection<PlayerWithStatistics> players = statisticRepo.findPlayersOrderedByWins();
         
-        Collection<Player> twentyPlayers = players;
+        Collection<PlayerWithStatistics> twentyPlayers = players;
         for(int i=0; i<20; i++) {
             // index not exists
             if(i >= players.size()) {
-                twentyPlayers.add(new Player());
+                twentyPlayers.add(new PlayerWithStatistics());
             }
         }
+
         return players;
     }
 
     @Transactional(readOnly = true)
-    public Collection<Player> getTwentyBestPlayersByPoints() {
-        Collection<Player> players = statisticRepo.findPlayersOrderedByPoints();
+    public Collection<PlayerWithStatistics> getTwentyBestPlayersByPoints() {
+        Collection<PlayerWithStatistics> players = statisticRepo.findPlayersOrderedByPoints();
         
-        Collection<Player> twentyPlayers = players;
+        Collection<PlayerWithStatistics> twentyPlayers = players;
         for(int i=0; i<20; i++) {
             // index not exists
             if(i >= players.size()) {
-                twentyPlayers.add(new Player());
+                twentyPlayers.add(new PlayerWithStatistics());
             }
         }
+
         return players;
     }
     

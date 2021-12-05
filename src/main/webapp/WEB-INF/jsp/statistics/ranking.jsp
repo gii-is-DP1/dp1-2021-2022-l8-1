@@ -24,14 +24,14 @@
         <span id="ranking-wins" class="ranking-section">
     
             <h2>Wins</h2>
-            <sevenislands:rankingTable parameter="Wins" players="${playersWins}"/>
+            <sevenislands:rankingTable parameter="Wins" playersWithStats="${playersWins}"/>
     
         </span>
     
         <span id="ranking-points" class="ranking-section">
     
             <h2>Points</h2>
-            <sevenislands:rankingTable parameter="Points" players="${playersPoints}"/>
+            <sevenislands:rankingTable parameter="Points" playersWithStats="${playersPoints}"/>
     
         </span>
     </div>
