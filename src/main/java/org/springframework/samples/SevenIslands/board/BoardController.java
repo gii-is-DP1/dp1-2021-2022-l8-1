@@ -1,5 +1,8 @@
 package org.springframework.samples.SevenIslands.board;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -47,10 +50,13 @@ public class BoardController {
 
     @GetMapping(path = "/{code}")
     public String board(@PathVariable("code") String code, ModelMap modelMap, HttpServletResponse response) {
+        
+        //Refresh 
+        response.addHeader("Refresh", "2");
+        
         String view = "boards/board";
         gService.insertIdUserModelMap(modelMap);
         
-        // modelMap.put("now", new Date());
 		modelMap.addAttribute("board",boardService.findById(1).get()); 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
         Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
@@ -64,10 +70,23 @@ public class BoardController {
             game.setActualPlayer(0);
             game.setTempo(18);
             game.setHas_started(true);
-        }else if(game.getActualPlayer()!=(game.getNumberOfTurn()%game.getPlayers().size()) || game.getTempo()==0){ //para que aunque refresque uno que no es su turno no incremente el turno
+            game.setTurnTime(LocalDateTime.now());
+        }else if(game.getActualPlayer()!=(game.getNumberOfTurn()%game.getPlayers().size())){ //para que aunque refresque uno que no es su turno no incremente el turno
             game.setNumberOfTurn(game.getNumberOfTurn()+1);
-        }else if(game.getActualPlayer()==(game.getNumberOfTurn()%game.getPlayers().size())){
-            game.setTempo(game.getTempo()-2);
+            
+        //}else if(game.getTempo()==0){
+        }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=18){
+            //Same code in changeTurn
+            Integer n = game.getPlayers().size();
+            game.setNumberOfTurn(game.getNumberOfTurn()+1);
+            game.setActualPlayer((game.getActualPlayer()+1)%n);
+            //
+            game.setTempo(18);
+            game.setTurnTime(LocalDateTime.now());
+        }else if(game.getPlayers().get(game.getActualPlayer()).getId()==securityService.getCurrentUserId() && game.getActualPlayer()==(game.getNumberOfTurn()%game.getPlayers().size())){
+            //Para que solo disminuya 2 segundos aunque haya 2 o más jugadores
+            Long temp = ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now());
+            game.setTempo(18-temp.intValue());
         }
         
         gameService.save(game);

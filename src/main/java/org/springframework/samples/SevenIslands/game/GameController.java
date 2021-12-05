@@ -2,9 +2,11 @@ package org.springframework.samples.SevenIslands.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -64,7 +66,7 @@ public class GameController {
         //TODO PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
         Deck deck = deckService.init(game.getName());
 
-        String view = "games/lobby";
+        //String view = "games/lobby";
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
             return "games/createOrUpdateGameForm";
@@ -86,7 +88,7 @@ public class GameController {
             modelMap.addAttribute("player", currentPlayer);
 
         }
-        return view;
+        return "redirect:/games/"+game.getId()+"/lobby";
     }
     
     @GetMapping(path = "/exit/{gameId}")
@@ -151,7 +153,11 @@ public class GameController {
     }
 
     @GetMapping(path = "/{gameId}/lobby")
-    public String lobby(@PathVariable("gameId") int gameId, ModelMap model) {
+    public String lobby(@PathVariable("gameId") int gameId, ModelMap model, HttpServletResponse response) {
+
+        //Refresh 
+        response.addHeader("Refresh", "2");
+		model.put("now", new Date());
 
         String view;
         securityService.insertIdUserModelMap(model);

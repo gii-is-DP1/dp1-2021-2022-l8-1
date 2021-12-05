@@ -35,6 +35,10 @@ public class Game extends NamedEntity {
 
     @Column(unique = true, name = "code")
     private String code;
+
+    @Column(name = "turn_time") 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime turnTime = LocalDateTime.now();
     
     @Column(name = "start_time") 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
