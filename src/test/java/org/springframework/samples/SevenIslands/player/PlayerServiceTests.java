@@ -40,7 +40,7 @@ public class PlayerServiceTests {
     @Test
     public void testCountWithInitialData(){
         int count = playerService.playerCount();
-        assertEquals(3, count);
+        assertEquals(11, count);
     }
 
     @Test
@@ -75,8 +75,8 @@ public class PlayerServiceTests {
         playerService.save(player);
         playerService.savePlayer(player1);
 
-        Player p  = playerService.findPlayerById(4).get();
-        Player p2  = playerService.findPlayerById(5).get();
+        Player p  = playerService.findPlayerById(12).get();
+        Player p2  = playerService.findPlayerById(13).get();
 
         assertThat(p.getFirstName().equals("Antonio"));
         assertThat(p2.getFirstName().equals("Antonio1"));
@@ -182,13 +182,13 @@ public class PlayerServiceTests {
     @Test
     public void testCountAllPlayers() { // H16 - POSITIVE 1
         long count = playerService.findAll().spliterator().getExactSizeIfKnown();
-        assertEquals(count, 3);
+        assertEquals(count, 11);
     }
 
     @Test
     public void testCountPlayerWithEspecificWordInUsername() { //H17 -POSITIVE 2
         Iterable<Player> a = playerService.findAll();
-        long n = StreamSupport.stream(a.spliterator(), false).filter(x->x.getUser().getUsername().contains("test")).count();
+        long n = StreamSupport.stream(a.spliterator(), false).filter(x->x.getUser().getUsername().contains("1")).count();
         assertEquals(n, 3);
     }
 

@@ -15,15 +15,6 @@
 
         <form:form modelAttribute="game" class="form-horizontal" action="#">
             <div class="form-group has-feedback">
-                <div class="row text-md-left">
-                    <div class="col-md">
-                        <div class="row text-center">
-                            <a href="/games/${game.code}/lobby" class="btn btn-warning">Refresh room</a>
-                        </div>
-                    </div>
-                    <br>
-                    <br> 
-                </div>
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="row text-center">

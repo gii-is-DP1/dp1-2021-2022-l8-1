@@ -4,6 +4,10 @@ import java.util.Collection;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +59,10 @@ public class GameController {
 
     @PostMapping(path = "/save")
     public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
-        //TODO PREGUNTARLE AL PAREJO, ESTA EN ESPAÑOL PORQUE ES IMPORTANTE, PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
+        //TODO PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
         Deck deck = deckService.init(game.getName());
 
-        String view = "games/lobby";
+        //String view = "games/lobby";
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
             return "games/createOrUpdateGameForm";
@@ -70,6 +74,7 @@ public class GameController {
             game.addPlayerinPlayers(currentPlayer);
             currentPlayer.addGameinGames(game);
             game.setDeck(deck);
+            System.out.println(game.getCode());
             
 
             
@@ -80,7 +85,7 @@ public class GameController {
             modelMap.addAttribute("player", currentPlayer);
 
         }
-        return view;
+        return "redirect:/games/"+game.getCode()+"/lobby";
     }
     
     @GetMapping(path = "/exit/{gameId}")
@@ -115,9 +120,12 @@ public class GameController {
     // }
 
     @GetMapping(path = "/{code}/lobby")
-    public String lobby(@PathVariable("code") String gameCode, ModelMap model, HttpServletRequest request) {
+    public String lobby(@PathVariable("code") String gameCode, ModelMap model,
+        HttpServletRequest request, HttpServletResponse response) {
 
-        
+        //Refresh 
+        response.addHeader("Refresh", "2");
+		model.put("now", new Date());
         Iterable<Game> gameOpt = gameService.findGamesByRoomCode(gameCode);
         
         if(securityService.isAuthenticatedUser()) {

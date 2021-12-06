@@ -171,6 +171,7 @@ public class GameService {
 
                 Player player = playerService.findPlayerById(playerId).get();
                 modelMap.addAttribute("player", player);
+                modelMap.addAttribute("totalplayers", game.getPlayers().size());
 
                 if(!game.getPlayers().contains(player) && game.getPlayers().size()<4) {
                     game.addPlayerinPlayers(player);
@@ -183,8 +184,6 @@ public class GameService {
                 } else {
                     return "redirect:/welcome"; //Need to change
                 }
-
-                modelMap.addAttribute("totalplayers", game.getPlayers().size());
                 return "games/lobby";
 
             } else if(securityService.isAdmin()) {
