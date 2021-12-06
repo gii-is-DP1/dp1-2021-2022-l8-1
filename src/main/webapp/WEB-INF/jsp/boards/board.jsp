@@ -36,11 +36,26 @@
         </div>
         <div class="col-md-8 playersList">
             <sevenislands:board board="${board}"/>
-            <!-- <c:forEach items="${board.cells}" var="cell">
-            	<game:cell size="100" cell="${cell}"/>
-            </c:forEach>  -->
+           
         </div>
     </div>
+
+    <div>
+
+        <c:forEach items ="${game.players}" var="p">
+            <div class="row text-center">
+                <c:out value = "${p.user.username} has "/>
+                <c:forEach items ="${p.cards}" var="c">
+                    <c:out value = "${c.cardType}, "/>
+                </c:forEach>
+                <br><br><br>
+                
+            </div>
+        </c:forEach>
+
+    </div>
+    
+
 
 
     
