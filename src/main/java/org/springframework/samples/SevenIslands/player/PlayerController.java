@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
@@ -164,10 +166,13 @@ public class PlayerController {
     }
 
     @GetMapping(path="/rooms")
-    public String games(ModelMap modelMap) {
+    public String games(ModelMap modelMap, HttpServletRequest request) {
         String view = "games/publicRooms";
-        Iterable<Game> games = gameService.findAllPublic();
+        Iterable<Game> games = gameService.findAllPublicNotPlaying();
+        modelMap.addAttribute("message", request.getSession().getAttribute("message"));
         modelMap.addAttribute("games", games);
+
+        request.getSession().removeAttribute("message");
         return view;
     }
 

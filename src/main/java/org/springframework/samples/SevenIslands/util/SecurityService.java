@@ -2,6 +2,8 @@ package org.springframework.samples.SevenIslands.util;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -9,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
-
+import org.springframework.samples.SevenIslands.web.WelcomeController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -25,6 +27,7 @@ public class SecurityService {
     @Autowired
     private PlayerService playerService;
 
+
     @Transactional
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
@@ -36,7 +39,7 @@ public class SecurityService {
     }
 
     @Transactional
-    public int getCurrentUserId() {
+    public int getCurrentPlayerId() {
         return playerService.getIdPlayerByName(getCurrentUser().getUsername());
     }
 
@@ -105,6 +108,11 @@ public class SecurityService {
 		
 	}
 
-    
+
+    @Transactional
+    public String redirectToWelcome(HttpServletRequest request) {      
+        request.getSession().setAttribute("message", "Please, first sign in!");
+        return "redirect:/welcome";
+    }
 
 }
