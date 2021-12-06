@@ -35,6 +35,10 @@ public class Game extends NamedEntity {
 
     @Column(unique = true, name = "code")
     private String code;
+
+    @Column(name = "turn_time") 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime turnTime = LocalDateTime.now();
     
     @Column(name = "start_time") 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -52,6 +56,12 @@ public class Game extends NamedEntity {
 
     @Column(name = "number_of_turn")   
     private Integer numberOfTurn;
+
+    @Column(name = "value_of_die")   
+    private String valueOfDie = "Currently has no value";
+
+    @Column(name = "die_throws")   
+    private Boolean dieThrows = false;  //Actual player uses die in the actual turn
 
     // @Column(name = "remains_cards")   
     // private Integer remainsCards;
