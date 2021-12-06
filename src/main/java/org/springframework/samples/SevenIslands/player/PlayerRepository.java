@@ -15,6 +15,12 @@ import org.springframework.data.domain.Page;
 
 public interface PlayerRepository extends PagingAndSortingRepository<Player, Integer>{
 
+	@Query("SELECT P FROM Player P ORDER BY totalWins DESC")
+	Collection<Player> findByPlayerIdOrderedByWins() throws DataAccessException;
+
+	@Query("SELECT P FROM Player P ORDER BY totalPointsAllGames DESC")
+	Collection<Player> findByPlayerIdOrderedByPoints() throws DataAccessException;
+
 	@Query("SELECT P FROM Player P INNER JOIN P.forums F WHERE F.id = :forumId")
 	Collection<Player> findByForumId(@Param("forumId") int forumId) throws DataAccessException;
 
