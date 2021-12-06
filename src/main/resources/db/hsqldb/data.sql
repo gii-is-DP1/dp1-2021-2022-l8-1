@@ -166,24 +166,35 @@ INSERT INTO players(id, profile_photo, username)
 INSERT INTO players(id, profile_photo, username) 
     VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11');
 
--- STATISTICS
-
 -- GAMES
-INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time) 
-VALUES ('Prueba0', 'ABCD124', 7, 5, 1, 1,'PUBLIC', false, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time) 
+VALUES (1, 'Prueba0', 'ABCD124', 7, 5, 1, 1,'PUBLIC', false, '2021-11-18 23:00:00');
 
- INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
- VALUES ('Prueba1', 'ABCD123', 4, 2,1, 2,'PUBLIC', false, '2021-11-18 23:00:00');
+ INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
+ VALUES (2, 'Prueba1', 'ABCD123', 4, 2,1, 2,'PUBLIC', false, '2021-11-18 23:00:00');
 
- INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
- VALUES ('Prueba2', 'ABCD122', 2, 1,1, 3,'PRIVATE', false, '2021-11-18 23:00:00');
+ INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
+ VALUES (3, 'Prueba2', 'ABCD122', 2, 1,1, 3,'PRIVATE', false, '2021-11-18 23:00:00');
 
- INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started, start_time) 
- VALUES ('Prueba3', 'ABCD121', 3, 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00');
+ INSERT INTO games(id, name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started, start_time) 
+ VALUES (4, 'Prueba3', 'ABCD121', 3, 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00');
 
- INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started, start_time) 
- VALUES ('Prueba4', 'ABCD120', 1, 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00');
+ INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started, start_time) 
+ VALUES (5, 'Prueba4', 'ABCD120', 1, 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00');
 -- TODO: AQUI HAY QUE QUITAR ATRIBUTOS NUEVOS METIDOS
+
+-- STATISTICS
+INSERT INTO STATISTICS(id, player_id, game_id, points, had_won)
+    VALUES (1, 1, 1, 70, true);
+
+INSERT INTO STATISTICS(id, player_id, game_id, points, had_won)
+    VALUES (2, 2, 1, 40, true);
+
+INSERT INTO STATISTICS(id, player_id, game_id, points, had_won)
+    VALUES (3, 3, 1, 50, false);
+
+INSERT INTO STATISTICS(id, player_id, game_id, points, had_won)
+    VALUES (4, 1, 2, 30, true);
 
 -- BOARDS
 INSERT INTO boards(id,background,height,width) VALUES (1,'/resources/images/board.jpg',644,527);

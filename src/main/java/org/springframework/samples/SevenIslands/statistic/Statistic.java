@@ -26,7 +26,7 @@ import lombok.Setter;
 @Table(name="statistics")
 public class Statistic extends BaseEntity {
 
-    @OneToOne(optional=false)
+    @ManyToOne(optional=false)
     private Player player;
 
     @ManyToOne(optional=false)

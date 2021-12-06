@@ -2,7 +2,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="parameter" required="true"%>
-<%@ attribute name="playersWithStats" required="false" rtexprvalue="true" type="java.util.ArrayList" %>
+<%@ attribute name="players" required="false" rtexprvalue="true" type="java.util.ArrayList" %>
 
 <div class="ranking-table">
 
@@ -16,17 +16,17 @@
     <div class="table-body">
         <table>
             <tbody>
-                <c:forEach items="${playersWithStats}" var="playerWithStat">
+                <c:forEach items="${players}" var="player">
                 <tr>
-                    <td class="pos-col"> <c:out value = "${playerWithStat.players.indexOf(player) + 1}"/> </td>
-                    <td> <a href="/players/profile/${playerWithStat.player.id}" htmlEscape="true" /> <c:out value = "${playerWithStat.player.user.username}"/> </a> </td>
+                    <td class="pos-col"> <c:out value = "${players.indexOf(player) + 1}"/> </td>
+                    <td style="min-width: 120px;"> <a href="/players/profile/${player.id}" htmlEscape="true" /> <c:out value = "${player.username}"/> </a> </td>
                     <td> 
                         <c:if test="${parameter == 'Wins'}">
-                            <c:out value = "${playerWithStat.player}"/>
+                            <c:out value = "${player.parameter}"/>
                         </c:if>
 
                         <c:if test="${parameter == 'Points'}">
-                            <c:out value = "${playerWithStat.player}"/>
+                            <c:out value = "${player.parameter}"/>
                         </c:if>
                     </td>
                 </tr>
