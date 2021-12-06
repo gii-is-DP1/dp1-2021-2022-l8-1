@@ -1,25 +1,19 @@
 package org.springframework.samples.SevenIslands.game;
 
-import java.lang.StackWalker.Option;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
-import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
-import org.springframework.samples.SevenIslands.web.WelcomeController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -47,8 +41,6 @@ public class GameController {
     @Autowired
     private PlayerController playerController;
 
-    @Autowired
-    private WelcomeController welcomeController;
 
     @Autowired
     private DeckService deckService;
@@ -92,9 +84,9 @@ public class GameController {
     }
     
     @GetMapping(path = "/exit/{gameId}")
-    public String joinGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+    public String exitGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Game game = gameService.findGameById(gameId).get();
-        int playerId = securityService.getCurrentUserId(); // Id of player that is logged
+        int playerId = securityService.getCurrentPlayerId(); // Id of player that is logged
         Player pay = playerService.findPlayerById(playerId).get();
         game.deletePlayerOfGame(pay);
         gameService.save(game);
@@ -108,7 +100,7 @@ public class GameController {
     public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap, HttpServletRequest request) {
 
         Optional<Game> game = gameService.findGameById(gameId); 
-
+        
         return gameService.deleteGame(game, gameId, modelMap, request);
     }
 
@@ -122,55 +114,22 @@ public class GameController {
     //     return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
     // }
 
-    @GetMapping(path = "/{gameId}/lobby")
-    public String lobby(@PathVariable("gameId") int gameId, ModelMap model) {
+    @GetMapping(path = "/{code}/lobby")
+    public String lobby(@PathVariable("code") String gameCode, ModelMap model, HttpServletRequest request) {
 
-        String view = "games/lobby";
         
-
-        if(securityService.authenticationNotNull()) {
-            securityService.insertIdUserModelMap(model);
-
-            Optional<Game> gameOpt = gameService.findGameById(gameId);
-
-            if(gameOpt.isPresent()) {
-                Game game = gameOpt.get();
-                
-                if(game.isHas_started()) {
-                    return "redirect:/boards/" + game.getCode();
-                } 
-                
-                model.addAttribute("game", game);
-
-                int playerId = securityService.getCurrentUserId(); // Id of player that is logged
-
-                Player player = playerService.findPlayerById(playerId).get();
-                model.addAttribute("player", player);
-
-                if(!game.getPlayers().contains(player) && game.getPlayers().size()<4) {
-                    game.addPlayerinPlayers(player);
-                    gameService.save(game);
-                    player.addGameinGames(game);
-                    playerService.save(player);
-                   
-                } else if(game.getPlayers().contains(player)) {
-                    view = "games/lobby";
-                } else {
-                    return "redirect:/welcome"; //Need to change
-                }
-
-                model.addAttribute("totalplayers", game.getPlayers().size());
-                view = "games/lobby";
-
-            } else {
-                return "redirect:/games/rooms";
-                
-            }
-
-            
+        Iterable<Game> gameOpt = gameService.findGamesByRoomCode(gameCode);
+        
+        if(securityService.isAuthenticatedUser()) {
+            return gameService.getLobby(gameOpt, model, request);
+        
+        } else {    // If user is not logged
+            request.getSession().setAttribute("message", "Please, first sign in!");
+            return "redirect:/welcome";
         }
 
-        return view;
+        
+
     }
 
     /**
@@ -210,15 +169,13 @@ public class GameController {
     // ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
     public String publicRooms(ModelMap modelMap, HttpServletRequest request) {
-
-
         if (securityService.isAuthenticatedUser()) {
             securityService.insertIdUserModelMap(modelMap);
              
             if (securityService.isAdmin()) {
-                return adminController.rooms(modelMap);
+                return adminController.rooms(modelMap, request);
             } else {
-                return playerController.games(modelMap);
+                return playerController.games(modelMap, request);
             }
             
         } else {
@@ -229,6 +186,8 @@ public class GameController {
         
     }
 
+
+    
     //Games by room code
     @GetMapping(path = "/rooms/{code}")
     public String gameByCode(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
@@ -236,9 +195,10 @@ public class GameController {
         if (securityService.isAuthenticatedUser()) {
             securityService.insertIdUserModelMap(modelMap);
 
-            Iterable<Game> games = gameService.findGamesByRoomCode(code);
             
-            gameService.addGamesToModelMap(games, modelMap);
+            Iterable<Game> game = gameService.findGamesByRoomCode(code);
+            
+            gameService.addGamesToModelMap(game, modelMap);
 
             
             return  "games/publicRooms";

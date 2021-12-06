@@ -18,7 +18,7 @@
                 <div class="row text-md-left">
                     <div class="col-md">
                         <div class="row text-center">
-                            <a href="/games/${game.id}/lobby" class="btn btn-warning">Refresh room</a>
+                            <a href="/games/${game.code}/lobby" class="btn btn-warning">Refresh room</a>
                         </div>
                     </div>
                     <br>

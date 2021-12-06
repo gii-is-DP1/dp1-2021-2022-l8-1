@@ -39,7 +39,7 @@ public class SecurityService {
     }
 
     @Transactional
-    public int getCurrentUserId() {
+    public int getCurrentPlayerId() {
         return playerService.getIdPlayerByName(getCurrentUser().getUsername());
     }
 

@@ -52,7 +52,8 @@ public class BoardController {
         // modelMap.put("now", new Date());
 		modelMap.addAttribute("board",boardService.findById(1).get()); 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
-        Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
+        // Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
         
         if(!game.isHas_started()){
             List<Player> p = game.getPlayers();
@@ -75,7 +76,7 @@ public class BoardController {
             modelMap.addAttribute("message", "The game cannot start, there is only one player in the room");
             modelMap.addAttribute("game", game);
             
-            int playerId = securityService.getCurrentUserId(); // Id of player that is logged
+            int playerId = securityService.getCurrentPlayerId(); // Id of player that is logged
 
             Player pay = playerService.findPlayerById(playerId).get();
             modelMap.addAttribute("player", pay);
@@ -99,8 +100,8 @@ public class BoardController {
         }
         
 
-        //toArray()[0] because there is only going to be one game with that code as its UNIQUE
-        modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).toArray()[0]);
+        // .iterator().next() because there is only going to be one game with that code as its UNIQUE
+        modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).iterator().next());
 
         return view;
     }
