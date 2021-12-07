@@ -64,17 +64,7 @@ public class BoardController {
     public String init(@PathVariable("code") String code, ModelMap modelMap){      
 
         Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
-        Board board = new Board();
-        List<Island> l = new ArrayList<>();
-        for(int i=1;i<7;i++){
-            Island isl = new Island();
-            isl.setIslandNum(i);
-            l.add(isl);
-        }
-        board.setIslands(l);
-
-        //poner aqui las cartas de la isla
-        boardService.save(board);
+        
         
         
         List<Player> players = game.getPlayers();
@@ -89,9 +79,9 @@ public class BoardController {
             playerService.save(p);
         
         }
-        boardService.distribute(board, d);
-        game.setBoard(board);
-        gameService.save(game);     
+        //boardService.distribute(board, d);
+        //game.setBoard(board);
+        //gameService.save(game);     
         
         return "redirect:/boards/"+ code;
     }

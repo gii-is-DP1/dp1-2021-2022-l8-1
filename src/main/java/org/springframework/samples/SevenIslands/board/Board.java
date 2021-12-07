@@ -37,7 +37,7 @@ public class Board extends BaseEntity{
         this.height=644;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Island> islands;
 
 }
