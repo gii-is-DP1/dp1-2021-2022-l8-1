@@ -1,10 +1,6 @@
 package org.springframework.samples.SevenIslands.deck;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -13,7 +9,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.card.CardService;
-import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -2,16 +2,12 @@ package org.springframework.samples.SevenIslands.achievement;
 
 import java.util.Optional;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.SevenIslands.admin.AdminService;
-import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -141,10 +137,7 @@ public class AchievementController {
 
     @PostMapping(value = "/edit/{achievementId}")
 	public String processUpdateForm(@Valid Achievement achievement, BindingResult result,@PathVariable("achievementId") int achievementId, ModelMap model, HttpServletRequest request) {
-		
-        if (!securityService.isAdmin()) {
-            return "redirect:/errors";
-        }
+
 
         if (result.hasErrors()) {
 			model.put("achievement", achievement);

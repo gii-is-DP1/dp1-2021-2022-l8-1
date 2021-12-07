@@ -2,7 +2,6 @@ package org.springframework.samples.SevenIslands.board;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.samples.SevenIslands.die.Die;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
-import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
@@ -146,7 +144,7 @@ public class BoardController {
         return "redirect:/boards/"+ code;
     }
 
-    @GetMapping(path = "/{gameId}/rollDie")
+    @GetMapping(path = "/{gameId}/rollDice")
     public String rollDie(@PathVariable("gameId") int gameId, ModelMap modelMap, HttpServletRequest request) {
 
         //TODO Se puede quitar el atributo en game, y pasar el valor del dado al model atributte
@@ -174,7 +172,7 @@ public class BoardController {
         game.setValueOfDie("Actual value: "+res);
         gameService.save(game);      
 
-        // modelMap.addAttribute("die",res);
+        // modelMap.addAttribute("dice",res);
         // this.board(code,modelMap,response);
         return "redirect:/boards/"+ code;
         //return "redirect:/boards/"+code+"/actions/"+ res;

@@ -9,7 +9,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
-import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
@@ -40,37 +39,42 @@ public class AdminController {
 
     @Autowired	
     private UserService userService;
+
+    private static final String VIEWS_ADMINS_CREATE_OR_UPDATE_FORM = "admins/createOrUpdateAdminForm";
+
     
     @GetMapping(path="/profile/{adminId}")
-    public String profile(@PathVariable("adminId") int adminId, ModelMap modelMap){
-        String view = "admins/profile";
-        securityService.insertIdUserModelMap(modelMap);
+    public String profile(@PathVariable("adminId") int adminId, ModelMap modelMap, HttpServletRequest request) {
+        // if the user is not an admin, it will return an error page (only admins can access this page)
+
+        securityService.insertIdUserModelMap(modelMap); 
         Optional<Admin> admin = adminService.findAdminById(adminId);
+        
         if(admin.isPresent()){
             modelMap.addAttribute("admin", admin.get());
-        }else{
-            modelMap.addAttribute("message", "Admin not found");
-            view = "/error";
+        
+        } else{
+            return "/error";
         }
-        return view;
+        return "admins/profile";
     }
+
 
     @GetMapping(path="/rooms")
     public String rooms(ModelMap modelMap, HttpServletRequest request) {
-        String view = "admins/rooms";
+
         Iterable<Game> games = gameService.findAll();
         modelMap.addAttribute("message", request.getSession().getAttribute("message"));
         modelMap.addAttribute("games", games);
         request.getSession().removeAttribute("message");
-        return view;
+        return "admins/rooms";
     }
 
-    private static final String VIEWS_ADMINS_CREATE_OR_UPDATE_FORM = "admins/createOrUpdateAdminForm";
 
     @GetMapping(value = "/profile/edit/{adminId}")
     public String updateAdmin(@PathVariable("adminId") int adminId, ModelMap modelMap) {
         securityService.insertIdUserModelMap(modelMap);
-        Optional<Admin> admin = adminService.findAdminById(adminId); // optional puede ser error el import
+        Optional<Admin> admin = adminService.findAdminById(adminId);
         if(admin.isPresent()){
             modelMap.addAttribute("admin", admin.get());
         }else{
@@ -80,35 +84,33 @@ public class AdminController {
         return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
     }
     
+    
     @PostMapping(value = "/profile/edit/{adminId}")
 	public String processUpdateForm(@Valid Admin admin, BindingResult result,@PathVariable("adminId") int adminId, ModelMap model) {
-		if (result.hasErrors()) {
-            System.out.print(result.getAllErrors());
+		
+        if (result.hasErrors()) {
 			model.put("player", admin);
 			return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
             
-            Optional<Admin> adminToUpdate=this.adminService.findAdminById(adminId);
+            Admin adminToUpdate = adminService.findAdminById(adminId).get();
+            // always present because if not, it should have redirected to error page in @GetMapping before
         
             
-            if(!adminToUpdate.isPresent()){
-                model.addAttribute("message", "Admin not found");
-                return "/error";
-            }
-            int a = adminToUpdate.get().getUser().getAuthorities().iterator().next().getId();
-            String n = adminToUpdate.get().getUser().getUsername();
+            int authId = adminToUpdate.getUser().getAuthorities().iterator().next().getId();
+            String userName = adminToUpdate.getUser().getUsername();
 
-			BeanUtils.copyProperties(admin, adminToUpdate.get(),"id");                                                                                  
+			BeanUtils.copyProperties(admin, adminToUpdate, "id");                                                                                  
                     try {                    
-                        this.adminService.save(adminToUpdate.get());
-                        userService.saveUser(adminToUpdate.get().getUser());
+                        adminService.save(adminToUpdate);
+                        userService.saveUser(adminToUpdate.getUser());
 		                
-		                authoritiesService.saveAuthorities(adminToUpdate.get().getUser().getUsername(), "admin");  
-                        authoritiesService.deleteAuthorities(a);
-                        if(n != adminToUpdate.get().getUser().getUsername()){
-                           
-                            userService.delete(n);
+		                authoritiesService.saveAuthorities(adminToUpdate.getUser().getUsername(), "admin");  
+                        authoritiesService.deleteAuthorities(authId);
+                        
+                        if(!userName.equals(adminToUpdate.getUser().getUsername())){   
+                            userService.delete(userName);
                         }
                         
                     } catch (Exception ex) {
@@ -116,7 +118,7 @@ public class AdminController {
                         return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM ;
                     }
 
-                    if(n != adminToUpdate.get().getUser().getUsername()){
+                    if(!userName.equals(adminToUpdate.getUser().getUsername())){
                         SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
                         return "redirect:/welcome";
                     }
