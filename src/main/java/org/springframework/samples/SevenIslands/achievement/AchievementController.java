@@ -2,6 +2,8 @@ package org.springframework.samples.SevenIslands.achievement;
 
 import java.util.Optional;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -29,77 +31,74 @@ public class AchievementController {
 	private SecurityService securityService;
 
     @GetMapping()
-    public String listAchievements(ModelMap modelMap){
-        String view = "achievements/achievements";
-        securityService.insertIdUserModelMap(modelMap);
+    public String listAchievements(ModelMap modelMap, HttpServletRequest request) {
+
+        if(securityService.isAdmin()) {
+            String view = "achievements/achievements";
+            securityService.insertIdUserModelMap(modelMap);
+            modelMap.addAttribute("message", request.getSession().getAttribute("message"));
+            
+            Iterable<Achievement> achievements = achievementService.findAll();
+            modelMap.addAttribute("achievements", achievements);
+            request.getSession().removeAttribute("message");
+            
+            return view;
         
-        Iterable<Achievement> achievements = achievementService.findAll();
-        modelMap.addAttribute("achievements", achievements);
+        } else {    // never should enter here because we specified that only admins have access to this page in SecurityConfiguration.java
+            request.getSession().setAttribute("message", "You don't have permission to access this page!");
+            return "redirect:/welcome";  
+        } 
+
         
-        return view;
     }
 
     @GetMapping(path="/new")
-    public String createAchievement(ModelMap modelMap){
-        // String view="achievements/editAchievement";
-        String view= "achievements/createOrUpdateAchievementForm";
-        securityService.insertIdUserModelMap(modelMap);
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
-                    modelMap.addAttribute("achievement", new Achievement());
-        }else{
-            view= "/errors";
+    public String createAchievement(ModelMap modelMap){ 
+
+        if(securityService.isAdmin()) {
+            securityService.insertIdUserModelMap(modelMap);
+            modelMap.addAttribute("achievement", new Achievement());
+        
+        }else{  
+            return "/errors";
         }
-        return view;
+        return "achievements/createOrUpdateAchievementForm";
     }
 
     @PostMapping(path="/save")
-    public String saveAchievement(@Valid Achievement achievement, BindingResult result, ModelMap modelMap){
-        String view= "achievements/listAchievements";
-       
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
-                    if(result.hasErrors()){
-                        System.out.print(result.getAllErrors());
-                        modelMap.addAttribute("achievement", achievement);
-                        return "achievements/editAchievement";
-                    }else{
+    public String saveAchievement(@Valid Achievement achievement, BindingResult result, ModelMap modelMap, HttpServletRequest request){
 
-                        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                        // User currentUser = (User) authentication.getPrincipal();
-                        
-                        // Achievement ach = achievement;
-                        // Admin admin = adminService.getAdminByName(currentUser.getUsername()).stream().findFirst().get(); 
-                        // sé que el usuario es un admin, de otra forma no habría entrado en este bloque
+        if (securityService.isAdmin()) {
+            if(result.hasErrors()){
+                // System.out.print(result.getAllErrors());
+                modelMap.addAttribute("achievement", achievement);
+                return "achievements/editAchievement";
+            }else{
 
-                        //ach.addAdminInAchievements(admin);  
-                        //admin.addAchievementInAdmins(ach); 
-
-                        achievementService.save(achievement);
-                        modelMap.addAttribute("message", "Achievement succesfully saved!");
-                        view=listAchievements(modelMap);
-                    }
+                achievementService.save(achievement);
+                request.getSession().setAttribute("message", "Achievement successfully saved!");
+                
+            }
         }else{
-            view ="/errors";
+            return "/errors";
         }
-        return view;
+        return "redirect:/achievements";
     }
+
+
     @GetMapping(path="/delete/{achievementId}")
-    public String deleteAchievement(@PathVariable("achievementId") int achievementId, ModelMap modelMap){
-        String view= "achievements/listAchievements";
-        securityService.insertIdUserModelMap(modelMap);
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
-                    Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
-                    if(achievement.isPresent()){    // porque es un optional
-                        achievementService.delete(achievement.get());
-                        modelMap.addAttribute("message", "Achievement successfully deleted!");
+    public String deleteAchievement(@PathVariable("achievementId") int achievementId, ModelMap modelMap, HttpServletRequest request){
 
-
-                    }else{
-                        modelMap.addAttribute("message", "Achievement not found");
-                        listAchievements(modelMap);
-                    }
+        if (securityService.isAdmin()) {
+            securityService.insertIdUserModelMap(modelMap);
+            Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
+            if(achievement.isPresent()){    // porque es un optional
+                achievementService.delete(achievement.get());
+                request.getSession().setAttribute("message", "Achievement successfully deleted!");
+            
+            }else{
+                request.getSession().setAttribute("message", "Achievement not found");                      
+            }
         }else{
             return "/errors";
         }
@@ -107,20 +106,25 @@ public class AchievementController {
 
     }
 
-    private static final String VIEWS_ACHIEVEMENTS_CREATE_OR_UPDATE_FORM = "achievements/createOrUpdateAchievementForm";
 
     @GetMapping(path="/edit/{achievementId}")
-    public String updateAchievement(@PathVariable("achievementId") int achievementId, ModelMap model) {
-        String view = VIEWS_ACHIEVEMENTS_CREATE_OR_UPDATE_FORM;
-        securityService.insertIdUserModelMap(model);
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
-                    Achievement achievement = achievementService.findAchievementById(achievementId).get();
-                    model.put("achievement", achievement);
-        }else{
-            view = "/errors";
+    public String updateAchievement(@PathVariable("achievementId") int achievementId, ModelMap model, HttpServletRequest request) {
+        
+        if (securityService.isAdmin()) {
+            securityService.insertIdUserModelMap(model);
+            Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
+            if(achievement.isPresent()){
+                model.put("achievement", achievement.get());
+                
+            } else {
+                request.getSession().setAttribute("message", "Achievement not found!");
+                return "redirect:/achievements";
+            }
+
+        }else {
+            return "/errors";
         }
-        return view;
+        return "achievements/createOrUpdateAchievementForm";
     }
 
     /**
@@ -136,26 +140,28 @@ public class AchievementController {
      */
 
     @PostMapping(value = "/edit/{achievementId}")
-	public String processUpdateForm(@Valid Achievement achievement, BindingResult result,@PathVariable("achievementId") int achievementId, ModelMap model) {
-		//Si no es admin:
-        if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
-                    return "redirect:/errors";
+	public String processUpdateForm(@Valid Achievement achievement, BindingResult result,@PathVariable("achievementId") int achievementId, ModelMap model, HttpServletRequest request) {
+		
+        if (!securityService.isAdmin()) {
+            return "redirect:/errors";
         }
+
         if (result.hasErrors()) {
-            System.out.print(result.getAllErrors());
 			model.put("achievement", achievement);
-			return VIEWS_ACHIEVEMENTS_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-            Achievement achievementToUpdate=this.achievementService.findAchievementById(achievementId).get();
-			BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  
+			return "achievements/createOrUpdateAchievementForm";
+		
+        } else {
+            Achievement achievementToUpdate= achievementService.findAchievementById(achievementId).get();   
+            // always present because if not, it should have redirected to achievements page with the message "Achievement not found!" in the @GetMapping before
+			
+            BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  
                     try {                    
-                        this.achievementService.save(achievementToUpdate);                    
+                        achievementService.save(achievementToUpdate);        
+                        request.getSession().setAttribute("message", "Achievement successfully updated!");            
                     
                     } catch (Exception ex) {
                         result.rejectValue("name", "duplicate", "already exists");
-                        return VIEWS_ACHIEVEMENTS_CREATE_OR_UPDATE_FORM;
+                        return "achievements/createOrUpdateAchievementForm";
                     }
 			return "redirect:/achievements";
 		}

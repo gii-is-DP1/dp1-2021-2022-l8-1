@@ -16,9 +16,7 @@ import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
-import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
-import org.springframework.samples.SevenIslands.web.WelcomeController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -38,24 +36,29 @@ public class GameController {
     private GameService gameService;
 
     @Autowired
-    private PlayerService playerService;
-
-    @Autowired
     private AdminController adminController;
 
     @Autowired
     private PlayerController playerController;
-
 
     @Autowired
     private DeckService deckService;
     
 
     @GetMapping(path = "/new")
-    public String createGame(Player player, ModelMap modelMap) {
-        String view = "games/createOrUpdateGameForm"; 
-        modelMap.addAttribute("game", new Game());
-        return view;
+    public String createGame(Player player, ModelMap modelMap, HttpServletRequest request) {
+        if(securityService.isAdmin()) {
+            request.getSession().setAttribute("message", "You must be a player to create a game");
+            return "redirect:/games/rooms";
+        
+        } else if(securityService.isAuthenticatedUser()) {
+            modelMap.addAttribute("game", new Game());
+            return "games/createOrUpdateGameForm";
+        
+        } else {
+            return securityService.redirectToWelcome(request);
+        }
+
     }
 
     @PostMapping(path = "/save")
