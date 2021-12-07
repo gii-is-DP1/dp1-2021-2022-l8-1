@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckRepository;
@@ -15,6 +17,8 @@ import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
+import org.springframework.samples.SevenIslands.player.Player;
+import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +34,9 @@ public class BoardService {
 
     @Autowired
     private GameService gameService;
+
+    @Autowired
+    private PlayerService playerService;
 
     @Transactional
     public int boardCount(){
@@ -76,5 +83,20 @@ public class BoardService {
         deckRepo.save(d);
         boardRepo.save(b);
     }
+
+    @Transactional
+    public void initCardPlayers(List<Player> players, Deck d){
+        
+        for(Player p: players){
+            List<Card> cards = p.getCards();
+            List<Card> doblones = d.getCards().stream().filter(x->x.getCardType().equals(CARD_TYPE.DOUBLON)).limit(3).collect(Collectors.toList());
+            d.getCards().removeAll(doblones);
+            deckRepo.save(d);
+            cards.addAll(doblones);
+            p.setCards(cards);
+            playerService.save(p);
+        }
+    }
+
 
 }

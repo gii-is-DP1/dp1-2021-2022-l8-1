@@ -64,24 +64,16 @@ public class BoardController {
     public String init(@PathVariable("code") String code, ModelMap modelMap){      
 
         Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
-        
+        Board board = game.getBoard();
         
         
         List<Player> players = game.getPlayers();
         Deck d = game.getDeck();
-        for(Player p: players){
-            List<Card> cards = p.getCards();
-            List<Card> doblones = d.getCards().stream().filter(x->x.getCardType().equals(CARD_TYPE.DOUBLON)).limit(3).collect(Collectors.toList());
-            d.getCards().removeAll(doblones);
-            deckService.save(d);
-            cards.addAll(doblones);
-            p.setCards(cards);
-            playerService.save(p);
         
-        }
-        //boardService.distribute(board, d);
-        //game.setBoard(board);
-        //gameService.save(game);     
+        boardService.initCardPlayers(players,d);
+        boardService.distribute(board, d);
+        game.setBoard(board);
+        gameService.save(game);     
         
         return "redirect:/boards/"+ code;
     }
