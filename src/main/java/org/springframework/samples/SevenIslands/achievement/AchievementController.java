@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
+import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,12 +26,12 @@ public class AchievementController {
     private AchievementService achievementService;
 
     @Autowired
-	private GeneralService generalService;
+	private SecurityService securityService;
 
     @GetMapping()
     public String listAchievements(ModelMap modelMap){
         String view = "achievements/achievements";
-        generalService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         
         Iterable<Achievement> achievements = achievementService.findAll();
         modelMap.addAttribute("achievements", achievements);
@@ -42,7 +43,7 @@ public class AchievementController {
     public String createAchievement(ModelMap modelMap){
         // String view="achievements/editAchievement";
         String view= "achievements/createOrUpdateAchievementForm";
-        generalService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     modelMap.addAttribute("achievement", new Achievement());
@@ -86,7 +87,7 @@ public class AchievementController {
     @GetMapping(path="/delete/{achievementId}")
     public String deleteAchievement(@PathVariable("achievementId") int achievementId, ModelMap modelMap){
         String view= "achievements/listAchievements";
-        generalService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
@@ -111,7 +112,7 @@ public class AchievementController {
     @GetMapping(path="/edit/{achievementId}")
     public String updateAchievement(@PathVariable("achievementId") int achievementId, ModelMap model) {
         String view = VIEWS_ACHIEVEMENTS_CREATE_OR_UPDATE_FORM;
-        generalService.insertIdUserModelMap(model);
+        securityService.insertIdUserModelMap(model);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Achievement achievement = achievementService.findAchievementById(achievementId).get();

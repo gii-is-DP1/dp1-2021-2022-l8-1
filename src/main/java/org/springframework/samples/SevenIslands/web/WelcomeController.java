@@ -12,6 +12,7 @@ import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.person.Person;
 import org.springframework.samples.SevenIslands.user.UserService;
+import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class WelcomeController {
 	GameService gameService;
 
 	@Autowired	
-	GeneralService gService;
+	SecurityService securityService;
 
 	@Autowired	
 	UserService userService;
@@ -71,7 +72,7 @@ public class WelcomeController {
 		f.setSurname("Salado");
 		persons.add(f);
 
-		gService.insertIdUser(modelMap);
+		securityService.insertIdUser(modelMap);
 		
 		modelMap.addAttribute("message", request.getSession().getAttribute("message"));
 		modelMap.addAttribute("persons", persons);

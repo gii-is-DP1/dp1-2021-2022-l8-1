@@ -72,8 +72,8 @@ public class SecurityService {
     public void insertIdUser(Map<String, Object> model){
 		
 		Authentication authentication = getAuthentication();
-		if (authentication.isAuthenticated()) {
-            
+        if (authentication.getPrincipal() != "anonymousUser"  && authentication.isAuthenticated()){
+                
             if (isAdmin()) {
                 User currentUser = (User) authentication.getPrincipal();
                 int playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());
@@ -84,6 +84,7 @@ public class SecurityService {
                 int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
                 model.put("id",playerLoggedId);
             }
+            
         }
 		
 	}
@@ -93,7 +94,7 @@ public class SecurityService {
 		
 		Authentication authentication = getAuthentication();
 		
-        if (authentication.isAuthenticated()){
+        if (authentication.getPrincipal() != "anonymousUser" &&  authentication.isAuthenticated()){
             if (isAdmin()) {
                 User currentUser = (User) authentication.getPrincipal();
                 int playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());

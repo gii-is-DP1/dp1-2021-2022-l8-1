@@ -18,9 +18,9 @@ import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
-import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
+import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -43,7 +43,7 @@ public class PlayerController {
     private PlayerService playerService;
 
     @Autowired	
-	  private GeneralService generalService;
+	private SecurityService securityService;
 
     @Autowired
     private GameService gameService;
@@ -60,7 +60,7 @@ public class PlayerController {
     @GetMapping()
     public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){        //For admins
         String view ="players/listPlayers";
-        generalService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
 
         //if pageNumber== null, we takes page number 0
         Pageable page;
@@ -124,17 +124,17 @@ public class PlayerController {
             modelMap.addAttribute("message", "Player not found");
             view = "/error"; 
         }
-        generalService.insertIdUserModelMap(modelMap);
+       securityService.insertIdUserModelMap(modelMap);
         return view;
     }
 
     @GetMapping(path="/profile/{playerId}/achievements")
     public String achievements(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/achievements";
-        generalService.insertIdUserModelMap(modelMap);
+       securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
-            generalService.insertIdUserModelMap(modelMap);
+           securityService.insertIdUserModelMap(modelMap);
         
             List<Achievement> achieved = StreamSupport.stream(achievementService.findByPlayerId(player.get().getId()).spliterator(), false).collect(Collectors.toList());
             List<Achievement> achievements = StreamSupport.stream(achievementService.findAll().spliterator(), false).collect(Collectors.toList());
@@ -154,7 +154,7 @@ public class PlayerController {
     @GetMapping(path="/profile/{playerId}/statistics")
     public String statistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/statistics";
-        generalService.insertIdUserModelMap(modelMap);
+       securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
@@ -179,7 +179,7 @@ public class PlayerController {
     @GetMapping(path="/profile/{playerId}/rooms/created")
     public String gamesCreated(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/roomsCreated";
-        generalService.insertIdUserModelMap(modelMap);
+       securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             Collection<Game> games = gameService.findByOwnerId(player.get().getId());
@@ -195,7 +195,7 @@ public class PlayerController {
     @GetMapping(path="/profile/{playerId}/rooms/played")
     public String gamesPlayed(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/roomsPlayed";
-        generalService.insertIdUserModelMap(modelMap);
+       securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
 
         if(player.isPresent()){
@@ -214,7 +214,7 @@ public class PlayerController {
     @GetMapping(path="/delete/{playerId}")
     public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view= "players/listPlayers";
-        generalService.insertIdUserModelMap(modelMap);
+       securityService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Player> player = playerService.findPlayerById(playerId);
@@ -248,7 +248,7 @@ public class PlayerController {
     public String updatePlayer(@PathVariable("playerId") int playerId, ModelMap model) {
         Optional<Player> player = playerService.findPlayerById(playerId); // optional puede ser error el import
         String view = VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-        generalService.insertIdUserModelMap(model);
+       securityService.insertIdUserModelMap(model);
         //Test if currentplayer is admin or the same id
         // TODO: Comprobar que sea o admin o q el usuer registrado tenga el mismo id q el de la url
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

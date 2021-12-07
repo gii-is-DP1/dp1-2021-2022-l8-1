@@ -12,6 +12,7 @@ import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
+import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,7 +30,7 @@ public class AdminController {
     private AdminService adminService;
 
     @Autowired	
-	private GeneralService generalService;
+	private SecurityService securityService;
 
     @Autowired
 	private GameService gameService;
@@ -43,7 +44,7 @@ public class AdminController {
     @GetMapping(path="/profile/{adminId}")
     public String profile(@PathVariable("adminId") int adminId, ModelMap modelMap){
         String view = "admins/profile";
-        generalService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         Optional<Admin> admin = adminService.findAdminById(adminId);
         if(admin.isPresent()){
             modelMap.addAttribute("admin", admin.get());
@@ -68,7 +69,7 @@ public class AdminController {
 
     @GetMapping(value = "/profile/edit/{adminId}")
     public String updateAdmin(@PathVariable("adminId") int adminId, ModelMap modelMap) {
-        generalService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         Optional<Admin> admin = adminService.findAdminById(adminId); // optional puede ser error el import
         if(admin.isPresent()){
             modelMap.addAttribute("admin", admin.get());

@@ -39,49 +39,50 @@ public class GeneralService {
         return generalRepo.totalGames();
     }
 
-    public void insertIdUser(Map<String, Object> model){
+    // public void insertIdUser(Map<String, Object> model){
 		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(authentication);
-		if (authentication.getPrincipal() != "anonymousUser") {
-            if (authentication.isAuthenticated()){
-				if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                    .anyMatch(x -> x.toString().equals("admin"))) {
-
-                    User currentUser = (User) authentication.getPrincipal();
-                    int playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());
-                    model.put("id",playerLoggedId);
-                    
-                } else {
-                    User currentUser = (User) authentication.getPrincipal();
-				    int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
-				    model.put("id",playerLoggedId);
-                }
-			}
-		}
-	}
-
-    public void insertIdUserModelMap(ModelMap model){
+	// 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	// 	System.out.println(authentication);
 		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(authentication);
-		if (authentication.getPrincipal() != "anonymousUser") {
-            if (authentication.isAuthenticated()){
-                if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                    .anyMatch(x -> x.toString().equals("admin"))) {
+    //     if (authentication.getPrincipal() != "anonymousUser") {
+    //         if (authentication.isAuthenticated()){
+	// 			if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+    //                 .anyMatch(x -> x.toString().equals("admin"))) {
 
-                    User currentUser = (User) authentication.getPrincipal();
-                    int playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());
-                    model.put("id",playerLoggedId);
+    //                 User currentUser = (User) authentication.getPrincipal();
+    //                 int playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());
+    //                 model.put("id",playerLoggedId);
                     
-                } else {
-                    User currentUser = (User) authentication.getPrincipal();
-				    int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
-				    model.put("id",playerLoggedId);
-                }
-			}
-		}
-	}
+    //             } else {
+    //                 User currentUser = (User) authentication.getPrincipal();
+	// 			    int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
+	// 			    model.put("id",playerLoggedId);
+    //             }
+	// 		}
+	// 	}
+	// }
+
+    // public void insertIdUserModelMap(ModelMap model){
+		
+	// 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	// 	System.out.println(authentication);
+	// 	if (authentication.getPrincipal() != "anonymousUser") {
+    //         if (authentication.isAuthenticated()){
+    //             if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+    //                 .anyMatch(x -> x.toString().equals("admin"))) {
+
+    //                 User currentUser = (User) authentication.getPrincipal();
+    //                 int playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());
+    //                 model.put("id",playerLoggedId);
+                    
+    //             } else {
+    //                 User currentUser = (User) authentication.getPrincipal();
+	// 			    int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
+	// 			    model.put("id",playerLoggedId);
+    //             }
+	// 		}
+	// 	}
+	// }
 
     
 

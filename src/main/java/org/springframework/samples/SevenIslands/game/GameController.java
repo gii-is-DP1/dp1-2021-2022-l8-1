@@ -18,6 +18,7 @@ import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
+import org.springframework.samples.SevenIslands.web.WelcomeController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -58,17 +59,15 @@ public class GameController {
     }
 
     @PostMapping(path = "/save")
-    public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
+    public String saveGame(@Valid Game game, BindingResult result, ModelMap modelMap) {
         //TODO PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
         Deck deck = deckService.init(game.getName());
 
-        //String view = "games/lobby";
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
             return "games/createOrUpdateGameForm";
         } else {
 
-            //RELATION GAME-PLAYERS
             Player currentPlayer = securityService.getCurrentPlayer();
             game.setPlayer(currentPlayer); 
             game.addPlayerinPlayers(currentPlayer);
@@ -77,9 +76,7 @@ public class GameController {
             System.out.println(game.getCode());
             
 
-            
             gameService.save(game);
-
 
             modelMap.addAttribute("game", game);
             modelMap.addAttribute("player", currentPlayer);
@@ -89,15 +86,19 @@ public class GameController {
     }
     
     @GetMapping(path = "/exit/{gameId}")
-    public String exitGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
-        Game game = gameService.findGameById(gameId).get();
-        int playerId = securityService.getCurrentPlayerId(); // Id of player that is logged
-        Player pay = playerService.findPlayerById(playerId).get();
-        game.deletePlayerOfGame(pay);
-        gameService.save(game);
-        pay.getGames().remove(game);
-        playerService.save(pay);
-        return "redirect:/games/rooms";
+    public String exitGame(@PathVariable("gameId") int gameId, HttpServletRequest request) { // to exit a game (not started)
+
+        Optional<Game> game = gameService.findGameById(gameId);
+        
+        if(securityService.isAuthenticatedUser()) {
+            return gameService.exitGame(game, request);
+        
+        } else {
+            return securityService.redirectToWelcome(request);
+        }
+        
+       
+        
     }
   
   
@@ -109,15 +110,6 @@ public class GameController {
         return gameService.deleteGame(game, gameId, modelMap, request);
     }
 
-    private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
-
-    // @GetMapping(path = "/edit/{gameId}")
-    // public String updateGame(@PathVariable("gameId") int gameId, ModelMap model) {
-    //     Game game = gameService.findGameById(gameId).get();
-    //     securityService.insertIdUserModelMap(model); 
-    //     model.put("game", game);
-    //     return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
-    // }
 
     @GetMapping(path = "/{code}/lobby")
     public String lobby(@PathVariable("code") String gameCode, ModelMap model,
@@ -132,8 +124,7 @@ public class GameController {
             return gameService.getLobby(gameOpt, model, request);
         
         } else {    // If user is not logged
-            request.getSession().setAttribute("message", "Please, first sign in!");
-            return "redirect:/welcome";
+            return securityService.redirectToWelcome(request);           
         }
 
         
@@ -153,26 +144,6 @@ public class GameController {
      */
 
 
-    // @PostMapping(value = "/edit/{gameId}")
-    // public String processUpdateForm(@Valid Game game, BindingResult result, @PathVariable("gameId") int gameId, ModelMap model, HttpServletRequest request) {
-    //     if (result.hasErrors()) {
-    //         model.addAttribute("game", game);
-    //         return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
-    //     } else {
-    //         Game gameToUpdate = this.gameService.findGameById(gameId).get();
-    //         BeanUtils.copyProperties(game, gameToUpdate, "id", "actualPlayer", "endTime", "starttime", "has_started", "code", "deck", "nameOfPlayers", "numberOfTurn", "player", "players", "points", "remainsCards");
-    //         try {
-    //             this.gameService.save(gameToUpdate);
-
-    //         } catch (Exception ex) {
-    //             request.getSession().setAttribute("errorMessage", ex.getMessage());
-    //             //result.rejectValue("name", "duplicate", "already exists");
-    //             return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
-    //         }
-    //         return "redirect:/games";
-    //     }
-
-    // }
 
     // ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
@@ -194,8 +165,6 @@ public class GameController {
         
     }
 
-
-    
     //Games by room code
     @GetMapping(path = "/rooms/{code}")
     public String gameByCode(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {

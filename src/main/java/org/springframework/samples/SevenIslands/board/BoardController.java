@@ -41,9 +41,6 @@ public class BoardController {
     private PlayerService playerService;
 
     @Autowired	
-	private GeneralService gService;
-
-    @Autowired	
 	private AdminService adminService;
     
     @Autowired
@@ -59,7 +56,7 @@ public class BoardController {
         modelMap.addAttribute("message", request.getSession().getAttribute("message"));
         
         String view = "boards/board";
-        gService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         
 		modelMap.addAttribute("board",boardService.findById(1).get()); 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
