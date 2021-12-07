@@ -42,6 +42,7 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
+
     @Autowired	
 	  private GeneralService generalService;
 
@@ -295,7 +296,15 @@ public class PlayerController {
 
     @PostMapping(value = "/edit/{playerId}")
 	public String processUpdateForm(@Valid Player player, BindingResult result,@PathVariable("playerId") int playerId, ModelMap model) {
-		if (result.hasErrors()) {
+
+        
+        if(playerService.playerHasInappropiateWords(player)){
+            model.addAttribute("message", "Your profile can't contains inappropiate words. Please, check your language.");
+			model.put("player", player);
+			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+        }
+
+		if (result.hasErrors()){
             System.out.print(result.getAllErrors());
 			model.put("player", player);
 			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
