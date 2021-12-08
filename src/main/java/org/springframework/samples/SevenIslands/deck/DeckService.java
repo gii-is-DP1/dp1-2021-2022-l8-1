@@ -2,6 +2,7 @@ package org.springframework.samples.SevenIslands.deck;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,6 +58,7 @@ public class DeckService {
         deck.setName(name);
         Iterable<Card> cardsI = cardService.findAll();
         List<Card> cards = StreamSupport.stream(cardsI.spliterator(), false).collect(Collectors.toList());
+        Collections.shuffle(cards);
         deck.setCards(cards);
         deckRepo.save(deck);
         return deck;

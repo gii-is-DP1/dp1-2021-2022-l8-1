@@ -21,7 +21,6 @@ import lombok.Setter;
 public class Island extends BaseEntity {
     
     @Column(name="island_num")
-    @NotEmpty
     @Min(value = 1)
     @Max(value = 7)
     private Integer islandNum;

@@ -12,8 +12,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
+import org.springframework.samples.SevenIslands.board.Board;
+import org.springframework.samples.SevenIslands.board.BoardService;
+import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
+import org.springframework.samples.SevenIslands.island.Island;
+import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
@@ -40,6 +45,13 @@ public class GameController {
     private PlayerService playerService;
 
     @Autowired
+    private BoardService boardService;
+
+    @Autowired
+    private IslandService islandService;
+
+
+    @Autowired
     private AdminController adminController;
 
     @Autowired
@@ -59,8 +71,11 @@ public class GameController {
 
     @PostMapping(path = "/save")
     public String salvarEvento(@Valid Game game, BindingResult result, ModelMap modelMap) {
-        //TODO PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
+              
         Deck deck = deckService.init(game.getName());
+       
+        //poner aqui las cartas de la isla
+        
 
         //String view = "games/lobby";
         if (result.hasErrors()) {
@@ -76,8 +91,10 @@ public class GameController {
             game.setDeck(deck);
             System.out.println(game.getCode());
             
-
             
+            boardService.init(game); //INITIALIZE BOARD FOR GAME
+
+
             gameService.save(game);
 
 

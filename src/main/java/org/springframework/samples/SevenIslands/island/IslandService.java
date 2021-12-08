@@ -15,5 +15,10 @@ public class IslandService {
     public int islandCount() {
         return (int) islandRepo.count();
     }    
+
+    @Transactional
+    public void save(Island i){
+        islandRepo.save(i);
+    }
 }
 
