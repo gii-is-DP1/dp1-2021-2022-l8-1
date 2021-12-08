@@ -58,7 +58,7 @@ public class BoardController {
     @GetMapping(path = "/{code}/init")
     public String init(@PathVariable("code") String code, ModelMap modelMap){      
 
-        Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
         Board board = game.getBoard();
         
         
@@ -83,10 +83,9 @@ public class BoardController {
         modelMap.addAttribute("message", request.getSession().getAttribute("message"));
         
         String view = "boards/board";
-
         securityService.insertIdUserModelMap(modelMap);
 
-        Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
         Board b = game.getBoard();
 
         
@@ -203,7 +202,7 @@ public class BoardController {
         game.setValueOfDie("Actual value: "+res);
         gameService.save(game);      
 
-        // modelMap.addAttribute("dice",res);
+        // modelMap.addAttribute("die",res);
         // this.board(code,modelMap,response);
         return "redirect:/boards/"+ code;
         //return "redirect:/boards/"+code+"/actions/"+ res;

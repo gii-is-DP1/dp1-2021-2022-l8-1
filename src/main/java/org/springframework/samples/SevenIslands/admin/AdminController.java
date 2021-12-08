@@ -54,6 +54,7 @@ public class AdminController {
             modelMap.addAttribute("admin", admin.get());
         
         } else{
+            modelMap.addAttribute("message", "admin not found");
             return "/error";
         }
         return "admins/profile";

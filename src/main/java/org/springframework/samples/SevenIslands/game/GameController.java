@@ -11,13 +11,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
-import org.springframework.samples.SevenIslands.board.Board;
 import org.springframework.samples.SevenIslands.board.BoardService;
-import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
-import org.springframework.samples.SevenIslands.island.Island;
-import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.util.SecurityService;
@@ -40,14 +36,7 @@ public class GameController {
     private GameService gameService;
 
     @Autowired
-    private PlayerService playerService;
-
-    @Autowired
     private BoardService boardService;
-
-    @Autowired
-    private IslandService islandService;
-
 
     @Autowired
     private AdminController adminController;
@@ -57,8 +46,9 @@ public class GameController {
 
     @Autowired
     private DeckService deckService;
-    
 
+    private static final String VIEW_CREATE_OR_UPDATE_GAME_FORM = "games/createOrUpdateGameForm";
+    
     @GetMapping(path = "/new")
     public String createGame(Player player, ModelMap modelMap, HttpServletRequest request) {
         if(securityService.isAdmin()) {
@@ -67,7 +57,7 @@ public class GameController {
         
         } else if(securityService.isAuthenticatedUser()) {
             modelMap.addAttribute("game", new Game());
-            return "games/createOrUpdateGameForm";
+            return VIEW_CREATE_OR_UPDATE_GAME_FORM;
         
         } else {
             return securityService.redirectToWelcome(request);
@@ -87,13 +77,13 @@ public class GameController {
         if(gameService.gameHasInappropiateWords(game)){
             modelMap.put("game", game);
             modelMap.addAttribute("message", "The room's name contains inappropiate words. Please, check your language.");
-            return "games/createOrUpdateGameForm";
+            return VIEW_CREATE_OR_UPDATE_GAME_FORM;
 
         }
       
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
-            return "games/createOrUpdateGameForm";
+            return VIEW_CREATE_OR_UPDATE_GAME_FORM;
         } else {
 
             Player currentPlayer = securityService.getCurrentPlayer();

@@ -26,6 +26,8 @@ public class AchievementController {
     @Autowired
 	private SecurityService securityService;
 
+    private static final String CREATE_OR_UPDATE_ACHIEVEMENTS_FORM = "achievements/createOrUpdateAchievementForm";
+
     @GetMapping()
     public String listAchievements(ModelMap modelMap, HttpServletRequest request) {
 
@@ -56,9 +58,9 @@ public class AchievementController {
             modelMap.addAttribute("achievement", new Achievement());
         
         }else{  
-            return "/errors";
+            return "/error";
         }
-        return "achievements/createOrUpdateAchievementForm";
+        return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
     }
 
     @PostMapping(path="/save")
@@ -66,7 +68,7 @@ public class AchievementController {
 
         if (securityService.isAdmin()) {
             if(result.hasErrors()){
-                // System.out.print(result.getAllErrors());
+
                 modelMap.addAttribute("achievement", achievement);
                 return "achievements/editAchievement";
             }else{
@@ -76,7 +78,7 @@ public class AchievementController {
                 
             }
         }else{
-            return "/errors";
+            return "/error";
         }
         return "redirect:/achievements";
     }
@@ -120,7 +122,7 @@ public class AchievementController {
         }else {
             return "/errors";
         }
-        return "achievements/createOrUpdateAchievementForm";
+        return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
     }
 
     /**
@@ -141,7 +143,7 @@ public class AchievementController {
 
         if (result.hasErrors()) {
 			model.put("achievement", achievement);
-			return "achievements/createOrUpdateAchievementForm";
+			return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
 		
         } else {
             Achievement achievementToUpdate= achievementService.findAchievementById(achievementId).get();   
@@ -154,7 +156,7 @@ public class AchievementController {
                     
                     } catch (Exception ex) {
                         result.rejectValue("name", "duplicate", "already exists");
-                        return "achievements/createOrUpdateAchievementForm";
+                        return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
                     }
 			return "redirect:/achievements";
 		}
