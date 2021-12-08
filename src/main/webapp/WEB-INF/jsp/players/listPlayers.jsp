@@ -7,12 +7,30 @@
 
 <sevenislands:simpleLayout pageName="players" title="Players">
 
+    <script>
+       
+    function main(){
+        debugger;
+        
+        //can't be use without Thymeleaf template
+        //var element = [[${filterName}]];
+        console.log(element);
+        document.getElementById("filterName").value=element;
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+    main();
+    });
+     
+     </script>
+     
+
+
     <div id="center-section">
 
         <div id="table-options">
             <form>
                 <label for="filterName">Find by username:</label>
-                <input type="text" id="filterName" name="filterName">
+                <input type="text" id="filterName" name="filterName" placeholder="${filterName}">
                 <input type="submit" value="Find"> 
             </form>
         </div>
@@ -32,7 +50,7 @@
                 </thead>
                 <tbody>
                 <c:set var="filterName" value="${filterName}"></c:set>
-                <c:forEach items="${players}" var="player" begin="${begin}" end="${end}">
+                <c:forEach items="${players}" var="player">
 
                         <tr>
                             <td>
@@ -75,9 +93,13 @@
             <div class="row text-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="/players?begin=0&end=9&filterName=${filterName}">1</a></li>
-                    <li class="page-item"><a class="page-link" href="/players?begin=10&end=19&filterName=${filterName}">2</a></li>
-                    <li class="page-item"><a class="page-link" href="/players?begin=20&end=29&filterName=${filterName}">3</a></li>
+                    <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=${previousPageNumber}">Previous Page</a></li>
+                    <!--
+                    <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=0">1</a></li>
+                    <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=1">2</a></li>
+                    <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=2">3</a></li>
+                    -->
+                    <li class="page-item"><a class="page-link" href="/players?filterName=${filterName}&pageNumber=${nextPageNumber}">Next Page</a></li>
                     </ul>
                 </nav>
             </div>

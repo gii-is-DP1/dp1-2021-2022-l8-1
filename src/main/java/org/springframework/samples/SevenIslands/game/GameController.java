@@ -1,15 +1,15 @@
 package org.springframework.samples.SevenIslands.game;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
 import org.springframework.samples.SevenIslands.board.Board;
@@ -23,7 +23,6 @@ import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
-import org.springframework.samples.SevenIslands.web.WelcomeController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -58,8 +57,6 @@ public class GameController {
     @Autowired
     private PlayerController playerController;
 
-    @Autowired
-    private WelcomeController welcomeController;
 
     @Autowired
     private DeckService deckService;
@@ -92,6 +89,7 @@ public class GameController {
             game.addPlayerinPlayers(currentPlayer);
             currentPlayer.addGameinGames(game);
             game.setDeck(deck);
+            System.out.println(game.getCode());
             
             
             boardService.init(game); //INITIALIZE BOARD FOR GAME
@@ -104,13 +102,13 @@ public class GameController {
             modelMap.addAttribute("player", currentPlayer);
 
         }
-        return "redirect:/games/"+game.getId()+"/lobby";
+        return "redirect:/games/"+game.getCode()+"/lobby";
     }
     
     @GetMapping(path = "/exit/{gameId}")
-    public String joinGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+    public String exitGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
         Game game = gameService.findGameById(gameId).get();
-        int playerId = securityService.getCurrentUserId(); // Id of player that is logged
+        int playerId = securityService.getCurrentPlayerId(); // Id of player that is logged
         Player pay = playerService.findPlayerById(playerId).get();
         game.deletePlayerOfGame(pay);
         gameService.save(game);
@@ -121,93 +119,42 @@ public class GameController {
   
   
     @GetMapping(path = "/delete/{gameId}")
-    public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap) {
+    public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap, HttpServletRequest request) {
 
         Optional<Game> game = gameService.findGameById(gameId); 
-
-        if(securityService.isAdmin()) {
-            securityService.insertIdUserModelMap(modelMap); 
-
-            if(game.isPresent()) {
-                gameService.delete(game.get());
-                modelMap.addAttribute("message", "Game successfully deleted");
-                
-            } else {
-                modelMap.addAttribute("message", "Game not found");
-            }
-            return adminController.rooms(modelMap);
         
-        } else if(securityService.isAuthenticatedUser()){
-            securityService.insertIdUserModelMap(modelMap); 
-            int currentPlayerId = securityService.getCurrentUserId();   
-
-            if(gameService.isOwner(currentPlayerId, gameId)) { // if the user is the owner of the game, the game is obviously present
-                gameService.delete(game.get());
-                modelMap.addAttribute("message", "Game successfully deleted!");
-                
-            } else {
-                modelMap.addAttribute("message", "You are not allowed to delete this game!");
-                
-            }
-
-            return playerController.games(modelMap);
-
-        } else {
-            modelMap.addAttribute("message", "Please, first sign in!");
-            return welcomeController.welcome(modelMap);
-        }
+        return gameService.deleteGame(game, gameId, modelMap, request);
     }
 
     private static final String VIEWS_GAMES_CREATE_OR_UPDATE_FORM = "games/createOrUpdateGameForm";
 
-    @GetMapping(path = "/edit/{gameId}")
-    public String updateGame(@PathVariable("gameId") int gameId, ModelMap model) {
-        Game game = gameService.findGameById(gameId).get();
-        securityService.insertIdUserModelMap(model); 
-        model.put("game", game);
-        return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
-    }
+    // @GetMapping(path = "/edit/{gameId}")
+    // public String updateGame(@PathVariable("gameId") int gameId, ModelMap model) {
+    //     Game game = gameService.findGameById(gameId).get();
+    //     securityService.insertIdUserModelMap(model); 
+    //     model.put("game", game);
+    //     return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+    // }
 
-    @GetMapping(path = "/{gameId}/lobby")
-    public String lobby(@PathVariable("gameId") int gameId, ModelMap model, HttpServletResponse response) {
+    @GetMapping(path = "/{code}/lobby")
+    public String lobby(@PathVariable("code") String gameCode, ModelMap model,
+        HttpServletRequest request, HttpServletResponse response) {
 
         //Refresh 
         response.addHeader("Refresh", "2");
 		model.put("now", new Date());
-
-        String view;
-        securityService.insertIdUserModelMap(model);
-        if (gameService.findGameById(gameId).isPresent()) {
-            Game game = gameService.findGameById(gameId).get(); 
-            if(game.isHas_started()){
-                String code = game.getCode();
-                return "redirect:/boards/" + code;
-            }
-            model.addAttribute("game", game);
-
-            int playerId = securityService.getCurrentUserId(); // Id of player that is logged
-
-            Player pay = playerService.findPlayerById(playerId).get();
-            model.addAttribute("player", pay);
-
-            if(!game.getPlayers().contains(pay) && game.getPlayers().size()<4){
-                game.addPlayerinPlayers(pay);
-                gameService.save(game);
-                pay.addGameinGames(game);
-                playerService.save(pay);
-            }else if(game.getPlayers().contains(pay)){
-                view = "games/lobby";
-            }else{
-                return "redirect:/welcome"; //Need to change
-            }
-            
-            model.addAttribute("totalplayers", game.getPlayers().size());
-            view = "games/lobby";
-        } else {
-            return "redirect:/games/rooms"; 
+        Iterable<Game> gameOpt = gameService.findGamesByRoomCode(gameCode);
+        
+        if(securityService.isAuthenticatedUser()) {
+            return gameService.getLobby(gameOpt, model, request);
+        
+        } else {    // If user is not logged
+            request.getSession().setAttribute("message", "Please, first sign in!");
+            return "redirect:/welcome";
         }
 
-        return view;
+        
+
     }
 
     /**
@@ -222,80 +169,79 @@ public class GameController {
      * @return
      */
 
-    @PostMapping(value = "/edit/{gameId}")
-    public String processUpdateForm(@Valid Game game, BindingResult result, @PathVariable("gameId") int gameId,
-            ModelMap model) {
-        if (result.hasErrors()) {
-            model.put("game", game);
-            return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
-        } else {
-            Game gameToUpdate = this.gameService.findGameById(gameId).get();
-            BeanUtils.copyProperties(game, gameToUpdate, "id", "actualPlayer", "endTime", "starttime", "has_started", "code", "deck", "nameOfPlayers", "numberOfTurn", "player", "players", "points", "remainsCards");
-            try {
-                this.gameService.save(gameToUpdate);
 
-            } catch (Exception ex) {
-                //result.rejectValue("name", "duplicate", "already exists");
-                return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
-            }
-            return "redirect:/games";
-        }
+    // @PostMapping(value = "/edit/{gameId}")
+    // public String processUpdateForm(@Valid Game game, BindingResult result, @PathVariable("gameId") int gameId, ModelMap model, HttpServletRequest request) {
+    //     if (result.hasErrors()) {
+    //         model.addAttribute("game", game);
+    //         return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+    //     } else {
+    //         Game gameToUpdate = this.gameService.findGameById(gameId).get();
+    //         BeanUtils.copyProperties(game, gameToUpdate, "id", "actualPlayer", "endTime", "starttime", "has_started", "code", "deck", "nameOfPlayers", "numberOfTurn", "player", "players", "points", "remainsCards");
+    //         try {
+    //             this.gameService.save(gameToUpdate);
 
-    }
+    //         } catch (Exception ex) {
+    //             request.getSession().setAttribute("errorMessage", ex.getMessage());
+    //             //result.rejectValue("name", "duplicate", "already exists");
+    //             return VIEWS_GAMES_CREATE_OR_UPDATE_FORM;
+    //         }
+    //         return "redirect:/games";
+    //     }
+
+    // }
 
     // ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
-    public String publicRooms(ModelMap modelMap) {
-
-        String view = "/welcome";
-        securityService.insertIdUserModelMap(modelMap);
-
-        if (securityService.authenticationNotNull()) {
-            if (securityService.isAuthenticatedUser()) {
-                
-                if (securityService.isAdmin()) {
-                    view = adminController.rooms(modelMap);
-                } else {
-                    view = playerController.games(modelMap);
-                }
+    public String publicRooms(ModelMap modelMap, HttpServletRequest request) {
+        if (securityService.isAuthenticatedUser()) {
+            securityService.insertIdUserModelMap(modelMap);
+             
+            if (securityService.isAdmin()) {
+                return adminController.rooms(modelMap, request);
             } else {
-
-                return "redirect:/welcome"; 
-
-            }
-        }
-        return view;
-    }
-
-    //Games by room code
-    @GetMapping(path = "/rooms/{code}")
-    public String gameByCode(@PathVariable("code") String code, ModelMap modelMap) {
-        String view;
-        securityService.insertIdUserModelMap(modelMap);
-        Iterable<Game> games;
-        if (securityService.authenticationNotNull()) {
-            view = "games/publicRooms";
-            games = gameService.findGamesByRoomCode(code);
-            modelMap.addAttribute("games", games);
-            if(games.spliterator().getExactSizeIfKnown()==0l){
-                modelMap.addAttribute("message", "Game not found");
+                return playerController.games(modelMap, request);
             }
             
-        
         } else {
-            return "welcome"; 
+
+            return securityService.redirectToWelcome(request);
+
         }
-        return view;
+        
+    }
+
+
+    
+    //Games by room code
+    @GetMapping(path = "/rooms/{code}")
+    public String gameByCode(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
+        
+        if (securityService.isAuthenticatedUser()) {
+            securityService.insertIdUserModelMap(modelMap);
+
+            
+            Iterable<Game> game = gameService.findGamesByRoomCode(code);
+            
+            gameService.addGamesToModelMap(game, modelMap);
+
+            
+            return  "games/publicRooms";
+        } else {
+            return securityService.redirectToWelcome(request);
+        }
+
     }
 
     // Games currently playing
     @GetMapping(path = "/rooms/playing")
-    public String currentlyPlaying(ModelMap modelMap) {
+    public String currentlyPlaying(ModelMap modelMap, HttpServletRequest request) {
 
-        securityService.insertIdUserModelMap(modelMap);
         Collection<Game> games;
 
         if(securityService.isAuthenticatedUser()) {
+            securityService.insertIdUserModelMap(modelMap); 
+            
                 // If the user has admin perms then:
                 if (securityService.isAdmin()) {
                     games = gameService.findAllPlaying();
@@ -308,10 +254,12 @@ public class GameController {
                     // here we can see only the public games which are currently being played, in order to watch it by streaming
 
                 }
+            
+                return "games/currentlyPlaying";
+        
+        } else {
+            return securityService.redirectToWelcome(request);
         }
-
-        return "games/currentlyPlaying";
-
 
     }
 

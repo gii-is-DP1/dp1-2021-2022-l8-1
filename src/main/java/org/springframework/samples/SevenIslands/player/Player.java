@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 
@@ -49,19 +50,19 @@ public class Player extends Person{
 
     @Column(name="total_games")
     // @NotEmpty
-    private Integer totalGames;
+    private Integer totalGames = 0;
     
     @Column(name="total_time_games")
     // @NotEmpty
-    private Integer totalTimeGames;  //In seconds
+    private Integer totalTimeGames = 0;  //In seconds
 
     @Column(name="avg_time_games")
     // @NotEmpty
-    private Double avgTimeGames;  //In seconds
+    private Double avgTimeGames = 0.0;  //In seconds
 
     @Column(name="max_time_game")
     // @NotEmpty
-    private Integer maxTimeGame;  //In seconds
+    private Integer maxTimeGame = 0;  //In seconds
 
     @Column(name="min_time_game")
     // @NotEmpty
@@ -69,11 +70,11 @@ public class Player extends Person{
 
     @Column(name="total_points_all_games")
     // @NotEmpty
-    private Integer totalPointsAllGames; 
+    private Integer totalPointsAllGames = 0; 
     
     @Column(name="avg_total_points")
     // @NotEmpty
-    private Double avgTotalPoints;
+    private Double avgTotalPoints = 0.0;
     
     @Column(name="favorite_island")
     // @NotEmpty
@@ -88,11 +89,19 @@ public class Player extends Person{
 
     @Column(name="max_points_of_games")
     // @NotEmpty
-    private Integer maxPointsOfGames;
+    private Integer maxPointsOfGames = 0;
 
     @Column(name="min_points_of_games")
     // @NotEmpty
-    private Integer minPointsOfGames;
+    private Integer minPointsOfGames = 0;
+
+    @Column(name="total_wins")
+    // @NotEmpty
+    private Integer totalWins = 0;
+
+    @Column(name="avg_wins")
+    // @NotEmpty
+    private Double avgWins = 0.0;
 
 
   //RELACION CON LOGROS

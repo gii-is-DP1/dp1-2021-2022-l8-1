@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class WelcomeController {
 
 
 	  @GetMapping({"/","/welcome"})
-	  public String welcome(ModelMap modelMap) {
+	  public String welcome(ModelMap modelMap, HttpServletRequest request) {
 		  
 		List<Person> persons = new ArrayList<Person>();
 		Person a = new Person();
@@ -72,11 +73,12 @@ public class WelcomeController {
 
 		gService.insertIdUser(modelMap);
 		
-
+		modelMap.addAttribute("message", request.getSession().getAttribute("message"));
 		modelMap.addAttribute("persons", persons);
 		modelMap.addAttribute("title", "Seven Islands");
 		modelMap.addAttribute("group", "L8-1 a.k.a. Dream Team");
-		
+
+		request.getSession().removeAttribute("message");
 		
 		
 		

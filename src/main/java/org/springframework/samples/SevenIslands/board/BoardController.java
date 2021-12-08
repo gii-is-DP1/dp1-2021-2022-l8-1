@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
@@ -24,15 +25,13 @@ import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -95,8 +94,6 @@ public class BoardController {
         
 		modelMap.addAttribute("board",b); 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
-      
-        
         
         if(!game.isHas_started()){
             List<Player> p = game.getPlayers();
@@ -136,7 +133,7 @@ public class BoardController {
             modelMap.addAttribute("message", "The game cannot start, there is only one player in the room");
             modelMap.addAttribute("game", game);
             
-            int playerId = securityService.getCurrentUserId(); // Id of player that is logged
+            int playerId = securityService.getCurrentPlayerId(); // Id of player that is logged
 
             Player pay = playerService.findPlayerById(playerId).get();
             modelMap.addAttribute("player", pay);
@@ -160,8 +157,8 @@ public class BoardController {
         }
         
 
-        //toArray()[0] because there is only going to be one game with that code as its UNIQUE
-        modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).toArray()[0]);
+        // .iterator().next() because there is only going to be one game with that code as its UNIQUE
+        modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).iterator().next());
 
         return view;
     }
@@ -188,7 +185,7 @@ public class BoardController {
         Game game = gameService.findGameById(gameId).stream().findFirst().get();
         String code = game.getCode();
 
-        if(securityService.getCurrentUserId()!=game.getPlayers().get(game.getActualPlayer()).getId()){ 
+        if(securityService.getCurrentPlayerId()!=game.getPlayers().get(game.getActualPlayer()).getId()){ 
            
             request.getSession().setAttribute("message", "It's not your turn");
             return "redirect:/boards/"+ code;

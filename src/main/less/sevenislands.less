@@ -15,11 +15,16 @@
 
 @spring-primary:      #fffd6b;
 @spring-dark-primary: #fffb00;
+@spring-light-primary: lightyellow;
 @spring-green: #27c300;
 @spring-red: #c31700;
 @spring-brown:      #34302D;
+@spring-darker-grey:       #626364;
 @spring-grey:       #838789;
 @spring-light-grey: #f1f1f1;
+@spring-gold:      #fffb0a;
+@spring-silver: #4b4b4b;
+@spring-bronze: #794d05;
 
 @body-bg:                           @spring-light-grey;
 @text-color:                        @spring-brown;
@@ -240,6 +245,21 @@ hr {
   border-top: 1px dotted @spring-brown;
 }
 
+:root {
+  ::-webkit-scrollbar {
+    width: 1em;
+  }
+    
+  ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+    
+  ::-webkit-scrollbar-thumb {
+      background-color: darkgrey;
+      outline: 1px solid slategrey;
+  }
+}
+
 @import "typography.less";
 @import "header.less";
 @import "responsive.less";
@@ -248,3 +268,4 @@ hr {
 @import "board.less";
 @import "achievement.less";
 @import "welcome.less";
+@import "ranking.less";
