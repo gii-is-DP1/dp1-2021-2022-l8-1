@@ -6,10 +6,14 @@ import org.springframework.ui.ModelMap;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWord;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWordService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
@@ -26,6 +30,9 @@ public class GameService {
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private InappropiateWordService inappropiateWordService;
 
     @Transactional
     public int gameCount(){
@@ -232,5 +239,11 @@ public class GameService {
         return "redirect:/games/rooms";
 
 
+    }
+  
+    public Boolean gameHasInappropiateWords(Game game){
+        Iterable<InappropiateWord> words = inappropiateWordService.findAll();
+        List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(x-> x.getName()).collect(Collectors.toList());
+        return listWords.stream().anyMatch(word-> game.getName().toLowerCase().contains(word));
     }
 }
