@@ -78,6 +78,12 @@ public class GameController {
         
 
         //String view = "games/lobby";
+        if(gameService.gameHasInappropiateWords(game)){
+            modelMap.put("game", game);
+            modelMap.addAttribute("message", "The room's name contains inappropiate words. Please, check your language.");
+            return "games/createOrUpdateGameForm";
+
+        }
         if (result.hasErrors()) {
             modelMap.addAttribute("game", game);
             return "games/createOrUpdateGameForm";
