@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 
 @Controller
@@ -54,29 +58,56 @@ public class PlayerController {
     private AchievementService achievementService;
 
     @GetMapping()
-    public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("begin") Integer begin, @PathParam("end") Integer end){        //For admins
+    public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){        //For admins
         String view ="players/listPlayers";
         generalService.insertIdUserModelMap(modelMap);
+
+        //if pageNumber== null, we takes page number 0
+        Pageable page;
+        if(pageNumber!= null){
+            //this method takes the page number pageNumber of two elements
+            //Ex, if pageNumber=3, it takes the third page of two elements
+            page = PageRequest.of(pageNumber, 5);
+        }else{
+            pageNumber=0;
+            page = PageRequest.of(0, 5);
+        }
+
+        //to pass it to the view:
+        Integer nextPageNumber;
+        Integer previousPageNumber;
+        nextPageNumber= pageNumber+1;
+        if(pageNumber==0){
+            previousPageNumber=0;
+        }else{
+            previousPageNumber=pageNumber-1;
+        }
+
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     
-                    Iterable<Player> players = playerService.findAll();
+                    //Iterable<Player> players = playerService.findAll();
+                    Iterable<Player> playersPaginated = playerService.findAll(page);
                     if(filterName!=null){
-                        List<Player> listPlayersFiltered= StreamSupport.stream(players.spliterator(), false).filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
-                        modelMap.addAttribute("players", listPlayersFiltered);
+                        Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
+                        //List<Player> listPlayersFiltered= StreamSupport.stream(players.spliterator(), false).filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
+                        List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
+                        //modelMap.addAttribute("players", listPlayersFiltered);
+                        modelMap.addAttribute("players", listPlayersPaginatedAndFiltered);
                     }else{
-                        modelMap.addAttribute("players", players);
-                    }
-                    if(end==null){
-                        end=9;
+                        //modelMap.addAttribute("players", players);
+                        List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
+                        modelMap.addAttribute("players", listPlayersPaginated);
                     }
                     
                     modelMap.addAttribute("filterName", filterName);
-                    modelMap.addAttribute("begin", begin);
-                    modelMap.addAttribute("end", end);
+                    modelMap.addAttribute("pageNumber", pageNumber);
+                    modelMap.addAttribute("nextPageNumber", nextPageNumber);
+                    modelMap.addAttribute("previousPageNumber", previousPageNumber);
+
             
         }else{
-            view = "/errors";
+            view = "/error";
         }
         return view;
 
@@ -135,10 +166,13 @@ public class PlayerController {
     }
 
     @GetMapping(path="/rooms")
-    public String games(ModelMap modelMap) {
+    public String games(ModelMap modelMap, HttpServletRequest request) {
         String view = "games/publicRooms";
-        Iterable<Game> games = gameService.findAllPublic();
+        Iterable<Game> games = gameService.findAllPublicNotPlaying();
+        modelMap.addAttribute("message", request.getSession().getAttribute("message"));
         modelMap.addAttribute("games", games);
+
+        request.getSession().removeAttribute("message");
         return view;
     }
 
@@ -195,14 +229,14 @@ public class PlayerController {
                         playerService.delete(player.get());
                         modelMap.addAttribute("message", "Player successfully deleted!");
 
-                        return listPlayers(modelMap, null, 0, 9);
+                        return listPlayers(modelMap, null, 0);
 
                     }else{
                         modelMap.addAttribute("message", "Player not found");
-                        view=listPlayers(modelMap, null, 0, 9);
+                        view=listPlayers(modelMap, null, 0);
                     }
         }else{
-            view = "/errors";
+            view = "/error";
         }
         return view;
 
@@ -240,7 +274,7 @@ public class PlayerController {
                 view= "/error";
             }
         }else{
-            view = "/errors";
+            view = "/error";
         }
         return view;
     }
@@ -269,19 +303,27 @@ public class PlayerController {
 		else {
                     
                     Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-                    int a = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
-                    String n = playerToUpdate.getUser().getUsername();
- 
+                    int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
+                    String username = playerToUpdate.getUser().getUsername();
+                    Iterable<Player> players = playerService.findAll();
+                    List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
                     //borrar user antes de grabarlo en playerToUpdate
                     //validador
 			BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
                     try {                    
                         //this.playerService.savePlayer(playerToUpdate);
-                        this.playerService.savePlayer(playerToUpdate);
-                        authoritiesService.deleteAuthorities(a);
-                        if(n != playerToUpdate.getUser().getUsername()){
                         
-                            userService.delete(n);
+                        //If the username is already in the DB and it's was edited then it means that
+                        //we are overwritting another user
+                        if(usernames.stream().anyMatch(x->x.equals(playerToUpdate.getUser().getUsername()))&&
+                        !playerToUpdate.getUser().getUsername().equals(username)){
+                            return "errors/error-500";
+                        }
+
+                        this.playerService.savePlayer(playerToUpdate);
+                        authoritiesService.deleteAuthorities(id);
+                        if(username != playerToUpdate.getUser().getUsername()){
+                            userService.delete(username);
                         }      
 
                     } catch (Exception ex) {
@@ -292,7 +334,7 @@ public class PlayerController {
                     .anyMatch(x -> x.toString().equals("admin"))){
                         return "redirect:/players";
                     }else{
-                        if(n != playerToUpdate.getUser().getUsername()){
+                        if(username != playerToUpdate.getUser().getUsername()){
                             SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
                             return "redirect:/welcome";
                         }
@@ -300,7 +342,5 @@ public class PlayerController {
                         
                     }
 		}
-	}
-    
-    
+	}  
 }

@@ -45,7 +45,7 @@
                             </c:forEach>
                         </td>
                         <td>
-                            <a href="/games/${game.id}/lobby" class="btn btn-danger" type="">Join</a>
+                            <a href="/games/${game.code}/lobby" class="btn btn-danger" type="">Join</a>
                         </td>
                     </tr>
                 </c:forEach>

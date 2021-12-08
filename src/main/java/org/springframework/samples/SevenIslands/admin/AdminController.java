@@ -2,6 +2,7 @@ package org.springframework.samples.SevenIslands.admin;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -54,10 +55,12 @@ public class AdminController {
     }
 
     @GetMapping(path="/rooms")
-    public String rooms(ModelMap modelMap) {
+    public String rooms(ModelMap modelMap, HttpServletRequest request) {
         String view = "admins/rooms";
         Iterable<Game> games = gameService.findAll();
+        modelMap.addAttribute("message", request.getSession().getAttribute("message"));
         modelMap.addAttribute("games", games);
+        request.getSession().removeAttribute("message");
         return view;
     }
 

@@ -88,7 +88,8 @@ public class GameServiceTests {
 
         assertThat(game.getId().longValue()).isNotEqualTo(0);
 
-        assertThat(gameService.findGamesByRoomCode(game.getCode()).stream().collect(Collectors.toList()).get(0).getCode().toString()).isEqualTo("AAAABBBB1");
+        // assertThat(gameService.findGameByRoomCode(game.getCode()).stream().collect(Collectors.toList()).get(0).getCode().toString()).isEqualTo("AAAABBBB1");
+        assertThat(gameService.findGamesByRoomCode(game.getCode()).iterator().next().getCode().toString()).isEqualTo("AAAABBBB1");
 
 
     }

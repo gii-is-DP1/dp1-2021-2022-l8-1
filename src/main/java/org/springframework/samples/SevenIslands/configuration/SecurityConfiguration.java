@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -48,20 +49,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/games/**").permitAll()
 				.antMatchers("/admins/**").hasAnyAuthority("admin")
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
+				.antMatchers("/ranking").hasAnyAuthority("player", "admin")
+				.antMatchers("/ranking/**").hasAnyAuthority("player", "admin")
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
-				 	/*.loginPage("/login1")*/
-				 	.failureUrl("/login-error")
+				 	.loginPage("/login").permitAll()
 				.and()
-					.logout()
-						.logoutSuccessUrl("/"); 
+					.logout().permitAll()
+					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));; 
                 // Configuración para que funcione la consola de administración 
                 // de la BD H2 (deshabilitar las cabeceras de protección contra
                 // ataques de tipo csrf y habilitar los framesets si su contenido
                 // se sirve desde esta misma página.
-                http.csrf().ignoringAntMatchers("/h2-console/**");
-                http.headers().frameOptions().sameOrigin();
+		http.csrf().ignoringAntMatchers("/h2-console/**")
+					.and()
+					.exceptionHandling().accessDeniedHandler(new AccessDeniedExceptionHandler());
+		http.headers().frameOptions().sameOrigin();
 	}
 
 	@Override

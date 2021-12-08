@@ -1,7 +1,9 @@
 package org.springframework.samples.SevenIslands.player;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -13,6 +15,8 @@ import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 @Service
 public class PlayerService {
@@ -52,6 +56,18 @@ public class PlayerService {
     public Iterable<Player> findAll(){
         return playerRepo.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public Iterable<Player> findAll(Pageable pageable){
+        return playerRepo.findAll(pageable);
+    }
+
+    @Transactional(readOnly=true)
+    public Page<Player> findIfPlayerContains(String data, Pageable pageable){
+        return playerRepo.findIfPlayerContains(data, pageable);
+    }
+
+
 
     @Transactional(readOnly = true)
 	public Collection<Player> findPlayerBySurname(String surname) throws DataAccessException {
@@ -132,4 +148,31 @@ public class PlayerService {
 
     }
 
+    @Transactional(readOnly = true)
+    public Collection<Player> getTwentyBestPlayersByWins() {
+        Collection<Player> players = playerRepo.findByPlayerIdOrderedByWins();
+        
+        Collection<Player> twentyPlayers = players;
+        for(int i=0; i<20; i++) {
+            // index not exists
+            if(i >= players.size()) {
+                twentyPlayers.add(new Player());
+            }
+        }
+        return players; // TEMP
+    }
+
+    @Transactional(readOnly = true)
+    public Collection<Player> getTwentyBestPlayersByPoints() {
+        Collection<Player> players = playerRepo.findByPlayerIdOrderedByPoints();
+        
+        Collection<Player> twentyPlayers = players;
+        for(int i=0; i<20; i++) {
+            // index not exists
+            if(i >= players.size()) {
+                twentyPlayers.add(new Player());
+            }
+        }
+        return players; // TEMP
+    }
 }
