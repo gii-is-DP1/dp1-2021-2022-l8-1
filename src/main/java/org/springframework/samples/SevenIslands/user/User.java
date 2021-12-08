@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import lombok.Getter;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class User{
-	@NotEmpty
+	@NotNull(message = "Username field is required")
 	@Id
 	String username;
 	
