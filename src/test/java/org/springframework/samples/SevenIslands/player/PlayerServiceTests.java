@@ -6,14 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -182,14 +179,14 @@ public class PlayerServiceTests {
     @Test
     public void testCountAllPlayers() { // H16 - POSITIVE 1
         long count = playerService.findAll().spliterator().getExactSizeIfKnown();
-        assertEquals(count, 11);
+        assertEquals(11, count);
     }
 
     @Test
     public void testCountPlayerWithEspecificWordInUsername() { //H17 -POSITIVE 2
         Iterable<Player> a = playerService.findAll();
         long n = StreamSupport.stream(a.spliterator(), false).filter(x->x.getUser().getUsername().contains("1")).count();
-        assertEquals(n, 3);
+        assertEquals(3, n);
     }
 
     @Test

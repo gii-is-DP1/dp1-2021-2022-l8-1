@@ -2,8 +2,6 @@ package org.springframework.samples.SevenIslands.admin;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
 import org.junit.jupiter.api.Test;
@@ -26,7 +24,7 @@ public class AdminServiceTests {
     @Test
     public void testCountWithInitialData() {
         int count = adminService.getNumberOfAdmins();
-        assertEquals(count, 1);
+        assertEquals(1, count);
     }
 
     @Test
@@ -38,13 +36,13 @@ public class AdminServiceTests {
     @Test
     public void testGetAdminByName() {
         Admin a = adminService.getAdminByName("ISMP15").get();
-        assertEquals(a.getId(), 1);
+        assertEquals(1, a.getId());
     }
 
     @Test
     public void testGetAdminById() {
         Admin a = adminService.findAdminById(1).get();
-        assertEquals(a.getFirstName(), "Ismael");
+        assertEquals("Ismael", a.getFirstName());
     }
 
     @Test
