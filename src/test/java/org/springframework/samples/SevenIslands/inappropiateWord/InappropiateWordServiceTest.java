@@ -26,7 +26,7 @@ public class InappropiateWordServiceTest {
     }
 
     @Test
-    public void testCounyAll() {
+    public void testCountAll() {
         Iterable<InappropiateWord> words = inappropiateWordService.findAll();
         List<InappropiateWord> listWords = StreamSupport.stream(words.spliterator(), false).collect(Collectors.toList());
         assertEquals(11, listWords.size());
