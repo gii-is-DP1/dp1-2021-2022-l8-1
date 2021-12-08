@@ -203,7 +203,7 @@ INSERT INTO islands(id,island_num) VALUES (2,2);
 INSERT INTO islands(id,island_num) VALUES (3,3);
 INSERT INTO islands(id,island_num) VALUES (4,4);
 INSERT INTO islands(id,island_num) VALUES (5,5);
-INSERT INTO islands(id,island_num, card_id) VALUES (6,6, 1);
+INSERT INTO islands(id,island_num) VALUES (6,6);
 
 -- FORUMS
 INSERT INTO forums(id, name, description) VALUES(1, 'Players', 'Forum about players');

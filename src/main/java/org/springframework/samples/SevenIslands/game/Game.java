@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.SevenIslands.board.Board;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.model.NamedEntity;
 import org.springframework.samples.SevenIslands.player.Player;
@@ -114,5 +115,8 @@ public class Game extends NamedEntity {
     public Deck getDeck() {
 		return deck;
   }
+
+  @OneToOne(cascade = CascadeType.ALL)
+    private Board board;
    
 }

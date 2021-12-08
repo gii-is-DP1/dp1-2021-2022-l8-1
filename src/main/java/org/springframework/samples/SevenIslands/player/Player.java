@@ -95,6 +95,7 @@ public class Player extends Person{
   @ManyToMany(fetch = FetchType.EAGER)
 	private Set<Card> cards;
 
+
   //RELACION CON ESPECTADOR
   @ManyToOne(optional = true)
 	private Game watchGames;
