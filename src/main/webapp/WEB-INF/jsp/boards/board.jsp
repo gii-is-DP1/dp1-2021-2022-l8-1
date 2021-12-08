@@ -2,6 +2,7 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
@@ -55,8 +56,40 @@
 
     </div>
     
+    <c:forEach items ="${game.players}" var="p">
+        <c:if test = "${id_playing==id}">
+            <c:if test = "${id_playing==p.id}">
+
+                <form:form modelAttribute = "${p}" class="form-horizontal" action="/boards/travel">
+                <c:forEach items ="${p.cards}" var="c">
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="${c}" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            <c:out value = "${c.cardType}"/>
+                        </label>
+                    </div>
+
+                </c:forEach>
+                <div>
+                    <!--<c:forEach items = "${options}" var = "o">
+                        <button id = "${o}"  class="btn btn-default" type="submit"><c:out value="${o}"></c:out></button>
+                    </c:forEach> 
+                -->
+                <button id = "1"  class="btn btn-default" type="submit"><c:out value="1"></c:out></button>
+                </div>
+            
+                </form:form>
+            
+            </c:if>
+        </c:if>
+    </c:forEach>
 
 
+
+
+
+    
 
     
     

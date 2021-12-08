@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
@@ -25,13 +29,16 @@ import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -62,7 +69,7 @@ public class BoardController {
     @GetMapping(path = "/{code}/init")
     public String init(@PathVariable("code") String code, ModelMap modelMap){      
 
-        Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
         Board board = game.getBoard();
         
         
@@ -85,15 +92,18 @@ public class BoardController {
         //response.addHeader("Refresh", "4");
 
         modelMap.addAttribute("message", request.getSession().getAttribute("message"));
+        modelMap.addAttribute("options", request.getSession().getAttribute("options"));
         
         String view = "boards/board";
         gService.insertIdUserModelMap(modelMap);
 
-        Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
         Board b = game.getBoard();
         
 		modelMap.addAttribute("board",b); 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
+      
+        
         
         if(!game.isHas_started()){
             List<Player> p = game.getPlayers();
@@ -109,8 +119,9 @@ public class BoardController {
             game.setTurnTime(LocalDateTime.now());
             game.setDieThrows(false);
             request.getSession().removeAttribute("message");
+            request.getSession().removeAttribute("options");
             
-        }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=18){  //Turn finished by time
+        }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=3600){  //Turn finished by time
             //Same code in changeTurn
             Integer n = game.getPlayers().size();
             game.setNumberOfTurn(game.getNumberOfTurn()+1);
@@ -118,13 +129,14 @@ public class BoardController {
             game.setDieThrows(false);       //No sabemos si tiró dado o no
             game.setTurnTime(LocalDateTime.now());
             request.getSession().removeAttribute("message");
+            request.getSession().removeAttribute("options");
 
         }
 
         gameService.save(game);
         modelMap.addAttribute("id_playing", game.getPlayers().get(game.getActualPlayer()).getId());
         Long temp = ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now());
-        modelMap.addAttribute("tempo", 18-temp.intValue());
+        modelMap.addAttribute("tempo", 3600-temp.intValue());
         int n =  game.getPlayers().size();     
         if(n==1){
 
@@ -157,7 +169,6 @@ public class BoardController {
         }
         
 
-        // .iterator().next() because there is only going to be one game with that code as its UNIQUE
         modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).iterator().next());
 
         return view;
@@ -207,17 +218,66 @@ public class BoardController {
 
         // modelMap.addAttribute("die",res);
         // this.board(code,modelMap,response);
-        return "redirect:/boards/"+ code;
-        //return "redirect:/boards/"+code+"/actions/"+ res;
+        //return "redirect:/boards/"+ code;
+        return "redirect:/boards/"+code+"/actions/"+ res;
     }
 
-    /*@GetMapping(path = "/{code}/actions/{number}")
-    public String actions(@PathVariable("number") int number, @PathVariable("code") String code, ModelMap modelMap) {
+    @GetMapping(path = "/{code}/actions/{number}")
+    public String actions(@PathVariable("number") int number, @PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
 
-        Die d = new Die();
-        int res = d.roll();
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
+        int cartasActualmente = game.getPlayers().get(game.getActualPlayer()).getCards().size();
+        int m = cartasActualmente;
+        
+        int limitSup = number + m;
+        int limitInf = number - m;
+        if(limitSup>7){
+            limitSup = 7;
+        }
+        if(limitInf<=0){
+            limitInf = 1;
+        }
+        List<Integer> posibilities = IntStream.rangeClosed(limitInf, limitSup)
+            .boxed().collect(Collectors.toList());
 
+        
+        request.getSession().setAttribute("options", posibilities);
         return "redirect:/boards/"+ code;
-    }*/
+    }
     
+    @GetMapping(path = "/{code}/Island/{option}")
+    public String chooseIsland(@PathVariable("option") int option, @PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
+
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
+        int cartasActualmente = game.getPlayers().get(game.getActualPlayer()).getCards().size();
+        List<String> cards = game.getPlayers().get(game.getActualPlayer()).getCards().stream().map(x->x.getCardType().toString()).collect(Collectors.toList());
+        int m = cartasActualmente;
+        
+        int cartasAGastar = Math.abs(Integer.parseInt(game.getValueOfDie().replace("Actual value: ", ""))-option);
+        Set<List<Card>> s = new TreeSet<>();
+
+        
+        
+       
+        return "redirect:/boards/"+ code;
+    }
+
+     @PostMapping(path = "/travel")
+     public String travel(BindingResult result, ModelMap modelMap){
+
+        if (result.hasErrors()) {
+            System.out.print(result.getAllErrors());
+            System.out.println("asdfsdafsdfffffffffffffasdfasdfasdfassdfas              " + result);
+            System.out.println("-------------------------------------------- " + result.toString());
+			return "redirect:/welcome";
+		}
+        else{
+            System.out.println("asdfsdafsdfffffffffffffasdfasdfasdfassdfas              " + result);
+            System.out.println("-------------------------------------------- " + result.toString());
+            return "redirect:/welcome";
+            
+        }
+      
+     }
+
 }
