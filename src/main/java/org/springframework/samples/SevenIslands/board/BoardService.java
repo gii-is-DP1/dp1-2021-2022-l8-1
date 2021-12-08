@@ -85,8 +85,9 @@ public class BoardService {
     }
 
     @Transactional
-    public void initCardPlayers(List<Player> players, Deck d){
-        
+    public void initCardPlayers(Game game){
+        List<Player> players = game.getPlayers();
+        Deck d = game.getDeck();
         for(Player p: players){
             List<Card> cards = p.getCards();
             List<Card> doblones = d.getCards().stream().filter(x->x.getCardType().equals(CARD_TYPE.DOUBLON)).limit(3).collect(Collectors.toList());

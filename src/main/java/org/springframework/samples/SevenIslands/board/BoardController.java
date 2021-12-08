@@ -67,11 +67,11 @@ public class BoardController {
         Board board = game.getBoard();
         
         
-        List<Player> players = game.getPlayers();
-        Deck d = game.getDeck();
+        //List<Player> players = game.getPlayers();
+        //Deck d = game.getDeck();
         
-        boardService.initCardPlayers(players,d);
-        boardService.distribute(board, d);
+        boardService.initCardPlayers(game);
+        boardService.distribute(board, game.getDeck());
         game.setBoard(board);
         gameService.save(game);     
         
