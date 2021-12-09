@@ -23,7 +23,7 @@ public class User{
 	String username;
 	
 	@NotEmpty
-	@Pattern(regexp ="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\\]).{9,}$")
+	@Pattern(regexp ="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}:;<>,.?~_+-=|]).{9,}$")
 	// @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[ª@~$€!¡¿?|#º/\\<>{}+-])[A-Za-z\\d@$!%*?&]{9,}$",message="Must contain at least one number and one uppercase and lowercase letter, and at least 9 or more characters")  
 	String password;
 	
