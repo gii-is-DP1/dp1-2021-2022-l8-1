@@ -41,8 +41,8 @@ public class Player extends Person{
   private String profilePhoto;
 
   // RELACION CON STATISTIC
-  @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, optional=false)
-  private Statistic statistic;
+  @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+  private Set<Statistic> statistic;
 
   //RELACION CON LOGROS
 	@ManyToMany(fetch = FetchType.LAZY)
