@@ -56,54 +56,58 @@
 
     </div>
     
-    <c:forEach items ="${game.players}" var="p">
-        <c:if test = "${id_playing==id}">
-            <c:if test = "${id_playing==p.id}">
+    <c:if test="${game.dieThrows}">
+        <c:forEach items ="${game.players}" var="p">
+            <c:if test = "${id_playing==id}">
+                <c:if test = "${id_playing==p.id}">
 
-                <form:form modelAttribute = "${p}" class="form-horizontal" action="/boards/travel">
-                <c:forEach items ="${p.cards}" var="c">
+                    <form:form class="form-horizontal" action="/boards/${game.code}/travel">
+                
+            
+                    <c:forEach items ="${p.cards}" var="c">
                     
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="${c}" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            <c:out value = "${c.cardType}"/>
-                        </label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="card[]" value="${c.id}" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                <c:out value = "${c.cardType}"/>
+                            </label>
+                        </div>
+
+                    </c:forEach>
+
+                    <div>
+                        <select id="island-input" name="island" class="selectpicker">
+                            <c:forEach items = "${options}" var = "o">
+                                <option value="${o}"><c:out value="Island ${o}"></c:out></option>
+                            </c:forEach>
+                        </select>
                     </div>
 
-                </c:forEach>
-                <div>
-                    <!--<c:forEach items = "${options}" var = "o">
-                        <button id = "${o}"  class="btn btn-default" type="submit"><c:out value="${o}"></c:out></button>
-                    </c:forEach> 
-                -->
-                <button id = "1"  class="btn btn-default" type="submit"><c:out value="1"></c:out></button>
-                </div>
-            
-                </form:form>
-            
+                    <button type="submit" class="btn btn-success">Travel</button>
+                
+                    </form:form>
+                
+                </c:if>
             </c:if>
-        </c:if>
-    </c:forEach>
+        </c:forEach>
+    </c:if>
 
 
-
-
-
-    
-
-    
     
     <c:if test="${id_playing==id}">
      
         <a href="/boards/${game.id}/changeTurn" class="btn btn-default">Finish Turn</a>
         
         <c:if test="${game.dieThrows==false}">
-        <a href ="/boards/${game.id}/rollDie" class="btn btn-default">Roll Die</a>
+        <a href ="/boards/${game.id}/rollDie" class="btn btn-default" id="roll">Roll Die</a>
         
         </c:if>
 
     </c:if>
     
     <h2><c:out value="${game.valueOfDie}"/></h2>
+
+
+    
    
 </sevenislands:layout>

@@ -26,6 +26,7 @@ import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.island.Island;
+import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
@@ -40,6 +41,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/boards")
@@ -65,6 +67,9 @@ public class BoardController {
 
     @Autowired	
 	private DeckService deckService;
+
+    @Autowired	
+	private IslandService islandService;
 
     @GetMapping(path = "/{code}/init")
     public String init(@PathVariable("code") String code, ModelMap modelMap){      
@@ -245,7 +250,7 @@ public class BoardController {
         return "redirect:/boards/"+ code;
     }
     
-    @GetMapping(path = "/{code}/Island/{option}")
+    /*@GetMapping(path = "/{code}/Island/{option}")
     public String chooseIsland(@PathVariable("option") int option, @PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
@@ -260,23 +265,60 @@ public class BoardController {
         
        
         return "redirect:/boards/"+ code;
-    }
+    }*/
 
-     @PostMapping(path = "/travel")
-     public String travel(BindingResult result, ModelMap modelMap){
+     @PostMapping(path = "/{code}/travel")
+     public String travel(@RequestParam(name="island") Integer island,@RequestParam(value="card[]", required = false) Integer[] l,@PathVariable("code") String code, HttpServletRequest request){
 
-        if (result.hasErrors()) {
-            System.out.print(result.getAllErrors());
-            System.out.println("asdfsdafsdfffffffffffffasdfasdfasdfassdfas              " + result);
-            System.out.println("-------------------------------------------- " + result.toString());
-			return "redirect:/welcome";
-		}
-        else{
-            System.out.println("asdfsdafsdfffffffffffffasdfasdfasdfassdfas              " + result);
-            System.out.println("-------------------------------------------- " + result.toString());
-            return "redirect:/welcome";
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
+        int cardsToSpend = Math.abs(Integer.parseInt(game.getValueOfDie().replace("Actual value: ", ""))-island); //AQUI TENGO LAS CARTAS QUE TENGO QUE GASTAR
+        
+        if(l!=null){
+            if(cardsToSpend != l.length){
+                request.getSession().setAttribute("message", "To travel to island "+island+"you must use "+cardsToSpend +" cards");
+                return "redirect:/boards/"+ code;
+            }
+        }else if(l==null){
+            if(cardsToSpend!=0){
+                request.getSession().setAttribute("message", "To travel to island "+island+"you must use "+cardsToSpend +" cards");
+                return "redirect:/boards/"+ code;
+            }
+           
+        }
+       
+        
+        
+        Player actualP = playerService.findPlayerById(game.getPlayers().get(game.getActualPlayer()).getId()).get();
+        
+        List<Card> now = actualP.getCards();
+        if(l!=null){
+            for(int i=0; i<l.length;i++){
+                int n = l[i];
+                now.remove(now.stream().filter(x->x.getId()==n).findFirst().get()); 
+            }
+        }       
+
+        if(island<7){
+            Deck d = game.getDeck();
+            Card c = d.getCards().stream().findFirst().get();
+            Island is = game.getBoard().getIslands().get(island-1);
+            now.add(game.getBoard().getIslands().get(island-1).getCard());
+            is.setCard(c);
+            d.deleteCards(c);
+            deckService.save(d);
+            islandService.save(is);
+            
+        }else{
+            Deck d = game.getDeck();
+            Card c = d.getCards().stream().findFirst().get();
+            now.add(c);
+            d.deleteCards(c);
+            deckService.save(d);
             
         }
+        actualP.setCards(now);
+        playerService.save(actualP);
+        return "redirect:/boards/"+game.getId()+"/changeTurn";
       
      }
 
