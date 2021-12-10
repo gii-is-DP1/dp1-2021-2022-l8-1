@@ -25,12 +25,12 @@
 </script>
 
 <script type="text/javascript">
-    var timeleft = 10;
+    var timeleft = 2;
     var downloadTimer = setInterval(function(){
     timeleft--;
     document.getElementById("countdowntimer").textContent = timeleft;
     if(timeleft <= 0)
-    //window.location.reload();
+    window.location.reload();
         clearInterval(downloadTimer);
     },1000);
 </script>

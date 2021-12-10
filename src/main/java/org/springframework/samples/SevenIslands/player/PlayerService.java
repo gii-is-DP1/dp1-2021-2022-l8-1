@@ -2,6 +2,8 @@ package org.springframework.samples.SevenIslands.player;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementRepository;
 import org.springframework.samples.SevenIslands.card.CardRepository;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWord;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWordService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,9 @@ public class PlayerService {
 	
 	@Autowired
 	private AuthoritiesService authoritiesService;
+
+    @Autowired
+    private InappropiateWordService inappropiateWordService;
 
     @Autowired
     private CardRepository cardRepo;
