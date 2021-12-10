@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.player;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -151,5 +152,18 @@ public class PlayerService {
         return playerRepo.findPlayerByUsername(n); //PUESTO DE PRUEBA
 
     }
+
+    @Transactional(readOnly = true)
+    public Boolean playerHasInappropiateWords(Player player){
+        String firstName = player.getFirstName().toLowerCase();
+        String surName = player.getSurname().toLowerCase();
+        String userName = player.getUser().getUsername().toLowerCase();
+        Iterable<InappropiateWord> words = inappropiateWordService.findAll();
+        List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(x-> x.getName()).collect(Collectors.toList());
+        Boolean firstNameHasWords = listWords.stream().anyMatch(word-> firstName.contains(word));
+        Boolean surNameHasWords = listWords.stream().anyMatch(word-> surName.contains(word));
+        Boolean userNameHasWords = listWords.stream().anyMatch(word-> userName.contains(word));
+        return firstNameHasWords || surNameHasWords || userNameHasWords;
+     }
 
 }
