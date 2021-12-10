@@ -43,13 +43,13 @@ public class PlayerController {
     private PlayerService playerService;
 
     @Autowired	
-	  private GeneralService generalService;
+	private GeneralService generalService;
 
     @Autowired
     private GameService gameService;
 
     @Autowired	
-	  private UserService userService;
+	private UserService userService;
     
     @Autowired
     private AuthoritiesService authoritiesService;

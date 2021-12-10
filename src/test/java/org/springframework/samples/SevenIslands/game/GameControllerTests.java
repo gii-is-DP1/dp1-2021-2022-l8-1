@@ -10,7 +10,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.SevenIslands.admin.AdminController;
 import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
+import org.springframework.samples.SevenIslands.deck.DeckService;
+import org.springframework.samples.SevenIslands.player.PlayerController;
+import org.springframework.samples.SevenIslands.player.PlayerService;
+import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
@@ -25,18 +30,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 
-
-//@EnableAutoConfiguration(exclude = { SecurityConfiguration.class})
-
-//@WebMvcTest(controllers = GameController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
-
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@WebMvcTest(controllers = GameController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 public class GameControllerTests {
     
     private static final int TEST_GAME_ID = 10;
+
+	@Autowired
+	private GameController gameController;
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,17 +44,32 @@ public class GameControllerTests {
     @MockBean
     private GameService gameService;
 
+	@MockBean
+    private SecurityService securityService;
+
+    @MockBean
+    private PlayerService playerService;
+
+    @MockBean
+    private AdminController adminController;
+
+    @MockBean
+    private PlayerController playerController;
+
+    @MockBean
+    private DeckService deckService;
+
+	private Game firstGame;
+
     @BeforeEach
 	void setup() {
 
-		Game firstGame = new Game();
+		firstGame = new Game();
 		firstGame.setId(TEST_GAME_ID);
         firstGame.setName("First Game");
         firstGame.setCode("AHG28FD9J");
         firstGame.setPrivacity(PRIVACITY.PUBLIC);
-        gameService.save(firstGame);//
-		//given(this.gameService.findGameById(TEST_GAME_ID).get()).willReturn(firstGame);
-
+		given(this.gameService.findAGameById(TEST_GAME_ID)).willReturn(firstGame);
 	}
 
     @WithMockUser(value = "spring")
@@ -63,27 +78,5 @@ public class GameControllerTests {
 		mockMvc.perform(get("/games/new")).andExpect(status().isOk()).andExpect(model().attributeExists("game"))
 				.andExpect(view().name("games/createOrUpdateGameForm"));
 	}
-
-	/*@WithMockUser(value = "spring")
-	@Test
-	void testJoinLobby() throws Exception {
-		mockMvc.perform(get("/{code}/lobby", "AHG28FD9J")).andExpect(status().isOk())
-				.andExpect(view().name("games/lobby"));
-	}*/
-
-	/*@WithMockUser(value = "spring")
-	@Test
-	void testExitGame() throws Exception {
-		mockMvc.perform(get("/exit/{gameId}", TEST_GAME_ID))
-				.andExpect(status().isOk())
-				.andExpect(view().name("games/publicRooms"));
-	}*/
-
-    /*@WithMockUser(value = "spring")
-	@Test
-	void testProcessCreationFormSuccess() throws Exception {
-		mockMvc.perform(post("/games/save").param("name", "My First Game").param("code", "ABCDF1234").param("privacity", "PUBLIC"))
-				.andExpect(status().isOk());
-	}*/
 
 }
