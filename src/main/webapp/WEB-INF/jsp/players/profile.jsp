@@ -45,23 +45,27 @@
             <table>
                 <tr>
                     <th class="table-title">Total Games</th>
-                    <!-- <th><c:out value="${player.totalGames}" /></th> -->
+                    <th> <c:out value="${totalGames}" /> </th>
                 </tr>
                 <tr>
                     <th class="table-title">Time Played</th>
-                    <!-- <th><c:out value="${player.totalTimeGames}" /> s</th> -->
+                    <th> <c:out value="${timePlayed == null ? 0 : timePlayed}" /> s</th>
+                </tr>
+                <tr>
+                    <th class="table-title">Total Wins</th>
+                    <th> <c:out value="${totalWins}" /> </th>
                 </tr>
                 <tr>
                     <th class="table-title">Total Points</th>
-                    <!-- <th><c:out value="${player.totalPointsAllGames}" /></th> -->
+                    <th> <c:out value="${totalPoints}" /> </th>
                 </tr>
                 <tr>
                     <th class="table-title">Favorite Island</th>
-                    <!-- <th><c:out value="${player.favoriteIsland}" /></th> -->
+                    <th> <c:out value="" /> </th>
                 </tr>
                 <tr>
                     <th class="table-title">Favorite Treasure</th>
-                    <!-- <th><c:out value="${player.favoriteTreasure}" /></th> -->
+                    <th> <c:out value="" /> </th>
                 </tr>
             </table>
         </div>

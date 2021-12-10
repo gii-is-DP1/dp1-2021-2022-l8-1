@@ -32,7 +32,6 @@ public class Statistic extends BaseEntity {
     @ManyToOne(optional=false)
     private Game game;
 
-
     @Column(name="points")
     public Integer points;
     

@@ -17,6 +17,7 @@ import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
+import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.security.core.Authentication;
@@ -54,6 +55,9 @@ public class PlayerController {
 
     @Autowired
     private AchievementService achievementService;
+
+    @Autowired
+    private StatisticService statsService ;
 
     @GetMapping()
     public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){        //For admins
@@ -118,6 +122,12 @@ public class PlayerController {
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
+            
+            // STATISTIC
+            modelMap.addAttribute("totalGames", gameService.findGamesCountByPlayerId(playerId));
+            modelMap.addAttribute("timePlayed", statsService.getTimePlayedByPlayerId(playerId));
+            modelMap.addAttribute("totalWins", statsService.getWinsCountByPlayerId(playerId));
+            modelMap.addAttribute("totalPoints", statsService.getPointsByPlayerId(playerId));
         }else{
             modelMap.addAttribute("message", "Player not found");
             view = "/error"; 
