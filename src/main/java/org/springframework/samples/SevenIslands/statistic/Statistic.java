@@ -37,7 +37,7 @@ public class Statistic extends BaseEntity {
     public Integer points;
     
     @Column(name="had_won")
-    public Boolean hadWon;
+    public Boolean had_won;
 
     @Column(name="island_count")
     @ElementCollection

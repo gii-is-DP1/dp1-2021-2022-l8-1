@@ -8,10 +8,10 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface StatisticRepository extends CrudRepository<Statistic, String>{
 
-    @Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, COUNT(P.statistic.hadWon)) FROM Player P WHERE P.statistic.hadWon = true GROUP BY P.id ORDER BY COUNT(P.statistic.hadWon) DESC")
+    @Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, COUNT(S)) FROM Player P JOIN P.statistic S WHERE S.had_won = TRUE GROUP BY P.id ORDER BY COUNT(S) DESC")
 	Collection<PlayerWithStatistics> findPlayersOrderedByWins() throws DataAccessException;
 
-	@Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, SUM(P.statistic.points)) FROM Player P GROUP BY P.id ORDER BY SUM(P.statistic.points) DESC")
+	@Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, SUM(S.points)) FROM Player P JOIN P.statistic S GROUP BY P.id ORDER BY SUM(S.points) DESC")
 	Collection<PlayerWithStatistics> findPlayersOrderedByPoints() throws DataAccessException;
     
 
