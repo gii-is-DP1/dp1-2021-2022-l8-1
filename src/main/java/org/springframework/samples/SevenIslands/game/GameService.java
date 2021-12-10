@@ -6,10 +6,14 @@ import org.springframework.ui.ModelMap;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWord;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWordService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
@@ -26,6 +30,9 @@ public class GameService {
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private InappropiateWordService inappropiateWordService;
 
     @Transactional
     public int gameCount(){
@@ -126,8 +133,7 @@ public class GameService {
                 }
 
             }   else {
-                request.getSession().setAttribute("message", "Please, first sign in!");
-                return "redirect:/welcome";
+                securityService.redirectToWelcome(request);
             }
 
         }   else {
@@ -196,5 +202,48 @@ public class GameService {
                 
             }
     }
-   
+
+    @Transactional
+    public String exitGame(Optional<Game> game, HttpServletRequest request) {
+    
+        if(game.isPresent()) {
+
+            if(securityService.isAdmin()) {
+                request.getSession().setAttribute("message", "You can't join or exit a game!");
+                
+           
+            } else {                 
+                Game gameToExit = game.get();
+                Player currentPlayer = securityService.getCurrentPlayer();
+
+                if(gameToExit.getPlayers().contains(currentPlayer)) {
+                    gameToExit.deletePlayerOfGame(currentPlayer);
+                    save(gameToExit);
+        
+                    currentPlayer.getGames().remove(gameToExit);
+                    playerService.save(currentPlayer);
+
+                    request.getSession().setAttribute("message", "You have successfully exited the game!");
+
+                } else {
+                    request.getSession().setAttribute("message", "You are not a player of this game!");
+                    
+                }
+    
+            }
+
+        } else {
+            request.getSession().setAttribute("message", "The game you are trying to exit does not even exist!");
+        }
+
+        return "redirect:/games/rooms";
+
+
+    }
+  
+    public Boolean gameHasInappropiateWords(Game game){
+        Iterable<InappropiateWord> words = inappropiateWordService.findAll();
+        List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(x-> x.getName()).collect(Collectors.toList());
+        return listWords.stream().anyMatch(word-> game.getName().toLowerCase().contains(word));
+    }
 }

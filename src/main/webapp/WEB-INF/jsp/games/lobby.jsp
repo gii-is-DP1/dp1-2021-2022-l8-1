@@ -53,7 +53,7 @@
                             <a href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <c:if test="${totalplayers>1}">
-                                <a href="/boards/${game.code}" class="btn btn-default">Start match</a>
+                                <a href="/boards/${game.code}/init" class="btn btn-default">Start match</a>
                             </c:if>
                         </c:when>
                         <c:otherwise>

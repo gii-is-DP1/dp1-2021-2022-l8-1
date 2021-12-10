@@ -6,12 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -42,7 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/welcome").permitAll()
 				.antMatchers("/games").permitAll()
 				.antMatchers("/boards/**").hasAnyAuthority("player","admin")
-				.antMatchers("/achievements").hasAnyAuthority("admin")
+				// .antMatchers("/achievements").hasAnyAuthority("admin")
+				.antMatchers("/error/**").permitAll()
         		.antMatchers("/achievements/**").hasAnyAuthority("admin")
 				.antMatchers("/players").permitAll()
 				.antMatchers("/players/**").permitAll()
@@ -57,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				 	.loginPage("/login").permitAll()
 				.and()
 					.logout().permitAll()
-					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));; 
+					.logoutRequestMatcher(new AntPathRequestMatcher("/logout")); 
                 // Configuración para que funcione la consola de administración 
                 // de la BD H2 (deshabilitar las cabeceras de protección contra
                 // ataques de tipo csrf y habilitar los framesets si su contenido

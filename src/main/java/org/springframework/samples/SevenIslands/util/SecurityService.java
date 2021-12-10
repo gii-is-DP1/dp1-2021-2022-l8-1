@@ -5,13 +5,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.transaction.annotation.Transactional;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
-import org.springframework.samples.SevenIslands.web.WelcomeController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -72,8 +69,8 @@ public class SecurityService {
     public void insertIdUser(Map<String, Object> model){
 		
 		Authentication authentication = getAuthentication();
-		if (authentication.isAuthenticated()) {
-            
+        if (authentication.getPrincipal() != "anonymousUser"  && authentication.isAuthenticated()){
+                
             if (isAdmin()) {
                 User currentUser = (User) authentication.getPrincipal();
                 int playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());
@@ -84,6 +81,7 @@ public class SecurityService {
                 int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
                 model.put("id",playerLoggedId);
             }
+            
         }
 		
 	}
@@ -93,7 +91,7 @@ public class SecurityService {
 		
 		Authentication authentication = getAuthentication();
 		
-        if (authentication.isAuthenticated()){
+        if (authentication.getPrincipal() != "anonymousUser" &&  authentication.isAuthenticated()){
             if (isAdmin()) {
                 User currentUser = (User) authentication.getPrincipal();
                 int playerLoggedId = adminService.getIdAdminByName(currentUser.getUsername());

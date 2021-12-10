@@ -2,7 +2,6 @@ package org.springframework.samples.SevenIslands.board;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
+import org.springframework.samples.SevenIslands.deck.Deck;
+import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.die.Die;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
-import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
@@ -41,13 +41,31 @@ public class BoardController {
     private PlayerService playerService;
 
     @Autowired	
-	private GeneralService gService;
-
-    @Autowired	
 	private AdminService adminService;
     
     @Autowired
     private SecurityService securityService;
+
+    @Autowired	
+	private DeckService deckService;
+
+    @GetMapping(path = "/{code}/init")
+    public String init(@PathVariable("code") String code, ModelMap modelMap){      
+
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
+        Board board = game.getBoard();
+        
+        
+        List<Player> players = game.getPlayers();
+        Deck d = game.getDeck();
+        
+        boardService.initCardPlayers(players,d);
+        boardService.distribute(board, d);
+        game.setBoard(board);
+        gameService.save(game);     
+        
+        return "redirect:/boards/"+ code;
+    }
 
     @GetMapping(path = "/{code}")
     public String board(@PathVariable("code") String code, ModelMap modelMap, HttpServletResponse response, HttpServletRequest request) {
@@ -59,13 +77,13 @@ public class BoardController {
         modelMap.addAttribute("message", request.getSession().getAttribute("message"));
         
         String view = "boards/board";
-        gService.insertIdUserModelMap(modelMap);
-        
-		modelMap.addAttribute("board",boardService.findById(1).get()); 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
-        // Game game = gameService.findGamesByRoomCode(code).stream().findFirst().get();
+        securityService.insertIdUserModelMap(modelMap);
+
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
+        Board b = game.getBoard();
         
+		modelMap.addAttribute("board",b); 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
         
         if(!game.isHas_started()){
             List<Player> p = game.getPlayers();

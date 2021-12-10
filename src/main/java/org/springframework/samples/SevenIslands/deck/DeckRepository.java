@@ -1,11 +1,9 @@
 package org.springframework.samples.SevenIslands.deck;
 
-import org.springframework.data.repository.CrudRepository;
-
 import java.util.Collection;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,10 +15,6 @@ public interface DeckRepository extends CrudRepository<Deck, Integer> {
 
     @Query(value = "SELECT D.card_id FROM decks_cards D WHERE D.deck_id = :deckId", nativeQuery = true)
 	Collection<Integer> findCardsInDeck(int deckId) throws DataAccessException;
-
-    // @Modifying
-    //     @Query(value = "INSERT INTO DECK(id) VALUES (?1)",nativeQuery = true)
-    //     public void insertDeck(@Param("id") int id);
 
     @Query(value = "SELECT * FROM DECK WHERE ID LIKE ?1", nativeQuery = true)
     Deck findDeckById(@Param("id") int id);
