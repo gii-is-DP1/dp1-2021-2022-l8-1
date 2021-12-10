@@ -122,7 +122,7 @@ public class Game extends NamedEntity {
 
     }
 
-    @OneToMany(mappedBy="game")
+    @OneToMany(mappedBy="game", cascade = CascadeType.ALL)
     private Set<Statistic> statistics;
 
     @OneToOne(cascade = CascadeType.ALL)
