@@ -33,6 +33,8 @@ public class RankingController {
         
         if(securityService.isAuthenticatedUser()) {
 
+            securityService.insertIdUserModelMap(modelMap);
+
             Collection<PlayerWithStatistics> playersWins =  statisticService.getTwentyBestPlayersByWins();
             Collection<PlayerWithStatistics> playersPoints =  statisticService.getTwentyBestPlayersByPoints();
           
