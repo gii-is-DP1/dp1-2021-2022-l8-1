@@ -27,8 +27,4 @@ public class CardService {
         return cardRepo.findById(id);
     }
 
-    // @Transactional
-    // public Iterable<Card> getByPlayerId(int playerId) {
-    //     return cardRepo.getByPlayerId(playerId);
-    // }
 }

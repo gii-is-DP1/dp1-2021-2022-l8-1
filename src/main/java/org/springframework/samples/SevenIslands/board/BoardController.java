@@ -1,9 +1,7 @@
 package org.springframework.samples.SevenIslands.board;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -17,8 +15,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
-import org.springframework.samples.SevenIslands.card.CARD_TYPE;
-import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.die.Die;
@@ -55,9 +51,6 @@ public class BoardController {
 
     @Autowired
     private PlayerService playerService;
-
-    @Autowired	
-	private GeneralService gService;
 
     @Autowired	
 	private AdminService adminService;
@@ -100,7 +93,7 @@ public class BoardController {
         modelMap.addAttribute("options", request.getSession().getAttribute("options"));
         
         String view = "boards/board";
-        gService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         Board b = game.getBoard();
