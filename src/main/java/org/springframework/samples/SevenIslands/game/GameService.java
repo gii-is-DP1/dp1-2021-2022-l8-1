@@ -62,12 +62,6 @@ public class GameService {
         return gameRepo.findById(id);
     }
 
-    //TODO Delete before delivery
-    @Transactional
-    public Game findAGameById(int id){
-        return gameRepo.findById(id).get();
-    }
-
     @Transactional
     public void save(Game game){
         gameRepo.save(game);
