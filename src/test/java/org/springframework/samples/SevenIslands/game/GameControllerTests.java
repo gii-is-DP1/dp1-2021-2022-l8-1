@@ -62,7 +62,6 @@ public class GameControllerTests {
         firstGame.setName("First Game");
         firstGame.setCode("AHG28FD9J");
         firstGame.setPrivacity(PRIVACITY.PUBLIC);
-		given(this.gameService.findAGameById(TEST_GAME_ID)).willReturn(firstGame);
 	}
 
     @WithMockUser(value = "spring")
