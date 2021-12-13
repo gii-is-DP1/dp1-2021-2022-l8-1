@@ -19,14 +19,14 @@
                 <c:forEach items="${players}" var="player">
                 <tr>
                     <td class="pos-col"> <c:out value = "${players.indexOf(player) + 1}"/> </td>
-                    <td> <a href="/players/profile/${player.id}" htmlEscape="true" /> <c:out value = "${player.user.username}"/> </a> </td>
+                    <td style="min-width: 120px;"> <a href="/players/profile/${player.id}" htmlEscape="true" /> <c:out value = "${player.username}"/> </a> </td>
                     <td> 
                         <c:if test="${parameter == 'Wins'}">
-                            <c:out value = "${player.totalWins}"/>
+                            <c:out value = "${player.parameter}"/>
                         </c:if>
 
                         <c:if test="${parameter == 'Points'}">
-                            <c:out value = "${player.totalPointsAllGames}"/>
+                            <c:out value = "${player.parameter}"/>
                         </c:if>
                     </td>
                 </tr>

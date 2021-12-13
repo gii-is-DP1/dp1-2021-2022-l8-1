@@ -7,9 +7,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementRepository;
 import org.springframework.samples.SevenIslands.card.CardRepository;
@@ -19,8 +20,6 @@ import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javassist.expr.NewArray;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -159,34 +158,6 @@ public class PlayerService {
     }
 
     @Transactional(readOnly = true)
-    public Collection<Player> getTwentyBestPlayersByWins() {
-        Collection<Player> players = playerRepo.findByPlayerIdOrderedByWins();
-        
-        Collection<Player> twentyPlayers = players;
-        for(int i=0; i<20; i++) {
-            // index not exists
-            if(i >= players.size()) {
-                twentyPlayers.add(new Player());
-            }
-        }
-        return players; // TEMP
-    }
-
-    @Transactional(readOnly = true)
-    public Collection<Player> getTwentyBestPlayersByPoints() {
-        Collection<Player> players = playerRepo.findByPlayerIdOrderedByPoints();
-        
-        Collection<Player> twentyPlayers = players;
-        for(int i=0; i<20; i++) {
-            // index not exists
-            if(i >= players.size()) {
-                twentyPlayers.add(new Player());
-            }
-        }
-        return players; // TEMP
-    }
-    
-    @Transactional(readOnly = true)
     public Boolean playerHasInappropiateWords(Player player){
         String firstName = player.getFirstName().toLowerCase();
         String surName = player.getSurname().toLowerCase();
@@ -198,6 +169,7 @@ public class PlayerService {
         Boolean userNameHasWords = listWords.stream().anyMatch(word-> userName.contains(word));
         return firstNameHasWords || surNameHasWords || userNameHasWords;
      }
+
 
     @Transactional
     public List<Integer> calculatePages(int pageNumber) {
@@ -239,4 +211,5 @@ public class PlayerService {
 
         return pages;
     }
+
 }

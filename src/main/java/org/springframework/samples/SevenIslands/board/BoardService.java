@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -85,8 +86,9 @@ public class BoardService {
     }
 
     @Transactional
-    public void initCardPlayers(List<Player> players, Deck d){
-        
+    public void initCardPlayers(Game game){
+        List<Player> players = game.getPlayers();
+        Deck d = game.getDeck();
         for(Player p: players){
             List<Card> cards = p.getCards();
             List<Card> doblones = d.getCards().stream().filter(x->x.getCardType().equals(CARD_TYPE.DOUBLON)).limit(3).collect(Collectors.toList());
@@ -97,6 +99,5 @@ public class BoardService {
             playerService.save(p);
         }
     }
-
 
 }
