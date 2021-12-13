@@ -1,7 +1,10 @@
 package org.springframework.samples.SevenIslands.player;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -10,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementRepository;
 import org.springframework.samples.SevenIslands.card.CardRepository;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWord;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWordService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
@@ -25,6 +30,9 @@ public class PlayerService {
 	
 	@Autowired
 	private AuthoritiesService authoritiesService;
+
+    @Autowired
+    private InappropiateWordService inappropiateWordService;
 
     @Autowired
     private CardRepository cardRepo;
@@ -144,5 +152,18 @@ public class PlayerService {
         return playerRepo.findPlayerByUsername(n); //PUESTO DE PRUEBA
 
     }
+
+    @Transactional(readOnly = true)
+    public Boolean playerHasInappropiateWords(Player player){
+        String firstName = player.getFirstName().toLowerCase();
+        String surName = player.getSurname().toLowerCase();
+        String userName = player.getUser().getUsername().toLowerCase();
+        Iterable<InappropiateWord> words = inappropiateWordService.findAll();
+        List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(x-> x.getName()).collect(Collectors.toList());
+        Boolean firstNameHasWords = listWords.stream().anyMatch(word-> firstName.contains(word));
+        Boolean surNameHasWords = listWords.stream().anyMatch(word-> surName.contains(word));
+        Boolean userNameHasWords = listWords.stream().anyMatch(word-> userName.contains(word));
+        return firstNameHasWords || surNameHasWords || userNameHasWords;
+     }
 
 }

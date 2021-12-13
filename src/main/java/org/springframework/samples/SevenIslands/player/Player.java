@@ -15,10 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.forum.Forum;
@@ -52,9 +50,8 @@ public class Player extends Person{
 
   //RELACION CON CARTAS
   @ManyToMany(fetch = FetchType.EAGER)
-	// @JoinTable(name = "players_cards", joinColumns = @JoinColumn(name = "player_id"),
-	// 		inverseJoinColumns = @JoinColumn(name = "card_id"))
-	private Set<Card> cards;
+	private List<Card> cards;
+
 
   //RELACION CON ESPECTADOR
   @ManyToOne(optional = true)

@@ -28,6 +28,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.samples.SevenIslands.player.PlayerController;
+import org.springframework.ui.ModelMap;
 
 /**
  * @author Juergen Hoeller
@@ -60,7 +62,12 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/users/new")
-	public String processCreationForm(@Valid Player player, BindingResult result) {
+	public String processCreationForm(@Valid Player player, BindingResult result, ModelMap model) {
+		if(playerService.playerHasInappropiateWords(player)){
+			model.addAttribute("message", "Your profile can't contains inappropiate words. Please, check your language.");
+			model.put("player", player);
+			return VIEWS_PLAYER_CREATE_FORM;
+		}
 		if (result.hasErrors()) {
 			return VIEWS_PLAYER_CREATE_FORM;
 		}

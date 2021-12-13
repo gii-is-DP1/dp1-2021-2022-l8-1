@@ -211,13 +211,17 @@ INSERT INTO achievements(id, name, description, icon, min_value, achievement_typ
 INSERT INTO cells(id, x_position, y_position, card) VALUES (1,'0','0','DOUBLON');
 INSERT INTO cells(id, x_position, y_position, card) VALUES (2,'0','0','CROWN');
 
+-- INAPPROPIATE_WORDS
+INSERT INTO inappropiate_words VALUES (1,'shit'), (2,'fuck'), (3, 'cock'), (4, 'piss off'), (5, 'dick head'),
+(6, 'asshole'), (7, 'bitch'), (8, 'bastard'), (9, 'damn'), (10, 'fucked'), (11, 'fucking');
+
 -- ISLANDS
 INSERT INTO islands(id,island_num) VALUES (1,1);
 INSERT INTO islands(id,island_num) VALUES (2,2);
 INSERT INTO islands(id,island_num) VALUES (3,3);
 INSERT INTO islands(id,island_num) VALUES (4,4);
 INSERT INTO islands(id,island_num) VALUES (5,5);
-INSERT INTO islands(id,island_num, card_id) VALUES (6,6, 1);
+INSERT INTO islands(id,island_num) VALUES (6,6);
 
 -- FORUMS
 INSERT INTO forums(id, name, description) VALUES(1, 'Players', 'Forum about players');
