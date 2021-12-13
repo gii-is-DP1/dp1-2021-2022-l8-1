@@ -73,37 +73,33 @@ public class PlayerController {
             page = PageRequest.of(0, 5);
         }
 
-        //to pass it to the view:
-        Integer nextPageNumber;
-        Integer previousPageNumber;
-        nextPageNumber= pageNumber+1;
-        if(pageNumber==0){
-            previousPageNumber=0;
-        }else{
-            previousPageNumber=pageNumber-1;
-        }
+    
+        List<Integer> pages = playerService.calculatePages(pageNumber);
 
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
+        //to pass it to the view:
+        Integer previousPageNumber = pages.get(0);
+        Integer nextPageNumber = pages.get(1);
+
+        if (securityService.isAdmin()) {
                     
-                    //Iterable<Player> players = playerService.findAll();
-                    Iterable<Player> playersPaginated = playerService.findAll(page);
-                    if(filterName!=null){
-                        Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
-                        //List<Player> listPlayersFiltered= StreamSupport.stream(players.spliterator(), false).filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
-                        List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
-                        //modelMap.addAttribute("players", listPlayersFiltered);
-                        modelMap.addAttribute("players", listPlayersPaginatedAndFiltered);
-                    }else{
-                        //modelMap.addAttribute("players", players);
-                        List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
-                        modelMap.addAttribute("players", listPlayersPaginated);
-                    }
-                    
-                    modelMap.addAttribute("filterName", filterName);
-                    modelMap.addAttribute("pageNumber", pageNumber);
-                    modelMap.addAttribute("nextPageNumber", nextPageNumber);
-                    modelMap.addAttribute("previousPageNumber", previousPageNumber);
+            Iterable<Player> playersPaginated = playerService.findAll(page);
+            if(filterName!=null){
+                Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
+                
+                List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
+                
+                modelMap.addAttribute("players", listPlayersPaginatedAndFiltered);
+
+            } else{
+                
+                List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
+                modelMap.addAttribute("players", listPlayersPaginated);
+            }
+            
+            modelMap.addAttribute("filterName", filterName);
+            modelMap.addAttribute("pageNumber", pageNumber);
+            modelMap.addAttribute("nextPageNumber", nextPageNumber);
+            modelMap.addAttribute("previousPageNumber", previousPageNumber);
 
             
         }else{
@@ -338,8 +334,7 @@ public class PlayerController {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
                     }
-                    if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                    .anyMatch(x -> x.toString().equals("admin"))){
+                    if(securityService.isAdmin()){
                         return "redirect:/players";
                     }else{
                         if(username != playerToUpdate.getUser().getUsername()){

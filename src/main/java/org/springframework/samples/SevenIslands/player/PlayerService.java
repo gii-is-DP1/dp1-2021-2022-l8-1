@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,9 @@ import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 @Service
 public class PlayerService {
@@ -165,5 +169,47 @@ public class PlayerService {
         Boolean userNameHasWords = listWords.stream().anyMatch(word-> userName.contains(word));
         return firstNameHasWords || surNameHasWords || userNameHasWords;
      }
+
+
+    @Transactional
+    public List<Integer> calculatePages(int pageNumber) {
+        
+        Integer playerCount = playerCount();
+        Integer totalPages;
+
+        if(playerCount %5 == 0) {
+            totalPages = playerCount/5;
+        } else {
+            totalPages = playerCount/5 + 1;
+        }
+
+        List<Integer> pages = new ArrayList<>();
+        pages.add(0);
+        pages.add(0);
+
+        
+        if(pageNumber==0){
+            // previousPageNumber=0;
+            pages.set(0, 0);
+
+            // nextPageNumber= pageNumber+1;
+            pages.set(1, pageNumber+1);
+        
+        }else if(pageNumber==totalPages-1){ 
+            // previousPageNumber=pageNumber-1;
+            pages.set(0, pageNumber-1);
+            // nextPageNumber = pageNumber;
+            pages.set(1, pageNumber);
+
+        } else {
+            // previousPageNumber=pageNumber-1;
+            pages.set(0, pageNumber-1);
+            // nextPageNumber = pageNumber+1;
+            pages.set(1, pageNumber+1);
+
+        }
+
+        return pages;
+    }
 
 }
