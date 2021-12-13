@@ -1,14 +1,11 @@
 package org.springframework.samples.SevenIslands.deck;
 
-
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
 
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.model.BaseEntity;
@@ -26,8 +23,7 @@ public class Deck extends BaseEntity {
     private String name;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    // @JoinTable(name = "decks_cards", joinColumns = @JoinColumn(name = "deck_id"),
-	// 		inverseJoinColumns = @JoinColumn(name = "card_id"))
+    
 	private List<Card> cards;
 
     public void deleteCards(Card card){

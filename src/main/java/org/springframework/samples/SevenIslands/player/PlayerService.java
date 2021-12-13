@@ -1,20 +1,27 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementRepository;
-import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.card.CardRepository;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWord;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWordService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javassist.expr.NewArray;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
@@ -28,6 +35,9 @@ public class PlayerService {
 	
 	@Autowired
 	private AuthoritiesService authoritiesService;
+
+    @Autowired
+    private InappropiateWordService inappropiateWordService;
 
     @Autowired
     private CardRepository cardRepo;
@@ -148,31 +158,58 @@ public class PlayerService {
 
     }
 
+  
     @Transactional(readOnly = true)
-    public Collection<Player> getTwentyBestPlayersByWins() {
-        Collection<Player> players = playerRepo.findByPlayerIdOrderedByWins();
-        
-        Collection<Player> twentyPlayers = players;
-        for(int i=0; i<20; i++) {
-            // index not exists
-            if(i >= players.size()) {
-                twentyPlayers.add(new Player());
-            }
-        }
-        return players; // TEMP
-    }
+    public Boolean playerHasInappropiateWords(Player player){
+        String firstName = player.getFirstName().toLowerCase();
+        String surName = player.getSurname().toLowerCase();
+        String userName = player.getUser().getUsername().toLowerCase();
+        Iterable<InappropiateWord> words = inappropiateWordService.findAll();
+        List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(x-> x.getName()).collect(Collectors.toList());
+        Boolean firstNameHasWords = listWords.stream().anyMatch(word-> firstName.contains(word));
+        Boolean surNameHasWords = listWords.stream().anyMatch(word-> surName.contains(word));
+        Boolean userNameHasWords = listWords.stream().anyMatch(word-> userName.contains(word));
+        return firstNameHasWords || surNameHasWords || userNameHasWords;
+     }
 
-    @Transactional(readOnly = true)
-    public Collection<Player> getTwentyBestPlayersByPoints() {
-        Collection<Player> players = playerRepo.findByPlayerIdOrderedByPoints();
+    @Transactional
+    public List<Integer> calculatePages(int pageNumber) {
         
-        Collection<Player> twentyPlayers = players;
-        for(int i=0; i<20; i++) {
-            // index not exists
-            if(i >= players.size()) {
-                twentyPlayers.add(new Player());
-            }
+        Integer playerCount = playerCount();
+        Integer totalPages;
+
+        if(playerCount %5 == 0) {
+            totalPages = playerCount/5;
+        } else {
+            totalPages = playerCount/5 + 1;
         }
-        return players; // TEMP
+
+        List<Integer> pages = new ArrayList<>();
+        pages.add(0);
+        pages.add(0);
+
+        
+        if(pageNumber==0){
+            // previousPageNumber=0;
+            pages.set(0, 0);
+
+            // nextPageNumber= pageNumber+1;
+            pages.set(1, pageNumber+1);
+        
+        }else if(pageNumber==totalPages-1){ 
+            // previousPageNumber=pageNumber-1;
+            pages.set(0, pageNumber-1);
+            // nextPageNumber = pageNumber;
+            pages.set(1, pageNumber);
+
+        } else {
+            // previousPageNumber=pageNumber-1;
+            pages.set(0, pageNumber-1);
+            // nextPageNumber = pageNumber+1;
+            pages.set(1, pageNumber+1);
+
+        }
+
+        return pages;
     }
 }
