@@ -45,23 +45,23 @@
             <table>
                 <tr>
                     <th class="table-title">Total Games</th>
-                    <th><c:out value="${player.totalGames}" /></th>
+                    
                 </tr>
                 <tr>
                     <th class="table-title">Time Played</th>
-                    <th><c:out value="${player.totalTimeGames}" /> s</th>
+                  
                 </tr>
                 <tr>
                     <th class="table-title">Total Points</th>
-                    <th><c:out value="${player.totalPointsAllGames}" /></th>
+                    
                 </tr>
                 <tr>
                     <th class="table-title">Favorite Island</th>
-                    <th><c:out value="${player.favoriteIsland}" /></th>
+                    
                 </tr>
                 <tr>
                     <th class="table-title">Favorite Treasure</th>
-                    <th><c:out value="${player.favoriteTreasure}" /></th>
+                    
                 </tr>
             </table>
         </div>

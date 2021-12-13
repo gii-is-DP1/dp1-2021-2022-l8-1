@@ -15,7 +15,6 @@
  */
 package org.springframework.samples.SevenIslands.user;
 
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +33,6 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	// @Autowired
-	// public UserService(UserRepository userRepository) {
-	// 	this.userRepository = userRepository;
-	// }
 
 	@Transactional(readOnly = true)
     public int userCount(){

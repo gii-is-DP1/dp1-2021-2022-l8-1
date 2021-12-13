@@ -52,21 +52,5 @@ public class Achievement extends NamedEntity {
 	@ManyToMany(mappedBy = "achievements")
 	private List<Player> players;
 
-    /*
-    @ManyToMany(mappedBy = "achievements")
-	private List<Admin> admins;
-
-    public void addAdminInAchievements(Admin admin){
-        if(this.getAdmins()==null){
-            List<Admin> l = new ArrayList<>();
-            l.add(admin);
-            this.setAdmins(l);     
-        }else{
-            List<Admin> l = this.getAdmins();
-            l.add(admin);
-            this.setAdmins(l);
-        }
-    }
-    */
     
 }

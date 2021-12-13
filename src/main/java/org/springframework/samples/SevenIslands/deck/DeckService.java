@@ -2,9 +2,8 @@ package org.springframework.samples.SevenIslands.deck;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -13,7 +12,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.card.CardService;
-import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -57,6 +55,7 @@ public class DeckService {
         deck.setName(name);
         Iterable<Card> cardsI = cardService.findAll();
         List<Card> cards = StreamSupport.stream(cardsI.spliterator(), false).collect(Collectors.toList());
+        Collections.shuffle(cards);
         deck.setCards(cards);
         deckRepo.save(deck);
         return deck;
