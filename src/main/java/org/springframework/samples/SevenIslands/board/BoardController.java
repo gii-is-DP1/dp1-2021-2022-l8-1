@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
+import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.die.Die;
@@ -169,6 +170,8 @@ public class BoardController {
 
         modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).iterator().next());
 
+        request.getSession().removeAttribute("message");    // to delete the message "to travel to island  X you must use Y cards"
+
         return view;
     }
 
@@ -263,17 +266,19 @@ public class BoardController {
      @PostMapping(path = "/{code}/travel")
      public String travel(@RequestParam(name="island") Integer island,@RequestParam(value="card[]", required = false) Integer[] l,@PathVariable("code") String code, HttpServletRequest request){
 
+        
+
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         int cardsToSpend = Math.abs(Integer.parseInt(game.getValueOfDie().replace("Actual value: ", ""))-island); //AQUI TENGO LAS CARTAS QUE TENGO QUE GASTAR
         
         if(l!=null){
             if(cardsToSpend != l.length){
-                request.getSession().setAttribute("message", "To travel to island "+island+"you must use "+cardsToSpend +" cards");
+                request.getSession().setAttribute("message", "To travel to island "+island+ " you must use "+cardsToSpend +" cards");
                 return "redirect:/boards/"+ code;
             }
         }else if(l==null){
             if(cardsToSpend!=0){
-                request.getSession().setAttribute("message", "To travel to island "+island+"you must use "+cardsToSpend +" cards");
+                request.getSession().setAttribute("message", "To travel to island "+island+ " you must use "+cardsToSpend +" cards");
                 return "redirect:/boards/"+ code;
             }
            
