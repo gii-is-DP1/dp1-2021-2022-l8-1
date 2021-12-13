@@ -16,6 +16,7 @@ import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
 import org.springframework.samples.SevenIslands.user.UserService;
+import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -48,6 +49,9 @@ public class PlayerControllerTests {
     
     @MockBean
     private PlayerService playerService;
+
+    @MockBean
+    private SecurityService securityService;
 
     @MockBean	
 	private GeneralService generalService;
