@@ -43,7 +43,8 @@ public class PlayerController {
 
 
     @Autowired	
-	private SecurityService securityService;
+	  private SecurityService securityService;
+
 
     @Autowired
     private GameService gameService;
