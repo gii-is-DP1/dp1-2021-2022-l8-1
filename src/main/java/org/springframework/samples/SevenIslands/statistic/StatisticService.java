@@ -1,10 +1,13 @@
 package org.springframework.samples.SevenIslands.statistic;
 
-import java.time.Duration;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.card.Card;
+import org.springframework.samples.SevenIslands.card.CardService;
 import org.springframework.samples.SevenIslands.game.GameRepository;
+import org.springframework.samples.SevenIslands.island.Island;
+import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +25,17 @@ public class StatisticService {
     public GameRepository gameRepo;
 
     @Autowired
-	public StatisticService(StatisticRepository statisticRepo, PlayerRepository playerRepo) {
+    public IslandService islandService;
+
+    @Autowired
+    public CardService cardService;
+
+    @Autowired
+	public StatisticService(StatisticRepository statisticRepo, PlayerRepository playerRepo, IslandService islandService, CardService cardService) {
         this.statisticRepo = statisticRepo;
         this.playerRepo = playerRepo;
+        this.islandService = islandService;
+        this.cardService = cardService;
 	}
 
     @Transactional(readOnly = true)
@@ -55,6 +66,24 @@ public class StatisticService {
         }
 
         return players;
+    }
+
+    // ISLAND
+    @Transactional(readOnly=true)
+    public Island getFavoriteIslandByPlayerId(Integer playerId) {
+        Collection<Integer> islandIds = statisticRepo.findIslandIdsByPlayerIdOrderedByCount(playerId);
+        Integer favIslandId = islandIds.iterator().next();
+        Island favIsland = islandService.getByIslandId(favIslandId).get();
+        return favIsland;
+    }
+
+    // CARD
+    @Transactional(readOnly=true)
+    public Card getFavoriteCardByPlayerId(Integer playerId) {
+        Collection<Integer> cardIds = statisticRepo.findCardIdsByPlayerIdOrderedByCount(playerId);
+        Integer favCardId = cardIds.iterator().next();
+        Card favCard = cardService.findCardById(favCardId).get();
+        return favCard;
     }
 
     // WINS

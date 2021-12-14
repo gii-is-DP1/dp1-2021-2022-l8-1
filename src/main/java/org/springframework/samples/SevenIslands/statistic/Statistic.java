@@ -42,11 +42,11 @@ public class Statistic extends BaseEntity {
     @ElementCollection
     @MapKeyJoinColumn(name="island_id")
     @CollectionTable(name="statistic_islands_count")
-    public Map<Island,Integer> islandsCount;
+    public Map<Island,Integer> islandCount;
     
     @Column(name="card_count")
     @ElementCollection
     @MapKeyJoinColumn(name="card_id")
     @CollectionTable(name="statistic_cards_count")
-    public Map<Card,Integer> cardsCount;
+    public Map<Card,Integer> cardCount;
 }

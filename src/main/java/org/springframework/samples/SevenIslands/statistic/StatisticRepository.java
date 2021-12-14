@@ -16,6 +16,13 @@ public interface StatisticRepository extends CrudRepository<Statistic, String>{
 	@Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, SUM(S.points)) FROM Player P JOIN P.statistic S GROUP BY P.id ORDER BY SUM(S.points) DESC")
 	Collection<PlayerWithStatistics> findPlayersOrderedByPoints() throws DataAccessException;
     
+    // ISLAND
+    @Query(value="SELECT IC.island_id FROM Statistics S JOIN Statistic_Islands_Count IC WHERE S.player_id = :playerId GROUP BY IC.island_Id ORDER BY SUM(IC.island_Count) DESC", nativeQuery=true)
+    Collection<Integer> findIslandIdsByPlayerIdOrderedByCount(@Param("playerId") int playerId) throws DataAccessException;
+
+    //CARD
+    @Query(value="SELECT CC.card_id FROM Statistics S JOIN Statistic_Cards_Count CC WHERE S.player_id = :playerId GROUP BY CC.card_Id ORDER BY SUM(CC.card_Count) DESC", nativeQuery=true)
+    Collection<Integer> findCardIdsByPlayerIdOrderedByCount(@Param("playerId") int playerId) throws DataAccessException;
 
     //  WINS (SUM, AVG)
     @Query("SELECT COUNT(S) FROM Statistic S WHERE S.player.id = :playerId AND S.had_won = TRUE")
