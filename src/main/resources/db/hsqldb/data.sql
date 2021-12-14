@@ -170,17 +170,17 @@ INSERT INTO players(id, profile_photo, username)
 INSERT INTO games(id, name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time,end_time,duration) 
 VALUES (1, 'Prueba0', 'ABCD124', 7, 5, 1, 1,'PUBLIC', false, '2021-11-18 20:00:00', '2021-11-18 23:00:00',230);
 
-INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
-VALUES (2, 'Prueba1', 'ABCD123', 4, 2,1, 2,'PUBLIC', false, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time,duration) 
+VALUES (2, 'Prueba1', 'ABCD123', 4, 2,1, 2,'PUBLIC', false, '2021-11-18 23:00:00',100);
 
-INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
-VALUES (3, 'Prueba2', 'ABCD122', 2, 1,1, 3,'PRIVATE', false, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time,duration) 
+VALUES (3, 'Prueba2', 'ABCD122', 2, 1,1, 3,'PRIVATE', false, '2021-11-18 23:00:00',20);
 
-INSERT INTO games(id, name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started, start_time) 
-VALUES (4, 'Prueba3', 'ABCD121', 3, 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started, start_time,duration) 
+VALUES (4, 'Prueba3', 'ABCD121', 3, 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00',300);
 
-INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started, start_time) 
-VALUES (5, 'Prueba4', 'ABCD120', 1, 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started, start_time,duration) 
+VALUES (5, 'Prueba4', 'ABCD120', 1, 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00',300);
 -- TODO: AQUI HAY QUE QUITAR ATRIBUTOS NUEVOS METIDOS
 
 -- BOARDS

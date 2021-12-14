@@ -59,7 +59,7 @@ public class PlayerController {
     private AchievementService achievementService;
 
     @Autowired
-    private StatisticService statsService ;
+    private StatisticService statsService;
 
     @GetMapping()
     public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){        //For admins
@@ -170,6 +170,22 @@ public class PlayerController {
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
+
+            // GAMES
+            modelMap.addAttribute("totalGames", gameService.findGamesCountByPlayerId(playerId));
+
+            // TIME
+            // modelMap.addAttribute("maxTime", statsService.getMaxPlayedByPlayerId(playerId));
+            modelMap.addAttribute("minTime", statsService.getMinPlayedByPlayerId(playerId));
+            modelMap.addAttribute("avgTime", statsService.getAvgPlayedByPlayerId(playerId));
+            modelMap.addAttribute("totalTime", statsService.getTimePlayedByPlayerId(playerId));
+
+            // POINTS
+            modelMap.addAttribute("maxPoints", statsService.getMaxPointsByPlayerId(playerId));
+            modelMap.addAttribute("minPoints", statsService.getMinPointsByPlayerId(playerId));
+            modelMap.addAttribute("avgPoints", statsService.getAvgPointsByPlayerId(playerId));
+            modelMap.addAttribute("totaPoints", statsService.getPointsByPlayerId(playerId));
+            
         }else{
             modelMap.addAttribute("message", "Player not found");
             view = "/error";

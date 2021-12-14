@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.card.CardService;
-import org.springframework.samples.SevenIslands.game.GameRepository;
+import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.PlayerRepository;
@@ -22,7 +22,7 @@ public class StatisticService {
     public PlayerRepository playerRepo;
 
     @Autowired
-    public GameRepository gameRepo;
+    public GameService gameService;
 
     @Autowired
     public IslandService islandService;
@@ -31,11 +31,12 @@ public class StatisticService {
     public CardService cardService;
 
     @Autowired
-	public StatisticService(StatisticRepository statisticRepo, PlayerRepository playerRepo, IslandService islandService, CardService cardService) {
+	public StatisticService(StatisticRepository statisticRepo, PlayerRepository playerRepo, IslandService islandService, CardService cardService, GameService gameService) {
         this.statisticRepo = statisticRepo;
         this.playerRepo = playerRepo;
         this.islandService = islandService;
         this.cardService = cardService;
+        this.gameService = gameService;
 	}
 
     @Transactional(readOnly = true)
@@ -94,7 +95,7 @@ public class StatisticService {
 
     @Transactional(readOnly=true)
     public Double getAvgWinsByPlayerId(Integer playerId) {
-        Integer games = gameRepo.findGamesCountByPlayerId(playerId);
+        Integer games = gameService.findGamesCountByPlayerId(playerId);
         Integer wins = statisticRepo.findWinsCountByPlayerId(playerId);
         Double avgWins = (double) wins / games;
         return avgWins;

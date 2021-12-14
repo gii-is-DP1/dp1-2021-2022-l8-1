@@ -93,7 +93,6 @@ public class GameService {
             return false;
         }
     }
-
     
     @Transactional
     public List<Game> findGamesByPlayerId(int id){ //Find games where the player with this Id have played
