@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.board;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -238,8 +239,22 @@ public class BoardController {
         if(limitInf<=0){
             limitInf = 1;
         }
-        List<Integer> posibilities = IntStream.rangeClosed(limitInf, limitSup)
+        List<Integer> posib = IntStream.rangeClosed(limitInf, limitSup)//2 a 7
             .boxed().collect(Collectors.toList());
+        
+        List<Integer> posibilities = new ArrayList<>();
+        for(Integer i: posib){
+            if(i>=limitInf-1 && i<=limitSup-1){
+                if(game.getBoard().getIslands().get(i-1).getCard()!=null){
+                    posibilities.add(i);
+                }
+            }else if(i==7){
+                if(game.getDeck().getCards()!=null){
+                    posibilities.add(i);
+                }
+            }
+        
+        }    //List<Integer> posibilities = posib.stream().filter(x->game.getBoard().getIslands().get(x).getCard()!=null).collect(Collectors.toList());//COMPROBAR ESTA LINEA PARA MOSTRAR SOLO AQUELLAS ISLAS QUE TENGAN CARTAS
 
         
         request.getSession().setAttribute("options", posibilities);
