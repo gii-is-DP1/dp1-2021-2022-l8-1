@@ -54,7 +54,8 @@ INSERT INTO cards(id,card_type) VALUES (9, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (10, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (11, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (12, 'DOUBLON');
-
+INSERT INTO cards(id,card_type) VALUES (13, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (14, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (15, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (16, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (17, 'DOUBLON');
