@@ -244,12 +244,13 @@ public class BoardController {
         
         List<Integer> posibilities = new ArrayList<>();
         for(Integer i: posib){
-            if(i>=limitInf-1 && i<=limitSup-1){
-                if(game.getBoard().getIslands().get(i-1).getCard()!=null){
+            if(i==7){
+                List<Card> a = game.getDeck().getCards();
+                if(a.size()!=0){
                     posibilities.add(i);
                 }
-            }else if(i==7){
-                if(game.getDeck().getCards()!=null){
+            }else if(i >=1 && i <= 6){
+                if(game.getBoard().getIslands().get(i-1).getCard()!=null){
                     posibilities.add(i);
                 }
             }
@@ -313,13 +314,21 @@ public class BoardController {
 
         if(island<7){
             Deck d = game.getDeck();
-            Card c = d.getCards().stream().findFirst().get();
-            Island is = game.getBoard().getIslands().get(island-1);
-            now.add(game.getBoard().getIslands().get(island-1).getCard());
-            is.setCard(c);
-            d.deleteCards(c);
-            deckService.save(d);
-            islandService.save(is);
+           
+            if(d.getCards().size()!=0){
+                Card c = d.getCards().stream().findFirst().get();
+                Island is = game.getBoard().getIslands().get(island-1);
+                now.add(game.getBoard().getIslands().get(island-1).getCard());
+                is.setCard(c);
+                d.deleteCards(c);
+                deckService.save(d);
+                islandService.save(is);
+
+            }else{
+                Island is = game.getBoard().getIslands().get(island-1);
+                is.setCard(null);
+                islandService.save(is);
+            }         
             
         }else{
             Deck d = game.getDeck();
