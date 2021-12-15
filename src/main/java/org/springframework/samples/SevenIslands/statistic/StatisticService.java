@@ -129,8 +129,8 @@ public class StatisticService {
     }
 
     @Transactional(readOnly=true)
-    public Integer getAvgPlayedByPlayerId(Integer playerId) {
-        return statisticRepo.findMinTimePlayedByPlayerId(playerId);
+    public Double getAvgPlayedByPlayerId(Integer playerId) {
+        return statisticRepo.findAvgTimePlayedByPlayerId(playerId);
     }
 
     @Transactional(readOnly=true)

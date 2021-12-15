@@ -46,13 +46,13 @@ public interface StatisticRepository extends CrudRepository<Statistic, String>{
     @Query("SELECT SUM(G.duration) FROM Game G WHERE G.player.id = :playerId")
     Integer findTimePlayedByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
     
-    @Query("SELECT AVG(G.duration) FROM Game G WHERE G.player.id = :playerId GROUP BY G.id")
-    Integer findAvgTimePlayedByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
+    @Query("SELECT AVG(G.duration) FROM Game G WHERE G.player.id = :playerId GROUP BY G.player")
+    Double findAvgTimePlayedByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 
-    @Query("SELECT MAX(G.duration) FROM Game G WHERE G.player.id = :playerId GROUP BY G.id")
+    @Query("SELECT MAX(G.duration) FROM Game G WHERE G.player.id = :playerId")
     Integer findMaxTimePlayedByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 
-    @Query("SELECT MIN(G.duration) FROM Game G WHERE G.player.id = :playerId GROUP BY G.id")
+    @Query("SELECT MIN(G.duration) FROM Game G WHERE G.player.id = :playerId")
     Integer findMinTimePlayedByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 
 }

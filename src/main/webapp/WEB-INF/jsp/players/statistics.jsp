@@ -19,25 +19,25 @@
                             <th class="table-title">Total</th>
                         </tr>
                         <tr>
-                            <th class="table-title">Games</th>
-                            <th>-</th>
-                            <th>-</th>
-                            <th>-</th>
-                            <th><c:out value="${totalGames}"></c:out></th>
-                        </tr>
-                        <tr>
                             <th class="table-title">Time Played</th>
-                            <!-- <th><c:out value="${maxTime}"></c:out> s</th> -->
+                            <th><c:out value="${maxTime}"></c:out> s</th>
                             <th><c:out value="${minTime}"></c:out> s</th>
                             <th><c:out value="${avgTime}"></c:out> s</th>
                             <th><c:out value="${totalTime}"></c:out> s</th>
                         </tr>
                         <tr>
-                            <th class="table-title">Total Points</th>
+                            <th class="table-title">Points</th>
                             <th><c:out value="${maxPoints}"></c:out></th>
                             <th><c:out value="${minPoints}"></c:out></th>
                             <th><c:out value="${avgPoints}"></c:out></th>
                             <th><c:out value="${totalPoints}"></c:out></th>
+                        </tr>
+                        <tr>
+                            <th class="table-title">Games</th>
+                            <th>-</th>
+                            <th>-</th>
+                            <th>-</th>
+                            <th><c:out value="${totalGames}"></c:out></th>
                         </tr>
                         </table>
                     

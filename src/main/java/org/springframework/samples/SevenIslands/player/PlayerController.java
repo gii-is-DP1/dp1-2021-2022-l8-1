@@ -175,7 +175,7 @@ public class PlayerController {
             modelMap.addAttribute("totalGames", gameService.findGamesCountByPlayerId(playerId));
 
             // TIME
-            // modelMap.addAttribute("maxTime", statsService.getMaxPlayedByPlayerId(playerId));
+            modelMap.addAttribute("maxTime", statsService.getMaxPlayedByPlayerId(playerId));
             modelMap.addAttribute("minTime", statsService.getMinPlayedByPlayerId(playerId));
             modelMap.addAttribute("avgTime", statsService.getAvgPlayedByPlayerId(playerId));
             modelMap.addAttribute("totalTime", statsService.getTimePlayedByPlayerId(playerId));
@@ -184,7 +184,7 @@ public class PlayerController {
             modelMap.addAttribute("maxPoints", statsService.getMaxPointsByPlayerId(playerId));
             modelMap.addAttribute("minPoints", statsService.getMinPointsByPlayerId(playerId));
             modelMap.addAttribute("avgPoints", statsService.getAvgPointsByPlayerId(playerId));
-            modelMap.addAttribute("totaPoints", statsService.getPointsByPlayerId(playerId));
+            modelMap.addAttribute("totalPoints", statsService.getPointsByPlayerId(playerId));
             
         }else{
             modelMap.addAttribute("message", "Player not found");
