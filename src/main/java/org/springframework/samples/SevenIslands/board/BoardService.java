@@ -73,16 +73,24 @@ public class BoardService {
     @Transactional
     public void distribute(Board b, Deck d){
         
-        for(Island i: b.getIslands()){
-            if(i.getCard()==null){   
-                Card c = d.getCards().stream().findFirst().get();       
-                d.getCards().remove(c);
-                i.setCard(c);
-                //PONER IF PARA CUANDO DECK NO TENGA CARTAS
+        if(d.getCards().size()!=0 && d.getCards().size()>=6){ //COMPROBAR ESTE IF QUE ES PARA CUANDO DECK NO TENGA CARTAS
+            for(Island i: b.getIslands()){
+                if(i.getCard()==null){  
+                    List<Card> cards =  d.getCards();     
+                    Card c = cards.stream().findFirst().get();  
+                        if(c!=null){
+                            d.getCards().remove(c);
+                            i.setCard(c);   
+                        }
+                        
+                }
             }
+            
+            deckRepo.save(d);
+            boardRepo.save(b);
+
         }
-        deckRepo.save(d);
-        boardRepo.save(b);
+
     }
 
     @Transactional

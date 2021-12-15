@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.board;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -238,8 +239,23 @@ public class BoardController {
         if(limitInf<=0){
             limitInf = 1;
         }
-        List<Integer> posibilities = IntStream.rangeClosed(limitInf, limitSup)
+        List<Integer> posib = IntStream.rangeClosed(limitInf, limitSup)//2 a 7
             .boxed().collect(Collectors.toList());
+        
+        List<Integer> posibilities = new ArrayList<>();
+        for(Integer i: posib){
+            if(i==7){
+                List<Card> a = game.getDeck().getCards();
+                if(a.size()!=0){
+                    posibilities.add(i);
+                }
+            }else if(i >=1 && i <= 6){
+                if(game.getBoard().getIslands().get(i-1).getCard()!=null){
+                    posibilities.add(i);
+                }
+            }
+        
+        }    //List<Integer> posibilities = posib.stream().filter(x->game.getBoard().getIslands().get(x).getCard()!=null).collect(Collectors.toList());//COMPROBAR ESTA LINEA PARA MOSTRAR SOLO AQUELLAS ISLAS QUE TENGAN CARTAS
 
         
         request.getSession().setAttribute("options", posibilities);
@@ -298,13 +314,21 @@ public class BoardController {
 
         if(island<7){
             Deck d = game.getDeck();
-            Card c = d.getCards().stream().findFirst().get();
-            Island is = game.getBoard().getIslands().get(island-1);
-            now.add(game.getBoard().getIslands().get(island-1).getCard());
-            is.setCard(c);
-            d.deleteCards(c);
-            deckService.save(d);
-            islandService.save(is);
+           
+            if(d.getCards().size()!=0){
+                Card c = d.getCards().stream().findFirst().get();
+                Island is = game.getBoard().getIslands().get(island-1);
+                now.add(game.getBoard().getIslands().get(island-1).getCard());
+                is.setCard(c);
+                d.deleteCards(c);
+                deckService.save(d);
+                islandService.save(is);
+
+            }else{
+                Island is = game.getBoard().getIslands().get(island-1);
+                is.setCard(null);
+                islandService.save(is);
+            }         
             
         }else{
             Deck d = game.getDeck();
