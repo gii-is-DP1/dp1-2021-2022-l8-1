@@ -167,34 +167,21 @@ INSERT INTO players(id, profile_photo, username)
     VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11');
 
 -- GAMES
-INSERT INTO games(id, name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time) 
-VALUES (1, 'Prueba0', 'ABCD124', 7, 5, 1, 1,'PUBLIC', false, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time,end_time,duration) 
+VALUES (1, 'Prueba0', 'ABCD124', 7, 5, 1, 1,'PUBLIC', false, '2021-11-18 20:00:00', '2021-11-18 23:00:00',230);
 
- INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
- VALUES (2, 'Prueba1', 'ABCD123', 4, 2,1, 2,'PUBLIC', false, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time,duration) 
+VALUES (2, 'Prueba1', 'ABCD123', 4, 2,1, 2,'PUBLIC', false, '2021-11-18 23:00:00',100);
 
- INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
- VALUES (3, 'Prueba2', 'ABCD122', 2, 1,1, 3,'PRIVATE', false, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time,duration) 
+VALUES (3, 'Prueba2', 'ABCD122', 2, 1,1, 3,'PRIVATE', false, '2021-11-18 23:00:00',20);
 
- INSERT INTO games(id, name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started, start_time) 
- VALUES (4, 'Prueba3', 'ABCD121', 3, 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started, start_time,duration) 
+VALUES (4, 'Prueba3', 'ABCD121', 3, 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00',300);
 
- INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started, start_time) 
- VALUES (5, 'Prueba4', 'ABCD120', 1, 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00');
+INSERT INTO games(id, name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started, start_time,duration) 
+VALUES (5, 'Prueba4', 'ABCD120', 1, 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00',300);
 -- TODO: AQUI HAY QUE QUITAR ATRIBUTOS NUEVOS METIDOS
-
--- STATISTICS
-INSERT INTO STATISTICS(id, player_id, game_id, points, had_won)
-    VALUES (1, 1, 1, 70, true);
-
-INSERT INTO STATISTICS(id, player_id, game_id, points, had_won)
-    VALUES (2, 2, 1, 40, true);
-
-INSERT INTO STATISTICS(id, player_id, game_id, points, had_won)
-    VALUES (3, 3, 1, 50, false);
-
-INSERT INTO STATISTICS(id, player_id, game_id, points, had_won)
-    VALUES (4, 1, 2, 30, true);
 
 -- BOARDS
 INSERT INTO boards(id,background,height,width) VALUES (1,'/resources/images/board.jpg',644,527);
@@ -273,7 +260,52 @@ INSERT INTO games_players(game_id, player_id) VALUES (4, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 2);
 
+-- STATISTICS
+INSERT INTO statistics(id, player_id, game_id, points, had_won)
+    VALUES (1, 1, 1, 70, true);
 
+INSERT INTO statistics(id, player_id, game_id, points, had_won)
+    VALUES (2, 2, 1, 40, false);
+
+INSERT INTO statistics(id, player_id, game_id, points, had_won)
+    VALUES (3, 3, 1, 50, false);
+
+INSERT INTO statistics(id, player_id, game_id, points, had_won)
+    VALUES (4, 1, 2, 30, true);
+
+    
+-- STATISTICS CARDS-COUNT
+-- STATISTIC - 1
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 1, 2);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 24, 3);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 21, 4);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 34, 30);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 16, 6);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 11, 7);
+
+-- STATISTIC - 2
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 18, 3);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 21, 30);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 39, 5);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 40, 6);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 55, 7);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 60, 8);
+
+-- STATISTICS ISLANDS-COUNT
+-- STATISTIC - 1
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 1, 1);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 2, 2);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 3, 3);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 4, 4);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 5, 5);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 6, 6);
+-- STATISTIC - 2
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 1, 2);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 2, 3);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 3, 4);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 4, 5);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 5, 6);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 6, 1);
 
 -- -- PLAYERS-INVITATIONS
 -- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);

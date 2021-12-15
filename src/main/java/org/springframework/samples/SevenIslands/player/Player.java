@@ -15,12 +15,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
-import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.forum.Forum;
 import org.springframework.samples.SevenIslands.game.Game;

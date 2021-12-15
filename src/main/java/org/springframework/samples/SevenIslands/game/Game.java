@@ -52,7 +52,7 @@ public class Game extends NamedEntity {
     private LocalDateTime endTime; //Do with a substraction
 
     @Column(name="duration")
-    private Duration duration = (endTime == null || startTime == null ? Duration.ofSeconds(0) : Duration.between(startTime, endTime));
+    private Integer duration = 0;
     
     // @Column(name = "number_of_players")   
     // private Integer numberOfPlayers;

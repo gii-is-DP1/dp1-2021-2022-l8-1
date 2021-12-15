@@ -93,11 +93,15 @@ public class GameService {
             return false;
         }
     }
-
     
     @Transactional
     public List<Game> findGamesByPlayerId(int id){ //Find games where the player with this Id have played
         return gameRepo.findGamesByPlayerId(id);
+    }
+
+    @Transactional(readOnly=true)
+    public Integer findGamesCountByPlayerId(int id){
+        return gameRepo.findGamesCountByPlayerId(id);
     }
     
     @Transactional
