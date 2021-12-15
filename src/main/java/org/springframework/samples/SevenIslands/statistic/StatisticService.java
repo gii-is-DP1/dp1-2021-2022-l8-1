@@ -73,6 +73,9 @@ public class StatisticService {
     @Transactional(readOnly=true)
     public Island getFavoriteIslandByPlayerId(Integer playerId) {
         Collection<Integer> islandIds = statisticRepo.findIslandIdsByPlayerIdOrderedByCount(playerId);
+        if(islandIds.size()==0){
+            return null;
+        }
         Integer favIslandId = islandIds.iterator().next();
         Island favIsland = islandService.getByIslandId(favIslandId).get();
         return favIsland;
@@ -82,6 +85,9 @@ public class StatisticService {
     @Transactional(readOnly=true)
     public Card getFavoriteCardByPlayerId(Integer playerId) {
         Collection<Integer> cardIds = statisticRepo.findCardIdsByPlayerIdOrderedByCount(playerId);
+        if(cardIds.size()==0){
+            return null;
+        }
         Integer favCardId = cardIds.iterator().next();
         Card favCard = cardService.findCardById(favCardId).get();
         return favCard;

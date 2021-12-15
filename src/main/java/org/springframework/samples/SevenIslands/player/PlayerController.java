@@ -130,8 +130,9 @@ public class PlayerController {
             modelMap.addAttribute("timePlayed", statsService.getTimePlayedByPlayerId(playerId));
             modelMap.addAttribute("totalWins", statsService.getWinsCountByPlayerId(playerId));
             modelMap.addAttribute("totalPoints", statsService.getPointsByPlayerId(playerId));
-            modelMap.addAttribute("favIsland", statsService.getFavoriteIslandByPlayerId(playerId).getIslandNum());
-            modelMap.addAttribute("favCard", statsService.getFavoriteCardByPlayerId(playerId).getCardType());
+            //FALLA POR EL SEGUNDO GET
+            modelMap.addAttribute("favIsland", statsService.getFavoriteIslandByPlayerId(playerId)==null ? "noData" : statsService.getFavoriteIslandByPlayerId(playerId).getIslandNum());
+            modelMap.addAttribute("favCard", statsService.getFavoriteCardByPlayerId(playerId)==null ? "noData" : statsService.getFavoriteCardByPlayerId(playerId).getCardType());
         }else{
             modelMap.addAttribute("message", "Player not found");
             view = "/error"; 

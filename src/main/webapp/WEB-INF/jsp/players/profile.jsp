@@ -57,7 +57,7 @@
                 </tr>
                 <tr>
                     <th class="table-title">Total Points</th>
-                    <th> <c:out value="${totalPoints}" /> </th>
+                    <th> <c:out value="${totalPoints == null ? 0 : totalPoints}" /> </th>
                 </tr>
                 <tr>
                     <th class="table-title">Favorite Island</th>
