@@ -106,7 +106,7 @@ public class BoardService {
             deckRepo.save(d);
             cards.addAll(doblones);
             p.setCards(cards);
-            p.setInGame(true);
+            //p.setInGame(true);
             playerService.save(p);
         }
     }

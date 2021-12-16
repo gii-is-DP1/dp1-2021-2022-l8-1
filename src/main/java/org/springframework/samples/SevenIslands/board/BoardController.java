@@ -411,6 +411,7 @@ public class BoardController {
 
             if(!p.getInGame()){
                 numOfPoints=0;
+                p.setInGame(true);
             }
 
             valuesPerPlayer.put(p, numOfPoints);

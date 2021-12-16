@@ -135,6 +135,11 @@ public class GameController {
     public String lobby(@PathVariable("code") String gameCode, ModelMap model,
         HttpServletRequest request, HttpServletResponse response) {
 
+        //TODO refactorizar
+        if(!securityService.getCurrentPlayer().getInGame()){
+            return "/error";                                        //Hasta que no termine el juego que abandonó no puede unirse a otro
+        }
+
         //Refresh 
         response.addHeader("Refresh", "2");
 		model.put("now", new Date());
