@@ -3,8 +3,14 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -16,6 +22,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
+import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
@@ -114,14 +121,33 @@ public class BoardController {
             game.setHas_started(true);
             game.setTurnTime(LocalDateTime.now());
 
+            
+
+        }else if(game.getPlayers().stream().filter(x->x.getInGame()).count()==1L){                      //Only a player in game
+
+            game.setEndTime(LocalDateTime.now());
+            game.setDuration((int) ChronoUnit.SECONDS.between(game.getStartTime(), game.getEndTime()));
+            gameService.save(game);
+            return "redirect:/boards/"+ code+"/endGame";
+
         }else if(game.getActualPlayer()!=(game.getNumberOfTurn()%game.getPlayers().size())){ //para que aunque refresque uno que no es su turno no incremente el turno
+            
+            if(game.getActualPlayer()==0 && game.getDeck().getCards().size()==0){
+                //Redirect a nueva vista fin del juego
+                game.setEndTime(LocalDateTime.now());
+                game.setDuration((int) ChronoUnit.SECONDS.between(game.getStartTime(), game.getEndTime()));
+                gameService.save(game);
+                return "redirect:/boards/"+ code+"/endGame";
+
+            }
+            
             game.setNumberOfTurn(game.getNumberOfTurn()+1);
             game.setTurnTime(LocalDateTime.now());
             game.setDieThrows(false);
             request.getSession().removeAttribute("message");
             request.getSession().removeAttribute("options");
             
-        }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=3600){  //Turn finished by time
+        }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=3600 || !game.getPlayers().get(game.getActualPlayer()).getInGame()){  //Turn finished by time or player isn't in game
             //Same code in changeTurn
             Integer n = game.getPlayers().size();
             game.setNumberOfTurn(game.getNumberOfTurn()+1);
@@ -315,10 +341,18 @@ public class BoardController {
         if(island<7){
             Deck d = game.getDeck();
            
+            Card islandCard = game.getBoard().getIslands().get(island-1).getCard();
+
+            if(islandCard!=null){
+                now.add(islandCard);
+            }else{
+                request.getSession().setAttribute("message", "Island "+island+ " hasn't a card, choose another island");
+                return "redirect:/boards/"+ code;
+            }
+
             if(d.getCards().size()!=0){
                 Card c = d.getCards().stream().findFirst().get();
                 Island is = game.getBoard().getIslands().get(island-1);
-                now.add(game.getBoard().getIslands().get(island-1).getCard());
                 is.setCard(c);
                 d.deleteCards(c);
                 deckService.save(d);
@@ -343,5 +377,74 @@ public class BoardController {
         return "redirect:/boards/"+game.getId()+"/changeTurn";
       
      }
+
+
+    @GetMapping(path = "/{code}/endGame")
+    public String endGame(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
+
+        Game g = gameService.findGamesByRoomCode(code).iterator().next();
+
+        if(g.getEndTime()==null){
+            
+            return "/error";
+
+        }
+        Map<Integer, Integer> values = boardService.initMapPoints();
+
+        Map<Player, Integer> valuesPerPlayer = new HashMap<>();
+
+        for(Player p : g.getPlayers()){  
+            Integer numOfPoints = (int) p.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count(); 
+            List<String> allCards = p.getCards().stream().filter(x->!x.getCardType().equals(CARD_TYPE.DOUBLON)).map(x->x.getCardType().toString()).collect(Collectors.toList());
+            List<Set<String>> listOfSets = new ArrayList<>();
+            while(allCards.size()!=0){
+                
+                Set<String> notDuplicateCard = new HashSet<>(allCards); 
+                listOfSets.add(notDuplicateCard); 
+                allCards.removeAll(notDuplicateCard); 
+            }
+            
+            for(Set<String> setOfCards : listOfSets){
+                Integer sizeOfSet = setOfCards.size();
+                numOfPoints += values.get(sizeOfSet);
+            }
+
+            if(!p.getInGame()){
+                numOfPoints=0;
+            }
+
+            valuesPerPlayer.put(p, numOfPoints);
+            
+            //modelMap.put("player", p);
+            //modelMap.put(p.getId().toString(),numOfPoints);
+
+        }
+        
+        LinkedHashMap<Player, Integer> sortedMap = new LinkedHashMap<>();
+        valuesPerPlayer.entrySet()
+            .stream()
+            .sorted(Map.Entry.comparingByValue((e1,e2) -> e2.compareTo(e1)))
+            .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
+
+        
+        modelMap.put("pointsOfPlayer", sortedMap);
+
+        //Mostrar vista
+        return "games/endGame";
+        
+        
+    }
+
+    @GetMapping(path = "/{code}/leaveGame")
+    public String leave(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
+
+        Player p = playerService.findPlayerById(securityService.getCurrentPlayerId()).get();
+        p.setInGame(false);
+        playerService.save(p);
+        
+        return "redirect:/welcome";
+        
+        
+    }
 
 }

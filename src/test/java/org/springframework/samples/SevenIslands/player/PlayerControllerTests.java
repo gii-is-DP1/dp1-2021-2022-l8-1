@@ -12,6 +12,7 @@ import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
+import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
@@ -67,6 +68,9 @@ public class PlayerControllerTests {
 
     @MockBean
     private AchievementService achievementService;
+
+    @MockBean
+    private StatisticService statsService;
 
     private Player otherPlayer;
     private User otherUser;

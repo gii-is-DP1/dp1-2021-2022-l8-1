@@ -62,7 +62,6 @@
                 <c:if test = "${id_playing==p.id}">
 
                     <form:form class="form-horizontal" action="/boards/${game.code}/travel">
-                
             
                     <c:forEach items ="${p.cards}" var="c">
                     
@@ -104,6 +103,8 @@
         </c:if>
 
     </c:if>
+
+    <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
     
     <h2><c:out value="${game.valueOfDie}"/></h2>
 
