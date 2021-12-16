@@ -47,9 +47,13 @@
 
                 console.log(hasCorrectDimensions);
                 if(!hasCorrectDimensions) {
-                    photoInput.oninvalid = photoInput.setCustomValidity('The profile photo must be 170 x 170 px');
+                    photoInput.oninvalid = function(e) {
+                        e.target.setCustomValidity('The profile photo must be 170 x 170 px');
+                    }
                 }else{
-                    photoInput.oninput = photoInput.setCustomValidity('');  
+                    photoInput.oninput = function(e) {
+                        e.target.setCustomValidity('');  
+                    }
                 }
             });
 
