@@ -199,6 +199,7 @@ public class BoardController {
 
         request.getSession().removeAttribute("message");    // to delete the message "to travel to island  X you must use Y cards"
 
+        modelMap.addAttribute("islands", gameService.findGamesByRoomCode(code).iterator().next().getBoard().getIslands());
         return view;
     }
 
