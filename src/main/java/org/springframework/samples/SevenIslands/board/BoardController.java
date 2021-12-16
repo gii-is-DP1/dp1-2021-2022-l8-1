@@ -34,6 +34,7 @@ import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
+import org.springframework.samples.SevenIslands.util.Pair;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -392,9 +393,10 @@ public class BoardController {
         }
         Map<Integer, Integer> values = boardService.initMapPoints();
 
-        Map<Player, Integer> valuesPerPlayer = new HashMap<>();
+        Map<Player, Pair> valuesPerPlayer = new HashMap<>();
 
         for(Player p : g.getPlayers()){  
+            Integer numOfDoublons = (int) p.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count();
             Integer numOfPoints = (int) p.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count(); 
             List<String> allCards = p.getCards().stream().filter(x->!x.getCardType().equals(CARD_TYPE.DOUBLON)).map(x->x.getCardType().toString()).collect(Collectors.toList());
             List<Set<String>> listOfSets = new ArrayList<>();
@@ -415,7 +417,9 @@ public class BoardController {
                 p.setInGame(true);
             }
 
-            valuesPerPlayer.put(p, numOfPoints);
+            Pair pointsDoublons = new Pair(numOfPoints,numOfDoublons);
+    
+            valuesPerPlayer.put(p, pointsDoublons);
             
             //modelMap.put("player", p);
             //modelMap.put(p.getId().toString(),numOfPoints);
@@ -426,7 +430,7 @@ public class BoardController {
         valuesPerPlayer.entrySet()
             .stream()
             .sorted(Map.Entry.comparingByValue((e1,e2) -> e2.compareTo(e1)))
-            .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
+            .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue().x));
 
         
         modelMap.put("pointsOfPlayer", sortedMap);
