@@ -52,69 +52,69 @@ INSERT INTO cards(id,card_type) VALUES (7, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (8, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (9, 'DOUBLON');
 INSERT INTO cards(id,card_type) VALUES (10, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (11, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (12, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (13, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (14, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (15, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (16, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (17, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (18, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (19, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (20, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (21, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (22, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (23, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (24, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (25, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (26, 'DOUBLON');
--- INSERT INTO cards(id,card_type) VALUES (27, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (11, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (12, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (13, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (14, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (15, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (16, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (17, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (18, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (19, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (20, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (21, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (22, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (23, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (24, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (25, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (26, 'DOUBLON');
+INSERT INTO cards(id,card_type) VALUES (27, 'DOUBLON');
 
--- INSERT INTO cards(id,card_type) VALUES (28, 'GOLDEN_CUP');
--- INSERT INTO cards(id,card_type) VALUES (29, 'GOLDEN_CUP');
--- INSERT INTO cards(id,card_type) VALUES (30, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type) VALUES (28, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type) VALUES (29, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type) VALUES (30, 'GOLDEN_CUP');
 
--- INSERT INTO cards(id,card_type) VALUES (31, 'RUBY');
--- INSERT INTO cards(id,card_type) VALUES (32, 'RUBY');
--- INSERT INTO cards(id,card_type) VALUES (33, 'RUBY');
+INSERT INTO cards(id,card_type) VALUES (31, 'RUBY');
+INSERT INTO cards(id,card_type) VALUES (32, 'RUBY');
+INSERT INTO cards(id,card_type) VALUES (33, 'RUBY');
 
 
--- INSERT INTO cards(id,card_type) VALUES (34, 'DIAMOND');
--- INSERT INTO cards(id,card_type) VALUES (35, 'DIAMOND');
--- INSERT INTO cards(id,card_type) VALUES (36, 'DIAMOND');
+INSERT INTO cards(id,card_type) VALUES (34, 'DIAMOND');
+INSERT INTO cards(id,card_type) VALUES (35, 'DIAMOND');
+INSERT INTO cards(id,card_type) VALUES (36, 'DIAMOND');
 
--- INSERT INTO cards(id,card_type) VALUES (37, 'PEARL_NECKLACE');
--- INSERT INTO cards(id,card_type) VALUES (38, 'PEARL_NECKLACE');
--- INSERT INTO cards(id,card_type) VALUES (39, 'PEARL_NECKLACE');
--- INSERT INTO cards(id,card_type) VALUES (40, 'PEARL_NECKLACE');
+INSERT INTO cards(id,card_type) VALUES (37, 'PEARL_NECKLACE');
+INSERT INTO cards(id,card_type) VALUES (38, 'PEARL_NECKLACE');
+INSERT INTO cards(id,card_type) VALUES (39, 'PEARL_NECKLACE');
+INSERT INTO cards(id,card_type) VALUES (40, 'PEARL_NECKLACE');
 
--- INSERT INTO cards(id,card_type) VALUES (41, 'CROWN');
--- INSERT INTO cards(id,card_type) VALUES (42, 'CROWN');
--- INSERT INTO cards(id,card_type) VALUES (43, 'CROWN');
--- INSERT INTO cards(id,card_type) VALUES (44, 'CROWN');
+INSERT INTO cards(id,card_type) VALUES (41, 'CROWN');
+INSERT INTO cards(id,card_type) VALUES (42, 'CROWN');
+INSERT INTO cards(id,card_type) VALUES (43, 'CROWN');
+INSERT INTO cards(id,card_type) VALUES (44, 'CROWN');
 
--- INSERT INTO cards(id,card_type) VALUES (45, 'MESSAGE_BOTTLE');
--- INSERT INTO cards(id,card_type) VALUES (46, 'MESSAGE_BOTTLE');
--- INSERT INTO cards(id,card_type) VALUES (47, 'MESSAGE_BOTTLE');
--- INSERT INTO cards(id,card_type) VALUES (48, 'MESSAGE_BOTTLE');
+INSERT INTO cards(id,card_type) VALUES (45, 'MESSAGE_BOTTLE');
+INSERT INTO cards(id,card_type) VALUES (46, 'MESSAGE_BOTTLE');
+INSERT INTO cards(id,card_type) VALUES (47, 'MESSAGE_BOTTLE');
+INSERT INTO cards(id,card_type) VALUES (48, 'MESSAGE_BOTTLE');
 
--- INSERT INTO cards(id,card_type) VALUES (49, 'BARREL_OF_RUM');
--- INSERT INTO cards(id,card_type) VALUES (50, 'BARREL_OF_RUM');
--- INSERT INTO cards(id,card_type) VALUES (51, 'BARREL_OF_RUM');
--- INSERT INTO cards(id,card_type) VALUES (52, 'BARREL_OF_RUM');
--- INSERT INTO cards(id,card_type) VALUES (53, 'BARREL_OF_RUM');
--- INSERT INTO cards(id,card_type) VALUES (54, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (49, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (50, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (51, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (52, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (53, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type) VALUES (54, 'BARREL_OF_RUM');
 
--- INSERT INTO cards(id,card_type) VALUES (55, 'STIR');
--- INSERT INTO cards(id,card_type) VALUES (56, 'STIR');
--- INSERT INTO cards(id,card_type) VALUES (57, 'STIR');
--- INSERT INTO cards(id,card_type) VALUES (58, 'STIR');
--- INSERT INTO cards(id,card_type) VALUES (59, 'STIR');
--- INSERT INTO cards(id,card_type) VALUES (60, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (55, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (56, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (57, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (58, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (59, 'STIR');
+INSERT INTO cards(id,card_type) VALUES (60, 'STIR');
 
---INSERT INTO cards(id,card_type) VALUES (61, 'SWORD');
---INSERT INTO cards(id,card_type) VALUES (62, 'SWORD');
--- INSERT INTO cards(id,card_type) VALUES (63, 'SWORD');
+INSERT INTO cards(id,card_type) VALUES (61, 'SWORD');
+INSERT INTO cards(id,card_type) VALUES (62, 'SWORD');
+INSERT INTO cards(id,card_type) VALUES (63, 'SWORD');
 INSERT INTO cards(id,card_type) VALUES (64, 'SWORD');
 INSERT INTO cards(id,card_type) VALUES (65, 'SWORD');
 INSERT INTO cards(id,card_type) VALUES (66, 'SWORD');
@@ -274,38 +274,38 @@ INSERT INTO statistics(id, player_id, game_id, points, had_won)
     VALUES (4, 1, 2, 30, true);
 
     
--- -- STATISTICS CARDS-COUNT
--- -- STATISTIC - 1
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 1, 2);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 24, 3);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 21, 4);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 34, 30);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 16, 6);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 11, 7);
+-- STATISTICS CARDS-COUNT
+-- STATISTIC - 1
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 1, 2);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 24, 3);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 21, 4);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 34, 30);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 16, 6);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 11, 7);
 
--- -- STATISTIC - 2
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 18, 3);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 21, 30);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 39, 5);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 40, 6);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 55, 7);
--- INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 60, 8);
+-- STATISTIC - 2
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 18, 3);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 21, 30);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 39, 5);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 40, 6);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 55, 7);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 60, 8);
 
--- -- STATISTICS ISLANDS-COUNT
--- -- STATISTIC - 1
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 1, 1);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 2, 2);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 3, 3);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 4, 4);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 5, 5);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 6, 6);
--- -- STATISTIC - 2
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 1, 2);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 2, 3);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 3, 4);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 4, 5);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 5, 6);
--- INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 6, 1);
+-- STATISTICS ISLANDS-COUNT
+-- STATISTIC - 1
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 1, 1);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 2, 2);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 3, 3);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 4, 4);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 5, 5);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 6, 6);
+-- STATISTIC - 2
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 1, 2);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 2, 3);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 3, 4);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 4, 5);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 5, 6);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 6, 1);
 
 -- -- PLAYERS-INVITATIONS
 -- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
