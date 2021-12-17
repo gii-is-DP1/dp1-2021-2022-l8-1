@@ -60,8 +60,8 @@ public class Game extends NamedEntity {
     @Column(name = "actual_player")   
     private Integer actualPlayer;
 
-    @Column(name = "number_of_turn")   
-    private Integer numberOfTurn;
+    // @Column(name = "number_of_turn")   
+    // private Integer numberOfTurn;
 
     @Column(name = "value_of_die")   
     private String valueOfDie = "Currently has no value";

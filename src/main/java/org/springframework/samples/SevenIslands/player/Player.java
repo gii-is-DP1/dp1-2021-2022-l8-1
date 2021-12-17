@@ -39,7 +39,7 @@ public class Player extends Person{
   private String profilePhoto;
 
   @Column(name="in_game")   //Player in a game  
-  private Boolean inGame=true;
+  private Boolean inGame=false;
 
   // RELACION CON STATISTIC
   @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)

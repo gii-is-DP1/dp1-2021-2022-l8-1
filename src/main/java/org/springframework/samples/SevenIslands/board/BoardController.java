@@ -9,15 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
@@ -29,7 +25,6 @@ import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.die.Die;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
-import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
@@ -38,9 +33,7 @@ import org.springframework.samples.SevenIslands.util.Pair;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.core.Authentication;
@@ -111,14 +104,18 @@ public class BoardController {
 		modelMap.addAttribute("board",b); 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//contador mod(n_jugadores) empieza el jugador 0
       
+        Player pl = securityService.getCurrentPlayer();
         
-        
-        if(!game.isHas_started()){
-            List<Player> p = game.getPlayers();
-            Collections.shuffle(p);
-            game.setPlayers(p);
-            game.setNumberOfTurn(0);
-            game.setActualPlayer(0);
+        if(!game.isHas_started()){  //si no ha empezado el juego
+            List<Player> players = game.getPlayers();
+            players.forEach(p -> {
+                p.setInGame(true);
+                playerService.save(p);
+            });    // ponemos a cada jugador como que ya está dentro de algún juego
+            Collections.shuffle(players);
+            game.setPlayers(players);
+            // game.setNumberOfTurn(0);
+            game.setActualPlayer(0);    // empieza el jugador 0 de la lista desordenada
             game.setHas_started(true);
             game.setTurnTime(LocalDateTime.now());
 
@@ -131,9 +128,11 @@ public class BoardController {
             gameService.save(game);
             return "redirect:/boards/"+ code+"/endGame";
 
-        }else if(game.getActualPlayer()!=(game.getNumberOfTurn()%game.getPlayers().size())){ //para que aunque refresque uno que no es su turno no incremente el turno
+
+        }else if(pl != game.getPlayers().get(game.getActualPlayer())){                          //para que aunque refresque uno que no es su turno no incremente el turno
+        // }else if(game.getActualPlayer()!=(game.getNumberOfTurn()%game.getPlayers().size())){ 
             
-            if(game.getActualPlayer()==0 && game.getDeck().getCards().size()==0){
+            if(game.getActualPlayer()==0 && game.getDeck().getCards().size()==0){              //si el deck esta vacio y ha terminado la ronda
                 //Redirect a nueva vista fin del juego
                 game.setEndTime(LocalDateTime.now());
                 game.setDuration((int) ChronoUnit.SECONDS.between(game.getStartTime(), game.getEndTime()));
@@ -142,7 +141,8 @@ public class BoardController {
 
             }
             
-            game.setNumberOfTurn(game.getNumberOfTurn()+1);
+            // game.setNumberOfTurn(game.getNumberOfTurn()+1);
+           
             game.setTurnTime(LocalDateTime.now());
             game.setDieThrows(false);
             request.getSession().removeAttribute("message");
@@ -151,7 +151,7 @@ public class BoardController {
         }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=3600 || !game.getPlayers().get(game.getActualPlayer()).getInGame()){  //Turn finished by time or player isn't in game
             //Same code in changeTurn
             Integer n = game.getPlayers().size();
-            game.setNumberOfTurn(game.getNumberOfTurn()+1);
+            // game.setNumberOfTurn(game.getNumberOfTurn()+1);
             game.setActualPlayer((game.getActualPlayer()+1)%n);
             game.setDieThrows(false);       //No sabemos si tiró dado o no
             game.setTurnTime(LocalDateTime.now());
@@ -395,10 +395,10 @@ public class BoardController {
 
         Map<Player, Pair> valuesPerPlayer = new HashMap<>();
 
-        for(Player p : g.getPlayers()){  
-            Integer numOfDoublons = (int) p.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count();
-            Integer numOfPoints = (int) p.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count(); 
-            List<String> allCards = p.getCards().stream().filter(x->!x.getCardType().equals(CARD_TYPE.DOUBLON)).map(x->x.getCardType().toString()).collect(Collectors.toList());
+        for(Player player : g.getPlayers()){  
+            Integer numOfDoublons = (int) player.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count();
+            Integer numOfPoints = (int) player.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count(); 
+            List<String> allCards = player.getCards().stream().filter(x->!x.getCardType().equals(CARD_TYPE.DOUBLON)).map(x->x.getCardType().toString()).collect(Collectors.toList());
             List<Set<String>> listOfSets = new ArrayList<>();
             while(allCards.size()!=0){
                 
@@ -412,18 +412,20 @@ public class BoardController {
                 numOfPoints += values.get(sizeOfSet);
             }
 
-            if(!p.getInGame()){
+            if(!player.getInGame()){    // Si el jugador no esta en juego, su puntuación es 0 
                 numOfPoints=0;
-                p.setInGame(true);
             }
 
             Pair pointsDoublons = new Pair(numOfPoints,numOfDoublons);
     
-            valuesPerPlayer.put(p, pointsDoublons);
+            valuesPerPlayer.put(player, pointsDoublons);
             
-            //modelMap.put("player", p);
-            //modelMap.put(p.getId().toString(),numOfPoints);
+            //modelMap.put("player", players);
+            //modelMap.put(players.getId().toString(),numOfPoints);
 
+            
+            player.setInGame(false);    // Una vez calculada su puntuación, ya puede volver a iniciar una partida diferente
+            playerService.save(player);
         }
         
         LinkedHashMap<Player, Integer> sortedMap = new LinkedHashMap<>();
@@ -444,9 +446,9 @@ public class BoardController {
     @GetMapping(path = "/{code}/leaveGame")
     public String leave(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
 
-        Player p = playerService.findPlayerById(securityService.getCurrentPlayerId()).get();
-        p.setInGame(false);
-        playerService.save(p);
+        Player playerWhoLeft = playerService.findPlayerById(securityService.getCurrentPlayerId()).get();
+        playerWhoLeft.setInGame(false);
+        playerService.save(playerWhoLeft);
         
         return "redirect:/welcome";
         
