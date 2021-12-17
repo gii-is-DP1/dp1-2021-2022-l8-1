@@ -18,7 +18,7 @@
 
     <div id="top-section">
         <a href="/players/profile/${player.id}">
-            <img id="profile-avatar" src="/resources/images/profile-photo.png">
+            <img id="profile-avatar" src="${player.profilePhoto}">
         </a>
         <a href="/players/profile/${player.id}">
             <h2><c:out value="${player.user.username}"/></h2>
