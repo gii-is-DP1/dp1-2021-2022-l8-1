@@ -36,6 +36,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.access.method.P;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -108,9 +109,11 @@ public class BoardController {
         
         if(!game.isHas_started()){  //si no ha empezado el juego
             List<Player> players = game.getPlayers();
+            List<Integer> playersAtStart = new ArrayList<Integer>();
             players.forEach(p -> {
                 p.setInGame(true);
                 playerService.save(p);
+                playersAtStart.add(p.getId());
             });    // ponemos a cada jugador como que ya está dentro de algún juego
             Collections.shuffle(players);
             game.setPlayers(players);
@@ -119,6 +122,7 @@ public class BoardController {
             game.setHas_started(true);
             game.setTurnTime(LocalDateTime.now());
 
+            request.getSession().setAttribute("playersAtStart", playersAtStart);
             
 
         }else if(game.getPlayers().stream().filter(x->x.getInGame()).count()==1L){                      //Only a player in game
@@ -386,11 +390,16 @@ public class BoardController {
 
         Game g = gameService.findGamesByRoomCode(code).iterator().next();
 
+        List<Integer> playersAtStart = (List<Integer>) request.getSession().getAttribute("playersAtStart");
+
+    
         if(g.getEndTime()==null){
             
             return "/error";
 
         }
+
+
         Map<Integer, Integer> values = boardService.initMapPoints();
 
         Map<Player, Pair> valuesPerPlayer = new HashMap<>();
@@ -412,9 +421,9 @@ public class BoardController {
                 numOfPoints += values.get(sizeOfSet);
             }
 
-            if(!player.getInGame()){    // Si el jugador no esta en juego, su puntuación es 0 
-                numOfPoints=0;
-            }
+            // if(!playersAtStart.contains(player.getId())){    // Si el jugador no esta en juego, su puntuación es 0 
+            //     numOfPoints=0;
+            // }
 
             Pair pointsDoublons = new Pair(numOfPoints,numOfDoublons);
     
@@ -435,7 +444,19 @@ public class BoardController {
             .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue().x));
 
         
+        for(Integer i : playersAtStart) {
+            Player p = playerService.findPlayerById(i).get();
+
+            if(!sortedMap.containsKey(p)){
+                sortedMap.put(p, 0);
+            }
+        
+        }
+
+        
         modelMap.put("pointsOfPlayer", sortedMap);
+
+        request.getSession().removeAttribute("playersAtStart");
 
         //Mostrar vista
         return "games/endGame";
@@ -449,6 +470,10 @@ public class BoardController {
         Player playerWhoLeft = playerService.findPlayerById(securityService.getCurrentPlayerId()).get();
         playerWhoLeft.setInGame(false);
         playerService.save(playerWhoLeft);
+
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
+        game.getPlayers().remove(playerWhoLeft);
+        gameService.save(game);
         
         return "redirect:/welcome";
         
