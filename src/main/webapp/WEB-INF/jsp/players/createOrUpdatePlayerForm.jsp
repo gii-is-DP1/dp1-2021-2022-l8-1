@@ -33,36 +33,4 @@
         </div>
     </form:form>
 
-    <script>
-        var photoInput = document.querySelector("form input#profilePhoto");
-
-        photoInput.addEventListener("change", () => {
-            console.log(photoInput);
-
-            var url = photoInput.value;
-            console.log(url);
-            getImgDimensions(url, function(width, height) {
-                var hasCorrectDimensions = width == height == 170;
-                console.log(width); 
-
-                console.log(hasCorrectDimensions);
-                if(!hasCorrectDimensions) {
-                    photoInput.oninvalid = function(e) {
-                        e.target.setCustomValidity('The profile photo must be 170 x 170 px');
-                    }
-                }else{
-                    photoInput.oninput = function(e) {
-                        e.target.setCustomValidity('');  
-                    }
-                }
-            });
-
-        });
-
-        function getImgDimensions(url, callback) {
-            var img = new Image();
-            img.src = url;
-            img.onload = function() { callback(this.width, this.height); }
-        }
-    </script>
 </SevenIslands:layout>
