@@ -133,7 +133,7 @@ public class GameController {
 
     @GetMapping(path = "/{code}/lobby")
     public String lobby(@PathVariable("code") String gameCode, ModelMap model,
-        HttpServletRequest request, HttpServletResponse response) {
+        HttpServletRequest request) { // , HttpServletResponse response
         Player p = securityService.getCurrentPlayer();
         Game g = gameService.findGamesByRoomCode(gameCode).iterator().next();
         Boolean inGame = securityService.getCurrentPlayer().getInGame();
@@ -143,7 +143,7 @@ public class GameController {
         }
 
         //Refresh 
-        response.addHeader("Refresh", "2");
+        // response.addHeader("Refresh", "2");
 		model.put("now", new Date());
         Iterable<Game> gameOpt = gameService.findGamesByRoomCode(gameCode);
         
