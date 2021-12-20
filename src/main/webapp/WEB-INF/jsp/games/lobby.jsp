@@ -8,48 +8,16 @@
 
 <sevenislands:gameLayout title="Lobby" pageName="Lobby">
 
-    <jsp:body>
+            <span id="left-section">
 
-        <div id="center-section">
-        <form:form modelAttribute="game" class="form-horizontal" action="#">
-            <div class="form-group has-feedback">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="row text-center">
-                            <p><strong><u>Game details</strong></u></p>
-                            <br>
-                            <br>
-                            <p>Name: <c:out value="${game.name}"/></p>
-                            <p>Room code: <c:out value="${game.code}"/></p>
-                        </div>
-                    </div> 
-                    <div class="col-sm-4">
-                        <div class="row text-center">
-                            <p><strong><u>Friends</strong></u></p>
-                            <br>
-                            <br>
-                            
-                        </div>
-
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="row text-center"><strong><u>Party members</strong></u></div>
-                        <br>
-                        <br>
-                        <c:forEach items ="${game.players}" var="p">
-                            <div class="row text-center">
-                                <c:out value = "${p.user.username}"/><br>
-                            </div>
-                        </c:forEach> 
-                    </div>
-                    
-                </div>
-                <br><br><br><br>
-                <div class="row text-center">
+                <h2>Game details</h2>
+                <div class="section-content">
+                    <p><strong>Name: </strong> <c:out value="${game.name}"/></p>
+                    <p><strong>Room Code: </strong><c:out value="${game.code}"/></p>
+    
                     <c:choose>
                         <c:when test="${game.player.id==player.id}">
                             <a href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
                             <c:if test="${totalplayers>1}">
                                 <a href="/boards/${game.code}/init" class="btn btn-default">Start match</a>
                             </c:if>
@@ -59,12 +27,25 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-            </div>
-        </form:form>
-        </div>
-    </jsp:body>
 
-    
+            </span>
+            
+            <span id="center-section">
+                <h2>Party members</h2>
 
+                <div class="section-content">
+                    <c:forEach items ="${game.players}" var="p">
+                        <p><c:out value = "${p.user.username}"/></p>
+                    </c:forEach>
+                </div>
+
+            </span>
+
+            <span id="right-section">
+                <h2>Friends</h2>
+                <div class="section-content">
+
+                </div>
+            </span>
 
 </sevenislands:gameLayout>

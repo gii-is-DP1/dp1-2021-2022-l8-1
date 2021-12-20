@@ -47,7 +47,7 @@
 }
 
 #mid-section {
-    background-color: @spring-light-grey;
+    background-color: @spring-light-blue;
     position: relative;
     display: flex;
     flex: auto;
@@ -55,7 +55,7 @@
     justify-content: space-around;
 
     > span {
-        min-width: 400px;
+        min-width: 300px;
         min-height: 300px;
         margin: 5%;
         padding: 20px;
@@ -67,8 +67,26 @@
         border: 1px solid #bbbbbb;
         box-shadow: 0 0 5px 1px #60606047;
 
+        h2 {
+            font-size: 16px;
+            line-height: 24px;
+            margin-bottom: auto;
+            font-weight: 700;
+            border-bottom: 1px solid #363636;
+            width: 80%;
+            text-align: center;
+        }
+
         button {
             margin: 5px;
+        }
+
+        .section-content {
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            flex-wrap: nowrap;
         }
     }
 
