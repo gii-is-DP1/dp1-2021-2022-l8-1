@@ -29,14 +29,20 @@
         </div>
     </c:if>
 
-    <div id="mid-section">
+    <div id="mid-section" style="background-color: transparent !important;">
+        <div id="background">
+            <div id="sun">
+                <div id="sun-shadow"></div>
+            </div>
+            <div class="waves">
+                    <div class="wave circulo a" ></div>
+                    <div class="wave circulo b" ></div>
+                    <div class="wave circulo c" ></div>
+            </div>
+        </div>
         <jsp:doBody/>
     </div>
 
-
-    <div id="bottom-decoration">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#0099ff" fill-opacity="1" d="M0,32L48,32C96,32,192,32,288,53.3C384,75,480,117,576,112C672,107,768,53,864,37.3C960,21,1056,43,1152,58.7C1248,75,1344,85,1392,90.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
-    </div>
     <div id="bottom-section"></div>
 
 </div>

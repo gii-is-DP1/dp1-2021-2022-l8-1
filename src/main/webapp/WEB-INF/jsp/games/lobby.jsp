@@ -7,12 +7,10 @@
 
 
 <sevenislands:gameLayout title="Lobby" pageName="Lobby">
+
     <jsp:body>
 
-        <div class="row text-center"><h2>Lobby</h2></div>
-        <br>
-        <br>
-
+        <div id="center-section">
         <form:form modelAttribute="game" class="form-horizontal" action="#">
             <div class="form-group has-feedback">
                 <div class="row">
@@ -63,6 +61,7 @@
                 </div>
             </div>
         </form:form>
+        </div>
     </jsp:body>
 
     
