@@ -53,6 +53,9 @@ public class Game extends NamedEntity {
 
     @Column(name="duration")
     private Integer duration = 0;
+
+    // @Column(name = "players_at_tStart")
+    // private List<Player> playersAtStart = new ArrayList<>();
     
     // @Column(name = "number_of_players")   
     // private Integer numberOfPlayers;
@@ -60,8 +63,8 @@ public class Game extends NamedEntity {
     @Column(name = "actual_player")   
     private Integer actualPlayer;
 
-    @Column(name = "number_of_turn")   
-    private Integer numberOfTurn;
+    // @Column(name = "number_of_turn")   
+    // private Integer numberOfTurn;
 
     @Column(name = "value_of_die")   
     private String valueOfDie = "Currently has no value";

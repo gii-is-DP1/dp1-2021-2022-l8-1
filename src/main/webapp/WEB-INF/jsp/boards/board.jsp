@@ -18,6 +18,17 @@
     <c:out value="${tempo}"></c:out>
     <div>
         <div class="col-md-4">
+            <div class="islandsList">
+                <h3 class="text-center">Islands:</h3>
+                <c:set var="count" value="1" scope="page" />
+                <c:forEach items ="${islands}" var="i">
+                    <div class="row text-center">
+                        Island<c:out value = "${count}"/>:
+                        <c:out value = "${i.card.cardType}"/><br>
+                        <c:set var="count" value="${count + 1}" scope="page"/>
+                    </div>
+                </c:forEach> 
+            </div>
             <div class="playersList">
                 <h3 class="text-center">Order of Turns:</h3>
                 <c:forEach items ="${game.players}" var="p">
@@ -62,7 +73,6 @@
                 <c:if test = "${id_playing==p.id}">
 
                     <form:form class="form-horizontal" action="/boards/${game.code}/travel">
-                
             
                     <c:forEach items ="${p.cards}" var="c">
                     
@@ -104,6 +114,8 @@
         </c:if>
 
     </c:if>
+
+    <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
     
     <h2><c:out value="${game.valueOfDie}"/></h2>
 

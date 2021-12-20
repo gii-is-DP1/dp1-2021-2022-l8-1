@@ -38,6 +38,9 @@ public class Player extends Person{
   // @NotEmpty
   private String profilePhoto;
 
+  @Column(name="in_game")   //Player in a game  
+  private Boolean inGame=false;
+
   // RELACION CON STATISTIC
   @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
   private Set<Statistic> statistic;
