@@ -55,7 +55,7 @@ public class GameController {
             request.getSession().setAttribute("message", "You must be a player to create a game");
             return "redirect:/games/rooms";
         
-        } else if(securityService.isAuthenticatedUser()) {
+        } else if(securityService.isAuthenticatedUser() && !player.getInGame()) {
             modelMap.addAttribute("game", new Game());
             return VIEW_CREATE_OR_UPDATE_GAME_FORM;
         
@@ -134,6 +134,13 @@ public class GameController {
     @GetMapping(path = "/{code}/lobby")
     public String lobby(@PathVariable("code") String gameCode, ModelMap model,
         HttpServletRequest request, HttpServletResponse response) {
+        Player p = securityService.getCurrentPlayer();
+        Game g = gameService.findGamesByRoomCode(gameCode).iterator().next();
+        Boolean inGame = securityService.getCurrentPlayer().getInGame();
+        //TODO refactorizar
+        if(inGame && !g.getPlayers().contains(p)){ // FIXME: al empezar una partida, como se refresca, detecta que está en un juego y redirige a error
+            return "/error";                                        //Hasta que no termine el juego que abandonó no puede unirse a otro
+        }
 
         //Refresh 
         response.addHeader("Refresh", "2");

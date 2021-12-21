@@ -28,6 +28,9 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
   @Query("SELECT g FROM Game g INNER JOIN g.players p WHERE p.id =:id")
   List<Game> findGamesByPlayerId(@Param("id") int id);
 
+  @Query("SELECT COUNT(g) FROM Game g INNER JOIN g.players p WHERE p.id =:id")
+  Integer findGamesCountByPlayerId(@Param("id") int id);
+
   @Query("SELECT P from Game P WHERE P.code = :code")
   Iterable<Game> findGamesByRoomCode(String code) throws DataAccessException;
 

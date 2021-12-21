@@ -1,5 +1,7 @@
 package org.springframework.samples.SevenIslands.island;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,11 @@ public class IslandService {
     @Transactional
     public void save(Island i){
         islandRepo.save(i);
+    }
+
+    @Transactional
+    public Optional<Island> getByIslandId(Integer islandId) {
+        return islandRepo.findById(islandId);
     }
 }
 

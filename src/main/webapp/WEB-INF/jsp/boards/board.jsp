@@ -2,6 +2,7 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
@@ -17,6 +18,17 @@
     <c:out value="${tempo}"></c:out>
     <div>
         <div class="col-md-4">
+            <div class="islandsList">
+                <h3 class="text-center">Islands:</h3>
+                <c:set var="count" value="1" scope="page" />
+                <c:forEach items ="${islands}" var="i">
+                    <div class="row text-center">
+                        Island<c:out value = "${count}"/>:
+                        <c:out value = "${i.card.cardType}"/><br>
+                        <c:set var="count" value="${count + 1}" scope="page"/>
+                    </div>
+                </c:forEach> 
+            </div>
             <div class="playersList">
                 <h3 class="text-center">Order of Turns:</h3>
                 <c:forEach items ="${game.players}" var="p">
@@ -55,22 +67,59 @@
 
     </div>
     
+    <c:if test="${game.dieThrows}">
+        <c:forEach items ="${game.players}" var="p">
+            <c:if test = "${id_playing==id}">
+                <c:if test = "${id_playing==p.id}">
+
+                    <form:form class="form-horizontal" action="/boards/${game.code}/travel">
+            
+                    <c:forEach items ="${p.cards}" var="c">
+                    
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="card[]" value="${c.id}" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                <c:out value = "${c.cardType}"/>
+                            </label>
+                        </div>
+
+                    </c:forEach>
+
+                    <div>
+                        <select id="island-input" name="island" class="selectpicker">
+                            <c:forEach items = "${options}" var = "o">
+                                <option value="${o}"><c:out value="Island ${o}"></c:out></option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Travel</button>
+                
+                    </form:form>
+                
+                </c:if>
+            </c:if>
+        </c:forEach>
+    </c:if>
 
 
-
-    
     
     <c:if test="${id_playing==id}">
      
         <a href="/boards/${game.id}/changeTurn" class="btn btn-default">Finish Turn</a>
         
         <c:if test="${game.dieThrows==false}">
-        <a href ="/boards/${game.id}/rollDie" class="btn btn-default">Roll Die</a>
+        <a href ="/boards/${game.id}/rollDie" class="btn btn-default" id="roll">Roll Die</a>
         
         </c:if>
 
     </c:if>
+
+    <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
     
     <h2><c:out value="${game.valueOfDie}"/></h2>
+
+
+    
    
 </sevenislands:layout>
