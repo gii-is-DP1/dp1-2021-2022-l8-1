@@ -33,11 +33,7 @@
             <span id="center-section">
                 <h2>Party members</h2>
 
-                <div class="section-content">
-                    <c:forEach items ="${game.players}" var="p">
-                        <p><c:out value = "${p.user.username}"/></p>
-                    </c:forEach>
-                </div>
+                <sevenislands:playerList players="${game.players}"/>
 
             </span>
 
