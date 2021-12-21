@@ -33,7 +33,9 @@
             <span id="center-section">
                 <h2>Party members</h2>
 
-                <sevenislands:playerList players="${game.players}"/>
+                <div class="section-content">
+                    <sevenislands:playerList players="${game.players}"/>
+                </div>
 
             </span>
 

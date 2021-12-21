@@ -8,11 +8,11 @@
     <a href="/players/profile/${player.id}" htmlEscape="true">
 
         <p class="username">${player.user.username}</p>
-        <!-- <img 
+        <img 
             class="profile-photo" 
             src="${player.profilePhoto == null ? '/resources/images/profile-photo.png' : player.profilePhoto}" 
             alt="Foto de perfil"
-        > -->
+        >
     
     </a>
 </li>
