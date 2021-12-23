@@ -1,10 +1,8 @@
 package org.springframework.samples.SevenIslands.web.model;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonView;
 
-import org.springframework.samples.SevenIslands.player.Player;
+import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.web.jsonview.Views;
 
 import lombok.Getter;
@@ -12,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AjaxResponseBody{
+public class AjaxGameResponseBody{
 
 	@JsonView(Views.Public.class)
 	String msg;
@@ -21,7 +19,9 @@ public class AjaxResponseBody{
 	String code;
 
 	@JsonView(Views.Public.class)
-	List<Player> players;
+	Game game;
 
-	//getters and setters
+	@JsonView(Views.Public.class)
+	Integer numberOfPlayers;
+
 }

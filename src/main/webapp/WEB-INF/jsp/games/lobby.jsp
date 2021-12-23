@@ -17,13 +17,10 @@
 
             <c:choose>
                 <c:when test="${game.player.id==player.id}">
-                    <a href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
-                    <c:if test="${totalplayers>1}">
-                        <a href="/boards/${game.code}/init" class="btn btn-default">Start match</a>
-                    </c:if>
+                    <a id="btn-cancel"  href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="/games/exit/${game.id}" class="btn btn-default">Exit</a>
+                    <a  id="btn-exit" href="/games/exit/${game.id}" class="btn btn-default">Exit</a>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -48,6 +45,8 @@
 
     <script>
 
+        const gameId = '${game.id}';
+        const playerId = '${player.id}';
         var lastPlayers = new Array();
 
         window.onload= ()=>{
@@ -55,16 +54,68 @@
             setInterval(() => {
 
                 loadPlayers();
+                loadGame();
 
-            }, 1000);
+            }, 800);
 
         };
 
-        function loadPlayers() {
-            
-            const gameId = '${game.id}';
+        // BOARD
+        
+        async function tryToEnterBoard(game) {
+            let hasStarted = checkIfGameHasStarted(game);
+            if(hasStarted) location.reload;
+        }
 
-            xhttp = new XMLHttpRequest();
+        async function loadGame() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/games/game/" + gameId);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log("SUCCESS");
+                        
+                        let response = JSON.parse(this.response);
+                        let game = response.game;
+                        let playersNum = response.numberOfPlayers;
+                        tryToEnterBoard(game);
+                        tryIfIsPossibleToStart(game, playersNum);
+                    }
+                };
+            xhttp.send();
+        }
+
+        function tryIfIsPossibleToStart(game, playersNum) {
+            let startButtonStr = `<a id="btn-start" href="/boards/\${game.code}/init" class="btn btn-default">Start match</a>`;
+            let parser = new DOMParser();
+	        let startButton = parser.parseFromString(startButtonStr, 'text/html').body.firstChild;
+            let sectionContent = document.querySelector("#left-section .section-content");
+        
+            let gameOwnerId = game.player.id;
+            if(playerId == gameOwnerId) {
+                let startButtonElement = document.getElementById("btn-start");
+                let buttonIsDisplayed = startButtonElement != undefined;
+
+                if(!buttonIsDisplayed && playersNum>1) {
+                sectionContent.appendChild(startButton);
+                }
+                if(buttonIsDisplayed && playersNum==1) {
+                    sectionContent.removeChild(startButtonElement);
+                }
+            }
+            
+        }
+
+        function checkIfGameHasStarted(game) {
+            let hasStarted = false;
+            if(game.has_started) return true;
+            return hasStarted;
+        }
+
+        // PLAYERS
+
+        function loadPlayers() {
+            let xhttp = new XMLHttpRequest();
             xhttp.open("GET", "/games/players/" + gameId);
             xhttp.setRequestHeader("Content-type", "application/json");
             xhttp.onreadystatechange = function() {
@@ -102,7 +153,6 @@
                 if(p1.id != p2.id) return true;
                 if(p1.user.username != p2.user.username) return true;
             }
-            console.log(hasChanged);
             return hasChanged;
         }
 

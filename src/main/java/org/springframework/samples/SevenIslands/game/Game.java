@@ -1,6 +1,5 @@
 package org.springframework.samples.SevenIslands.game;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +19,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.SevenIslands.board.Board;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.model.NamedEntity;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.statistic.Statistic;
+import org.springframework.samples.SevenIslands.web.jsonview.Views;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +38,7 @@ import lombok.Setter;
 @Table(name = "games")
 public class Game extends NamedEntity {
 
+    @JsonView(Views.Public.class)
     @Column(unique = true, name = "code")
     private String code;
 
@@ -88,6 +91,7 @@ public class Game extends NamedEntity {
     @Enumerated(EnumType.STRING)
     private PRIVACITY privacity;
 
+    @JsonView(Views.Public.class)
     @Column(name="has_started")
     private boolean has_started;
     
@@ -114,6 +118,7 @@ public class Game extends NamedEntity {
         this.players.remove(player);
     }
 
+    @JsonView(Views.Public.class)
     @ManyToOne(optional=false)
     private Player player;
 

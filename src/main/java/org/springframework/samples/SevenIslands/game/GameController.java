@@ -19,7 +19,8 @@ import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.samples.SevenIslands.web.jsonview.Views;
-import org.springframework.samples.SevenIslands.web.model.AjaxResponseBody;
+import org.springframework.samples.SevenIslands.web.model.AjaxGameResponseBody;
+import org.springframework.samples.SevenIslands.web.model.AjaxPlayersResponseBody;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -185,9 +186,9 @@ public class GameController {
     @JsonView(Views.Public.class)
     @ResponseBody
     @RequestMapping(value = "/players/{gameId}")
-    public AjaxResponseBody getGamePlayers(@PathVariable("gameId") int gameId) {
+    public AjaxPlayersResponseBody getGamePlayers(@PathVariable("gameId") int gameId) {
 
-            AjaxResponseBody result = new AjaxResponseBody();
+            AjaxPlayersResponseBody result = new AjaxPlayersResponseBody();
 
             Game game = gameService.findGameById(gameId).get();
             List<Player> players = game.getPlayers();
@@ -195,6 +196,24 @@ public class GameController {
             result.setCode("200");
             result.setMsg("hola");
             result.setPlayers(players);
+
+            return result;
+    }
+
+    @JsonView(Views.Public.class)
+    @ResponseBody
+    @RequestMapping(value = "/game/{gameId}")
+    public AjaxGameResponseBody getGame(@PathVariable("gameId") int gameId) {
+
+            AjaxGameResponseBody result = new AjaxGameResponseBody();
+
+            Game game = gameService.findGameById(gameId).get();
+            Integer playersNum = game.getPlayers().size();
+
+            result.setCode("200");
+            result.setMsg("hola");
+            result.setGame(game);
+            result.setNumberOfPlayers(playersNum);
 
             return result;
     }
