@@ -48,7 +48,7 @@
 
     <script>
 
-        var lastPlayers = "";
+        var lastPlayers = new Array();
 
         window.onload= ()=>{
 
@@ -56,7 +56,7 @@
 
                 loadPlayers();
 
-            }, 1000);
+            }, 5000);
 
         };
 
@@ -72,12 +72,10 @@
                         console.log("SUCCESS");
 
                         let response = JSON.parse(this.response);
-                        let players = response.players;
+                        var players = response.players;
                         
                         let hasChanged = checkIfPlayersChanged(players, lastPlayers);
-                        var lastPlayers = players;
-                        console.log(players);
-                        console.log(lastPlayers);
+                        lastPlayers = [...players];
 
                         if(hasChanged) {
                             updateTable(players);
@@ -90,7 +88,21 @@
         }
 
         function checkIfPlayersChanged(players, lastPlayers) {
-            let hasChanged = players != lastPlayers;
+            if(lastPlayers == []) return false;
+
+            let hasChanged = false;
+
+            let hasDifferentSize = players.length != lastPlayers.length;
+            if(hasDifferentSize) return true;
+
+            for(let i=0; i++; i<players.length) {
+                let p1 = player[i];
+                let p2 = lastPlayers[i];
+
+                if(p1.id != p2.id) return true;
+                if(p1.user.username != p2.user.username) return true;
+            }
+            console.log(hasChanged);
             return hasChanged;
         }
 
