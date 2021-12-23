@@ -125,7 +125,7 @@ public class Game extends NamedEntity {
 
     }
 
-    @OneToMany(mappedBy="game", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="game", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Statistic> statistics;
 
     @OneToOne(cascade = CascadeType.ALL)

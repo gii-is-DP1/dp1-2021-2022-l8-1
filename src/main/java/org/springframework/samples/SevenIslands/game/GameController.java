@@ -1,13 +1,14 @@
 package org.springframework.samples.SevenIslands.game;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
@@ -17,6 +18,8 @@ import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.util.SecurityService;
+import org.springframework.samples.SevenIslands.web.jsonview.Views;
+import org.springframework.samples.SevenIslands.web.model.AjaxResponseBody;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/games")
@@ -156,6 +160,43 @@ public class GameController {
 
         
 
+    }
+
+    // @RequestMapping(value = "/players/{gameId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    // @ResponseBody
+    // public List<Player> getGamePlayers(@PathVariable("gameId") int gameId, ModelMap model,
+    //     HttpServletRequest request, HttpServletResponse response) {
+    //         Game game = gameService.findGameById(gameId).get();
+    //         List<Player> players = game.getPlayers();
+
+    //         return players;
+    // }
+
+    // @RequestMapping(value = "/players/{gameId}")
+    // @ResponseBody
+    // public String getGamePlayersList(@PathVariable("gameId") int gameId, ModelMap model,
+    //     HttpServletRequest request, HttpServletResponse response) {
+    //         Game game = gameService.findGameById(gameId).get();
+    //         List<Player> players = game.getPlayers();
+
+    //         return "";
+    // }
+
+    @JsonView(Views.Public.class)
+    @ResponseBody
+    @RequestMapping(value = "/players/{gameId}")
+    public AjaxResponseBody getGamePlayers(@PathVariable("gameId") int gameId) {
+
+            AjaxResponseBody result = new AjaxResponseBody();
+
+            Game game = gameService.findGameById(gameId).get();
+            List<Player> players = game.getPlayers();
+
+            result.setCode("200");
+            result.setMsg("hola");
+            result.setPlayers(players);
+
+            return result;
     }
 
     /**

@@ -8,7 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+
+import com.fasterxml.jackson.annotation.JsonView;
+
+import org.springframework.samples.SevenIslands.web.jsonview.Views;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +21,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class User{
+
+	@JsonView(Views.Public.class)
 	@NotEmpty
 	@Id
 	String username;

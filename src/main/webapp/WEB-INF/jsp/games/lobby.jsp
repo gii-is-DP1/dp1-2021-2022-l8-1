@@ -8,42 +8,128 @@
 
 <sevenislands:gameLayout title="Lobby" pageName="Lobby">
 
-            <span id="left-section">
+    <span id="left-section">
+        <h2>Game details</h2>
 
-                <h2>Game details</h2>
-                <div class="section-content">
-                    <p><strong>Name: </strong> <c:out value="${game.name}"/></p>
-                    <p><strong>Room Code: </strong><c:out value="${game.code}"/></p>
+        <div class="section-content">
+            <p><strong>Name: </strong> <c:out value="${game.name}"/></p>
+            <p><strong>Room Code: </strong><c:out value="${game.code}"/></p>
+
+            <c:choose>
+                <c:when test="${game.player.id==player.id}">
+                    <a href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
+                    <c:if test="${totalplayers>1}">
+                        <a href="/boards/${game.code}/init" class="btn btn-default">Start match</a>
+                    </c:if>
+                </c:when>
+                <c:otherwise>
+                    <a href="/games/exit/${game.id}" class="btn btn-default">Exit</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
+
+    </span>
     
-                    <c:choose>
-                        <c:when test="${game.player.id==player.id}">
-                            <a href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
-                            <c:if test="${totalplayers>1}">
-                                <a href="/boards/${game.code}/init" class="btn btn-default">Start match</a>
-                            </c:if>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="/games/exit/${game.id}" class="btn btn-default">Exit</a>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+    <span id="center-section">
+        <h2>Party members</h2>
 
-            </span>
+        <div class="section-content">
+            <sevenislands:playerList players="${game.players}"/>
+        </div>
+
+    </span>
+
+    <span id="right-section">
+        <h2>Friends</h2>
+        <div class="section-content">
+
+        </div>
+    </span>
+
+    <script>
+
+        var lastPlayers = "";
+
+        window.onload= ()=>{
+
+            setInterval(() => {
+
+                loadPlayers();
+
+            }, 1000);
+
+        };
+
+        function loadPlayers() {
             
-            <span id="center-section">
-                <h2>Party members</h2>
+            const gameId = '${game.id}';
 
-                <div class="section-content">
-                    <sevenislands:playerList players="${game.players}"/>
-                </div>
+            xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/games/players/" + gameId);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log("SUCCESS");
 
-            </span>
+                        let response = JSON.parse(this.response);
+                        let players = response.players;
+                        
+                        let hasChanged = checkIfPlayersChanged(players, lastPlayers);
+                        var lastPlayers = players;
+                        console.log(players);
+                        console.log(lastPlayers);
 
-            <span id="right-section">
-                <h2>Friends</h2>
-                <div class="section-content">
+                        if(hasChanged) {
+                            updateTable(players);
+                        }
+                        
+                    }
+                };
+            xhttp.send();
 
-                </div>
-            </span>
+        }
+
+        function checkIfPlayersChanged(players, lastPlayers) {
+            let hasChanged = players != lastPlayers;
+            return hasChanged;
+        }
+
+        function updateTable(players) {
+            var playersList = document.querySelector(".player-list");
+
+            // Empty the table
+            playersList.innerHTML = "";
+            
+            playerItems = createPlayerItems(players);
+            insertItemsInList(playersList, playerItems);
+
+        }
+
+        function createPlayerItems(players) {
+
+            let playerItems = [];
+            for (let player of players) {
+                let playerItemHTML = 
+                    `<li class="player-item">
+                        <a href="/players/profile/\${player.id}" htmlescape="true">
+
+                            <p class="username">\${player.user.username}</p>
+                            <img class="profile-photo" src="\${player.profilePhoto == null ? '/resources/images/profile-photo.png' : player.profilePhoto}">
+                        
+                        </a>
+                    </li>`;
+
+                playerItems.push(playerItemHTML);
+            }
+
+            return playerItems;
+        }
+
+        function insertItemsInList(table, items) {
+            let innerHTML = items.reduce((item, acum) => item + acum);
+            table.innerHTML = innerHTML;
+        }
+        
+    </script>
 
 </sevenislands:gameLayout>

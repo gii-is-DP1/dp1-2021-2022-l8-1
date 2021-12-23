@@ -29,6 +29,9 @@
         <jacoco.version>0.8.5</jacoco.version>
         <spring-format.version>0.0.19</spring-format.version>
 
+        <!-- JSON -->
+        <jackson.version>2.10.1</jackson.version>
+
     </properties>
 
     <developers>
@@ -199,6 +202,19 @@
             <version>${webjars-bootstrap.version}</version>
         </dependency>
 
+        <!-- JSON -->
+        <dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -231,13 +247,13 @@
             <optional>true</optional>
         </dependency>
     
-      <dependency>
-        <groupId>javax</groupId>
-        <artifactId>javaee-api</artifactId>
-        <version>8.0.1</version>
-      </dependency>
-    </dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0.1</version>
+        </dependency>
 
+        </dependencies>
     <build>
         <plugins>
             <plugin>
