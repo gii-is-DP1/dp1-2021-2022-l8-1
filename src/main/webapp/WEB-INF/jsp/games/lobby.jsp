@@ -56,7 +56,7 @@
                 loadPlayers();
                 loadGame();
 
-            }, 800);
+            }, 1500);
 
         };
 
