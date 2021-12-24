@@ -361,71 +361,20 @@ public class BoardController {
     @GetMapping(path = "/{code}/endGame")
     public String endGame(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
 
-        Game g = gameService.findGamesByRoomCode(code).iterator().next();
-
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
+        List<Player> players = game.getPlayers();
         List<Integer> playersAtStart = (List<Integer>) request.getSession().getAttribute("playersAtStart");
-
     
-        if(g.getEndTime()==null){
-            
-            return "/error";
-
-        }
-
-
-        Map<Integer, Integer> values = boardService.initMapPoints();
-
-        Map<Player, Pair> valuesPerPlayer = new HashMap<>();
-
-        for(Player player : g.getPlayers()){  
-            Integer numOfDoublons = (int) player.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count();
-            Integer numOfPoints = (int) player.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count(); 
-            List<String> allCards = player.getCards().stream().filter(x->!x.getCardType().equals(CARD_TYPE.DOUBLON)).map(x->x.getCardType().toString()).collect(Collectors.toList());
-            List<Set<String>> listOfSets = new ArrayList<>();
-            while(allCards.size()!=0){
-                
-                Set<String> notDuplicateCard = new HashSet<>(allCards); 
-                listOfSets.add(notDuplicateCard); 
-                allCards.removeAll(notDuplicateCard); 
-            }
-            
-            for(Set<String> setOfCards : listOfSets){
-                Integer sizeOfSet = setOfCards.size();
-                numOfPoints += values.get(sizeOfSet);
-            }
-
-            Pair pointsDoublons = new Pair(numOfPoints,numOfDoublons);
-    
-            valuesPerPlayer.put(player, pointsDoublons);
-            
-            player.setInGame(false);    
-            playerService.save(player);
-        }
+        if(game.getEndTime()==null) return "/error";
         
-        LinkedHashMap<Player, Integer> sortedMap = new LinkedHashMap<>();
-        valuesPerPlayer.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue((e1,e2) -> e2.compareTo(e1)))
-            .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue().x));
-
+        LinkedHashMap<Player, Integer> playersByPunctuation = 
+                boardService.calcPlayersByPunctuation(playersAtStart, players);
         
-        for(Integer i : playersAtStart) {
-            Player p = playerService.findPlayerById(i).get();
+        modelMap.put("playersByPunctuation", playersByPunctuation);
 
-            if(!sortedMap.containsKey(p)){
-                sortedMap.put(p, 0);
-            }
-        
-        }
-
-        
-        modelMap.put("pointsOfPlayer", sortedMap);
-
-        request.getSession().removeAttribute("playersAtStart");
+        // request.getSession().removeAttribute("playersAtStart");
 
         return "games/endGame";
-        
-        
     }
 
     @GetMapping(path = "/{code}/leaveGame")

@@ -23,7 +23,7 @@
             
                 <c:set var="count" value="1" scope="page" />
 
-                <c:forEach items="${pointsOfPlayer}" var="map">
+                <c:forEach items="${playersByPunctuation}" var="map">
 
                     <tr>
                         <td>
