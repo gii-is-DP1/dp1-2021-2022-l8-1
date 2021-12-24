@@ -138,7 +138,7 @@ public class GameController {
 
     @GetMapping(path = "/{code}/lobby")
     public String lobby(@PathVariable("code") String gameCode, ModelMap model,
-        HttpServletRequest request) { // , HttpServletResponse response
+        HttpServletRequest request) {
         Player p = securityService.getCurrentPlayer();
         Game g = gameService.findGamesByRoomCode(gameCode).iterator().next();
         Boolean inGame = securityService.getCurrentPlayer().getInGame();
@@ -147,8 +147,6 @@ public class GameController {
             return "/error";                                        //Hasta que no termine el juego que abandonó no puede unirse a otro
         }
 
-        //Refresh 
-        // response.addHeader("Refresh", "2");
 		model.put("now", new Date());
         Iterable<Game> gameOpt = gameService.findGamesByRoomCode(gameCode);
         
