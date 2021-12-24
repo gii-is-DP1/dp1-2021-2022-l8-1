@@ -119,9 +119,8 @@ public class BoardController {
             game.setTurnTime(LocalDateTime.now());
 
             request.getSession().setAttribute("playersAtStart", playersAtStart);
-            
 
-        }else if(game.getPlayers().stream().filter(x->x.getInGame()).count()==1L){                     
+        }else if(game.getPlayers().stream().filter(x->x.getInGame()).count()==1L || game.getActualPlayer()==0 && game.getDeck().getCards().isEmpty()){                     
 
             game.setEndTime(LocalDateTime.now());
             game.setDuration((int) ChronoUnit.SECONDS.between(game.getStartTime(), game.getEndTime()));
@@ -130,18 +129,7 @@ public class BoardController {
 
 
         }else if(pl != game.getPlayers().get(game.getActualPlayer())){         //para que aunque refresque uno que no es su turno no incremente el turno
-
-            if(game.getActualPlayer()==0 && game.getDeck().getCards().size()==0){              
-                //Redirect a nueva vista fin del juego
-                game.setEndTime(LocalDateTime.now());
-                game.setDuration((int) ChronoUnit.SECONDS.between(game.getStartTime(), game.getEndTime()));
-                gameService.save(game);
-                return "redirect:/boards/"+ code+"/endGame";
-
-            }
            
-            game.setTurnTime(LocalDateTime.now());
-            game.setDieThrows(false);
             request.getSession().removeAttribute("message");
             request.getSession().removeAttribute("options");
             
@@ -196,6 +184,19 @@ public class BoardController {
         request.getSession().removeAttribute("message");    
 
         modelMap.addAttribute("islands", gameService.findGamesByRoomCode(code).iterator().next().getBoard().getIslands());
+
+
+        if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())<=5){               //Jugador aún no sabe los jugadores actuales
+            List<Player> players = game.getPlayers();
+            List<Integer> playersAtStart = new ArrayList<Integer>();
+            players.forEach(p -> {
+                p.setInGame(true);
+                playerService.save(p);
+                playersAtStart.add(p.getId());
+            });    
+            request.getSession().setAttribute("playersAtStart", playersAtStart);
+        }
+
         return view;
     }
 
@@ -208,6 +209,8 @@ public class BoardController {
         Integer n = game.getPlayers().size();
 
         game.setActualPlayer((game.getActualPlayer()+1)%n);
+        game.setTurnTime(LocalDateTime.now());
+        game.setDieThrows(false);
         gameService.save(game);
 
         return "redirect:/boards/"+ code;
