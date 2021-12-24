@@ -8,6 +8,7 @@
 
     margin: 20px;
     background-color: @spring-brown;
+    animation: 2s end-game-player cubic-bezier(0.38, 0.04, 0.66, 1.07) infinite alternate;
 
     a {
         display: flex;
@@ -79,14 +80,27 @@
 .end-game-player-2 { 
     h1 {color: @spring-silver;}
     img {border: 5px solid @spring-silver;}
+    animation-delay: .6s;
 }
 
 .end-game-player-3 { 
     h1 {color: @spring-bronze;}
     img {border: 5px solid @spring-bronze;}
+    animation-delay: 1.2s;
 }
 
 .end-game-player-4 { 
     h1 {color: @spring-bronze;}
     img {border: 5px solid @spring-bronze;}
+    animation-delay: 1.8s;
+}
+
+// ANIMATION
+@keyframes end-game-player {
+    0% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(10px);
+    }
 }
