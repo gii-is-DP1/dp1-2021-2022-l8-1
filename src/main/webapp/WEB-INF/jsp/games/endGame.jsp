@@ -7,50 +7,26 @@
 
 <sevenislands:simpleLayout pageName="endGame" title="End Game">   
 
-    <div id="row center-section">
+    <span id="center-section" class="end-game-section">
+                
+        <c:set var="count" value="1" scope="page" />
+        <c:forEach items="${playersByPunctuation}" var="map">
 
-        <div id="players">
+            <sevenislands:endGamePlayer 
+                    player="${map.key}" 
+                    punctuation="${map.value}"
+                    position="${count}"/>
 
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Position</th>
-                    <th>Username</th>
-                    <th>Points</th>
-                </tr>
-                </thead>
-                <tbody>
-            
-                <c:set var="count" value="1" scope="page" />
+            <c:set var="count" value="${count + 1}" scope="page"/>
 
-                <c:forEach items="${playersByPunctuation}" var="map">
+        </c:forEach>
 
-                    <tr>
-                        <td>
-                            <c:out value="${count}"/>
-                        </td>
-                        <td>
-                            <c:out value="${map.key.user.username}"/>
-                        </td>
-                        
-                        <td>
-                            <c:out value="${map.value}"/>
-                        </td>
-                        
-                    </tr>
+    </span>
+    
+    <span id="extra-section">
 
-                    <c:set var="count" value="${count + 1}" scope="page"/>
-
-                </c:forEach>
-                </tbody>
-            </table>
-
-        </div>
-
-    </div>
-
-    <div class="row text-center">
         <a href="/welcome" class="btn btn-default">Exit game</a>
-    </div>
+    
+    </span>
 
 </sevenislands:simpleLayout>
