@@ -61,13 +61,8 @@
         };
 
         // BOARD
-        
-        async function tryToEnterBoard(game) {
-            let hasStarted = checkIfGameHasStarted(game);
-            if(hasStarted) location.reload;
-        }
 
-        async function loadGame() {
+        function loadGame() {
             let xhttp = new XMLHttpRequest();
             xhttp.open("GET", "/games/game/" + gameId);
             xhttp.setRequestHeader("Content-type", "application/json");
@@ -83,6 +78,12 @@
                     }
                 };
             xhttp.send();
+        }
+
+        function tryToEnterBoard(game) {
+            let hasStarted = game.has_started;
+            console.log(hasStarted);
+            if(hasStarted) location.reload();
         }
 
         function tryIfIsPossibleToStart(game, playersNum) {
@@ -104,12 +105,6 @@
                 }
             }
             
-        }
-
-        function checkIfGameHasStarted(game) {
-            let hasStarted = false;
-            if(game.has_started) return true;
-            return hasStarted;
         }
 
         // PLAYERS
