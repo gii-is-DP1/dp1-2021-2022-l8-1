@@ -200,8 +200,7 @@ public class BoardController {
 
         request.getSession().removeAttribute("message");    
 
-        // //CREAR STADISTICA PARA GAME E ID
-        // Statistic a = statisticService.getStatisticByPlayerAndGameId(pl.getId(), game.getId());
+        
 
         modelMap.addAttribute("islands", gameService.findGamesByRoomCode(code).iterator().next().getBoard().getIslands());
         return view;
@@ -440,13 +439,19 @@ public class BoardController {
         
         }
 
+        //TODO PROBAR ESTO 
         for(Player y : sortedMap.keySet()){
             int p = sortedMap.get(y);
             y.getStatistic().stream().filter(x->x.getGame()==g).findFirst().get().setPoints(p);
             y.getStatistic().stream().filter(x->x.getGame()==g).findFirst().get().setHad_won(false);
+            
         }
         sortedMap.keySet().iterator().next().getStatistic().stream().filter(x->x.getGame()==g).findFirst().get().setHad_won(true);
         
+        for(Player y : sortedMap.keySet()){
+            playerService.save(y);            
+        }
+        //HASTA AQUI
 
         modelMap.put("pointsOfPlayer", sortedMap);
 
