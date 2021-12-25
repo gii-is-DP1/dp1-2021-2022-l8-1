@@ -3,10 +3,12 @@ package org.springframework.samples.SevenIslands.board;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -22,6 +24,8 @@ import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
+import org.springframework.samples.SevenIslands.statistic.Statistic;
+import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,6 +44,9 @@ public class BoardService {
 
     @Autowired
     private PlayerService playerService;
+ 
+    @Autowired	
+	private StatisticService statisticService;
 
     @Transactional
     public int boardCount(){
@@ -100,12 +107,29 @@ public class BoardService {
         List<Player> players = game.getPlayers();
         Deck d = game.getDeck();
         for(Player p: players){
-            List<Card> cards = new ArrayList<>();       //TODO Revisar / List<Card> cards = p.getCards();
+            List<Card> cards = new ArrayList<>();      
             List<Card> doblones = d.getCards().stream().filter(x->x.getCardType().equals(CARD_TYPE.DOUBLON)).limit(3).collect(Collectors.toList());
             d.getCards().removeAll(doblones);
             deckRepo.save(d);
             cards.addAll(doblones);
             p.setCards(cards);
+            Statistic s = new Statistic();
+            s.setGame(game);
+            s.setPlayer(p);
+
+            
+            
+            statisticService.save(s);
+
+            statisticService.insertinitIslandCount(s.getId(),1);
+            statisticService.insertinitIslandCount(s.getId(),2);
+            statisticService.insertinitIslandCount(s.getId(),3);
+            statisticService.insertinitIslandCount(s.getId(),4);
+            statisticService.insertinitIslandCount(s.getId(),5);
+            statisticService.insertinitIslandCount(s.getId(),6);
+            p.getStatistic().add(s);;
+                  
+            
             //p.setInGame(true);
             playerService.save(p);
         }

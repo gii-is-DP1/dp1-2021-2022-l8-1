@@ -29,6 +29,8 @@ import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
+import org.springframework.samples.SevenIslands.statistic.Statistic;
+import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.util.Pair;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.stereotype.Controller;
@@ -67,6 +69,9 @@ public class BoardController {
 
     @Autowired	
 	private IslandService islandService;
+
+    @Autowired	
+	private StatisticService statisticService;
 
     @GetMapping(path = "/{code}/init")
     public String init(@PathVariable("code") String code, ModelMap modelMap){      
@@ -204,6 +209,9 @@ public class BoardController {
 
         request.getSession().removeAttribute("message");    // to delete the message "to travel to island  X you must use Y cards"
 
+        // //CREAR STADISTICA PARA GAME E ID
+        // Statistic a = statisticService.getStatisticByPlayerAndGameId(pl.getId(), game.getId());
+
         modelMap.addAttribute("islands", gameService.findGamesByRoomCode(code).iterator().next().getBoard().getIslands());
         return view;
     }
@@ -337,6 +345,7 @@ public class BoardController {
         Player actualP = playerService.findPlayerById(game.getPlayers().get(game.getActualPlayer()).getId()).get();
         
         List<Card> now = actualP.getCards();
+       
         if(l!=null){
             for(int i=0; i<l.length;i++){
                 int n = l[i];
@@ -351,6 +360,17 @@ public class BoardController {
 
             if(islandCard!=null){
                 now.add(islandCard);
+                int statisticId = statisticService.getStatisticByPlayerAndGameId(actualP.getId(), game.getId()).getId();
+                if(l!=null){
+                    for(int i=0; i<l.length;i++){
+                        int n = l[i];
+                        statisticService.insertCardCount(statisticId, n);
+                    }
+                }  
+                
+                statisticService.insertCardCount(statisticId, islandCard.getId());
+                statisticService.updateIslandCount(statisticId, island);
+
             }else{
                 request.getSession().setAttribute("message", "Island "+island+ " hasn't a card, choose another island");
                 return "redirect:/boards/"+ code;
@@ -378,6 +398,8 @@ public class BoardController {
             deckService.save(d);
             
         }
+
+
         actualP.setCards(now);
         playerService.save(actualP);
         return "redirect:/boards/"+game.getId()+"/changeTurn";
@@ -453,7 +475,14 @@ public class BoardController {
         
         }
 
+        for(Player y : sortedMap.keySet()){
+            int p = sortedMap.get(y);
+            y.getStatistic().stream().filter(x->x.getGame()==g).findFirst().get().setPoints(p);
+            y.getStatistic().stream().filter(x->x.getGame()==g).findFirst().get().setHad_won(false);
+        }
+        sortedMap.keySet().iterator().next().getStatistic().stream().filter(x->x.getGame()==g).findFirst().get().setHad_won(true);
         
+
         modelMap.put("pointsOfPlayer", sortedMap);
 
         request.getSession().removeAttribute("playersAtStart");

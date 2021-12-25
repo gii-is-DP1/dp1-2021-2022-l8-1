@@ -148,5 +148,34 @@ public class StatisticService {
     public Integer getMinPlayedByPlayerId(Integer playerId) {
         return statisticRepo.findMinTimePlayedByPlayerId(playerId);
     }
+
+    @Transactional(readOnly=true)
+    public Statistic getStatisticByPlayerAndGameId(Integer playerId, Integer gameId) {
+        return statisticRepo.findByGameAndPlayerId(playerId, gameId);
+    }
+
+    @Transactional
+    public void save(Statistic i){
+        statisticRepo.save(i);
+    }
+
+    @Transactional
+    public void insertCardCount(Integer id, Integer cardId){
+        statisticRepo.insertCardCount(id, cardId);
+    }
+
+    @Transactional
+    public void insertinitIslandCount(Integer id,Integer islandId){
+        statisticRepo.initIslandCount(id,0, islandId);
+    }
+
+    @Transactional
+    public void updateIslandCount(Integer id, Integer islandId){
+        
+        int sum = statisticRepo.getCountingIslandById(id, islandId);
+        
+        statisticRepo.updateIslandCount(id,islandId,sum + 1);
+    }
+
     
 }
