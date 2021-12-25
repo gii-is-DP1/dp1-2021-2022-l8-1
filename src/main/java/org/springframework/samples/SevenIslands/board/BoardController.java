@@ -3,12 +3,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
-import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
@@ -29,17 +24,16 @@ import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
-import org.springframework.samples.SevenIslands.util.Pair;
+import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.security.access.method.P;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -67,6 +61,9 @@ public class BoardController {
 
     @Autowired	
 	private IslandService islandService;
+
+    @Autowired	
+	private StatisticService statisticService;
 
     @GetMapping(path = "/{code}/init")
     public String init(@PathVariable("code") String code, ModelMap modelMap){      
@@ -182,6 +179,8 @@ public class BoardController {
         modelMap.addAttribute("game", gameService.findGamesByRoomCode(code).iterator().next());
 
         request.getSession().removeAttribute("message");    
+
+        
 
         modelMap.addAttribute("islands", gameService.findGamesByRoomCode(code).iterator().next().getBoard().getIslands());
 
@@ -313,6 +312,7 @@ public class BoardController {
         Player actualP = playerService.findPlayerById(game.getPlayers().get(game.getActualPlayer()).getId()).get();
         
         List<Card> now = actualP.getCards();
+       
         if(l!=null){
             for(int i=0; i<l.length;i++){
                 int n = l[i];
@@ -327,6 +327,17 @@ public class BoardController {
 
             if(islandCard!=null){
                 now.add(islandCard);
+                int statisticId = statisticService.getStatisticByPlayerAndGameId(actualP.getId(), game.getId()).getId();
+                if(l!=null){
+                    for(int i=0; i<l.length;i++){
+                        int n = l[i];
+                        statisticService.insertCardCount(statisticId, n);
+                    }
+                }  
+                
+                statisticService.insertCardCount(statisticId, islandCard.getId());
+                statisticService.updateIslandCount(statisticId, island);
+
             }else{
                 request.getSession().setAttribute("message", "Island "+island+ " hasn't a card, choose another island");
                 return "redirect:/boards/"+ code;
@@ -354,6 +365,8 @@ public class BoardController {
             deckService.save(d);
             
         }
+
+
         actualP.setCards(now);
         playerService.save(actualP);
         return "redirect:/boards/"+game.getId()+"/changeTurn";
@@ -366,13 +379,16 @@ public class BoardController {
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         List<Player> players = game.getPlayers();
-        List<Integer> playersAtStart = (List<Integer>) request.getSession().getAttribute("playersAtStart");
+        List<Integer> playersIdAtStart = (List<Integer>) request.getSession().getAttribute("playersAtStart");
+        List<Player> playersAtStart = playersIdAtStart.stream().map(id -> playerService.findPlayerById(id).get()).collect(Collectors.toList());
     
         if(game.getEndTime()==null) return "/error";
         
         LinkedHashMap<Player, Integer> playersByPunctuation = 
                 boardService.calcPlayersByPunctuation(playersAtStart, players);
-        
+
+        statisticService.setFinalStatistics(playersAtStart, playersByPunctuation, game);
+
         modelMap.put("playersByPunctuation", playersByPunctuation);
 
         // request.getSession().removeAttribute("playersAtStart");

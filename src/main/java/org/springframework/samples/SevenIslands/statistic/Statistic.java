@@ -15,6 +15,7 @@ import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.model.BaseEntity;
+import org.springframework.samples.SevenIslands.model.NamedEntity;
 import org.springframework.samples.SevenIslands.player.Player;
 
 import lombok.Getter;

@@ -193,6 +193,8 @@ INSERT INTO achievements(id, name, description, icon, min_value, achievement_typ
     VALUES (2, 'Silver_loses', 'Loses 200 times.', 'https://www.pngall.com/wp-content/uploads/2017/03/Silver-Medal-PNG-HD.png', 200, 'SILVER', 'LOSES');
 INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
     VALUES (3, 'Gold_loses', 'Loses 300 times.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'LOSES');
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
+    VALUES (4, 'Gold_points', 'Get 2 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 2, 'GOLD', 'POINTS');
 
 -- CELLS
 INSERT INTO cells(id, x_position, y_position, card) VALUES (1,'0','0','DOUBLON');

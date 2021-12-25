@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Collection;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -54,5 +55,30 @@ public interface StatisticRepository extends CrudRepository<Statistic, String>{
 
     @Query("SELECT MIN(G.duration) FROM Game G WHERE G.player.id = :playerId")
     Integer findMinTimePlayedByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
+
+    @Query("SELECT S FROM Statistic S WHERE S.player.id = :playerId and S.game.id = :gameId")
+    Statistic findByGameAndPlayerId(@Param("playerId") int playerId, @Param("gameId") int gameId) throws DataAccessException;
+
+    @Modifying
+    @Query(value = "INSERT INTO STATISTIC_CARDS_COUNT VALUES (:id,1,:cardId)", nativeQuery = true)
+    void insertCardCount(@Param("id") Integer id, @Param("cardId") Integer cardId);
+
+    @Modifying
+    @Query(value = "INSERT INTO Statistic_Islands_Count VALUES (:id,:add,:islandId)", nativeQuery = true)
+    void initIslandCount(@Param("id") Integer id,@Param("add") Integer add ,@Param("islandId") Integer islandId);
+    
+    @Query(value = "SELECT island_count FROM Statistic_Islands_Count WHERE statistic_id = :id and island_id = :islandId", nativeQuery = true)
+    Integer getCountingIslandById(@Param("id") Integer id, @Param("islandId") Integer islandId) throws DataAccessException;
+  
+    @Modifying
+    @Query(value = "UPDATE statistic_islands_count set island_count = :sum where statistic_id = :id and island_id = :islandId", nativeQuery = true)
+    void updateIslandCount(@Param("id") Integer id,@Param("islandId") Integer islandId,@Param("sum") Integer sum);
+
+
+
+ 
+    //     void deactivateUsersNotLoggedInSince(@Param("date") LocalDate date);
+    
+
 
 }
