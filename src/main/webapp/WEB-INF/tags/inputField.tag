@@ -16,7 +16,7 @@
         <div class="col-sm-10">
             <c:choose>
                 <c:when test="${label == 'Profile Photo'}">
-                    <form:input type = "Url" class="form-control" path="${name}"/>
+                    <form:input type = "Url" class="form-control" path="${name}" value="https://www.jing.fm/clipimg/full/14-140860_smiley-face-images-black-and-white-smiley-face.png"/>
                 </c:when>
                 <c:when test="${label == 'Password'}">
                     <form:input type = "Password" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}:;<>,.?~_+-=|]).{9,}$" title="Must contain at least one number and one uppercase and lowercase letter, and at least 9 or more characters" class="form-control" path="${name}"/>

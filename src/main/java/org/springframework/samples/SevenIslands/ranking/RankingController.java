@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
+import org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics;
+import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,13 +25,19 @@ public class RankingController {
     @Autowired
     private SecurityService securityService;
 
+    @Autowired
+    StatisticService statisticService;
+
     @GetMapping()
     public String ranking(ModelMap modelMap, HttpServletRequest request) {
         
         if(securityService.isAuthenticatedUser()) {
-            Collection<Player> playersWins =  playerService.getTwentyBestPlayersByWins();
-            Collection<Player> playersPoints =  playerService.getTwentyBestPlayersByPoints();
 
+            securityService.insertIdUserModelMap(modelMap);
+
+            Collection<PlayerWithStatistics> playersWins =  statisticService.getTwentyBestPlayersByWins();
+            Collection<PlayerWithStatistics> playersPoints =  statisticService.getTwentyBestPlayersByPoints();
+          
             modelMap.addAttribute("playersWins", playersWins);
             modelMap.addAttribute("playersPoints", playersPoints);
 

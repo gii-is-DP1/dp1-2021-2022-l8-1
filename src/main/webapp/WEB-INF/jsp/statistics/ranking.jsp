@@ -36,8 +36,4 @@
         </span>
     </div>
 
-    <script>
-        console.log(`${playersWins}`);
-    </script>
-
 </sevenislands:adminLayout>

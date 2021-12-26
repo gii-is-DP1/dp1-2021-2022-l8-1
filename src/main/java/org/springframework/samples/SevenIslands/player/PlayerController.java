@@ -13,10 +13,14 @@ import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementService;
+import org.springframework.samples.SevenIslands.achievement.PARAMETER;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
+import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
@@ -30,8 +34,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 
 @Controller
@@ -43,7 +45,8 @@ public class PlayerController {
 
 
     @Autowired	
-	private SecurityService securityService;
+	  private SecurityService securityService;
+
 
     @Autowired
     private GameService gameService;
@@ -56,6 +59,9 @@ public class PlayerController {
 
     @Autowired
     private AchievementService achievementService;
+
+    @Autowired
+    private StatisticService statsService;
 
     @GetMapping()
     public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){        //For admins
@@ -73,37 +79,33 @@ public class PlayerController {
             page = PageRequest.of(0, 5);
         }
 
-        //to pass it to the view:
-        Integer nextPageNumber;
-        Integer previousPageNumber;
-        nextPageNumber= pageNumber+1;
-        if(pageNumber==0){
-            previousPageNumber=0;
-        }else{
-            previousPageNumber=pageNumber-1;
-        }
+    
+        List<Integer> pages = playerService.calculatePages(pageNumber);
 
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
+        //to pass it to the view:
+        Integer previousPageNumber = pages.get(0);
+        Integer nextPageNumber = pages.get(1);
+
+        if (securityService.isAdmin()) {
                     
-                    //Iterable<Player> players = playerService.findAll();
-                    Iterable<Player> playersPaginated = playerService.findAll(page);
-                    if(filterName!=null){
-                        Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
-                        //List<Player> listPlayersFiltered= StreamSupport.stream(players.spliterator(), false).filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
-                        List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
-                        //modelMap.addAttribute("players", listPlayersFiltered);
-                        modelMap.addAttribute("players", listPlayersPaginatedAndFiltered);
-                    }else{
-                        //modelMap.addAttribute("players", players);
-                        List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
-                        modelMap.addAttribute("players", listPlayersPaginated);
-                    }
-                    
-                    modelMap.addAttribute("filterName", filterName);
-                    modelMap.addAttribute("pageNumber", pageNumber);
-                    modelMap.addAttribute("nextPageNumber", nextPageNumber);
-                    modelMap.addAttribute("previousPageNumber", previousPageNumber);
+            Iterable<Player> playersPaginated = playerService.findAll(page);
+            if(filterName!=null){
+                Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
+                
+                List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
+                
+                modelMap.addAttribute("players", listPlayersPaginatedAndFiltered);
+
+            } else{
+                
+                List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
+                modelMap.addAttribute("players", listPlayersPaginated);
+            }
+            
+            modelMap.addAttribute("filterName", filterName);
+            modelMap.addAttribute("pageNumber", pageNumber);
+            modelMap.addAttribute("nextPageNumber", nextPageNumber);
+            modelMap.addAttribute("previousPageNumber", previousPageNumber);
 
             
         }else{
@@ -120,6 +122,15 @@ public class PlayerController {
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
+            
+            // STATISTIC
+            modelMap.addAttribute("totalGames", gameService.findGamesCountByPlayerId(playerId));
+            modelMap.addAttribute("timePlayed", statsService.getTimePlayedByPlayerId(playerId));
+            modelMap.addAttribute("totalWins", statsService.getWinsCountByPlayerId(playerId));
+            modelMap.addAttribute("totalPoints", statsService.getPointsByPlayerId(playerId));
+            //FALLA POR EL SEGUNDO GET
+            modelMap.addAttribute("favIsland", statsService.getFavoriteIslandByPlayerId(playerId)==null ? "noData" : statsService.getFavoriteIslandByPlayerId(playerId).getIslandNum());
+            modelMap.addAttribute("favCard", statsService.getFavoriteCardByPlayerId(playerId)==null ? "noData" : statsService.getFavoriteCardByPlayerId(playerId).getCardType());
         }else{
             modelMap.addAttribute("message", "Player not found");
             view = "/error"; 
@@ -138,9 +149,43 @@ public class PlayerController {
         
             List<Achievement> achieved = StreamSupport.stream(achievementService.findByPlayerId(player.get().getId()).spliterator(), false).collect(Collectors.toList());
             List<Achievement> achievements = StreamSupport.stream(achievementService.findAll().spliterator(), false).collect(Collectors.toList());
-    
             List<Achievement> notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
     
+
+            for(Achievement a: notAchieved){
+                if(a.getParameter()==PARAMETER.POINTS){
+                    int totalPoints = statsService.getPointsByPlayerId(player.get().getId());
+                    if(a.getMinValue()<=totalPoints){
+                        player.get().getAchievements().add(a);
+                        playerService.save(player.get());
+                        achieved.add(a);
+                    }
+                }else if(a.getParameter()==PARAMETER.GAMES_PLAYED){
+                    int totalGames = player.get().getGames().size();
+                    if(a.getMinValue()<=totalGames){
+                        player.get().getAchievements().add(a);
+                        playerService.save(player.get());
+                        achieved.add(a);
+                    }
+                }else if(a.getParameter()==PARAMETER.LOSES){
+                    int totalLoses = player.get().getGames().size() - statsService.getWinsCountByPlayerId(player.get().getId());
+                    if(a.getMinValue()<=totalLoses){
+                        player.get().getAchievements().add(a);
+                        playerService.save(player.get());
+                        achieved.add(a);
+                    }
+                }else if(a.getParameter()==PARAMETER.WINS){
+                    int totalWins = statsService.getWinsCountByPlayerId(player.get().getId());
+                    if(a.getMinValue()<=totalWins){
+                        player.get().getAchievements().add(a);
+                        playerService.save(player.get());
+                        achieved.add(a);
+                    }
+                }
+            }
+
+            notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
+
             modelMap.addAttribute("achieved", achieved); 
             modelMap.addAttribute("notAchieved", notAchieved);
             modelMap.addAttribute("player", player.get());
@@ -158,6 +203,22 @@ public class PlayerController {
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
+
+            // GAMES
+            modelMap.addAttribute("totalGames", gameService.findGamesCountByPlayerId(playerId));
+
+            // TIME
+            modelMap.addAttribute("maxTime", statsService.getMaxPlayedByPlayerId(playerId));
+            modelMap.addAttribute("minTime", statsService.getMinPlayedByPlayerId(playerId));
+            modelMap.addAttribute("avgTime", statsService.getAvgPlayedByPlayerId(playerId));
+            modelMap.addAttribute("totalTime", statsService.getTimePlayedByPlayerId(playerId));
+
+            // POINTS
+            modelMap.addAttribute("maxPoints", statsService.getMaxPointsByPlayerId(playerId));
+            modelMap.addAttribute("minPoints", statsService.getMinPointsByPlayerId(playerId));
+            modelMap.addAttribute("avgPoints", statsService.getAvgPointsByPlayerId(playerId));
+            modelMap.addAttribute("totalPoints", statsService.getPointsByPlayerId(playerId));
+            
         }else{
             modelMap.addAttribute("message", "Player not found");
             view = "/error";
@@ -338,8 +399,7 @@ public class PlayerController {
                         result.rejectValue("name", "duplicate", "already exists");
                         return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
                     }
-                    if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                    .anyMatch(x -> x.toString().equals("admin"))){
+                    if(securityService.isAdmin()){
                         return "redirect:/players";
                     }else{
                         if(username != playerToUpdate.getUser().getUsername()){

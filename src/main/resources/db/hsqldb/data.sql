@@ -133,53 +133,54 @@ INSERT INTO cards(id,card_type) VALUES (66, 'SWORD');
 -- INSERT INTO decks_cards(deck_id, card_id) VALUES (5, 1);
 
 -- PLAYERS
-INSERT INTO players(id, first_name, surname, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-    VALUES (1,'Paco', 'Alonso', 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 6, 'BARREL_OF_RUM', 79, 56, 100, 5.6, 'test1');
+INSERT INTO players(id, first_name, surname, profile_photo, username) 
+    VALUES (1,'Paco', 'Alonso', 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test1');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-    VALUES (2, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 2, 1220, 220.0, 720, 540, 121, 24.2, 3, 'BARREL_OF_RUM', 59, 26, 100, 5.6, 'test2');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (2, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test2');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-    VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47, 100, 5.6, 'test3');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test3');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-VALUES (4, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47, 100, 5.6, 'test4');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (4, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test4');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-VALUES (5, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47, 120, 5.6, 'test5');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (5, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test5');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-VALUES (6, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47, 100, 5.6, 'test6');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (6, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test6');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-VALUES (7, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47, 200, 5.6, 'test7');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (7, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test7');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-VALUES (8, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47, 10, 5.6, 'test8');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (8, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test8');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-VALUES (9, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47, 4, 5.6, 'test9');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (9, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test9');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-VALUES (10, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47, 1, 5.6, 'test10');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (10, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test10');
 
-INSERT INTO players(id, profile_photo, total_games, total_time_games, avg_time_games, max_time_game, min_time_game, total_points_all_games, avg_total_points, favorite_island, favorite_treasure, max_points_of_games, min_points_of_games, total_wins, avg_wins, username) 
-VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 5, 3600, 720.0, 800, 610, 321, 64.2, 2, 'STIR', 81, 47, 0, 5.6, 'test11');
+INSERT INTO players(id, profile_photo, username) 
+    VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11');
+
 -- GAMES
-INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started,start_time) 
-VALUES ('Prueba0', 'ABCD124', 7, 5, 1, 1,'PUBLIC', false, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, actual_player, player_id, deck_id, privacity,has_started,start_time,end_time,duration) 
+VALUES (1, 'Prueba0', 'ABCD124', 5, 1, 1,'PUBLIC', false, '2021-11-18 20:00:00', '2021-11-18 23:00:00',230);
 
- INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
- VALUES ('Prueba1', 'ABCD123', 4, 2,1, 2,'PUBLIC', false, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, actual_player,player_id, deck_id, privacity,has_started,start_time,duration) 
+VALUES (2, 'Prueba1', 'ABCD123', 2,1, 2,'PUBLIC', false, '2021-11-18 23:00:00',100);
 
- INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started,start_time) 
- VALUES ('Prueba2', 'ABCD122', 2, 1,1, 3,'PRIVATE', false, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, actual_player,player_id, deck_id, privacity,has_started,start_time,duration) 
+VALUES (3, 'Prueba2', 'ABCD122', 1,1, 3,'PRIVATE', false, '2021-11-18 23:00:00',20);
 
- INSERT INTO games(name,code, number_of_turn, actual_player, player_id, deck_id, privacity,has_started, start_time) 
- VALUES ('Prueba3', 'ABCD121', 3, 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00');
+INSERT INTO games(id, name,code, actual_player, player_id, deck_id, privacity,has_started, start_time,duration) 
+VALUES (4, 'Prueba3', 'ABCD121', 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00',300);
 
- INSERT INTO games(name,code, number_of_turn, actual_player,player_id, deck_id, privacity,has_started, start_time) 
- VALUES ('Prueba4', 'ABCD120', 1, 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00');
+INSERT INTO games(id, name,code, actual_player,player_id, deck_id, privacity,has_started, start_time,duration) 
+VALUES (5, 'Prueba4', 'ABCD120', 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00',300);
 -- TODO: AQUI HAY QUE QUITAR ATRIBUTOS NUEVOS METIDOS
 
 -- BOARDS
@@ -192,6 +193,8 @@ INSERT INTO achievements(id, name, description, icon, min_value, achievement_typ
     VALUES (2, 'Silver_loses', 'Loses 200 times.', 'https://www.pngall.com/wp-content/uploads/2017/03/Silver-Medal-PNG-HD.png', 200, 'SILVER', 'LOSES');
 INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
     VALUES (3, 'Gold_loses', 'Loses 300 times.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'LOSES');
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
+    VALUES (4, 'Gold_points', 'Get 2 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 2, 'GOLD', 'POINTS');
 
 -- CELLS
 INSERT INTO cells(id, x_position, y_position, card) VALUES (1,'0','0','DOUBLON');
@@ -259,7 +262,52 @@ INSERT INTO games_players(game_id, player_id) VALUES (4, 2);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 2);
 
+-- STATISTICS
+INSERT INTO statistics(id, player_id, game_id, points, had_won)
+    VALUES (1, 1, 1, 70, true);
 
+INSERT INTO statistics(id, player_id, game_id, points, had_won)
+    VALUES (2, 2, 1, 40, false);
+
+INSERT INTO statistics(id, player_id, game_id, points, had_won)
+    VALUES (3, 3, 1, 50, false);
+
+INSERT INTO statistics(id, player_id, game_id, points, had_won)
+    VALUES (4, 1, 2, 30, true);
+
+    
+-- STATISTICS CARDS-COUNT
+-- STATISTIC - 1
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 1, 2);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 24, 3);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 21, 4);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 34, 30);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 16, 6);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (1, 11, 7);
+
+-- STATISTIC - 2
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 18, 3);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 21, 30);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 39, 5);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 40, 6);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 55, 7);
+INSERT INTO statistic_cards_count(statistic_id, card_id, card_count) VALUES (2, 60, 8);
+
+-- STATISTICS ISLANDS-COUNT
+-- STATISTIC - 1
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 1, 1);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 2, 2);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 3, 3);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 4, 4);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 5, 5);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (1, 6, 6);
+-- STATISTIC - 2
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 1, 2);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 2, 3);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 3, 4);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 4, 5);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 5, 6);
+INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 6, 1);
 
 -- -- PLAYERS-INVITATIONS
 -- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
