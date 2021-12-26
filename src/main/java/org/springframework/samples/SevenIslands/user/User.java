@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +21,7 @@ public class User{
 	@Id
 	String username;
 	
-	@NotEmpty
-	@Pattern(regexp ="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}:;<>,.?~_+-=|]).{9,}$")
-	// @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[ª@~$€!¡¿?|#º/\\<>{}+-])[A-Za-z\\d@$!%*?&]{9,}$",message="Must contain at least one number and one uppercase and lowercase letter, and at least 9 or more characters")  
+	@PasswordConstraint
 	String password;
 	
 	boolean enabled;
