@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
 import org.springframework.samples.SevenIslands.board.BoardService;
@@ -49,6 +50,9 @@ public class GameController {
 
     @Autowired
     private PlayerController playerController;
+
+    @Autowired
+    private GameController gameController;
 
     @Autowired
     private DeckService deckService;
@@ -153,11 +157,18 @@ public class GameController {
         Player p = securityService.getCurrentPlayer();
         Game g = gameService.findGamesByRoomCode(gameCode).iterator().next();
         Boolean inGame = securityService.getCurrentPlayer().getInGame();
+       
+        Game gocla = gameService.waitingRoom(p.getId());
+        
         //TODO refactorizar
         if(inGame && !g.getPlayers().contains(p)){ // FIXME: al empezar una partida, como se refresca, detecta que está en un juego y redirige a error
             return "/error";                                        //Hasta que no termine el juego que abandonó no puede unirse a otro
-        } else if(g==null){
-            return "redirect:/welcome";// FIXME: COMPROBAR A 27 DE DICIEMBRE
+        } else if(gocla != null){
+            if(gameService.isWaitingOnRoom(p.getId()) && !gameService.waitingRoom(p.getId()).getCode().equals(gameCode)){
+                request.getSession().setAttribute("message", "You are waiting for start a game actually, can´t join an another game");
+                return gameController.publicRooms(model, request);
+            }
+           
         }
 
 		model.put("now", new Date());
@@ -167,7 +178,7 @@ public class GameController {
             return gameService.getLobby(gameOpt, model, request);
         
         } else {    // If user is not logged
-            return securityService.redirectToWelcome(request);           
+            return securityService.redirectToWelcome(request);        
         }
 
         
@@ -252,6 +263,7 @@ public class GameController {
             if (securityService.isAdmin()) {
                 return adminController.rooms(modelMap, request);
             } else {
+                
                 return playerController.games(modelMap, request);
             }
             

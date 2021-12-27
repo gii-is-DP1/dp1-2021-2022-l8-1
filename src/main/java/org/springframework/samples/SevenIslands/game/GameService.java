@@ -253,7 +253,7 @@ public class GameService {
 
     @Transactional
     public boolean isWaitingOnRoom(int playerId){ //Check if the player is waiting on a room
-        Collection<Game> games = findByOwnerId(playerId);
+        Collection<Game> games = findGamesByPlayerId(playerId);
         if(games.stream().anyMatch(x->x.isHas_started()==false)){
             return true;
         } else {
@@ -263,7 +263,7 @@ public class GameService {
 
     @Transactional
     public Game waitingRoom(int playerId){ //Return the waiting room
-        Collection<Game> games = findByOwnerId(playerId);
+        Collection<Game> games = findGamesByPlayerId(playerId);
         if(games.stream().anyMatch(x->x.isHas_started()==false)){
             return games.stream().filter(x->x.isHas_started()==false).findFirst().get();
         } else {
