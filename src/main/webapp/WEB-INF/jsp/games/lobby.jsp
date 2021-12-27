@@ -6,7 +6,7 @@
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
-<sevenislands:gameLayout title="Lobby" pageName="Lobby">
+<sevenislands:lobbyLayout title="Lobby" pageName="Lobby">
 
     <span id="left-section">
         <h2>Game details</h2>
@@ -188,4 +188,4 @@
         
     </script>
 
-</sevenislands:gameLayout>
+</sevenislands:lobbyLayout>

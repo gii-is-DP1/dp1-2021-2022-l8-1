@@ -1,0 +1,58 @@
+
+//  LAYOUT
+
+#mid-game-section {
+    background-color: @spring-light-blue;
+    position: relative;
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    #turn-section {
+        width: 100%;
+        min-height: 55px;
+        background: red;
+
+        h3 {
+            width: 140px;
+            margin: 20px 20px auto auto;
+            color: @spring-light-grey;
+            border-bottom: solid 1px @spring-light-grey;
+            padding-left: 10px;
+        }
+    }
+    
+    #central-section {
+        width: 100%;
+        min-height: 300px;
+        background: rgb(0, 255, 234);
+        display: flex;
+        justify-content: space-evenly;
+
+        > * {
+            margin: 20px;
+            min-height: 100px;
+            background: pink;
+            background-color: @spring-grey;
+            border: 1px solid #bbbbbb;
+            box-shadow: 0 0 5px 1px #60606047;    
+        }
+
+        #players-section {
+            flex-grow: 0.2;
+        }
+        
+        #game-section {
+            flex-grow: 0.7;
+        }
+    }
+    
+    #deck-section {
+        width: 100%;
+        min-height: 120px;
+        background: red;
+    }
+
+}

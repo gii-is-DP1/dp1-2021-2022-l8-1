@@ -7,15 +7,22 @@
 
 
 
-<sevenislands:layout pageName="board">
+<sevenislands:gameLayout pageName="Board" title="" subtitle="${'GAME: '.concat(game.name)}">
     
-    
-    <div id="top-section">
-        <img id="profile-avatar" src="/resources/images/profile-photo.png">
-        <h2><c:out value="${game.name}"/></h2>
-    </div>
     <!--<p> Your will lose your turn in <span id="countdowntimer"> 10 </span> Seconds</p>-->
-    <c:out value="${tempo}"></c:out>
+    <div id="turn-section">
+        <h3>Turn: 00:00</h3>
+    </div>
+    
+    <div id="central-section">
+
+        <div id="players-section"></div>
+        <div id="game-section"></div>
+
+    </div>
+    <div id="deck-section"></div>
+
+    <!-- <c:out value="${tempo}"></c:out>
     <div>
         <div class="col-md-4">
             <div class="islandsList">
@@ -117,9 +124,9 @@
 
     <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
     
-    <h2><c:out value="${game.valueOfDie}"/></h2>
+    <h2><c:out value="${game.valueOfDie}"/></h2> -->
 
 
     
    
-</sevenislands:layout>
+</sevenislands:gameLayout>

@@ -18,8 +18,6 @@
 <div id="body-section">
     <div id="top-section">
         <h2 id="title"><c:out value="${title}"></c:out></h2>
-
-        <h2 id="sub-title"><c:out value="${subtitle}"></c:out></h2>
     </div>
 
     <c:if test="${not empty message}" >
@@ -31,7 +29,17 @@
         </div>
     </c:if>
 
-    <div id="mid-game-section">
+    <div id="mid-section" style="background-color: transparent !important;">
+        <div id="background">
+            <div id="sun">
+                <div id="sun-shadow"></div>
+            </div>
+            <div class="waves">
+                    <div class="wave circulo a" ></div>
+                    <div class="wave circulo b" ></div>
+                    <div class="wave circulo c" ></div>
+            </div>
+        </div>
         <jsp:doBody/>
     </div>
 

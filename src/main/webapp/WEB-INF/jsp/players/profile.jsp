@@ -61,11 +61,11 @@
                 </tr>
                 <tr>
                     <th class="table-title">Favorite Island</th>
-                    <th> <c:out value="${favIsland  == 'noData' ? '' : favIsland}" /> </th>
+                    <th> <c:out value="${favIsland}" /> </th>
                 </tr>
                 <tr>
                     <th class="table-title">Favorite Treasure</th>
-                    <th> <c:out value="${favCard  == 'noData' ? '' : favCard}" /> </th>
+                    <th> <c:out value="${favCard}" /> </th>
                 </tr>
             </table>
         </div>
