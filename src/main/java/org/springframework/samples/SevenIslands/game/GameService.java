@@ -250,4 +250,24 @@ public class GameService {
         List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(x-> x.getName()).collect(Collectors.toList());
         return listWords.stream().anyMatch(word-> game.getName().toLowerCase().contains(word));
     }
+
+    @Transactional
+    public boolean isWaitingOnRoom(int playerId){ //Check if the player is waiting on a room
+        Collection<Game> games = findByOwnerId(playerId);
+        if(games.stream().anyMatch(x->x.isHas_started()==false)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Transactional
+    public Game waitingRoom(int playerId){ //Return the waiting room
+        Collection<Game> games = findByOwnerId(playerId);
+        if(games.stream().anyMatch(x->x.isHas_started()==false)){
+            return games.stream().filter(x->x.isHas_started()==false).findFirst().get();
+        } else {
+            return null;
+        }
+    }
 }
