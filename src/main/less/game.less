@@ -110,7 +110,7 @@
 
                     img {
                         width: 45px;
-                        filter: inver(1);
+                        filter: invert(1);
                     }
                 }
 
@@ -118,9 +118,14 @@
                     animation: 2s game-btn-pending cubic-bezier(0.46, 0.03, 0.52, 0.96) infinite alternate;
                 }
 
-                .game-btn:hover {
+                .game-btn-pending:hover {
                     box-shadow: 0 0 0 5px yellow;
                     cursor: pointer;
+                }
+
+                .game-btn-disabled {
+                    filter: contrast(0.5);
+                    pointer-events: none;
                 }
 
                 #dice {

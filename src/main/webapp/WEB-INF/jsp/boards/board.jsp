@@ -32,12 +32,8 @@
 
             <div id="actions-section">
 
-                <a class="game-btn"></a>
-                <a class="game-btn"></a>
-                <a id="dice-btn" class="game-btn game-btn-pending">
-                    <p>Roll the dice</p>
-                    <img src="/resources/images/dice/dice_icon.png" alt="Roll the dice">
-                </a>
+                <sevenislands:gameButton type="island" pending="false"/>
+                <sevenislands:gameButton type="dice" pending="true"/>
 
                 <div id="dice">
                     <img src="/resources/images/dice/Dice1.png" alt="Dice">
