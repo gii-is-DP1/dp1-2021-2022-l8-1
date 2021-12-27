@@ -16,7 +16,12 @@
     
     <div id="central-section">
 
-        <div id="players-section"></div>
+        <div id="players-section">
+            <h2>Players</h2>
+            <sevenislands:playerList 
+                    players="${game.players}"
+                    activePlayerId="12"/>
+        </div>
         <div id="game-section"></div>
 
     </div>

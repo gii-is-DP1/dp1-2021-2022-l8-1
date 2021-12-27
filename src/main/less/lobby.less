@@ -99,8 +99,7 @@ position: absolute;
         border-radius: 15px;
         box-shadow: inset 5px 5px 5px -5px #ffffff3b,
                     0 2px 7px 1px #00000059;
-        animation: 3s player-item cubic-bezier(0.46, 0.03, 0.52, 0.96) infinite alternate;
-
+        
         a {
             width: 100%;
             padding: 10px;
@@ -122,6 +121,15 @@ position: absolute;
             aspect-ratio: 1;
             border-radius: 50%;
         }
+    }
+
+    .player-item-active {
+        border: yellow solid 5px;
+        box-shadow: 0px 0px 4px 3px #00000075;
+    }
+
+    .player-item-animated {
+        animation: 3s player-item cubic-bezier(0.46, 0.03, 0.52, 0.96) infinite alternate;
     }
 }
 
