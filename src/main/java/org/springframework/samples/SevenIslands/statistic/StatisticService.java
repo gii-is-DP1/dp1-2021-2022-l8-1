@@ -1,14 +1,19 @@
 package org.springframework.samples.SevenIslands.statistic;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.card.CardService;
+import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
+import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerRepository;
+import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class StatisticService {
 
     @Autowired
-    public StatisticRepository statisticRepo;
+    public StatisticRepository statisticRepo;  // TODO: change to service
 
     @Autowired
-    public PlayerRepository playerRepo;
+    public PlayerRepository playerRepo; // TODO: change to service
+
+    @Autowired
+    public PlayerService playerService;
 
     @Autowired
     public GameService gameService;
@@ -31,9 +39,10 @@ public class StatisticService {
     public CardService cardService;
 
     @Autowired
-	public StatisticService(StatisticRepository statisticRepo, PlayerRepository playerRepo, IslandService islandService, CardService cardService, GameService gameService) {
+	public StatisticService(StatisticRepository statisticRepo, PlayerRepository playerRepo, PlayerService playerService, IslandService islandService, CardService cardService, GameService gameService) {
         this.statisticRepo = statisticRepo;
         this.playerRepo = playerRepo;
+        this.playerService = playerService;
         this.islandService = islandService;
         this.cardService = cardService;
         this.gameService = gameService;
@@ -175,6 +184,23 @@ public class StatisticService {
         int sum = statisticRepo.getCountingIslandById(id, islandId);
         
         statisticRepo.updateIslandCount(id,islandId,sum + 1);
+    }
+
+    public void setFinalStatistics(List<Player> players, LinkedHashMap<Player, Integer> playersByPunctuation, Game game) {
+        //TODO PROBAR ESTO 
+        // Set statistics
+        for(Player player : players){
+            Integer punctuation = playersByPunctuation.get(player);
+            player.getStatistic().stream().filter(x->x.getGame()==game).findFirst().get().setPoints(punctuation);
+            player.getStatistic().stream().filter(x->x.getGame()==game).findFirst().get().setHad_won(false);  
+        }
+        
+        // Set winner
+        players.iterator().next().getStatistic().stream().filter(x->x.getGame()==game).findFirst().get().setHad_won(true);
+        
+        // Save players
+        players.forEach(player -> playerService.save(player));
+        //HASTA AQUI
     }
 
     

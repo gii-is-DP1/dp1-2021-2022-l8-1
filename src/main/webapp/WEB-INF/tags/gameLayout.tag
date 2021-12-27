@@ -5,6 +5,7 @@
 <%@ attribute name="pageName" required="true" %>
 <%@ attribute name="customScript" required="false" fragment="true"%>
 <%@ attribute name="title" required="false"%>
+<%@ attribute name="subtitle" required="false"%>
 
 <!doctype html>
 <html>
@@ -28,7 +29,17 @@
         </div>
     </c:if>
 
-    <div id="mid-section">
+    <div id="mid-section" style="background-color: transparent !important;">
+        <div id="background">
+            <div id="sun">
+                <div id="sun-shadow"></div>
+            </div>
+            <div class="waves">
+                    <div class="wave circulo a" ></div>
+                    <div class="wave circulo b" ></div>
+                    <div class="wave circulo c" ></div>
+            </div>
+        </div>
         <jsp:doBody/>
     </div>
 
