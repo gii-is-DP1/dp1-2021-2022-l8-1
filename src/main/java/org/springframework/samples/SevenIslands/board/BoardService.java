@@ -1,14 +1,13 @@
 package org.springframework.samples.SevenIslands.board;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -26,6 +25,7 @@ import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.statistic.Statistic;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
+import org.springframework.samples.SevenIslands.util.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -136,7 +136,7 @@ public class BoardService {
     }
 
     @Transactional
-    public Map<Integer, Integer> initMapPoints(){
+    public Map<Integer, Integer> getPointsPerSet(){
         
         Map<Integer, Integer> values = new HashMap<>();
 
@@ -151,6 +151,63 @@ public class BoardService {
         values.put(9, 60); 
     
         return values;
+    }
+
+    public Integer calcPoints(Integer numOfPoints, List<String> cards) {
+        Map<Integer, Integer> pointsPerSet = this.getPointsPerSet();
+
+        List<Set<String>> listOfSets = new ArrayList<>();
+        while(cards.size()!=0){
+            Set<String> notDuplicatedCard = new HashSet<>(cards);
+            listOfSets.add(notDuplicatedCard);
+            cards.removeAll(notDuplicatedCard);
+        }
+        
+        for(Set<String> setOfCards : listOfSets){
+            Integer sizeOfSet = setOfCards.size();
+            numOfPoints += pointsPerSet.get(sizeOfSet);
+        }
+
+        return numOfPoints;
+    }
+
+    public Map<Player, Pair> calcValuesPerPlayer(List<Player> players) {
+        Map<Player, Pair> valuesPerPlayer = new HashMap<>();
+
+        for(Player player : players){
+            Integer numOfDoublons = (int) player.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count();
+            Integer numOfPoints = (int) player.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count(); 
+            List<String> cards = player.getCards().stream().filter(x->!x.getCardType().equals(CARD_TYPE.DOUBLON)).map(x->x.getCardType().toString()).collect(Collectors.toList());
+            
+            numOfPoints = this.calcPoints(numOfPoints, cards);
+
+            Pair pointsDoublons = new Pair(numOfPoints,numOfDoublons);
+    
+            valuesPerPlayer.put(player, pointsDoublons);
+            player.setInGame(false);
+            playerService.save(player);
+        }
+
+        return valuesPerPlayer;
+    }
+
+    public LinkedHashMap<Player, Integer> calcPlayersByPunctuation(List<Player> playersAtStart, List<Player> players) {
+        Map<Player, Pair> valuesPerPlayers = this.calcValuesPerPlayer(players);
+        
+        LinkedHashMap<Player, Integer> playersByPunctuation = new LinkedHashMap<>();
+        // Sort playersByPunctuation
+        valuesPerPlayers.entrySet()
+            .stream()
+            .sorted(Map.Entry.comparingByValue((e1,e2) -> e2.compareTo(e1)))
+            .forEachOrdered(x -> playersByPunctuation.put(x.getKey(), x.getValue().x));
+
+        // Set at 0 abbandoned players
+        for(Player player : playersAtStart) {
+            Boolean playerHasAbbandoned = !playersByPunctuation.containsKey(player);
+            if(playerHasAbbandoned) playersByPunctuation.put(player, 0);
+        }
+
+        return playersByPunctuation;
     }
 
 }

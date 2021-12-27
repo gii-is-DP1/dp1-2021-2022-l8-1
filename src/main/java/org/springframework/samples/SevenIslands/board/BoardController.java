@@ -3,12 +3,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.admin.AdminService;
-import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
@@ -29,19 +24,16 @@ import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
-import org.springframework.samples.SevenIslands.statistic.Statistic;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
-import org.springframework.samples.SevenIslands.util.Pair;
 import org.springframework.samples.SevenIslands.util.SecurityService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.security.access.method.P;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -124,9 +116,8 @@ public class BoardController {
             game.setTurnTime(LocalDateTime.now());
 
             request.getSession().setAttribute("playersAtStart", playersAtStart);
-            
 
-        }else if(game.getPlayers().stream().filter(x->x.getInGame()).count()==1L){                     
+        }else if(game.getPlayers().stream().filter(x->x.getInGame()).count()==1L || game.getActualPlayer()==0 && game.getDeck().getCards().isEmpty()){                     
 
             game.setEndTime(LocalDateTime.now());
             game.setDuration((int) ChronoUnit.SECONDS.between(game.getStartTime(), game.getEndTime()));
@@ -135,18 +126,7 @@ public class BoardController {
 
 
         }else if(pl != game.getPlayers().get(game.getActualPlayer())){         //para que aunque refresque uno que no es su turno no incremente el turno
-
-            if(game.getActualPlayer()==0 && game.getDeck().getCards().size()==0){              
-                //Redirect a nueva vista fin del juego
-                game.setEndTime(LocalDateTime.now());
-                game.setDuration((int) ChronoUnit.SECONDS.between(game.getStartTime(), game.getEndTime()));
-                gameService.save(game);
-                return "redirect:/boards/"+ code+"/endGame";
-
-            }
            
-            game.setTurnTime(LocalDateTime.now());
-            game.setDieThrows(false);
             request.getSession().removeAttribute("message");
             request.getSession().removeAttribute("options");
             
@@ -203,6 +183,19 @@ public class BoardController {
         
 
         modelMap.addAttribute("islands", gameService.findGamesByRoomCode(code).iterator().next().getBoard().getIslands());
+
+
+        if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())<=5){               //Jugador aún no sabe los jugadores actuales
+            List<Player> players = game.getPlayers();
+            List<Integer> playersAtStart = new ArrayList<Integer>();
+            players.forEach(p -> {
+                p.setInGame(true);
+                playerService.save(p);
+                playersAtStart.add(p.getId());
+            });    
+            request.getSession().setAttribute("playersAtStart", playersAtStart);
+        }
+
         return view;
     }
 
@@ -215,6 +208,8 @@ public class BoardController {
         Integer n = game.getPlayers().size();
 
         game.setActualPlayer((game.getActualPlayer()+1)%n);
+        game.setTurnTime(LocalDateTime.now());
+        game.setDieThrows(false);
         gameService.save(game);
 
         return "redirect:/boards/"+ code;
@@ -382,84 +377,23 @@ public class BoardController {
     @GetMapping(path = "/{code}/endGame")
     public String endGame(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
 
-        Game g = gameService.findGamesByRoomCode(code).iterator().next();
-
-        List<Integer> playersAtStart = (List<Integer>) request.getSession().getAttribute("playersAtStart");
-
+        Game game = gameService.findGamesByRoomCode(code).iterator().next();
+        List<Player> players = game.getPlayers();
+        List<Integer> playersIdAtStart = (List<Integer>) request.getSession().getAttribute("playersAtStart");
+        List<Player> playersAtStart = playersIdAtStart.stream().map(id -> playerService.findPlayerById(id).get()).collect(Collectors.toList());
     
-        if(g.getEndTime()==null){
-            
-            return "/error";
-
-        }
-
-
-        Map<Integer, Integer> values = boardService.initMapPoints();
-
-        Map<Player, Pair> valuesPerPlayer = new HashMap<>();
-
-        for(Player player : g.getPlayers()){  
-            Integer numOfDoublons = (int) player.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count();
-            Integer numOfPoints = (int) player.getCards().stream().filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).count(); 
-            List<String> allCards = player.getCards().stream().filter(x->!x.getCardType().equals(CARD_TYPE.DOUBLON)).map(x->x.getCardType().toString()).collect(Collectors.toList());
-            List<Set<String>> listOfSets = new ArrayList<>();
-            while(allCards.size()!=0){
-                
-                Set<String> notDuplicateCard = new HashSet<>(allCards); 
-                listOfSets.add(notDuplicateCard); 
-                allCards.removeAll(notDuplicateCard); 
-            }
-            
-            for(Set<String> setOfCards : listOfSets){
-                Integer sizeOfSet = setOfCards.size();
-                numOfPoints += values.get(sizeOfSet);
-            }
-
-            Pair pointsDoublons = new Pair(numOfPoints,numOfDoublons);
-    
-            valuesPerPlayer.put(player, pointsDoublons);
-            
-            player.setInGame(false);    
-            playerService.save(player);
-        }
+        if(game.getEndTime()==null) return "/error";
         
-        LinkedHashMap<Player, Integer> sortedMap = new LinkedHashMap<>();
-        valuesPerPlayer.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue((e1,e2) -> e2.compareTo(e1)))
-            .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue().x));
+        LinkedHashMap<Player, Integer> playersByPunctuation = 
+                boardService.calcPlayersByPunctuation(playersAtStart, players);
 
-        
-        for(Integer i : playersAtStart) {
-            Player p = playerService.findPlayerById(i).get();
+        statisticService.setFinalStatistics(playersAtStart, playersByPunctuation, game);
 
-            if(!sortedMap.containsKey(p)){
-                sortedMap.put(p, 0);
-            }
-        
-        }
+        modelMap.put("playersByPunctuation", playersByPunctuation);
 
-        //TODO PROBAR ESTO 
-        for(Player y : sortedMap.keySet()){
-            int p = sortedMap.get(y);
-            y.getStatistic().stream().filter(x->x.getGame()==g).findFirst().get().setPoints(p);
-            y.getStatistic().stream().filter(x->x.getGame()==g).findFirst().get().setHad_won(false);
-            
-        }
-        sortedMap.keySet().iterator().next().getStatistic().stream().filter(x->x.getGame()==g).findFirst().get().setHad_won(true);
-        
-        for(Player y : sortedMap.keySet()){
-            playerService.save(y);            
-        }
-        //HASTA AQUI
-
-        modelMap.put("pointsOfPlayer", sortedMap);
-
-        request.getSession().removeAttribute("playersAtStart");
+        // request.getSession().removeAttribute("playersAtStart");
 
         return "games/endGame";
-        
-        
     }
 
     @GetMapping(path = "/{code}/leaveGame")
