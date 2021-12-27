@@ -16,6 +16,7 @@ import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
+import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,17 +48,27 @@ public class GameController {
     @Autowired
     private DeckService deckService;
 
+
     private static final String VIEW_CREATE_OR_UPDATE_GAME_FORM = "games/createOrUpdateGameForm";
     
     @GetMapping(path = "/new")
-    public String createGame(Player player, ModelMap modelMap, HttpServletRequest request) {
+    public String createGame(Player player, ModelMap modelMap, HttpServletRequest request) { //AQUI PLAYER player no se usa para nada, está mal, no lo pilla de ningun lado
+        Player p = securityService.getCurrentPlayer();
         if(securityService.isAdmin()) {
             request.getSession().setAttribute("message", "You must be a player to create a game");
             return "redirect:/games/rooms";
         
-        } else if(securityService.isAuthenticatedUser() && !player.getInGame()) {
+        } else if(securityService.isAuthenticatedUser() && !p.getInGame()) {
             modelMap.addAttribute("game", new Game());
             return VIEW_CREATE_OR_UPDATE_GAME_FORM;
+        
+        }else if(p.getInGame()) {
+            Game game = gameService.waitingRoom(p.getId());
+            return "redirect:/boards/"+game.getCode();
+        
+        }else if(gameService.isWaitingOnRoom(p.getId())) {
+            Game game = gameService.waitingRoom(p.getId());
+            return "redirect:/" + game.getCode() + "/lobby";
         
         } else {
             return securityService.redirectToWelcome(request);
@@ -140,6 +151,8 @@ public class GameController {
         //TODO refactorizar
         if(inGame && !g.getPlayers().contains(p)){ // FIXME: al empezar una partida, como se refresca, detecta que está en un juego y redirige a error
             return "/error";                                        //Hasta que no termine el juego que abandonó no puede unirse a otro
+        } else if(g==null){
+            return "redirect:/welcome";// FIXME: COMPROBAR A 27 DE DICIEMBRE
         }
 
         //Refresh 
