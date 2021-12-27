@@ -24,7 +24,7 @@ public class Card extends BaseEntity {
     private CARD_TYPE cardType;
     
     @Column(name = "image_url")
-    //@NotEmpty
-    private String imageUrl; // TODO: needs to be added in data.sql
+    @NotEmpty
+    private String imageUrl;
     
 }

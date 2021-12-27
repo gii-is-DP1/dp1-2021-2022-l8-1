@@ -70,54 +70,54 @@ INSERT INTO cards(id,card_type,image_url) VALUES (25, 'DOUBLON', '/resources/ima
 INSERT INTO cards(id,card_type,image_url) VALUES (26, 'DOUBLON', '/resources/images/cards/Doublon.png');
 INSERT INTO cards(id,card_type,image_url) VALUES (27, 'DOUBLON', '/resources/images/cards/Doublon.png');
 
-INSERT INTO cards(id,card_type) VALUES (28, 'GOLDEN_CUP');
-INSERT INTO cards(id,card_type) VALUES (29, 'GOLDEN_CUP');
-INSERT INTO cards(id,card_type) VALUES (30, 'GOLDEN_CUP');
+INSERT INTO cards(id,card_type,image_url) VALUES (28, 'GOLDEN_CUP', '/resources/images/cards/GoldenCup.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (29, 'GOLDEN_CUP', '/resources/images/cards/GoldenCup.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (30, 'GOLDEN_CUP', '/resources/images/cards/GoldenCup.png');
 
-INSERT INTO cards(id,card_type) VALUES (31, 'RUBY');
-INSERT INTO cards(id,card_type) VALUES (32, 'RUBY');
-INSERT INTO cards(id,card_type) VALUES (33, 'RUBY');
+INSERT INTO cards(id,card_type,image_url) VALUES (31, 'RUBY', '/resources/images/cards/Ruby.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (32, 'RUBY', '/resources/images/cards/Ruby.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (33, 'RUBY', '/resources/images/cards/Ruby.png');
 
 
-INSERT INTO cards(id,card_type) VALUES (34, 'DIAMOND');
-INSERT INTO cards(id,card_type) VALUES (35, 'DIAMOND');
-INSERT INTO cards(id,card_type) VALUES (36, 'DIAMOND');
+INSERT INTO cards(id,card_type,image_url) VALUES (34, 'DIAMOND', '/resources/images/cards/Diamond.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (35, 'DIAMOND', '/resources/images/cards/Diamond.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (36, 'DIAMOND', '/resources/images/cards/Diamond.png');
 
-INSERT INTO cards(id,card_type) VALUES (37, 'PEARL_NECKLACE');
-INSERT INTO cards(id,card_type) VALUES (38, 'PEARL_NECKLACE');
-INSERT INTO cards(id,card_type) VALUES (39, 'PEARL_NECKLACE');
-INSERT INTO cards(id,card_type) VALUES (40, 'PEARL_NECKLACE');
+INSERT INTO cards(id,card_type,image_url) VALUES (37, 'PEARL_NECKLACE', '/resources/images/cards/PearlNecklace.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (38, 'PEARL_NECKLACE', '/resources/images/cards/PearlNecklace.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (39, 'PEARL_NECKLACE', '/resources/images/cards/PearlNecklace.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (40, 'PEARL_NECKLACE', '/resources/images/cards/PearlNecklace.png');
 
-INSERT INTO cards(id,card_type) VALUES (41, 'CROWN');
-INSERT INTO cards(id,card_type) VALUES (42, 'CROWN');
-INSERT INTO cards(id,card_type) VALUES (43, 'CROWN');
-INSERT INTO cards(id,card_type) VALUES (44, 'CROWN');
+INSERT INTO cards(id,card_type,image_url) VALUES (41, 'CROWN', '/resources/images/cards/Crown.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (42, 'CROWN', '/resources/images/cards/Crown.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (43, 'CROWN', '/resources/images/cards/Crown.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (44, 'CROWN', '/resources/images/cards/Crown.png');
 
-INSERT INTO cards(id,card_type) VALUES (45, 'MESSAGE_BOTTLE');
-INSERT INTO cards(id,card_type) VALUES (46, 'MESSAGE_BOTTLE');
-INSERT INTO cards(id,card_type) VALUES (47, 'MESSAGE_BOTTLE');
-INSERT INTO cards(id,card_type) VALUES (48, 'MESSAGE_BOTTLE');
+INSERT INTO cards(id,card_type,image_url) VALUES (45, 'MESSAGE_BOTTLE', '/resources/images/cards/MessageBottle.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (46, 'MESSAGE_BOTTLE', '/resources/images/cards/MessageBottle.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (47, 'MESSAGE_BOTTLE', '/resources/images/cards/MessageBottle.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (48, 'MESSAGE_BOTTLE', '/resources/images/cards/MessageBottle.png');
 
-INSERT INTO cards(id,card_type) VALUES (49, 'BARREL_OF_RUM');
-INSERT INTO cards(id,card_type) VALUES (50, 'BARREL_OF_RUM');
-INSERT INTO cards(id,card_type) VALUES (51, 'BARREL_OF_RUM');
-INSERT INTO cards(id,card_type) VALUES (52, 'BARREL_OF_RUM');
-INSERT INTO cards(id,card_type) VALUES (53, 'BARREL_OF_RUM');
-INSERT INTO cards(id,card_type) VALUES (54, 'BARREL_OF_RUM');
+INSERT INTO cards(id,card_type,image_url) VALUES (49, 'BARREL_OF_RUM', '/resources/images/cards/BarrelOfRum.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (50, 'BARREL_OF_RUM', '/resources/images/cards/BarrelOfRum.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (51, 'BARREL_OF_RUM', '/resources/images/cards/BarrelOfRum.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (52, 'BARREL_OF_RUM', '/resources/images/cards/BarrelOfRum.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (53, 'BARREL_OF_RUM', '/resources/images/cards/BarrelOfRum.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (54, 'BARREL_OF_RUM', '/resources/images/cards/BarrelOfRum.png');
 
-INSERT INTO cards(id,card_type) VALUES (55, 'STIR');
-INSERT INTO cards(id,card_type) VALUES (56, 'STIR');
-INSERT INTO cards(id,card_type) VALUES (57, 'STIR');
-INSERT INTO cards(id,card_type) VALUES (58, 'STIR');
-INSERT INTO cards(id,card_type) VALUES (59, 'STIR');
-INSERT INTO cards(id,card_type) VALUES (60, 'STIR');
+INSERT INTO cards(id,card_type,image_url) VALUES (55, 'STIR', '/resources/images/cards/Stir.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (56, 'STIR', '/resources/images/cards/Stir.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (57, 'STIR', '/resources/images/cards/Stir.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (58, 'STIR', '/resources/images/cards/Stir.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (59, 'STIR', '/resources/images/cards/Stir.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (60, 'STIR', '/resources/images/cards/Stir.png');
 
-INSERT INTO cards(id,card_type) VALUES (61, 'SWORD');
-INSERT INTO cards(id,card_type) VALUES (62, 'SWORD');
-INSERT INTO cards(id,card_type) VALUES (63, 'SWORD');
-INSERT INTO cards(id,card_type) VALUES (64, 'SWORD');
-INSERT INTO cards(id,card_type) VALUES (65, 'SWORD');
-INSERT INTO cards(id,card_type) VALUES (66, 'SWORD');
+INSERT INTO cards(id,card_type,image_url) VALUES (61, 'SWORD', '/resources/images/cards/Sword.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (62, 'SWORD', '/resources/images/cards/Sword.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (63, 'SWORD', '/resources/images/cards/Sword.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (64, 'SWORD', '/resources/images/cards/Sword.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (65, 'SWORD', '/resources/images/cards/Sword.png');
+INSERT INTO cards(id,card_type,image_url) VALUES (66, 'SWORD', '/resources/images/cards/Sword.png');
 
 
 -- DECKS-CARDS
