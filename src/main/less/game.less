@@ -1,6 +1,4 @@
 
-//  LAYOUT
-
 #mid-game-section {
     background-color: @spring-light-blue;
     position: relative;
@@ -67,6 +65,70 @@
         
         #game-section {
             flex-grow: 0.8;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: stretch;
+            justify-content: stretch;
+
+            #board-section {
+                flex-grow: 0.7;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+
+                canvas {
+                    width: 350px;
+                    border: solid 2px @spring-brown;
+                }
+            }
+
+            #actions-section {
+                flex-grow: 0.3;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                flex-wrap: wrap;
+                flex-direction: column;
+
+                .game-btn {
+                    width: 160px;
+                    height: 70px;
+                    display:flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    border-radius: 10px;
+                    text-decoration: none;
+                    background-color: @spring-brown;
+                    box-shadow: inset 5px 5px 5px -5px #ffffff3b, 0 2px 7px 1px #00000059;
+
+                    p {
+                        font-family: 'montserratregular';
+                        color: white;
+                    }
+
+                    img {
+                        width: 45px;
+                        filter: inver(1);
+                    }
+                }
+
+                .game-btn-pending {
+                    animation: 2s game-btn-pending cubic-bezier(0.46, 0.03, 0.52, 0.96) infinite alternate;
+                }
+
+                .game-btn:hover {
+                    box-shadow: 0 0 0 5px yellow;
+                    cursor: pointer;
+                }
+
+                #dice {
+                    img {
+                        width: 70px;
+                    }
+                }
+            }
         }
     }
     
@@ -99,4 +161,14 @@
         }
     }
 
+}
+
+
+@keyframes game-btn-pending {
+    0% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1);
+    }
 }

@@ -22,7 +22,29 @@
                     players="${game.players}"
                     activePlayerId="12"/>
         </div>
-        <div id="game-section"></div>
+
+        <div id="game-section">
+            <div id="board-section">
+
+                <sevenislands:board board="${board}"/>
+
+            </div>
+
+            <div id="actions-section">
+
+                <a class="game-btn"></a>
+                <a class="game-btn"></a>
+                <a id="dice-btn" class="game-btn game-btn-pending">
+                    <p>Roll the dice</p>
+                    <img src="/resources/images/dice/dice_icon.png" alt="Roll the dice">
+                </a>
+
+                <div id="dice">
+                    <img src="/resources/images/dice/Dice1.png" alt="Dice">
+                </div>
+
+            </div>
+        </div>
 
     </div>
     <div id="deck-section">
