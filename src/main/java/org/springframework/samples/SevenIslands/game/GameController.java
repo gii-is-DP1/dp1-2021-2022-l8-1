@@ -63,17 +63,17 @@ public class GameController {
             request.getSession().setAttribute("message", "You must be a player to create a game");
             return "redirect:/games/rooms";
         
+        }else if(gameService.isWaitingOnRoom(p.getId())) {
+            Game game = gameService.waitingRoom(p.getId());
+            return "redirect:/games/" + game.getCode() + "/lobby";
+        
         } else if(securityService.isAuthenticatedUser() && !p.getInGame()) {
             modelMap.addAttribute("game", new Game());
             return VIEW_CREATE_OR_UPDATE_GAME_FORM;
         
         }else if(p.getInGame()) {
-            Game game = gameService.waitingRoom(p.getId());
+            Game game = p.getGames().stream().filter(x->x.getEndTime()==null && x.isHas_started()).findFirst().get(); //JUEGO QUE ESTÁ JUGANDO AHORA MISMO
             return "redirect:/boards/"+game.getCode();
-        
-        }else if(gameService.isWaitingOnRoom(p.getId())) {
-            Game game = gameService.waitingRoom(p.getId());
-            return "redirect:/" + game.getCode() + "/lobby";
         
         } else {
             return securityService.redirectToWelcome(request);
