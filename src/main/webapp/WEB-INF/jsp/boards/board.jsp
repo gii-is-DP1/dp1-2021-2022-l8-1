@@ -25,7 +25,9 @@
         <div id="game-section"></div>
 
     </div>
-    <div id="deck-section"></div>
+    <div id="deck-section">
+        <sevenislands:deck cards="${player.cards}"></sevenislands:deck>
+    </div>
 
     <!-- <c:out value="${tempo}"></c:out>
     <div>

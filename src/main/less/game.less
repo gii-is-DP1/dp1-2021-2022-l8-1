@@ -39,7 +39,7 @@
         }
 
         #players-section {
-            flex-grow: 0.2;
+            flex-grow: 0.1;
             display: flex;
             align-items: center;
             flex-direction: column;
@@ -66,7 +66,7 @@
         }
         
         #game-section {
-            flex-grow: 0.7;
+            flex-grow: 0.8;
         }
     }
     
@@ -76,7 +76,27 @@
         background: red;
         background-color: @spring-grey;
         border: 1px solid #bbbbbb;
-        box-shadow: 0 0 5px 1px #60606047; 
+        box-shadow: 0 0 5px 1px #60606047;
+
+        .deck-list {
+            margin: 5px;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+
+            .card-item {
+                margin: 5px;
+
+                img {
+                    height: 105px;
+                    border-radius: 6px;
+                    box-shadow: inset 5px 5px 5px -5px #ffffff3b, 2px 2px 3px 1px #00000047;
+                }
+                
+            }
+        }
     }
 
 }

@@ -31,7 +31,7 @@
         <h2>Party members</h2>
 
         <div class="section-content">
-            <sevenislands:playerList players="${game.players}"/>
+            <sevenislands:playerList players="${game.players}" animated="true"/>
         </div>
 
     </span>
@@ -166,7 +166,7 @@
             let playerItems = [];
             for (let player of players) {
                 let playerItemHTML = 
-                    `<li class="player-item">
+                    `<li class="player-item player-item-animated">
                         <a href="/players/profile/\${player.id}" htmlescape="true">
 
                             <p class="username">\${player.user.username}</p>

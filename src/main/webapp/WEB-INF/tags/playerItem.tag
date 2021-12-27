@@ -6,7 +6,7 @@
 <%@ attribute name="animated" required="false" rtexprvalue="true"%>
 
 
-<li class="player-item ${active == true ? 'player-item-active' : ''} ${animated == true ? '.player-item-animated' : ''}">
+<li class="player-item ${active == true ? 'player-item-active' : ''} ${animated == true ? 'player-item-animated' : ''}">
     <a href="/players/profile/${player.id}" htmlEscape="true">
 
         <p class="username">${player.user.username}</p>
