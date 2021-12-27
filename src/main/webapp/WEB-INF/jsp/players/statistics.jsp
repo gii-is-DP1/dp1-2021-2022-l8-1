@@ -13,31 +13,31 @@
                     <table>
                         <tr>
                             <th></th>
-                            <th class="table-title">Max</th>
-                            <th class="table-title">Min</th>
-                            <th class="table-title">Average</th>
-                            <th class="table-title">Total</th>
+                            <th class="table-title">Max <span class="glyphicon glyphicon-circle-arrow-up"></span> </th>
+                            <th class="table-title">Min <span class="glyphicon glyphicon-circle-arrow-down"></span> </th>
+                            <th class="table-title">Average <span class="glyphicon glyphicon-record"></span> </th>
+                            <th class="table-title">Total <span class="glyphicon glyphicon glyphicon-plus-sign"></span> </th>
                         </tr>
                         <tr>
                             <th class="table-title">Time Played</th>
-                            <th><c:out value="${maxTime}"></c:out> s</th>
-                            <th><c:out value="${minTime}"></c:out> s</th>
-                            <th><c:out value="${avgTime}"></c:out> s</th>
-                            <th><c:out value="${totalTime}"></c:out> s</th>
+                            <sevenislands:statisticTableCell value="${maxTime}" isTime="true"/>
+                            <sevenislands:statisticTableCell value="${minTime}" isTime="true"/>
+                            <sevenislands:statisticTableCell value="${avgTime}" isTime="true"/>
+                            <sevenislands:statisticTableCell value="${totalTime}" isTime="true"/>
                         </tr>
                         <tr>
                             <th class="table-title">Points</th>
-                            <th><c:out value="${maxPoints}"></c:out></th>
-                            <th><c:out value="${minPoints}"></c:out></th>
-                            <th><c:out value="${avgPoints}"></c:out></th>
-                            <th><c:out value="${totalPoints}"></c:out></th>
+                            <sevenislands:statisticTableCell value="${maxPoints}"/>
+                            <sevenislands:statisticTableCell value="${minPoints}"/>
+                            <sevenislands:statisticTableCell value="${avgPoints}"/>
+                            <sevenislands:statisticTableCell value="${totalPoints}"/>
                         </tr>
                         <tr>
                             <th class="table-title">Games</th>
                             <th>-</th>
                             <th>-</th>
                             <th>-</th>
-                            <th><c:out value="${totalGames}"></c:out></th>
+                            <sevenislands:statisticTableCell value="${totalGames}"/>
                         </tr>
                         </table>
                     

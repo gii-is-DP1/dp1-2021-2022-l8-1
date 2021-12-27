@@ -20,6 +20,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import org.springframework.samples.SevenIslands.person.Person;
+import org.springframework.samples.SevenIslands.player.Player;
+import org.springframework.samples.SevenIslands.web.jsonview.Views;
+
 /**
  * Simple JavaBean domain object with an id property. Used as a base class for objects
  * needing this property.
@@ -27,9 +36,18 @@ import javax.persistence.MappedSuperclass;
  * @author Ken Krebs
  * @author Juergen Hoeller
  */
+@JsonTypeInfo(
+  use = JsonTypeInfo.Id.NAME, 
+  include = JsonTypeInfo.As.PROPERTY, 
+  property = "type")
+@JsonSubTypes({ 
+	@Type(value = Player.class, name = "player"), 
+	@Type(value = Person.class, name = "person") 
+  })
 @MappedSuperclass
 public class BaseEntity {
 
+	@JsonView(Views.Public.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;

@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.forum.Forum;
@@ -24,6 +26,7 @@ import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.person.Person;
 import org.springframework.samples.SevenIslands.statistic.Statistic;
 import org.springframework.samples.SevenIslands.user.User;
+import org.springframework.samples.SevenIslands.web.jsonview.Views;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +37,7 @@ import lombok.Setter;
 @Table(name="players")
 public class Player extends Person{
   
+  @JsonView(Views.Public.class)
   @Column(name="profile_photo")
   // @NotEmpty
   private String profilePhoto;
@@ -42,7 +46,7 @@ public class Player extends Person{
   private Boolean inGame=false;
 
   // RELACION CON STATISTIC
-  @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   private Set<Statistic> statistic;
 
   //RELACION CON LOGROS
@@ -101,6 +105,7 @@ public class Player extends Person{
 
 
   //RELACION CON USER
+  @JsonView(Views.Public.class)
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
