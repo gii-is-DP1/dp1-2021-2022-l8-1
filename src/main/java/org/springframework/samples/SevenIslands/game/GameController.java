@@ -164,10 +164,6 @@ public class GameController {
         if(inGame && !g.getPlayers().contains(p)){ // FIXME: al empezar una partida, como se refresca, detecta que está en un juego y redirige a error
             return "/error";                                        //Hasta que no termine el juego que abandonó no puede unirse a otro
         } else if(gocla != null){
-            String ss = gameService.waitingRoom(p.getId()).getCode();
-            boolean a = ss.equals(gameCode);
-            Boolean aaa = gameService.waitingRoom(p.getId()).getCode() == gameCode;
-            Boolean bbb = gameService.isWaitingOnRoom(p.getId());
             if(gameService.isWaitingOnRoom(p.getId()) && !gameService.waitingRoom(p.getId()).getCode().equals(gameCode)){
                 request.getSession().setAttribute("message", "You are waiting for start a game actually, can´t join an another game");
                 return gameController.publicRooms(model, request);
