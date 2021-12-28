@@ -7,9 +7,9 @@
 
 <button id="${type == 'dice' ? 'dice-btn' : type == 'island' ? 'island-btn' : type == 'skip' ? 'skip-btn' : type == 'travel' ? 'travel-btn' : ''}" 
     class="game-btn ${pending == 'true' ? 'game-btn-pending' : 'game-btn-disabled'}"
-    
+    type="button"
     ${pending == 'true' ? '' : 'disabled'}>
-   <!-- href="#" -->
+
     <c:if test="${type == 'dice'}">
         <p>Roll the dice</p>
         <img src="/resources/images/icons/dice_icon.png" alt="Roll the dice">

@@ -8,7 +8,9 @@
 
 
 <sevenislands:gameLayout pageName="Board" title="" subtitle="${'GAME: '.concat(game.name)}">
-    
+
+    <form:form action="/boards/${game.code}/travel">
+
     <!--<p> Your will lose your turn in <span id="countdowntimer"> 10 </span> Seconds</p>-->
     <div id="turn-section">
         <h3>Turn: 00:00</h3>
@@ -32,15 +34,24 @@
 
             <div id="actions-section">
 
-                <sevenislands:gameButton type="island" pending="false"/>
-                <sevenislands:gameButton type="travel" pending="false"/>
-                <sevenislands:gameButton type="skip" pending="false"/>
-                <sevenislands:gameButton type="dice" pending="true"/>
+                <sevenislands:gameButton type="island" pending="${game.dieThrows && id_playing==id}"/>
+                <sevenislands:gameButton type="travel" pending="${game.dieThrows && id_playing==id}"/>
+                <sevenislands:gameButton type="skip" pending="${!game.dieThrows && id_playing==id}"/>
+                <sevenislands:gameButton type="dice" pending="${!game.dieThrows && id_playing==id}"/>
 
                 <div id="dice" class="dice-stop">
                     <img src="/resources/images/dice/Dice1.png" alt="Dice">
                 </div>
 
+                <c:if test="${game.dieThrows && id_playing==id}">
+                <div>
+                    <select id="island-input" name="island" class="selectpicker">
+                        <c:forEach items = "${options}" var = "o">
+                            <option value="${o}"><c:out value="Island ${o}"></c:out></option>
+                        </c:forEach>
+                    </select>
+                </div>
+                </c:if>
             </div>
         </div>
 
@@ -51,6 +62,30 @@
     <div id="extra-section">
         <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
     </div>
+
+    </form:form>
+
+    <script>
+            // BUTTONS
+
+            let islandBtn = document.getElementById("island-btn");
+            let travelBtn = document.getElementById("travel-btn");
+            let skipBtn = document.getElementById("skip-btn");
+
+            islandBtn.addEventListener("click", (e) => {
+                location.href = "/boards/${game.id}/changeTurn";
+            });
+            
+            travelBtn.addEventListener("click", (e) => {
+                let form = document.querySelector("form");
+                form.submit();
+            });
+
+            skipBtn.addEventListener("click", (e) => {
+                location.href = "/boards/${game.id}/changeTurn";
+            });
+            
+    </script>
 
     <script  type="text/javascript" >
 
@@ -191,7 +226,8 @@
 
                     <form:form class="form-horizontal" action="/boards/${game.code}/travel">
             
-                    <c:forEach items ="${p.cards}" var="c">
+                    <!-- DONE -->
+                    <!-- <c:forEach items ="${p.cards}" var="c">
                     
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="card[]" value="${c.id}" id="flexCheckDefault">
@@ -200,7 +236,7 @@
                             </label>
                         </div>
 
-                    </c:forEach>
+                    </c:forEach> -->
 
                     <div>
                         <select id="island-input" name="island" class="selectpicker">

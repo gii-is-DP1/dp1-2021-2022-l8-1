@@ -8,7 +8,11 @@
 <ul class="deck-list">
 
     <c:forEach items="${cards}" var="card">
-        <sevenislands:card card="${card}" selectable="true"/>
+        
+        <div class="form-check">
+            <sevenislands:card card="${card}" selectable="true"/>
+        </div>
+        
     </c:forEach>
 
 </ul>
