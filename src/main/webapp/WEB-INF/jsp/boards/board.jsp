@@ -48,6 +48,9 @@
     <div id="deck-section">
         <sevenislands:deck cards="${player.cards}"></sevenislands:deck>
     </div>
+    <div id="extra-section">
+        <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
+    </div>
 
     <script  type="text/javascript" >
 
@@ -203,8 +206,6 @@
         </c:if>
 
     </c:if>
-
-    <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
     
     <h2><c:out value="${game.valueOfDie}"/></h2>
 
