@@ -11,6 +11,7 @@ import java.util.stream.StreamSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -19,6 +20,7 @@ import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
+import org.springframework.samples.SevenIslands.user.UserBuilder;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 
@@ -43,27 +45,19 @@ public class PlayerServiceTests {
     @Test
     public void shouldInsertPlayerAndUser(){
 
-        Player player = new Player();
-        player.setFirstName("Antonio");
-        player.setSurname("García");
-        player.setEmail("antoniogar@gmail.com");
-        player.setProfilePhoto("www.foto.png");
+        User user = new UserBuilder().setUsername("antoniog11")
+        .setPassword("4G4rc14@1234").setEnabled(true).build();
 
-        Player player1 = new Player();
-        player1.setFirstName("Antonio1");
-        player1.setSurname("García1");
-        player1.setEmail("antonio1gar@gmail.com");
-        player1.setProfilePhoto("www.foto.png");
+        Player player = new PlayerBuilder().setFirstName("Antonio")
+        .setSurname("García").setEmail("antoniogar@gmail.com")
+        .setProfilePhoto("www.foto.png").setUser(user).build();
+       
+        User user1 = new UserBuilder().setUsername("antoniog11B")
+        .setPassword("4G4rc14@1234").setEnabled(true).build();
 
-        User user = new User();
-        user.setUsername("antoniog11");
-        user.setPassword("4G4rc14");
-        user.setEnabled(true);
-
-        User user1 = new User();
-        user1.setUsername("antoniog111");
-        user1.setPassword("4G4rc14");
-        user1.setEnabled(true);
+        Player player1 = new PlayerBuilder().setFirstName("Antonio1")
+        .setSurname("García1").setEmail("antonio1gar@gmail.com")
+        .setProfilePhoto("www.foto.png").setUser(user1).build();
 
         player.setUser(user);
         player1.setUser(user1);
@@ -216,10 +210,11 @@ public class PlayerServiceTests {
     @Test
     public void shouldDeleteUser(){
 
-        User user = new User();
-        user.setUsername("antoniog11");
-        user.setPassword("4G4rc14");
-        user.setEnabled(true);
+        User user = new UserBuilder().setUsername("antoniog11")
+        .setPassword("4G4rc14@1234").setEnabled(true).build();
+        // user.setUsername("antoniog11");
+        // user.setPassword("4G4rc14");
+        // user.setEnabled(true);
 
         userService.saveUser(user);
 
