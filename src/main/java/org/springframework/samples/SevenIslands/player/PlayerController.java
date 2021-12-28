@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.io.FilterReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -420,4 +421,32 @@ public class PlayerController {
             }
 		}
 	}  
+
+    @GetMapping(path="/auditing")
+    public String playerAuditing(ModelMap modelMap, @PathParam("filterName") String filterName){
+        String view= "players/auditing";
+        securityService.insertIdUserModelMap(modelMap);
+
+
+        if (securityService.isAdmin()) {
+
+            if(filterName!=null){
+                
+                List<Player> listPlayers = playerService.getAuditPlayers().stream().filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
+                modelMap.addAttribute("players", listPlayers);
+
+            } else{
+
+                List<Player> listPlayers = playerService.getAuditPlayers().stream().collect(Collectors.toList());
+                modelMap.addAttribute("players", listPlayers);
+            }
+
+            modelMap.addAttribute("filterName", filterName);
+                    
+        }else{
+            view = "/error";
+        }
+        return view;
+
+    }
 }
