@@ -8,6 +8,7 @@
 
 <li class="card-item ${selectable ? 'card-item-selectable' : '' }">
 
+    <input class="card-checkbox" type="checkbox" ${selectable ? '' : 'disabled'}>
     <img 
     class="card-img" 
     src="${card.imageUrl}" 

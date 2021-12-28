@@ -176,6 +176,14 @@
                 margin: 5px;
                 transition: transform ease 1s;
                 border-radius: 6px;
+                border: 4px transparent solid;
+
+                .card-checkbox {
+                    opacity: 0;
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                }
 
                 img {
                     height: 105px;
@@ -185,7 +193,21 @@
                 
             }
 
-            .card-item:hover {
+            // .card-item-selectable:has(.card-checkbox:checked){
+            //     border: 4px yellow solid;
+            //     background: yellow;
+            //     transform: translateY(-20px);
+            //     animation: none;
+            // }
+
+            .card-item-checked {
+                border: 4px yellow solid;
+                background: yellow;
+                transform: translateY(-20px);
+                animation: none !important;
+            }
+
+            .card-item-selectable:hover {
                 border: 4px yellow solid;
                 background: yellow;
                 transform: translateY(-20px);

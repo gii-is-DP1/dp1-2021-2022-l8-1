@@ -54,6 +54,8 @@
 
     <script  type="text/javascript" >
 
+            // DICE 
+
         const diceFaces = {
             1:"/resources/images/dice/Dice1.png",
             2:"/resources/images/dice/Dice2.png",
@@ -118,6 +120,29 @@
             let value = Math.floor(Math.random() * 6)+ 1; // Random 1-6
             setDiceValue(value);
         }
+
+    </script>
+
+    <script>
+
+        // CARDS
+
+        let cards = document.querySelectorAll(".card-item-selectable");
+
+        cards.forEach((card) =>{
+            card.addEventListener("change", (e) => {
+                console.log(e);
+                let checkbox = e.target;
+                console.log(checkbox);
+                let card = checkbox.parentElement;
+                if(checkbox.checked) {
+                    card.classList.add("card-item-checked");
+                }
+                else{
+                    card.classList.remove("card-item-checked");
+                }
+            });
+        });
 
     </script>
 
