@@ -6,66 +6,186 @@
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
-<sevenislands:layout pageName="Lobby">
-    <jsp:body>
+<sevenislands:gameLayout title="Lobby" pageName="Lobby">
 
-        <div class="row text-center"><h2>Lobby</h2></div>
-        <br>
-        <br>
+    <span id="left-section">
+        <h2>Game details</h2>
 
-        <form:form modelAttribute="game" class="form-horizontal" action="#">
-            <div class="form-group has-feedback">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="row text-center">
-                            <p><strong><u>Game details</strong></u></p>
-                            <br>
-                            <br>
-                            <p>Name: <c:out value="${game.name}"/></p>
-                            <p>Room code: <c:out value="${game.code}"/></p>
-                        </div>
-                    </div> 
-                    <div class="col-sm-4">
-                        <div class="row text-center">
-                            <p><strong><u>Friends</strong></u></p>
-                            <br>
-                            <br>
-                            
-                        </div>
+        <div class="section-content">
+            <p><strong>Name: </strong> <c:out value="${game.name}"/></p>
+            <p><strong>Room Code: </strong><c:out value="${game.code}"/></p>
 
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="row text-center"><strong><u>Party members</strong></u></div>
-                        <br>
-                        <br>
-                        <c:forEach items ="${game.players}" var="p">
-                            <div class="row text-center">
-                                <c:out value = "${p.user.username}"/><br>
-                            </div>
-                        </c:forEach> 
-                    </div>
-                    
-                </div>
-                <br><br><br><br>
-                <div class="row text-center">
-                    <c:choose>
-                        <c:when test="${game.player.id==player.id}">
-                            <a href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <c:if test="${totalplayers>1}">
-                                <a href="/boards/${game.code}/init" class="btn btn-default">Start match</a>
-                            </c:if>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="/games/exit/${game.id}" class="btn btn-default">Exit</a>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </div>
-        </form:form>
-    </jsp:body>
+            <c:choose>
+                <c:when test="${game.player.id==player.id}">
+                    <a id="btn-cancel"  href="/games/delete/${game.id}" class="btn btn-default">Cancel</a>
+                </c:when>
+                <c:otherwise>
+                    <a  id="btn-exit" href="/games/exit/${game.id}" class="btn btn-default">Exit</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
 
+    </span>
     
+    <span id="center-section">
+        <h2>Party members</h2>
 
+        <div class="section-content">
+            <sevenislands:playerList players="${game.players}"/>
+        </div>
 
-</sevenislands:layout>
+    </span>
+
+    <span id="right-section">
+        <h2>Friends</h2>
+        <div class="section-content">
+
+        </div>
+    </span>
+
+    <script>
+
+        const gameId = '${game.id}';
+        const playerId = '${player.id}';
+        var lastPlayers = new Array();
+
+        window.onload= ()=>{
+
+            setInterval(() => {
+
+                loadPlayers();
+                loadGame();
+
+            }, 1500);
+
+        };
+
+        // BOARD
+
+        function loadGame() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/games/game/" + gameId);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log("SUCCESS");
+                        
+                        let response = JSON.parse(this.response);
+                        let game = response.game;
+                        let playersNum = response.numberOfPlayers;
+                        tryToEnterBoard(game);
+                        tryIfIsPossibleToStart(game, playersNum);
+                    }
+                };
+            xhttp.send();
+        }
+
+        function tryToEnterBoard(game) {
+            let hasStarted = game.has_started;
+            if(hasStarted) location.reload();
+        }
+
+        function tryIfIsPossibleToStart(game, playersNum) {
+            let startButtonStr = `<a id="btn-start" href="/boards/\${game.code}/init" class="btn btn-default">Start match</a>`;
+            let parser = new DOMParser();
+	        let startButton = parser.parseFromString(startButtonStr, 'text/html').body.firstChild;
+            let sectionContent = document.querySelector("#left-section .section-content");
+        
+            let gameOwnerId = game.player.id;
+            if(playerId == gameOwnerId) {
+                let startButtonElement = document.getElementById("btn-start");
+                let buttonIsDisplayed = startButtonElement != undefined;
+
+                if(!buttonIsDisplayed && playersNum>1) {
+                sectionContent.appendChild(startButton);
+                }
+                if(buttonIsDisplayed && playersNum==1) {
+                    sectionContent.removeChild(startButtonElement);
+                }
+            }
+            
+        }
+
+        // PLAYERS
+
+        function loadPlayers() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/games/players/" + gameId);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log("SUCCESS");
+
+                        let response = JSON.parse(this.response);
+                        var players = response.players;
+                        
+                        let hasChanged = checkIfPlayersChanged(players, lastPlayers);
+                        lastPlayers = [...players];
+
+                        if(hasChanged) {
+                            updateTable(players);
+                        }
+                        
+                    }
+                };
+            xhttp.send();
+
+        }
+
+        function checkIfPlayersChanged(players, lastPlayers) {
+            if(lastPlayers == []) return false;
+
+            let hasChanged = false;
+
+            let hasDifferentSize = players.length != lastPlayers.length;
+            if(hasDifferentSize) return true;
+
+            for(let i=0; i++; i<players.length) {
+                let p1 = player[i];
+                let p2 = lastPlayers[i];
+
+                if(p1.id != p2.id) return true;
+                if(p1.user.username != p2.user.username) return true;
+            }
+            return hasChanged;
+        }
+
+        function updateTable(players) {
+            var playersList = document.querySelector(".player-list");
+
+            // Empty the table
+            playersList.innerHTML = "";
+            
+            playerItems = createPlayerItems(players);
+            insertItemsInList(playersList, playerItems);
+
+        }
+
+        function createPlayerItems(players) {
+
+            let playerItems = [];
+            for (let player of players) {
+                let playerItemHTML = 
+                    `<li class="player-item">
+                        <a href="/players/profile/\${player.id}" htmlescape="true">
+
+                            <p class="username">\${player.user.username}</p>
+                            <img class="profile-photo" src="\${player.profilePhoto == null ? '/resources/images/profile-photo.png' : player.profilePhoto}">
+                        
+                        </a>
+                    </li>`;
+
+                playerItems.push(playerItemHTML);
+            }
+
+            return playerItems;
+        }
+
+        function insertItemsInList(table, items) {
+            let innerHTML = items.reduce((item, acum) => item + acum);
+            table.innerHTML = innerHTML;
+        }
+        
+    </script>
+
+</sevenislands:gameLayout>

@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementService;
+import org.springframework.samples.SevenIslands.achievement.PARAMETER;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
@@ -148,9 +149,43 @@ public class PlayerController {
         
             List<Achievement> achieved = StreamSupport.stream(achievementService.findByPlayerId(player.get().getId()).spliterator(), false).collect(Collectors.toList());
             List<Achievement> achievements = StreamSupport.stream(achievementService.findAll().spliterator(), false).collect(Collectors.toList());
-    
             List<Achievement> notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
     
+
+            for(Achievement a: notAchieved){
+                if(a.getParameter()==PARAMETER.POINTS){
+                    int totalPoints = statsService.getPointsByPlayerId(player.get().getId());
+                    if(a.getMinValue()<=totalPoints){
+                        player.get().getAchievements().add(a);
+                        playerService.save(player.get());
+                        achieved.add(a);
+                    }
+                }else if(a.getParameter()==PARAMETER.GAMES_PLAYED){
+                    int totalGames = player.get().getGames().size();
+                    if(a.getMinValue()<=totalGames){
+                        player.get().getAchievements().add(a);
+                        playerService.save(player.get());
+                        achieved.add(a);
+                    }
+                }else if(a.getParameter()==PARAMETER.LOSES){
+                    int totalLoses = player.get().getGames().size() - statsService.getWinsCountByPlayerId(player.get().getId());
+                    if(a.getMinValue()<=totalLoses){
+                        player.get().getAchievements().add(a);
+                        playerService.save(player.get());
+                        achieved.add(a);
+                    }
+                }else if(a.getParameter()==PARAMETER.WINS){
+                    int totalWins = statsService.getWinsCountByPlayerId(player.get().getId());
+                    if(a.getMinValue()<=totalWins){
+                        player.get().getAchievements().add(a);
+                        playerService.save(player.get());
+                        achieved.add(a);
+                    }
+                }
+            }
+
+            notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
+
             modelMap.addAttribute("achieved", achieved); 
             modelMap.addAttribute("notAchieved", notAchieved);
             modelMap.addAttribute("player", player.get());

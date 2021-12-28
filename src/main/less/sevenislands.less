@@ -22,6 +22,7 @@
 @spring-darker-grey: #686868;
 @spring-grey:       #e0e0e0;
 @spring-light-grey: #fdfdfd;
+@spring-light-blue: #0f9bf6;
 @spring-gold:      #fffb0a;
 @spring-silver: #4b4b4b;
 @spring-bronze: #794d05;
@@ -55,6 +56,10 @@
 @pagination-active-bg:                    @spring-brown;
 @pagination-active-border:                @spring-primary;
 @table-border-color:                      @spring-brown;
+
+.table {
+  background-color: @spring-grey;
+}
 
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
@@ -269,3 +274,6 @@ hr {
 @import "achievement.less";
 @import "welcome.less";
 @import "ranking.less";
+@import "lobby.less";
+@import "game.less";
+@import "endGame.less";
