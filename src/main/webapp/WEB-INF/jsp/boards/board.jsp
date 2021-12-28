@@ -20,7 +20,7 @@
             <h2>Players</h2>
             <sevenislands:playerList 
                     players="${game.players}"
-                    activePlayerId="12"/>
+                    activePlayerId="${id_playing}"/>
         </div>
 
         <div id="game-section">
@@ -33,6 +33,8 @@
             <div id="actions-section">
 
                 <sevenislands:gameButton type="island" pending="false"/>
+                <sevenislands:gameButton type="travel" pending="false"/>
+                <sevenislands:gameButton type="skip" pending="false"/>
                 <sevenislands:gameButton type="dice" pending="true"/>
 
                 <div id="dice" class="dice-stop">
@@ -116,7 +118,12 @@
 
     </script>
 
-    <!-- <c:out value="${tempo}"></c:out>
+
+<!-- ============= DEBUG INFO =============== -->
+
+<h1 class="text-center">====== DEBUG INFO ======</h1>
+
+    <p class="text-center"> Tempo: <c:out value="${tempo}"></c:out> </p>
     <div>
         <div class="col-md-4">
             <div class="islandsList">
@@ -130,31 +137,12 @@
                     </div>
                 </c:forEach> 
             </div>
-            <div class="playersList">
-                <h3 class="text-center">Order of Turns:</h3>
-                <c:forEach items ="${game.players}" var="p">
-                    <div class="row text-center">
-                        <c:choose>
-                            <c:when test="${id_playing==p.id}">
-                                <span style="background-color: yellow;"><c:out value = "${p.user.username}"/></span><br>
-                            </c:when>
-                            <c:otherwise>
-                                <c:out value = "${p.user.username}"/><br>
-                            </c:otherwise>
-                        </c:choose>
-                        
-                    </div>
-                </c:forEach> 
-            </div>
-        </div>
-        <div class="col-md-8 playersList">
-            <sevenislands:board board="${board}"/>
-           
+
         </div>
     </div>
 
     <div>
-
+        <h3 class="text-center">Players - cards:</h3>
         <c:forEach items ="${game.players}" var="p">
             <div class="row text-center">
                 <c:out value = "${p.user.username} has "/>
@@ -218,7 +206,7 @@
 
     <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
     
-    <h2><c:out value="${game.valueOfDie}"/></h2> -->
+    <h2><c:out value="${game.valueOfDie}"/></h2>
 
 
     

@@ -4,20 +4,30 @@
 <%@ attribute name="pending" required="false" rtexprvalue="true" %>
 <%@ attribute name="type" required="true" rtexprvalue="true" %>
 
-<button id="${type == 'dice' ? 'dice-btn' : 'island-btn' }" 
-    class="game-btn 
-           ${pending == 'true' ? 'game-btn-pending' : 'game-btn-disabled'}"
+
+<button id="${type == 'dice' ? 'dice-btn' : type == 'island' ? 'island-btn' : type == 'skip' ? 'skip-btn' : type == 'travel' ? 'travel-btn' : ''}" 
+    class="game-btn ${pending == 'true' ? 'game-btn-pending' : 'game-btn-disabled'}"
     
     ${pending == 'true' ? '' : 'disabled'}>
    <!-- href="#" -->
     <c:if test="${type == 'dice'}">
         <p>Roll the dice</p>
-        <img src="/resources/images/dice/dice_icon.png" alt="Roll the dice">
+        <img src="/resources/images/icons/dice_icon.png" alt="Roll the dice">
     </c:if>
 
     <c:if test="${type == 'island'}">
         <p>Take card</p>
-        <img src="/resources/images/cards/cards_icon.png" alt="Take card">
+        <img src="/resources/images/icons/cards_icon.png" alt="Take card">
+    </c:if>
+
+    <c:if test="${type == 'skip'}">
+        <p>Skip turn</p>
+        <img src="/resources/images/icons/skip_icon.png" alt="Skip turn">
+    </c:if>
+
+    <c:if test="${type == 'travel'}">
+        <p>Travel to island</p>
+        <img src="/resources/images/icons/travel_icon.png" alt="Travel to island">
     </c:if>
 
 </button>
