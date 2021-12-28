@@ -3,8 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="card" required="false" rtexprvalue="true" type="org.springframework.samples.SevenIslands.card.Card" %>
 <%@ attribute name="withText" required="false" rtexprvalue="true" %>
+<%@ attribute name="selectable" required="false" rtexprvalue="true" %>
 
-<li class="card-item">
+
+<li class="card-item ${selectable ? 'card-item-selectable' : '' }">
 
     <img 
     class="card-img" 

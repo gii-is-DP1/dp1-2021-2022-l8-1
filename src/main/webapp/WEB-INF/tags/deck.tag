@@ -8,7 +8,7 @@
 <ul class="deck-list">
 
     <c:forEach items="${cards}" var="card">
-        <sevenislands:card card="${card}"/>
+        <sevenislands:card card="${card}" selectable="true"/>
     </c:forEach>
 
 </ul>
