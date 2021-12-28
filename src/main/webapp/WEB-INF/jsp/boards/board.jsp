@@ -47,6 +47,38 @@
         <sevenislands:deck cards="${player.cards}"></sevenislands:deck>
     </div>
 
+    <script  type="text/javascript" >
+
+        const diceFaces = {
+            1:"/resources/images/dice/Dice1.png",
+            2:"/resources/images/dice/Dice2.png",
+            3:"/resources/images/dice/Dice3.png",
+            4:"/resources/images/dice/Dice4.png",
+            5:"/resources/images/dice/Dice5.png",
+            6:"/resources/images/dice/Dice6.png",
+        }
+
+        let shuffling = true;
+
+        function main() {
+            shuffleDice();
+        }
+
+        main();
+
+        function shuffleDice() {
+            let dice = document.getElementById("dice");
+            let diceImg = dice.firstChild.nextSibling;
+
+            setInterval(() => {
+                let face = Math.floor(Math.random() * 6)+ 1; // Random 1-6
+                diceImg.src = diceFaces[face]
+            }, 500);
+            
+        }
+
+    </script>
+
     <!-- <c:out value="${tempo}"></c:out>
     <div>
         <div class="col-md-4">
