@@ -35,7 +35,7 @@
                 <sevenislands:gameButton type="island" pending="false"/>
                 <sevenislands:gameButton type="dice" pending="true"/>
 
-                <div id="dice">
+                <div id="dice" class="dice-stop">
                     <img src="/resources/images/dice/Dice1.png" alt="Dice">
                 </div>
 
@@ -58,23 +58,60 @@
             6:"/resources/images/dice/Dice6.png",
         }
 
-        let shuffling = true;
+        let diceInterval = null;
+        let dice = document.getElementById("dice");
+        let diceImg = dice.firstChild.nextSibling;
 
         function main() {
-            shuffleDice();
+            //shuffleDice();
+
+            let diceBtn = document.getElementById("dice-btn");
+            diceBtn.onclick = rollDice;
         }
 
         main();
 
         function shuffleDice() {
-            let dice = document.getElementById("dice");
-            let diceImg = dice.firstChild.nextSibling;
-
-            setInterval(() => {
+            if (diceInterval != null) return;
+            diceInterval = setInterval(() => {
                 let face = Math.floor(Math.random() * 6)+ 1; // Random 1-6
-                diceImg.src = diceFaces[face]
-            }, 500);
+                diceImg.src = diceFaces[face];
+            }, 300);
             
+        }
+
+        function stopShufflingDice() {
+            clearInterval(diceInterval);
+            diceInterval = null;
+        }
+
+        function setDiceValue(diceValue) {
+            stopShufflingDice();
+
+            dice.classList.add("dice-rolling");
+            dice.classList.remove("dice-stop");
+            dice.classList.remove("dice-done");
+            shuffleDice();
+
+            setTimeout(() => {
+                dice = document.getElementById("dice");
+                diceImg = dice.firstChild.nextSibling;
+
+                dice.classList.add("dice-done");
+                dice.classList.remove("dice-rolling");
+                stopShufflingDice();
+
+                let face = diceValue;
+                diceImg.src = diceFaces[face];
+                console.log("DONE: " + face);
+            }, 5000);
+        
+        }
+
+        function rollDice() {
+            console.log("click");
+            let value = Math.floor(Math.random() * 6)+ 1; // Random 1-6
+            setDiceValue(value);
         }
 
     </script>

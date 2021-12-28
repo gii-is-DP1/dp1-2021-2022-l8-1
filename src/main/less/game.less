@@ -96,6 +96,7 @@
                 .game-btn {
                     width: 160px;
                     height: 70px;
+                    margin: 15px;
                     display:flex;
                     align-items: center;
                     justify-content: space-around;
@@ -130,9 +131,26 @@
                 }
 
                 #dice {
+                    margin: 15px;
+                    border-radius: 10px;
+                    transition: border-color cubic-bezier(1, 0.24, 1, 1) 0.8s;
+
                     img {
                         width: 70px;
                     }
+                }
+
+                .dice-stop {
+                    border: 10px solid red;
+                }
+
+                .dice-rolling {
+                    border: 10px solid yellow;
+                    animation: 1s dice-rolling infinite ease-in-out;
+                }
+
+                .dice-done {
+                    border: 10px solid limegreen;
                 }
             }
         }
@@ -176,5 +194,14 @@
     }
     100% {
         transform: scale(1);
+    }
+}
+
+@keyframes dice-rolling {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }

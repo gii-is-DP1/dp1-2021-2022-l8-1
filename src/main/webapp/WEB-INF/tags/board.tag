@@ -13,7 +13,7 @@
 <img id="BARREL_OF_RUM" src="/resources/images/cards/BarrelOfRum.png" style="display:none">
 <img id="STIR" src="/resources/images/cards/Stir.png" style="display:none">
 <img id="SWORD" src="/resources/images/cards/Sword.png" style="display:none">
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     window.onload = function() {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
@@ -33,4 +33,4 @@
     window.location.reload();
         clearInterval(downloadTimer);
     },1000);
-</script>
+</script> -->
