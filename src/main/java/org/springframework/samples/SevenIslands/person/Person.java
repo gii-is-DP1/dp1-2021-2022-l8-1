@@ -7,11 +7,11 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import org.springframework.samples.SevenIslands.model.BaseEntity;
+import org.springframework.samples.SevenIslands.model.AuditableEntity;
 import org.springframework.samples.SevenIslands.web.jsonview.Views;
 
 @MappedSuperclass
-public class Person extends BaseEntity {
+public class Person extends AuditableEntity {
 
     @JsonView(Views.Public.class)
     @NotEmpty
