@@ -1,3 +1,6 @@
+INSERT INTO users(username,password,enabled) VALUES ('mra21','mra21',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (3,'mra21','admin');
+
 INSERT INTO users(username,password,enabled) VALUES ('ISMP15','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'ISMP15','admin');
 
@@ -224,6 +227,7 @@ INSERT INTO generals(id, total_games, total_duration_all_games) VALUES (1, 200, 
 
 -- ADMINS
 INSERT INTO admins(first_name, surname, email, username) VALUES ('Ismael', 'Perez', 'ismperort@alum.us.es', 'ISMP15');
+INSERT INTO admins(first_name, surname, email, username) VALUES ('Miguel', 'Romero', 'migromarj@alum.us.es', 'mra21');
 
 -- COMMENTS
 INSERT INTO comments(id, message) VALUES (1, 'I agree');

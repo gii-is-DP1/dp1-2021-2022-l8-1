@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -37,6 +38,9 @@ import lombok.Setter;
 @Table(name="players")
 public class Player extends Person{
   
+  @Version
+	protected Integer version;
+
   @JsonView(Views.Public.class)
   @Column(name="profile_photo")
   // @NotEmpty
