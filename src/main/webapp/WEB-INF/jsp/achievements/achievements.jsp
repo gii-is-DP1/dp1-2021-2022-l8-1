@@ -12,6 +12,11 @@
 
         <div id="achievements">
 
+            <div class="row text-center">
+                <spring:url value="/achievements/new" var="newAchievementUrl"></spring:url>
+                <a class="btn btn-success" href="${fn:escapeXml(newAchievementUrl)}">New Achievement</a>
+            </div><br>
+            
             <table class="table table-striped">
                 <thead>
                 <tr>
