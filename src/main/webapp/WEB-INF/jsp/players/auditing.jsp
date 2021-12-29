@@ -41,6 +41,8 @@
                 <thead>
                 <tr>
                     <th>Username</th>
+                    <th>Created by</th>
+                    <th>Created date</th>
                     <th>Last modified by</th>
                     <th>Last modified date</th>
                 </tr>
@@ -52,6 +54,13 @@
                         <tr>
                             <td>
                                 <c:out value="${player.user.username}"/>
+                            </td>
+                            <td>
+                                <c:out value="${player.createdBy}"/>
+                            </td>
+                            
+                            <td>
+                                <c:out value="${player.createdDate}"/>
                             </td>
 
                             <td>

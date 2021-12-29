@@ -2,6 +2,7 @@ package org.springframework.samples.SevenIslands.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -24,9 +25,11 @@ import lombok.Setter;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditableEntity extends BaseEntity {
     
+    @Column(updatable = false)
     @CreatedBy
     protected String CreatedBy;
 
+    @Column(updatable = false)
     @CreatedDate
     protected Date createdDate;
 
