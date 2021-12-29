@@ -57,7 +57,7 @@
 
     </div>
     <div id="deck-section">
-        <sevenislands:deck cards="${player.cards}"></sevenislands:deck>
+        <sevenislands:deck cards="${player.cards}" disabled="${id_playing!=id}"></sevenislands:deck>
     </div>
     <div id="extra-section">
         <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
