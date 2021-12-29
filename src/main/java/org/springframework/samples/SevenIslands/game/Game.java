@@ -70,7 +70,7 @@ public class Game extends NamedEntity {
     // private Integer numberOfTurn;
 
     @Column(name = "value_of_die")   
-    private String valueOfDie = "Currently has no value";
+    private Integer valueOfDie = null;
 
     @Column(name = "die_throws")   
     private Boolean dieThrows = false;  //Actual player uses die in the actual turn

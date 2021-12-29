@@ -240,7 +240,7 @@ public class BoardController {
         int res = d.roll();
 
         game.setDieThrows(true);
-        game.setValueOfDie("Actual value: "+res);
+        game.setValueOfDie(res);
         gameService.save(game);      
 
 
@@ -292,7 +292,7 @@ public class BoardController {
         
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
-        int cardsToSpend = Math.abs(Integer.parseInt(game.getValueOfDie().replace("Actual value: ", ""))-island); 
+        int cardsToSpend = Math.abs(game.getValueOfDie()-island);
         
         if(l!=null){
             if(cardsToSpend != l.length){

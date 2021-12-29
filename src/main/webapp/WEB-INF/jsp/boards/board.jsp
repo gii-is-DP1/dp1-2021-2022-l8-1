@@ -66,24 +66,29 @@
     </form:form>
 
     <script>
-            // BUTTONS
+        // BUTTONS
 
-            let islandBtn = document.getElementById("island-btn");
-            let travelBtn = document.getElementById("travel-btn");
-            let skipBtn = document.getElementById("skip-btn");
+        let islandBtn = document.getElementById("island-btn");
+        let travelBtn = document.getElementById("travel-btn");
+        let skipBtn = document.getElementById("skip-btn");
+        let diceBtn = document.getElementById("dice-btn");
 
-            islandBtn.addEventListener("click", (e) => {
-                location.href = "/boards/${game.id}/changeTurn";
-            });
-            
-            travelBtn.addEventListener("click", (e) => {
-                let form = document.querySelector("form");
-                form.submit();
-            });
+        islandBtn.addEventListener("click", (e) => {
+            location.href = "/boards/${game.id}/changeTurn";
+        });
+        
+        travelBtn.addEventListener("click", (e) => {
+            let form = document.querySelector("form");
+            form.submit();
+        });
 
-            skipBtn.addEventListener("click", (e) => {
-                location.href = "/boards/${game.id}/changeTurn";
-            });
+        skipBtn.addEventListener("click", (e) => {
+            location.href = "/boards/${game.id}/changeTurn";
+        });
+
+        diceBtn.addEventListener("click", (e) => {
+            location.href = "/boards/${game.id}/rollDie";
+        });
             
     </script>
 
@@ -103,15 +108,14 @@
         let diceInterval = null;
         let dice = document.getElementById("dice");
         let diceImg = dice.firstChild.nextSibling;
+        let diceValue = "${game.valueOfDie}";
+        console.log(diceValue);
 
-        function main() {
-            //shuffleDice();
-
-            let diceBtn = document.getElementById("dice-btn");
-            diceBtn.onclick = rollDice;
+        startDiceIfPossible();
+        
+        function startDiceIfPossible() {
+            if(diceValue != "") rollDice();
         }
-
-        main();
 
         function shuffleDice() {
             if (diceInterval != null) return;
@@ -146,14 +150,14 @@
                 let face = diceValue;
                 diceImg.src = diceFaces[face];
                 console.log("DONE: " + face);
-            }, 5000);
+            }, 7000);
         
         }
 
         function rollDice() {
             console.log("click");
-            let value = Math.floor(Math.random() * 6)+ 1; // Random 1-6
-            setDiceValue(value);
+            // let value = Math.floor(Math.random() * 6)+ 1; // Random 1-6
+            setDiceValue(diceValue);
         }
 
     </script>
@@ -224,10 +228,10 @@
             <c:if test = "${id_playing==id}">
                 <c:if test = "${id_playing==p.id}">
 
-                    <form:form class="form-horizontal" action="/boards/${game.code}/travel">
+                    <!-- <form:form class="form-horizontal" action="/boards/${game.code}/travel">
             
-                    <!-- DONE -->
-                    <!-- <c:forEach items ="${p.cards}" var="c">
+                    DONE
+                    <c:forEach items ="${p.cards}" var="c">
                     
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="card[]" value="${c.id}" id="flexCheckDefault">
@@ -236,7 +240,7 @@
                             </label>
                         </div>
 
-                    </c:forEach> -->
+                    </c:forEach>
 
                     <div>
                         <select id="island-input" name="island" class="selectpicker">
@@ -248,7 +252,7 @@
 
                     <button type="submit" class="btn btn-success">Travel</button>
                 
-                    </form:form>
+                    </form:form> -->
                 
                 </c:if>
             </c:if>
