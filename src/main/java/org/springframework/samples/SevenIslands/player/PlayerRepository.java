@@ -25,7 +25,7 @@ public interface PlayerRepository extends PagingAndSortingRepository<Player, Int
 	@Query("SELECT P FROM Player P WHERE P.surname LIKE :surname%")
 	Collection<Player> findBySurname(@Param("surname") String surname);
 	
-	@Query(value = "SELECT * FROM Players WHERE created_date IS NOT null ORDER BY created_date DESC", nativeQuery = true)	
+	@Query(value = "SELECT * FROM Players WHERE last_modified_date IS NOT null ORDER BY last_modified_date DESC", nativeQuery = true)	
 	Collection<Player> findAuditPlayers();
 
 	@Query(value = "SELECT P.id FROM Players P JOIN Users U ON U.username=P.username WHERE P.username LIKE ?1", nativeQuery = true)	
