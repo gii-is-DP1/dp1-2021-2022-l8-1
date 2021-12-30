@@ -20,8 +20,6 @@ import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javassist.expr.NewArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
@@ -155,6 +153,12 @@ public class PlayerService {
     @Transactional(readOnly = true)
     public Collection<Player> getPlayerByUsername(String n) {
         return playerRepo.findPlayerByUsername(n); //PUESTO DE PRUEBA
+
+    }
+
+    @Transactional(readOnly = true)
+    public Collection<?> getAuditPlayers(String username) {
+        return playerRepo.findAuditPlayers(username);
 
     }
 

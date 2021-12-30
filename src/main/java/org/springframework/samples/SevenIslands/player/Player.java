@@ -16,9 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.forum.Forum;
@@ -33,10 +36,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Audited
 @Entity
 @Table(name="players")
 public class Player extends Person{
   
+  @NotAudited
+  @Version
+	protected Integer version;
+
   @JsonView(Views.Public.class)
   @Column(name="profile_photo")
   // @NotEmpty
@@ -47,32 +55,38 @@ public class Player extends Person{
 
   // RELACION CON STATISTIC
   @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @NotAudited
   private Set<Statistic> statistic;
 
   //RELACION CON LOGROS
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
+	@NotAudited
+  @JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
 
   //RELACION CON CARTAS
   @ManyToMany(fetch = FetchType.EAGER)
-	private List<Card> cards;
+	@NotAudited
+  private List<Card> cards;
 
 
   //RELACION CON ESPECTADOR
   @ManyToOne(optional = true)
-	private Game watchGames;
+	@NotAudited
+  private Game watchGames;
 
   //RELACION CON FOROS
   @ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "players_forums", joinColumns = @JoinColumn(name = "player_id"),
+	@NotAudited
+  @JoinTable(name = "players_forums", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "forum_id"))
 	private Set<Forum> forums;
 
   //RELACION CON GAMES 
 	@ManyToMany(mappedBy = "players",cascade = CascadeType.ALL) //PROBLEMA AQUI
-	private Collection<Game> games;
+	@NotAudited
+  private Collection<Game> games;
 
   public void addGameinGames(Game game){
     List<Game> g = new ArrayList<>(this.getGames());
@@ -115,6 +129,7 @@ public class Player extends Person{
   }
   //SEGUNDA RELACION CON GAMES
   @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+  @NotAudited
   private Set<Game> gamesCreador;
 	
 }

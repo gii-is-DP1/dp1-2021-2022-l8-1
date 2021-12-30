@@ -27,13 +27,13 @@ public class AchievementServiceTests {
     @Test
     public void testCountWithInitialData(){
         int count = achievementService.achievementCount();
-        assertEquals(count,3);
+        assertEquals(count,4);
     }
 
     @Test
     public void testFindAll(){
         long count = achievementService.findAll().spliterator().getExactSizeIfKnown();
-        assertEquals(3, count);
+        assertEquals(4, count);
     }
 
     @Test

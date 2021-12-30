@@ -8,6 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -23,6 +24,9 @@ import lombok.Setter;
 @Table(name="achievements")
 public class Achievement extends NamedEntity {
     
+    @Version
+	private Integer version;
+
     @Column(name="name")
     @NotEmpty
     private String name;

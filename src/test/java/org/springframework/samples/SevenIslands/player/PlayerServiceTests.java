@@ -57,12 +57,12 @@ public class PlayerServiceTests {
 
         User user = new User();
         user.setUsername("antoniog11");
-        user.setPassword("4G4rc14");
+        user.setPassword("4G4rc14!1234");
         user.setEnabled(true);
 
         User user1 = new User();
         user1.setUsername("antoniog111");
-        user1.setPassword("4G4rc14");
+        user1.setPassword("4G4rc14!1234");
         user1.setEnabled(true);
 
         player.setUser(user);
@@ -218,7 +218,7 @@ public class PlayerServiceTests {
 
         User user = new User();
         user.setUsername("antoniog11");
-        user.setPassword("4G4rc14");
+        user.setPassword("4G4rc14!1234");
         user.setEnabled(true);
 
         userService.saveUser(user);
