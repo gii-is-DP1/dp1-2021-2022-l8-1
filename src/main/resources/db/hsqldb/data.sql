@@ -136,38 +136,38 @@ INSERT INTO cards(id,card_type) VALUES (66, 'SWORD');
 -- INSERT INTO decks_cards(deck_id, card_id) VALUES (5, 1);
 
 -- PLAYERS
-INSERT INTO players(id, first_name, surname, profile_photo, username) 
-    VALUES (1,'Paco', 'Alonso', 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test1');
+INSERT INTO players(id, first_name, surname, profile_photo, username, version) 
+    VALUES (1,'Paco', 'Alonso', 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test1', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (2, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test2');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (2, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test2', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test3');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test3', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (4, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test4');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (4, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test4', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (5, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test5');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (5, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test5', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (6, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test6');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (6, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test6', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (7, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test7');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (7, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test7', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (8, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test8');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (8, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test8', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (9, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test9');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (9, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test9', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (10, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test10');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (10, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test10', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11', 0);
 
 -- GAMES
 INSERT INTO games(id, name,code, actual_player, player_id, deck_id, privacity,has_started,start_time,end_time,duration) 
