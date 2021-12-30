@@ -424,21 +424,22 @@ public class PlayerController {
 
     @GetMapping(path="/auditing")
     public String playerAuditing(ModelMap modelMap, @PathParam("filterName") String filterName){
+        
         String view= "players/auditing";
         securityService.insertIdUserModelMap(modelMap);
-
 
         if (securityService.isAdmin()) {
 
             if(filterName!=null){
                 
-                List<Player> listPlayers = playerService.getAuditPlayers().stream().filter(x->x.getUser().getUsername().contains(filterName)).collect(Collectors.toList());
+                List<?> listPlayers = playerService.getAuditPlayers(filterName).stream().collect(Collectors.toList());
                 modelMap.addAttribute("players", listPlayers);
 
             } else{
 
-                List<Player> listPlayers = playerService.getAuditPlayers().stream().collect(Collectors.toList());
+                List<?> listPlayers = playerService.getAuditPlayers("").stream().collect(Collectors.toList());
                 modelMap.addAttribute("players", listPlayers);
+                System.out.println(listPlayers.toString());
             }
 
             modelMap.addAttribute("filterName", filterName);
@@ -449,4 +450,5 @@ public class PlayerController {
         return view;
 
     }
+
 }

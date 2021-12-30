@@ -40,11 +40,14 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
+                    <th>Action</th>
                     <th>Username</th>
-                    <th>Created by</th>
-                    <th>Created date</th>
-                    <th>Last modified by</th>
-                    <th>Last modified date</th>
+                    <th>Email</th>
+                    <th>FirstName</th>
+                    <th>Surname</th>
+                    <th>Profile Photo</th>
+                    <th>Password</th>
+                    <th>Realised by</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,30 +55,138 @@
                 <c:forEach items="${players}" var="player">
 
                         <tr>
+                            
                             <td>
-                                <c:out value="${player.user.username}"/>
-                            </td>
-                            <td>
-                                <c:out value="${player.createdBy}"/>
+                                <c:if test="${player[1] == 0}">
+                                    <c:out value="Insert"/>
+                                </c:if>
+
+                                <c:if test="${player[1] == 1}">
+                                    <c:out value="Update"/>
+                                </c:if>
+
+                                <c:if test="${player[1] == 2}">
+                                    <c:out value="Delete"/>
+                                </c:if>
+
+                                <c:if test="${player[1] == null}">
+                                    <c:out value="Password Update"/>
+                                </c:if>
+
                             </td>
                             
                             <td>
-                                <c:out value="${player.createdDate}"/>
+                                <c:if test="${player[6] != null}">
+                                    <c:out value="${player[6]}"/>
+                                </c:if>
+                                
+                                <c:if test="${player[7] != null}">
+                                    <c:out value="${player[7]}"/>
+                                </c:if>
                             </td>
 
                             <td>
-                                <c:out value="${player.lastModifiedBy}"/>
+                                <c:if test="${player[1] == 2}">
+                                    <c:out value="No data"/>
+                                </c:if>
+
+                                <c:if test="${player[1] != 2}">
+
+                                    <c:if test="${player[2] == null}">
+                                        <c:out value="Email not modified"/>
+                                    </c:if>
+
+                                    <c:if test="${player[2] != null}">
+                                        <c:out value="${player[2]}"/>
+                                    </c:if>
+
+                                </c:if>
                             </td>
-                            
+
                             <td>
-                                <c:out value="${player.lastModifiedDate}"/>
+                                <c:if test="${player[1] == 2}">
+                                    <c:out value="No data"/>
+                                </c:if>
+
+                                <c:if test="${player[1] != 2}">
+
+                                    <c:if test="${player[3] == null}">
+                                        <c:out value="Firstname not modified"/>
+                                    </c:if>
+
+                                    <c:if test="${player[3] != null}">
+                                        <c:out value="${player[3]}"/>
+                                    </c:if>
+
+                                </c:if>
+                            </td>
+
+                            <td>
+                                <c:if test="${player[1] == 2}">
+                                    <c:out value="No data"/>
+                                </c:if>
+
+                                <c:if test="${player[1] != 2}">
+
+                                    <c:if test="${player[4] == null}">
+                                        <c:out value="Surname not modified"/>
+                                    </c:if>
+
+                                    <c:if test="${player[4] != null}">
+                                        <c:out value="${player[4]}"/>
+                                    </c:if>
+
+                                </c:if>
+                            </td>
+
+                            <td>
+                                
+                                <c:if test="${player[1] == 2}">
+                                    <c:out value="No data"/>
+                                </c:if>
+
+                                <c:if test="${player[1] != 2}">
+
+                                    <c:if test="${player[5] == null}">
+                                        <c:out value="Profile photo not modified"/>
+                                    </c:if>
+
+                                    <c:if test="${player[5] != null}">
+                                        <c:out value="${player[5]}"/>
+                                    </c:if>
+
+                                </c:if>
+
+                            </td>
+
+                            <td>
+
+                                <c:if test="${player[1] == 2}">
+                                    <c:out value="No data"/>
+                                </c:if>
+
+                                <c:if test="${player[1] != 2}">
+
+                                    <c:if test="${player[8] == null}">
+                                        <c:out value="Password not modified"/>
+                                    </c:if>
+
+                                    <c:if test="${player[8] != null}">
+                                        <c:out value="${player[8]}"/>
+                                    </c:if>
+
+                                </c:if>
+
+                            </td>
+
+                            <td>
+                                <c:out value="${player[9]}"/>
                             </td>
                             
                         </tr>
 
                 </c:forEach>
 
-                
                 </tbody>
             </table>
 
