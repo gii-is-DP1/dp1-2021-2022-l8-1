@@ -190,14 +190,14 @@ VALUES (5, 'Prueba4', 'ABCD120', 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00',
 INSERT INTO boards(id,background,height,width) VALUES (1,'/resources/images/board.jpg',644,527);
 
 -- ACHIEVEMENTS
-INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-    VALUES (1, 'Gold_points', 'Get 300 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'POINTS');
-INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-    VALUES (2, 'Silver_loses', 'Loses 200 times.', 'https://www.pngall.com/wp-content/uploads/2017/03/Silver-Medal-PNG-HD.png', 200, 'SILVER', 'LOSES');
-INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-    VALUES (3, 'Gold_loses', 'Loses 300 times.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'LOSES');
-INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-    VALUES (4, 'Gold_points', 'Get 2 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 2, 'GOLD', 'POINTS');
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter,version)
+    VALUES (1, 'Gold_points', 'Get 300 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'POINTS',0);
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter,version)
+    VALUES (2, 'Silver_loses', 'Loses 200 times.', 'https://www.pngall.com/wp-content/uploads/2017/03/Silver-Medal-PNG-HD.png', 200, 'SILVER', 'LOSES',0);
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter,version)
+    VALUES (3, 'Gold_loses', 'Loses 300 times.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'LOSES',0);
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter,version)
+    VALUES (4, 'Gold_points', 'Get 2 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 2, 'GOLD', 'POINTS',0);
 
 -- CELLS
 INSERT INTO cells(id, x_position, y_position, card) VALUES (1,'0','0','DOUBLON');
@@ -267,17 +267,17 @@ INSERT INTO games_players(game_id, player_id) VALUES (5, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 2);
 
 -- STATISTICS
-INSERT INTO statistics(id, player_id, game_id, points, had_won)
-    VALUES (1, 1, 1, 70, true);
+INSERT INTO statistics(id, player_id, points, had_won)
+    VALUES (1, 1, 70, true);
 
-INSERT INTO statistics(id, player_id, game_id, points, had_won)
-    VALUES (2, 2, 1, 40, false);
+INSERT INTO statistics(id, player_id,  points, had_won)
+    VALUES (2, 1, 40, false);
 
-INSERT INTO statistics(id, player_id, game_id, points, had_won)
-    VALUES (3, 3, 1, 50, false);
+INSERT INTO statistics(id, player_id,  points, had_won)
+    VALUES (3, 1, 50, false);
 
-INSERT INTO statistics(id, player_id, game_id, points, had_won)
-    VALUES (4, 1, 2, 30, true);
+INSERT INTO statistics(id, player_id,  points, had_won)
+    VALUES (4, 2, 30, true);
 
     
 -- STATISTICS CARDS-COUNT

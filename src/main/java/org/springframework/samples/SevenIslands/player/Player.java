@@ -54,7 +54,7 @@ public class Player extends Person{
   private Boolean inGame=false;
 
   // RELACION CON STATISTIC
-  @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
   @NotAudited
   private Set<Statistic> statistic;
 
