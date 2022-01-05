@@ -99,7 +99,10 @@ public class GameControllerTests {
         when(this.gameService.gameHasInappropiateWords(any())).thenReturn(true);
 
 		mockMvc.perform(post("/games/save")
-                .with(csrf()))
+                .with(csrf())
+                .param("name", "Second Game shit")
+                .param("code", "AHG28FD8J")
+                .param("privacity", PRIVACITY.PUBLIC.toString()))
                 .andExpect(status().isOk()).andExpect(model().attributeExists("game"))
 				.andExpect(view().name("games/createOrUpdateGameForm"));
 	}
