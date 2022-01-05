@@ -134,7 +134,7 @@ public class BoardController {
             //Same code in changeTurn
             Integer n = game.getPlayers().size();
             game.setActualPlayer((game.getActualPlayer()+1)%n);
-            game.setDieThrows(false);       //No sabemos si tiró dado o no
+            game.setDieThrows(false);       
             game.setTurnTime(LocalDateTime.now());
             request.getSession().removeAttribute("message");
             request.getSession().removeAttribute("options");

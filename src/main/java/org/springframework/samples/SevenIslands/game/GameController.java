@@ -86,14 +86,12 @@ public class GameController {
     }
 
     @PostMapping(path = "/save")
-    public String saveGame(@Valid Game game, BindingResult result, ModelMap modelMap) {
-        //TODO PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
+    public String saveGame(@Valid Game game, BindingResult result, ModelMap modelMap) {   
 
         Deck deck = deckService.init(game.getName());
        
         //poner aqui las cartas de la isla
         
-        //String view = "games/lobby";
         if(gameService.gameHasInappropiateWords(game)){
             modelMap.put("game", game);
             modelMap.addAttribute("message", "The room's name contains inappropiate words. Please, check your language.");
