@@ -369,7 +369,6 @@ public class PlayerController {
         }
 
 		if (result.hasErrors()){
-            System.out.print(result.getAllErrors());
 			model.put("player", player);
 			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
 		}
@@ -439,7 +438,6 @@ public class PlayerController {
 
                 List<?> listPlayers = playerService.getAuditPlayers("").stream().collect(Collectors.toList());
                 modelMap.addAttribute("players", listPlayers);
-                System.out.println(listPlayers.toString());
             }
 
             modelMap.addAttribute("filterName", filterName);

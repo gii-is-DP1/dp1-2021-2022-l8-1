@@ -111,7 +111,6 @@ public class GameController {
             game.addPlayerinPlayers(currentPlayer);
             currentPlayer.addGameinGames(game);
             game.setDeck(deck);
-            System.out.println(game.getCode());
             
 
             boardService.init(game); //INITIALIZE BOARD FOR GAME

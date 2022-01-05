@@ -33,12 +33,5 @@ public class CardServiceTests {
         Card card = cardService.findCardById(1).get();
         assertThat(card.getCardType()).isEqualTo(CARD_TYPE.DOUBLON);
     }
-
-    // @Disabled
-    // @Test
-    // public void testGetByPlayerId() {
-    //     Iterable<Card> cards = cardService.getByPlayerId(1);
-    //     assertEquals(cards.spliterator().getExactSizeIfKnown(), 3);
-    // }
     
 }
