@@ -23,8 +23,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 
 import java.util.Optional;
 
-import com.mysql.cj.x.protobuf.MysqlxNotice.SessionStateChanged.Parameter;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @WebMvcTest(controllers = AchievementController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)

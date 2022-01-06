@@ -1,6 +1,9 @@
 package org.springframework.samples.SevenIslands.achievement;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -57,7 +60,7 @@ public class AchievementController {
         if(securityService.isAdmin()) {
             securityService.insertIdUserModelMap(modelMap);
             modelMap.addAttribute("achievement", new Achievement());
-        
+            
         }else{  
             return "/error";
         }
@@ -71,11 +74,25 @@ public class AchievementController {
             if(result.hasErrors()){
 
                 modelMap.addAttribute("achievement", achievement);
-                return "achievements/editAchievement";
+                return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
             }else{
+                
+                Iterable<Achievement> achievementsI = achievementService.findAll();
+                List<Achievement> achievements = StreamSupport.stream(achievementsI.spliterator(), false).collect(Collectors.toList());
+
+                for(Achievement a:achievements){
+
+                    if(a.getParameter()==achievement.getParameter()&&a.getMinValue()==achievement.getMinValue()){
+                        
+                        modelMap.addAttribute("message", "Achievement already exist!");
+                        return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+                        
+                    }
+                }
 
                 achievementService.save(achievement);
                 request.getSession().setAttribute("message", "Achievement successfully saved!");
+             
                 
             }
         }else{
