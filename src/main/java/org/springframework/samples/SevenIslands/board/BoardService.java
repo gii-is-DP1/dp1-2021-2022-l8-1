@@ -114,7 +114,7 @@ public class BoardService {
             cards.addAll(doblones);
             p.setCards(cards);
             Statistic s = new Statistic();
-            s.setGame(game);
+            //s.setGame(game);
             s.setPlayer(p);
 
             

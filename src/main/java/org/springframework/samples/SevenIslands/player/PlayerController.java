@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.io.FilterReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -309,6 +311,7 @@ public class PlayerController {
 
     @GetMapping(path="/edit/{playerId}")
     public String updatePlayer(@PathVariable("playerId") int playerId, ModelMap model) {
+
         Optional<Player> player = playerService.findPlayerById(playerId); // optional puede ser error el import
         String view = VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
         securityService.insertIdUserModelMap(model);
@@ -357,7 +360,8 @@ public class PlayerController {
      */
 
     @PostMapping(value = "/edit/{playerId}")
-	public String processUpdateForm(@Valid Player player, BindingResult result,@PathVariable("playerId") int playerId, ModelMap model) {
+	public String processUpdateForm(@Valid Player player, BindingResult result,@PathVariable("playerId") int playerId, ModelMap model,
+                                        @RequestParam(value="version", required = false) Integer version) {
 
         
         if(playerService.playerHasInappropiateWords(player)){
@@ -367,50 +371,79 @@ public class PlayerController {
         }
 
 		if (result.hasErrors()){
-            System.out.print(result.getAllErrors());
 			model.put("player", player);
 			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
                     
-                    Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-                    int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
-                    String username = playerToUpdate.getUser().getUsername();
-                    Iterable<Player> players = playerService.findAll();
-                    List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
-                    //borrar user antes de grabarlo en playerToUpdate
-                    //validador
-			        BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
-                    try {                    
-                        //this.playerService.savePlayer(playerToUpdate);
-                        
-                        //If the username is already in the DB and it's was edited then it means that
-                        //we are overwritting another user
-                        if(usernames.stream().anyMatch(x->x.equals(playerToUpdate.getUser().getUsername()))&&
-                        !playerToUpdate.getUser().getUsername().equals(username)){
-                            return "errors/error-500";
-                        }
+      Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
+      int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
+      String username = playerToUpdate.getUser().getUsername();
+      Iterable<Player> players = playerService.findAll();
+      List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
+      //borrar user antes de grabarlo en playerToUpdate
+      //validador
+      BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
+      try {                    
+          //this.playerService.savePlayer(playerToUpdate);
 
-                        this.playerService.savePlayer(playerToUpdate);
-                        authoritiesService.deleteAuthorities(id);
-                        if(username != playerToUpdate.getUser().getUsername()){
-                            userService.delete(username);
-                        }      
+          //If the username is already in the DB and it's was edited then it means that
+          //we are overwritting another user
+          if(usernames.stream().anyMatch(x->x.equals(playerToUpdate.getUser().getUsername()))&&
+          !playerToUpdate.getUser().getUsername().equals(username)){
+              return "errors/error-500";
+          }
 
-                    } catch (Exception ex) {
-                        result.rejectValue("name", "duplicate", "already exists");
-                        return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-                    }
-                    if(securityService.isAdmin()){
-                        return "redirect:/players";
-                    }else{
-                        if(username != playerToUpdate.getUser().getUsername()){
-                            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-                            return "redirect:/welcome";
-                        }
-                        return "redirect:/players/profile/{playerId}";
-                        
-                    }
+          this.playerService.savePlayer(playerToUpdate);
+          authoritiesService.deleteAuthorities(id);
+          if(username != playerToUpdate.getUser().getUsername()){
+              userService.delete(username);
+          }      
+
+      } catch (Exception ex) {
+          result.rejectValue("name", "duplicate", "already exists");
+          return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+      }
+      if(securityService.isAdmin()){
+          return "redirect:/players";
+      }else{
+          if(username != playerToUpdate.getUser().getUsername()){
+              SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+              return "redirect:/welcome";
+          }
+          return "redirect:/players/profile/{playerId}";
+
+      }
+
 		}
 	}  
+
+    @GetMapping(path="/auditing")
+    public String playerAuditing(ModelMap modelMap, @PathParam("filterName") String filterName){
+        
+        String view= "players/auditing";
+        securityService.insertIdUserModelMap(modelMap);
+
+        if (securityService.isAdmin()) {
+
+            if(filterName!=null){
+                
+                List<?> listPlayers = playerService.getAuditPlayers(filterName).stream().collect(Collectors.toList());
+                modelMap.addAttribute("players", listPlayers);
+
+            } else{
+
+                List<?> listPlayers = playerService.getAuditPlayers("").stream().collect(Collectors.toList());
+                modelMap.addAttribute("players", listPlayers);
+            }
+
+            modelMap.addAttribute("filterName", filterName);
+                    
+        }else{
+            view = "/error";
+        }
+        return view;
+
+    }
+
 }

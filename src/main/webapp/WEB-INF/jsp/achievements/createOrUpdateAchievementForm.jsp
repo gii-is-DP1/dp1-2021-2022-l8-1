@@ -61,6 +61,9 @@
         <c:otherwise>
             <form:form modelAttribute="achievement" class="form-horizontal" id="add-achievement-form">
             <div class="form-group has-feedback">
+
+                <input type="hidden" name="version" value="${achievement.version}"/>
+
                 <div class="row">
                     <sevenislands:inputField label="MinValue" name="minValue"/>
                     <sevenislands:inputField label="Name" name="name"/>

@@ -1,7 +1,6 @@
 package org.springframework.samples.SevenIslands.game;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -94,6 +93,9 @@ public class GameServiceTests {
 
     @Test
     public void shouldDeleteGame(){
+
+        int countBefore = gameService.gameCount();
+
         Game game = new Game();
         game.setName("Partida 1");
         Deck deck = deckService.init(game.getName());
@@ -106,13 +108,11 @@ public class GameServiceTests {
         
         gameService.save(game);
 
-        int countBefore = gameService.gameCount();
-
         gameService.delete(game);
 
         int countAfter = gameService.gameCount();
 
-        assertNotEquals(countBefore, countAfter);
+        assertEquals(countBefore, countAfter);
 
     }
 

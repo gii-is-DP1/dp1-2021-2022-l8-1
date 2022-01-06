@@ -11,6 +11,8 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.samples.SevenIslands.web.jsonview.Views;
 
 import lombok.Getter;
@@ -19,6 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "users")
 public class User{
 
@@ -27,13 +30,13 @@ public class User{
 	@Id
 	String username;
 	
-	@NotEmpty
-	// @Pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[ª@~$€!¡¿?|#º/\\<>{}+-])[A-Za-z\d@$!%*?&]{9,}$")
-	// @Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[ª@~$€!¡¿?|#º/\\<>{}+-])[A-Za-z\\d@$!%*?&]{9,}$",message="Must contain at least one number and one uppercase and lowercase letter, and at least 9 or more characters")  
+	@PasswordConstraint
 	String password;
 	
+	@NotAudited
 	boolean enabled;
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+	@NotAudited
 	private Set<Authorities> authorities;
 }

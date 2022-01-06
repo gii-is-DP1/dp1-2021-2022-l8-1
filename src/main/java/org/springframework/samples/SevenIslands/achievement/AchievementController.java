@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/achievements")
@@ -107,8 +108,10 @@ public class AchievementController {
 
     @GetMapping(path="/edit/{achievementId}")
     public String updateAchievement(@PathVariable("achievementId") int achievementId, ModelMap model, HttpServletRequest request) {
+
         
         securityService.insertIdUserModelMap(model);
+
 
         if (securityService.isAdmin()) {
             securityService.insertIdUserModelMap(model);
@@ -140,8 +143,8 @@ public class AchievementController {
      */
 
     @PostMapping(value = "/edit/{achievementId}")
-	public String processUpdateForm(@Valid Achievement achievement, BindingResult result,@PathVariable("achievementId") int achievementId, ModelMap model, HttpServletRequest request) {
-
+	public String processUpdateForm(@Valid Achievement achievement, BindingResult result,@PathVariable("achievementId") int achievementId, ModelMap model, HttpServletRequest request,
+                                        @RequestParam(value="version", required = false) Integer version) {
 
         if (result.hasErrors()) {
 			model.put("achievement", achievement);
@@ -151,6 +154,11 @@ public class AchievementController {
             Achievement achievementToUpdate= achievementService.findAchievementById(achievementId).get();   
             // always present because if not, it should have redirected to achievements page with the message "Achievement not found!" in the @GetMapping before
 			
+            if(achievementToUpdate.getVersion()!=version){    //Version
+                model.put("message", "Concurrent modification of achievement! Try again!");
+                return updateAchievement(achievementToUpdate.getId(),model,request);
+            }
+
             BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  
                     try {                    
                         achievementService.save(achievementToUpdate);        

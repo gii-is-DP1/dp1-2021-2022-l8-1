@@ -134,7 +134,7 @@ public class BoardController {
             //Same code in changeTurn
             Integer n = game.getPlayers().size();
             game.setActualPlayer((game.getActualPlayer()+1)%n);
-            game.setDieThrows(false);       //No sabemos si tiró dado o no
+            game.setDieThrows(false);       
             game.setTurnTime(LocalDateTime.now());
             request.getSession().removeAttribute("message");
             request.getSession().removeAttribute("options");
@@ -329,16 +329,21 @@ public class BoardController {
 
             if(islandCard!=null){
                 now.add(islandCard);
-                int statisticId = statisticService.getStatisticByPlayerAndGameId(actualP.getId(), game.getId()).getId();
+                int statisticId = statisticService.getStatisticByPlayerId(actualP.getId()).stream().filter(x->x.getHad_won()==null).findFirst().get().getId();
                 if(l!=null){
                     for(int i=0; i<l.length;i++){
                         int n = l[i];
-                        statisticService.insertCardCount(statisticId, n);
+                        if(statisticService.existsRow(statisticId, n)){
+                            statisticService.updateCardCount(statisticId, n);
+                        }else{
+                            statisticService.insertCardCount(statisticId, n); //AQUI SE INSERTA LAS CARTAS QUE HAS USADO
+                        }
+                         
                     }
                 }  
                 
-                statisticService.insertCardCount(statisticId, islandCard.getId());
-                statisticService.updateIslandCount(statisticId, island);
+                statisticService.insertCardCount(statisticId, islandCard.getId()); //AQUI SE INSERTA LA CARTA QUE HAS ESCOGIDA
+                statisticService.updateIslandCount(statisticId, island); //AQUI SE INCREMENTA LA ISLA QUE HAS USADO PORQUE TE GUSTA
 
             }else{
                 request.getSession().setAttribute("message", "Island "+island+ " hasn't a card, choose another island");

@@ -38,16 +38,6 @@
 					<span>Ranking</span>
 				</sevenislands:menuItem>
 
-				<sevenislands:menuItem url="#" title="Enter forum page">
-					<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-					<span>Forum</span>
-				</sevenislands:menuItem>
-
-				<sevenislands:menuItem url="#" title="Enter viewer mode page">
-					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-					<span>Viewer Mode</span>
-				</sevenislands:menuItem>
-
 				<sec:authorize access="hasAuthority('player')">
 				<sevenislands:menuItem url="/games/new" title="Create new room for playing">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -68,6 +58,14 @@
 					<span>Achievements</span>
 				</sevenislands:menuItem>
 				</sec:authorize>
+
+				<sec:authorize access="hasAuthority('admin')">
+				<sevenislands:menuItem url="/players/auditing" title="View players auditing list">
+					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+					<span>Auditing</span>
+				</sevenislands:menuItem>
+				</sec:authorize>
+
 			</ul>
 
 			<!-- PLAYER -->

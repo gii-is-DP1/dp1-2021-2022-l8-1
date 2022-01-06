@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.SevenIslands.admin.AdminController;
 import org.springframework.samples.SevenIslands.board.BoardService;
 import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
+import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
@@ -19,12 +20,15 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.context.annotation.FilterType;
-import static org.mockito.BDDMockito.given;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.util.Optional;
 
@@ -84,14 +88,41 @@ public class GameControllerTests {
         firstGame.setPlayer(firstPlayer);
 
         when(this.gameService.findGameById(TEST_GAME_ID)).thenReturn(Optional.of(firstGame));
-        when(this.securityService.getCurrentPlayerId()).thenReturn(TEST_PLAYER_ID);
+        // when(this.securityService.getCurrentPlayerId()).thenReturn(TEST_PLAYER_ID);
+        when(this.securityService.getCurrentPlayer()).thenReturn(firstPlayer);
+	}
+
+    @WithMockUser(value = "spring")
+	@Test
+	void testCreationGameInappropiateWords() throws Exception {
+
+        when(this.gameService.gameHasInappropiateWords(any())).thenReturn(true);
+
+		mockMvc.perform(post("/games/save")
+                .with(csrf())
+                .param("name", "Second Game shit")
+                .param("code", "AHG28FD8J")
+                .param("privacity", PRIVACITY.PUBLIC.toString()))
+                .andExpect(status().isOk()).andExpect(model().attributeExists("game"))
+				.andExpect(view().name("games/createOrUpdateGameForm"));
 	}
 
     @Disabled
     @WithMockUser(value = "spring")
 	@Test
-	void testInitCreationForm() throws Exception {
-		mockMvc.perform(get("/games/new")).andExpect(status().isOk()).andExpect(model().attributeExists("game"))
+	void testCreationGameCorrectly() throws Exception {
+
+        when(this.deckService.init(any())).thenReturn(new Deck());
+        when(this.gameService.gameHasInappropiateWords(any())).thenReturn(false);
+        //doNothing().when(firstPlayer.addGameinGames(any()));
+
+		mockMvc.perform(post("/games/save")
+                .with(csrf())
+                .param("name", "Second Game")
+                .param("code", "AHG28FD8J")
+                .param("privacity", PRIVACITY.PUBLIC.toString()))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("game"))
 				.andExpect(view().name("games/createOrUpdateGameForm"));
 	}
 

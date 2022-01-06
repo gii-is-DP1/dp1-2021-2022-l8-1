@@ -2,7 +2,6 @@ package org.springframework.samples.SevenIslands.achievement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +26,13 @@ public class AchievementServiceTests {
     @Test
     public void testCountWithInitialData(){
         int count = achievementService.achievementCount();
-        assertEquals(count,3);
+        assertEquals(count,4);
     }
 
     @Test
     public void testFindAll(){
         long count = achievementService.findAll().spliterator().getExactSizeIfKnown();
-        assertEquals(3, count);
+        assertEquals(4, count);
     }
 
     @Test
@@ -68,6 +67,9 @@ public class AchievementServiceTests {
 
     @Test
     public void shouldDeleteAchievementWithoutPlayers(){
+
+        int countBefore = achievementService.achievementCount();
+
         Achievement achievement = new Achievement();
         achievement.setName("Test Achievement");
         achievement.setDescription("An achievement for testing");
@@ -78,17 +80,18 @@ public class AchievementServiceTests {
 
         achievementService.save(achievement);
 
-        int countBefore = achievementService.achievementCount();
-
         achievementService.delete(achievement);
 
         int countAfter = achievementService.achievementCount();
 
-        assertNotEquals(countBefore, countAfter);
+        assertEquals(countBefore, countAfter);
     }
 
     @Test
     public void shouldDeleteAchievementWithPlayers(){
+
+        int countBefore = achievementService.achievementCount();
+
         Achievement achievement = new Achievement();
         achievement.setName("Test Achievement");
         achievement.setDescription("An achievement for testing");
@@ -106,23 +109,11 @@ public class AchievementServiceTests {
 
         achievementService.save(achievement);
 
-        int countBefore = achievementService.achievementCount();
-
         achievementService.delete(achievement);
 
         int countAfter = achievementService.achievementCount();
 
-        assertNotEquals(countBefore, countAfter);
+        assertEquals(countBefore, countAfter);
     }
-
-
-
-    /*
-    @Test
-    public void testFindByAdminId(){
-        Iterable<Achievement> achievements = achievementService.findByAdminId(1);
-        assertEquals(achievements.spliterator().getExactSizeIfKnown(), 2);
-    }
-    */
 
 }

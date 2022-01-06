@@ -57,12 +57,12 @@ public class PlayerServiceTests {
 
         User user = new User();
         user.setUsername("antoniog11");
-        user.setPassword("4G4rc14");
+        user.setPassword("4G4rc14!1234");
         user.setEnabled(true);
 
         User user1 = new User();
         user1.setUsername("antoniog111");
-        user1.setPassword("4G4rc14");
+        user1.setPassword("4G4rc14!1234");
         user1.setEnabled(true);
 
         player.setUser(user);
@@ -104,7 +104,7 @@ public class PlayerServiceTests {
         int countAfter=playerService.playerCount();
 
 
-        assertNotEquals(countBefore, countAfter);
+        assertEquals(countBefore-1, countAfter);
 
     }
 
@@ -114,21 +114,6 @@ public class PlayerServiceTests {
         long count = players.spliterator().getExactSizeIfKnown();
         assertEquals(2, count);
     }
-
-    // @Test
-    // public void testFindInvitationsByPlayerId(){
-    //     Iterable<Player> players = playerService.findInvitationsByPlayerId(2);
-    //     long count = players.spliterator().getExactSizeIfKnown();
-    //     assertEquals(2, count);
-    // }
-
-    // @Test
-    // public void testFindRequestsByPlayerId(){
-    //     Iterable<Player> players = playerService.findRequestsByPlayerId(3);
-    //     long count = players.spliterator().getExactSizeIfKnown();
-    //     assertEquals(1, count);
-
-    // }
 
     @Test
     public void testFinPlayerByUsername(){
@@ -153,13 +138,6 @@ public class PlayerServiceTests {
         long count = playerService.getAchievementsByPlayerId(1).spliterator().getExactSizeIfKnown();
         assertEquals(2,count);
     }
-
-    // @Disabled
-    // @Test
-    // public void testGetCardsByPlayerId(){
-    //     long count = playerService.getCardsByPlayerId(1).spliterator().getExactSizeIfKnown();
-    //     assertEquals(3,count);
-    // }
 
     @Test
     public void testWatchGameByPlayerId(){
@@ -216,21 +194,21 @@ public class PlayerServiceTests {
     @Test
     public void shouldDeleteUser(){
 
+        int countBefore = userService.userCount();
+
         User user = new User();
         user.setUsername("antoniog11");
-        user.setPassword("4G4rc14");
+        user.setPassword("4G4rc14!1234");
         user.setEnabled(true);
 
         userService.saveUser(user);
-
-        int countBefore = userService.userCount();
 
         userService.delete(user.getUsername());
 
         int countAfter = userService.userCount();
 
     
-        assertNotEquals(countBefore, countAfter);
+        assertEquals(countBefore, countAfter);
 
     }
 

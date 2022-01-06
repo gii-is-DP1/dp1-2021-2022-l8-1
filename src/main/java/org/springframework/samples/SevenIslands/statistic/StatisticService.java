@@ -159,8 +159,8 @@ public class StatisticService {
     }
 
     @Transactional(readOnly=true)
-    public Statistic getStatisticByPlayerAndGameId(Integer playerId, Integer gameId) {
-        return statisticRepo.findByGameAndPlayerId(playerId, gameId);
+    public List<Statistic> getStatisticByPlayerId(Integer playerId) {
+        return statisticRepo.findByPlayerId(playerId);
     }
 
     @Transactional
@@ -187,21 +187,38 @@ public class StatisticService {
     }
 
     public void setFinalStatistics(List<Player> players, LinkedHashMap<Player, Integer> playersByPunctuation, Game game) {
-        //TODO PROBAR ESTO 
-        // Set statistics
-        for(Player player : players){
-            Integer punctuation = playersByPunctuation.get(player);
-            player.getStatistic().stream().filter(x->x.getGame()==game).findFirst().get().setPoints(punctuation);
-            player.getStatistic().stream().filter(x->x.getGame()==game).findFirst().get().setHad_won(false);  
+        
+        for(Player p: players){
+            Integer punctuation = playersByPunctuation.get(p);
+            List<Statistic> s = this.getStatisticByPlayerId(p.getId());
+            Statistic filter = s.stream().filter(x->x.getHad_won()==null).findFirst().get();
+            filter.setHad_won(false);
+            filter.setPoints(punctuation);
+            if(playersByPunctuation.keySet().iterator().next().equals(p)){
+                filter.setHad_won(true);
+            }
+            playerService.save(p);
         }
+  
+       
+    }
+
+    @Transactional
+    public void updateCardCount(Integer statsId, Integer cardId){
+       
+        int sum = statisticRepo.getCountingCardById(statsId, cardId);
         
-        
-        // Set winner
-        playersByPunctuation.keySet().iterator().next().getStatistic().stream().filter(x->x.getGame()==game).findFirst().get().setHad_won(true);
-        
-        // Save players
-        players.forEach(player -> playerService.save(player));
-        //HASTA AQUI
+        statisticRepo.updateCardCount(statsId,cardId,sum + 1);
+    }
+
+    @Transactional
+    public boolean existsRow(Integer statsId, Integer cardId){
+        Integer a = statisticRepo.findExistRow(statsId, cardId);
+        if(a == 1){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     

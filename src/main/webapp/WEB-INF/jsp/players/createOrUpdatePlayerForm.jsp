@@ -11,7 +11,10 @@
         <c:if test="${player['new']}">New </c:if> Player
     </h2>
     <form:form modelAttribute="player" class="form-horizontal" id="add-player-form">
+
         <div class="form-group has-feedback">
+            <input type="hidden" name="version" value="${player.version}"/>
+            
             <SevenIslands:inputField label="Profile Photo" name="profilePhoto"/>
             <SevenIslands:inputField label="First Name" name="firstName"/>
             <SevenIslands:inputField label="Surname" name="surname"/>

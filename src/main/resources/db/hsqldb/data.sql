@@ -1,3 +1,6 @@
+INSERT INTO users(username,password,enabled) VALUES ('mra21','mra21',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (3,'mra21','admin');
+
 INSERT INTO users(username,password,enabled) VALUES ('ISMP15','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'ISMP15','admin');
 
@@ -133,38 +136,38 @@ INSERT INTO cards(id,card_type,image_url) VALUES (66, 'SWORD', '/resources/image
 -- INSERT INTO decks_cards(deck_id, card_id) VALUES (5, 1);
 
 -- PLAYERS
-INSERT INTO players(id, first_name, surname, profile_photo, username) 
-    VALUES (1,'Paco', 'Alonso', 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test1');
+INSERT INTO players(id, first_name, surname, profile_photo, username, version) 
+    VALUES (1,'Paco', 'Alonso', 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test1', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (2, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test2');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (2, 'https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg', 'test2', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test3');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (3, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test3', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (4, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test4');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (4, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test4', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (5, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test5');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (5, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test5', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (6, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test6');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (6, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test6', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (7, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test7');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (7, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test7', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (8, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test8');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (8, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test8', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (9, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test9');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (9, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test9', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (10, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test10');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (10, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test10', 0);
 
-INSERT INTO players(id, profile_photo, username) 
-    VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11');
+INSERT INTO players(id, profile_photo, username, version) 
+    VALUES (11, 'https://www.tuexperto.com/wp-content/uploads/2015/07/perfil_01.jpg', 'test11', 0);
 
 -- GAMES
 INSERT INTO games(id, name,code, actual_player, player_id, deck_id, privacity,has_started,start_time,end_time,duration) 
@@ -187,14 +190,14 @@ VALUES (5, 'Prueba4', 'ABCD120', 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00',
 INSERT INTO boards(id,background,height,width) VALUES (1,'/resources/images/board.jpg',644,527);
 
 -- ACHIEVEMENTS
-INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-    VALUES (1, 'Gold_points', 'Get 300 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'POINTS');
-INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-    VALUES (2, 'Silver_loses', 'Loses 200 times.', 'https://www.pngall.com/wp-content/uploads/2017/03/Silver-Medal-PNG-HD.png', 200, 'SILVER', 'LOSES');
-INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-    VALUES (3, 'Gold_loses', 'Loses 300 times.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'LOSES');
-INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
-    VALUES (4, 'Gold_points', 'Get 2 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 2, 'GOLD', 'POINTS');
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter,version)
+    VALUES (1, 'Gold_points', 'Get 300 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'POINTS',0);
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter,version)
+    VALUES (2, 'Silver_loses', 'Loses 200 times.', 'https://www.pngall.com/wp-content/uploads/2017/03/Silver-Medal-PNG-HD.png', 200, 'SILVER', 'LOSES',0);
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter,version)
+    VALUES (3, 'Gold_loses', 'Loses 300 times.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 300, 'GOLD', 'LOSES',0);
+INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter,version)
+    VALUES (4, 'Gold_points', 'Get 2 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 2, 'GOLD', 'POINTS',0);
 
 -- INAPPROPIATE_WORDS
 INSERT INTO inappropiate_words VALUES (1,'shit'), (2,'fuck'), (3, 'cock'), (4, 'piss off'), (5, 'dick head'),
@@ -220,6 +223,7 @@ INSERT INTO generals(id, total_games, total_duration_all_games) VALUES (1, 200, 
 
 -- ADMINS
 INSERT INTO admins(first_name, surname, email, username) VALUES ('Ismael', 'Perez', 'ismperort@alum.us.es', 'ISMP15');
+INSERT INTO admins(first_name, surname, email, username) VALUES ('Miguel', 'Romero', 'migromarj@alum.us.es', 'mra21');
 
 -- COMMENTS
 INSERT INTO comments(id, message) VALUES (1, 'I agree');
@@ -259,17 +263,17 @@ INSERT INTO games_players(game_id, player_id) VALUES (5, 1);
 INSERT INTO games_players(game_id, player_id) VALUES (5, 2);
 
 -- STATISTICS
-INSERT INTO statistics(id, player_id, game_id, points, had_won)
-    VALUES (1, 1, 1, 70, true);
+INSERT INTO statistics(id, player_id, points, had_won)
+    VALUES (1, 1, 70, true);
 
-INSERT INTO statistics(id, player_id, game_id, points, had_won)
-    VALUES (2, 2, 1, 40, false);
+INSERT INTO statistics(id, player_id,  points, had_won)
+    VALUES (2, 1, 40, false);
 
-INSERT INTO statistics(id, player_id, game_id, points, had_won)
-    VALUES (3, 3, 1, 50, false);
+INSERT INTO statistics(id, player_id,  points, had_won)
+    VALUES (3, 1, 50, false);
 
-INSERT INTO statistics(id, player_id, game_id, points, had_won)
-    VALUES (4, 1, 2, 30, true);
+INSERT INTO statistics(id, player_id,  points, had_won)
+    VALUES (4, 2, 30, true);
 
     
 -- STATISTICS CARDS-COUNT
