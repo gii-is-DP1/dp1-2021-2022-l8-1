@@ -137,17 +137,17 @@ public class PlayerController {
             modelMap.addAttribute("message", "Player not found");
             view = "/error"; 
         }
-       securityService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         return view;
     }
 
     @GetMapping(path="/profile/{playerId}/achievements")
     public String achievements(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/achievements";
-       securityService.insertIdUserModelMap(modelMap);
+       
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
-           securityService.insertIdUserModelMap(modelMap);
+            securityService.insertIdUserModelMap(modelMap);
         
             List<Achievement> achieved = StreamSupport.stream(achievementService.findByPlayerId(player.get().getId()).spliterator(), false).collect(Collectors.toList());
             List<Achievement> achievements = StreamSupport.stream(achievementService.findAll().spliterator(), false).collect(Collectors.toList());
@@ -230,6 +230,8 @@ public class PlayerController {
 
     @GetMapping(path="/rooms")
     public String games(ModelMap modelMap, HttpServletRequest request) {
+
+        securityService.insertIdUserModelMap(modelMap);
         String view = "games/publicRooms";
         Iterable<Game> games = gameService.findAllPublicNotPlaying();
         modelMap.addAttribute("message", request.getSession().getAttribute("message"));
@@ -277,7 +279,7 @@ public class PlayerController {
     @GetMapping(path="/delete/{playerId}")
     public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view= "players/listPlayers";
-       securityService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
                 .anyMatch(x -> x.toString().equals("admin"))) {
                     Optional<Player> player = playerService.findPlayerById(playerId);
@@ -374,50 +376,45 @@ public class PlayerController {
 		}
 		else {
                     
-            Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-            int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
-            String username = playerToUpdate.getUser().getUsername();
-            Iterable<Player> players = playerService.findAll();
-            List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
-            //borrar user antes de grabarlo en playerToUpdate
-            //validador
+      Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
+      int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
+      String username = playerToUpdate.getUser().getUsername();
+      Iterable<Player> players = playerService.findAll();
+      List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
+      //borrar user antes de grabarlo en playerToUpdate
+      //validador
+      BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
+      try {                    
+          //this.playerService.savePlayer(playerToUpdate);
 
-            if(playerToUpdate.getVersion()!=version){    //Version
-                model.put("message", "Concurrent modification of player! Try again!");
-                return updatePlayer(playerToUpdate.getId(),model);
-            }
+          //If the username is already in the DB and it's was edited then it means that
+          //we are overwritting another user
+          if(usernames.stream().anyMatch(x->x.equals(playerToUpdate.getUser().getUsername()))&&
+          !playerToUpdate.getUser().getUsername().equals(username)){
+              return "errors/error-500";
+          }
 
-            BeanUtils.copyProperties(player, playerToUpdate,"id", "in_game","statistic","achievements","cards","watchGames","forums","games","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
-            try {                    
-                //this.playerService.savePlayer(playerToUpdate);
-                
-                //If the username is already in the DB and it's was edited then it means that
-                //we are overwritting another user
-                if(usernames.stream().anyMatch(x->x.equals(playerToUpdate.getUser().getUsername()))&&
-                !playerToUpdate.getUser().getUsername().equals(username)){
-                    return "errors/error-500";
-                }
+          this.playerService.savePlayer(playerToUpdate);
+          authoritiesService.deleteAuthorities(id);
+          if(username != playerToUpdate.getUser().getUsername()){
+              userService.delete(username);
+          }      
 
-                this.playerService.savePlayer(playerToUpdate);
-                authoritiesService.deleteAuthorities(id);
-                if(username != playerToUpdate.getUser().getUsername()){
-                    userService.delete(username);
-                }      
+      } catch (Exception ex) {
+          result.rejectValue("name", "duplicate", "already exists");
+          return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+      }
+      if(securityService.isAdmin()){
+          return "redirect:/players";
+      }else{
+          if(username != playerToUpdate.getUser().getUsername()){
+              SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+              return "redirect:/welcome";
+          }
+          return "redirect:/players/profile/{playerId}";
 
-            } catch (Exception ex) {
-                result.rejectValue("name", "duplicate", "already exists");
-                return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-            }
-            if(securityService.isAdmin()){
-                return "redirect:/players";
-            }else{
-                if(username != playerToUpdate.getUser().getUsername()){
-                    SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-                    return "redirect:/welcome";
-                }
-                return "redirect:/players/profile/{playerId}";
-                
-            }
+      }
+
 		}
 	}  
 

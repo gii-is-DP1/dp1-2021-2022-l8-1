@@ -5,7 +5,6 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;

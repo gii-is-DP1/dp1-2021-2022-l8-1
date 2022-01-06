@@ -143,6 +143,7 @@ public class GameController {
     public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap, HttpServletRequest request) {
 
         Optional<Game> game = gameService.findGameById(gameId); 
+        securityService.insertIdUserModelMap(modelMap);
         
         return gameService.deleteGame(game, gameId, modelMap, request);
     }
@@ -151,6 +152,8 @@ public class GameController {
     @GetMapping(path = "/{code}/lobby")
     public String lobby(@PathVariable("code") String gameCode, ModelMap model,
         HttpServletRequest request) {
+
+        securityService.insertIdUserModelMap(model);
         Player p = securityService.getCurrentPlayer();
         Game g = gameService.findGamesByRoomCode(gameCode).iterator().next();
         Boolean inGame = securityService.getCurrentPlayer().getInGame();
@@ -181,27 +184,7 @@ public class GameController {
         
 
     }
-
-    // @RequestMapping(value = "/players/{gameId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    // @ResponseBody
-    // public List<Player> getGamePlayers(@PathVariable("gameId") int gameId, ModelMap model,
-    //     HttpServletRequest request, HttpServletResponse response) {
-    //         Game game = gameService.findGameById(gameId).get();
-    //         List<Player> players = game.getPlayers();
-
-    //         return players;
-    // }
-
-    // @RequestMapping(value = "/players/{gameId}")
-    // @ResponseBody
-    // public String getGamePlayersList(@PathVariable("gameId") int gameId, ModelMap model,
-    //     HttpServletRequest request, HttpServletResponse response) {
-    //         Game game = gameService.findGameById(gameId).get();
-    //         List<Player> players = game.getPlayers();
-
-    //         return "";
-    // }
-
+    
     @JsonView(Views.Public.class)
     @ResponseBody
     @RequestMapping(value = "/players/{gameId}")

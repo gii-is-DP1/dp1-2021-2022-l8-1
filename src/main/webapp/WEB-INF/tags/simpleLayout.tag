@@ -5,6 +5,7 @@
 <%@ attribute name="pageName" required="true" %>
 <%@ attribute name="customScript" required="false" fragment="true"%>
 <%@ attribute name="title" required="false"%>
+<%@ attribute name="subtitle" required="false"%>
 
 <!doctype html>
 <html>
@@ -17,6 +18,8 @@
 <div id="body-section">
     <div id="top-section">
         <h2 id="title"><c:out value="${title}"></c:out></h2>
+
+        <h2 id="sub-title"><c:out value="${subtitle}"></c:out></h2>
     </div>
 
     <c:if test="${not empty message}" >

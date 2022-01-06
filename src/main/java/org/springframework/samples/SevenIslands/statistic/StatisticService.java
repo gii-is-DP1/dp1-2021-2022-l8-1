@@ -205,7 +205,7 @@ public class StatisticService {
 
     @Transactional
     public void updateCardCount(Integer statsId, Integer cardId){
-        
+       
         int sum = statisticRepo.getCountingCardById(statsId, cardId);
         
         statisticRepo.updateCardCount(statsId,cardId,sum + 1);

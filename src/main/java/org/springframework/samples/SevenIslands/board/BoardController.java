@@ -240,7 +240,7 @@ public class BoardController {
         int res = d.roll();
 
         game.setDieThrows(true);
-        game.setValueOfDie("Actual value: "+res);
+        game.setValueOfDie(res);
         gameService.save(game);      
 
 
@@ -249,6 +249,8 @@ public class BoardController {
 
     @GetMapping(path = "/{code}/actions/{number}")
     public String actions(@PathVariable("number") int number, @PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
+
+        securityService.insertIdUserModelMap(modelMap);
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         int cartasActualmente = game.getPlayers().get(game.getActualPlayer()).getCards().size();
@@ -292,7 +294,7 @@ public class BoardController {
         
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
-        int cardsToSpend = Math.abs(Integer.parseInt(game.getValueOfDie().replace("Actual value: ", ""))-island); 
+        int cardsToSpend = Math.abs(game.getValueOfDie()-island);
         
         if(l!=null){
             if(cardsToSpend != l.length){
@@ -382,6 +384,8 @@ public class BoardController {
     @GetMapping(path = "/{code}/endGame")
     public String endGame(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
 
+        securityService.insertIdUserModelMap(modelMap);
+
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         List<Player> players = game.getPlayers();
         List<Integer> playersIdAtStart = (List<Integer>) request.getSession().getAttribute("playersAtStart");
@@ -403,6 +407,8 @@ public class BoardController {
 
     @GetMapping(path = "/{code}/leaveGame")
     public String leave(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
+
+        securityService.insertIdUserModelMap(modelMap);
 
         Player playerWhoLeft = playerService.findPlayerById(securityService.getCurrentPlayerId()).get();
         playerWhoLeft.setInGame(false);
