@@ -96,6 +96,8 @@
 
             // DICE 
 
+        const diceRollingTime = 5000;
+
         const diceFaces = {
             1:"/resources/images/dice/Dice1.png",
             2:"/resources/images/dice/Dice2.png",
@@ -150,7 +152,7 @@
                 let face = diceValue;
                 diceImg.src = diceFaces[face];
                 console.log("DONE: " + face);
-            }, 7000);
+            }, diceRollingTime);
         
         }
 

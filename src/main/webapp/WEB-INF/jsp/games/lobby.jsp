@@ -45,6 +45,7 @@
 
     <script>
 
+        const ajaxIntervalTime = 3000;
         const gameId = '${game.id}';
         const playerId = '${player.id}';
         var lastPlayers = new Array();
@@ -56,7 +57,7 @@
                 loadPlayers();
                 loadGame();
 
-            }, 3000);
+            }, ajaxIntervalTime);
 
         };
 
