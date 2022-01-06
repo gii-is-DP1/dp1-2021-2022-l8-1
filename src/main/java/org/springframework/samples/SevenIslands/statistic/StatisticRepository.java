@@ -1,6 +1,5 @@
 package org.springframework.samples.SevenIslands.statistic;
 
-import java.time.Duration;
 import java.util.Collection;
 
 import org.springframework.dao.DataAccessException;

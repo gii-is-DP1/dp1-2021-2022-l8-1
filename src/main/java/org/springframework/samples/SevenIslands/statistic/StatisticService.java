@@ -195,8 +195,9 @@ public class StatisticService {
             player.getStatistic().stream().filter(x->x.getGame()==game).findFirst().get().setHad_won(false);  
         }
         
+        
         // Set winner
-        players.iterator().next().getStatistic().stream().filter(x->x.getGame()==game).findFirst().get().setHad_won(true);
+        playersByPunctuation.keySet().iterator().next().getStatistic().stream().filter(x->x.getGame()==game).findFirst().get().setHad_won(true);
         
         // Save players
         players.forEach(player -> playerService.save(player));

@@ -196,10 +196,6 @@ INSERT INTO achievements(id, name, description, icon, min_value, achievement_typ
 INSERT INTO achievements(id, name, description, icon, min_value, achievement_type , parameter)
     VALUES (4, 'Gold_points', 'Get 2 points.', 'https://cdn2.iconfinder.com/data/icons/award-and-reward-3/128/Golden-badges-honor-medals-achievement-512.png', 2, 'GOLD', 'POINTS');
 
--- CELLS
-INSERT INTO cells(id, x_position, y_position, card) VALUES (1,'0','0','DOUBLON');
-INSERT INTO cells(id, x_position, y_position, card) VALUES (2,'0','0','CROWN');
-
 -- INAPPROPIATE_WORDS
 INSERT INTO inappropiate_words VALUES (1,'shit'), (2,'fuck'), (3, 'cock'), (4, 'piss off'), (5, 'dick head'),
 (6, 'asshole'), (7, 'bitch'), (8, 'bastard'), (9, 'damn'), (10, 'fucked'), (11, 'fucking');

@@ -108,6 +108,8 @@ public class AchievementController {
     @GetMapping(path="/edit/{achievementId}")
     public String updateAchievement(@PathVariable("achievementId") int achievementId, ModelMap model, HttpServletRequest request) {
         
+        securityService.insertIdUserModelMap(model);
+
         if (securityService.isAdmin()) {
             securityService.insertIdUserModelMap(model);
             Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
