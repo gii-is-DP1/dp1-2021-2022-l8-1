@@ -162,7 +162,16 @@
         background: red;
         background-color: @spring-grey;
         border: 1px solid #bbbbbb;
-        box-shadow: 0 0 5px 1px #60606047;
+
+        .deck-list-title {
+            box-shadow: 0 0 5px 1px #60606047;
+            display: flex;
+            margin-top: 2em;
+            
+            h2 {
+                margin: 1em;
+            }
+        }
 
         .deck-list {
             margin: 5px;
@@ -171,6 +180,7 @@
             align-items: center;
             justify-content: flex-start;
             flex-wrap: wrap;
+            box-shadow: 0 0 5px 1px #60606047;
 
             .card-item {
                 margin: 5px;

@@ -58,6 +58,16 @@
     </div>
     <div id="deck-section">
         <sevenislands:deck cards="${player.cards}" disabled="${id_playing!=id}"></sevenislands:deck>
+
+        <c:forEach items="${game.players}" var="opponent">
+        <c:if test="${opponent != player}">
+            <sevenislands:deck 
+                    cards="${opponent.cards}" 
+                    disabled="true"
+                    playerUsername="${player.user.username}">
+            </sevenislands:deck>
+        </c:if>
+        </c:forEach>
     </div>
     <div id="extra-section">
         <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
