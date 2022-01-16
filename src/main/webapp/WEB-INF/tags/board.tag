@@ -102,17 +102,3 @@
     });
 
 </script>
-
-<!-- <script type="text/javascript">
-
-    // TIMER
-
-    var timeleft = 2;
-    var downloadTimer = setInterval(function(){
-    timeleft--;
-    document.getElementById("countdowntimer").textContent = timeleft;
-    if(timeleft <= 0)
-    window.location.reload();
-        clearInterval(downloadTimer);
-    },1000);
-</script> -->

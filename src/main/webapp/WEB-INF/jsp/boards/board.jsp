@@ -13,7 +13,13 @@
 
     <!--<p> Your will lose your turn in <span id="countdowntimer"> 10 </span> Seconds</p>-->
     <div id="turn-section">
-        <h3>Turn: 00:00</h3>
+        <h3>Turn:     
+            &nbsp
+            <span id="turn-secs">00</span>
+            :
+            <span id="turn-mins">00</>
+        </h3>
+        
     </div>
     
     <div id="central-section">
@@ -80,6 +86,7 @@
     <sevenislands:boardDeckScript/>
     <sevenislands:boardDiceScript/>
     <sevenislands:boardChangeTurnScript/>
+    <sevenislands:boardTimerScript/>
 
 
 
