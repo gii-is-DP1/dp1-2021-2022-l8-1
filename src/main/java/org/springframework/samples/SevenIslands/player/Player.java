@@ -88,6 +88,18 @@ public class Player extends Person{
 	@NotAudited
   private Collection<Game> games;
 
+  public Player(String firstName, String surname, String email, String profilePhoto2, User user2) {
+    this.firstName = firstName;
+    this.surname=surname;
+    this.email=email;
+    this.profilePhoto=profilePhoto2;
+    this.user=user2;
+  }
+
+  public Player(){
+    
+  }
+
   public void addGameinGames(Game game){
     List<Game> g = new ArrayList<>(this.getGames());
     g.add(game);

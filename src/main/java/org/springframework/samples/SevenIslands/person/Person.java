@@ -18,17 +18,17 @@ public class Person extends BaseEntity {
     @JsonView(Views.Public.class)
     @NotEmpty
     @Column(name = "first_name")
-    private String firstName;
+    public String firstName;
     
     @JsonView(Views.Public.class)
     @NotEmpty
     @Column(name = "surname")
-    private String surname;
+    public String surname;
     
     @NotEmpty
     @Email
     @Column(unique = true, name = "email")
-    private String email;
+    public String email;
 
 
     public String getEmail() {

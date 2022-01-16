@@ -25,6 +25,10 @@ public class Board extends BaseEntity{
     @Positive
     int height;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Island> islands;
+
+
     public Board(){
 
         this.background="/resources/images/board.jpg";
@@ -32,7 +36,11 @@ public class Board extends BaseEntity{
         this.height=644;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Island> islands;
+    public Board(List<Island> l){
+        this.background="/resources/images/board.jpg";
+        this.width=527;
+        this.height=644;
+        this.islands=l;
+    }
 
 }

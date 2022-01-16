@@ -25,6 +25,17 @@ import lombok.Setter;
 @Table(name = "users")
 public class User{
 
+	public User(String username2, String password2, Boolean enabled2) {
+		this.username=username2;
+		this.password=password2;
+		this.enabled=enabled2;
+
+	}
+
+	public User() {
+
+	}
+
 	@JsonView(Views.Public.class)
 	@NotEmpty
 	@Id
