@@ -1,3 +1,7 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="board" required="false" rtexprvalue="true" type="org.springframework.samples.SevenIslands.board.Board"
  description="Board to be rendered" %>
 
@@ -67,19 +71,32 @@
         ctx.drawImage(image, 0, 0);
 
         // Cards
-        ctx.drawImage(sword, 62, 20, cardHeight, cardWidth);
+        let islands = {};
 
-        let islands = "${islands}";
+        let islandNum = 0;
+        let islandCard = "";
+        <c:set var="count" value="1" scope="page" />
+        <c:forEach items ="${islands}" var="island">
+            islandNum = ${count};
+            islandCard = "${island.card.cardType}".toLowerCase();
+
+            islands[islandNum] = islandCard;
+            <c:set var="count" value="${count + 1}" scope="page"/>
+        </c:forEach>
+        
         console.log(islands);
 
-        for(let island of islands) {
-            let i = islands.islandNum;
-            console.log(i);
-            let card = islands.card.cardType.toLowerCase();
+        for(let islandNum in islands) {
+            let card = islands[islandNum];
 
             let cardImg = cards[card];
-            ctx.drawImage(cardImg, 62, 20, cardHeight, cardWidth);
 
+            let x = islandsCoordinates[islandNum].x;
+            let y = islandsCoordinates[islandNum].y;
+            
+            setTimeout(()=> {
+                ctx.drawImage(cardImg, x, y, cardHeight, cardWidth);
+            }, 500 * islandNum);
         }
 
     }
