@@ -63,7 +63,7 @@
 
     </div>
     <div id="deck-section">
-        <sevenislands:deck cards="${player.cards}" disabled="${id_playing!=id}"></sevenislands:deck>
+        <sevenislands:deck cards="${player.cards}" disabled="${!(game.dieThrows && id_playing==id)}"></sevenislands:deck>
 
         <c:forEach items="${game.players}" var="opponent">
         <c:if test="${opponent != player}">
