@@ -25,7 +25,7 @@
     
     // BOARD
 
-    window.onload = function() {
+    window.addEventListener("load", ()=> {
         var image = document.getElementById("source");
 
         var boar = document.getElementById("boar-card");
@@ -34,6 +34,7 @@
         var ruby = document.getElementById("ruby-card");
         var diamond = document.getElementById("diamond-card");
         var pearl_necklace = document.getElementById("pearl_necklace-card");
+        var crown = document.getElementById("crown-card");
         var message_bottle = document.getElementById("message_bottle-card");
         var barrel_of_rum = document.getElementById("barrel_of_rum-card");
         var stir = document.getElementById("stir-card");
@@ -47,6 +48,7 @@
             "diamond": diamond,
             "pearl_necklace": pearl_necklace,
             "message_bottle": message_bottle,
+            "crown": crown,
             "barrel_of_rum": barrel_of_rum,
             "stir": stir,
             "sword": sword,
@@ -83,8 +85,6 @@
             islands[islandNum] = islandCard;
             <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>
-        
-        console.log(islands);
 
         for(let islandNum in islands) {
             let card = islands[islandNum];
@@ -99,7 +99,8 @@
             }, 500 * islandNum);
         }
 
-    }
+    });
+
 </script>
 
 <!-- <script type="text/javascript">

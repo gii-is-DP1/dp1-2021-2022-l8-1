@@ -5,6 +5,8 @@
 <script>
     // BUTTONS
 
+    window.addEventListener("load", ()=> {
+
     let islandBtn = document.getElementById("island-btn");
     let travelBtn = document.getElementById("travel-btn");
     let skipBtn = document.getElementById("skip-btn");
@@ -25,6 +27,8 @@
 
     diceBtn.addEventListener("click", (e) => {
         location.href = "/boards/${game.id}/rollDie";
+    });
+    
     });
         
 </script>

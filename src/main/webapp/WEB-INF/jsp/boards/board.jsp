@@ -20,7 +20,7 @@
 
         <div id="players-section">
             <h2>Players</h2>
-            <sevenislands:playerList 
+            <sevenislands:playerList
                     players="${game.players}"
                     activePlayerId="${id_playing}"/>
         </div>
@@ -76,9 +76,10 @@
     </form:form>
 
     <%-- SCRIPTS --%>
-    <sevenislands:boardButtonsScript></sevenislands:boardButtonsScript>
+    <sevenislands:boardButtonsScript/>
     <sevenislands:boardDeckScript/>
     <sevenislands:boardDiceScript/>
+    <sevenislands:boardChangeTurnScript/>
 
 
 
@@ -102,6 +103,13 @@
             </div>
 
         </div>
+    </div>
+
+    <div>
+        <h3 class="text-center">Actual Player:</h3>
+        <p class="text-center">
+            <c:out value ="${id_playing}"/>
+        </p>
     </div>
 
     <div>

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -196,7 +197,6 @@ public class GameController {
             List<Player> players = game.getPlayers();
 
             result.setCode("200");
-            result.setMsg("hola");
             result.setPlayers(players);
 
             return result;
@@ -211,11 +211,16 @@ public class GameController {
 
             Game game = gameService.findGameById(gameId).get();
             Integer playersNum = game.getPlayers().size();
+            Integer actualPlayerId = game.getActualPlayer();
+
+            List<Integer> playersIds = game.getPlayers().stream().map(Player::getId).collect(Collectors.toList());
+            System.out.println("======" + playersIds.toString());
 
             result.setCode("200");
-            result.setMsg("hola");
             result.setGame(game);
             result.setNumberOfPlayers(playersNum);
+            result.setActualPlayer(actualPlayerId);
+            result.setPlayersIds(playersIds);
 
             return result;
     }
