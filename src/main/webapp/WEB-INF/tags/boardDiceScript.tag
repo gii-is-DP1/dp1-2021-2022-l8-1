@@ -19,6 +19,7 @@ const diceFaces = {
 
 let diceInterval = null;
 let dice = document.getElementById("dice");
+let diceThrown = '${game.dieThrows}' == 'true';
 let diceImg = dice.firstChild.nextSibling;
 let diceValue = "${game.valueOfDie}";
 console.log(diceValue);
@@ -26,7 +27,16 @@ console.log(diceValue);
 startDiceIfPossible();
 
 function startDiceIfPossible() {
-    if(diceValue != "") rollDice();
+    console.log("try to start");
+
+    console.log("thrown: " + diceThrown);
+    console.log("diceValue: " + diceValue);
+    
+
+    if(diceValue != "" && diceThrown) {
+        console.log("start dice");
+        rollDice();
+    }
 }
 
 function shuffleDice() {
