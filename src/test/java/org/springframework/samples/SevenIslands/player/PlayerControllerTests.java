@@ -83,8 +83,10 @@ public class PlayerControllerTests {
         otherPlayer.setSurname("González");
         otherPlayer.setEmail("manuelgonzalez@gmail.com");
         
-        User otherUser = new UserBuilder().setUsername("manugo44")
-        .setPassword("ManueGonza9!").setEnabled(true).build();
+        otherUser = new User();
+        otherUser.setUsername("manugo44");
+        otherUser.setPassword("ManueGonza9!");
+        otherUser.setEnabled(true);
 
         auth = new Authorities();
         auth.setAuthority("player");
