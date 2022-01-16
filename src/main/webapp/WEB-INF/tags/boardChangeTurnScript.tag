@@ -20,10 +20,6 @@
 
     });
 
-    function checkForNewTurn() {
-
-    }
-
     function loadNewTurn() {
             let xhttp = new XMLHttpRequest();
             xhttp.open("GET", "/games/game/" + gameId);
@@ -39,7 +35,9 @@
 
                         let currentGamePlayerId = playersIds[currentPlayer];
                         
-                        if(currentGamePlayerId != currentPlayerId) {
+                        let hasChangedPlayer = currentGamePlayerId != currentPlayerId;
+                        let onlyRemainsOnePlayer = playersIds.length == 1;
+                        if(hasChangedPlayer || onlyRemainsOnePlayer) {
                             window.location.reload();
                         }
                     }
