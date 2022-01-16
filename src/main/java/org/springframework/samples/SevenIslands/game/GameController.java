@@ -214,7 +214,6 @@ public class GameController {
             Integer actualPlayerId = game.getActualPlayer();
 
             List<Integer> playersIds = game.getPlayers().stream().map(Player::getId).collect(Collectors.toList());
-            System.out.println("======" + playersIds.toString());
 
             result.setCode("200");
             result.setGame(game);
