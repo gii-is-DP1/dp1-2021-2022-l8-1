@@ -37,7 +37,8 @@
                         
                         let hasChangedPlayer = currentGamePlayerId != currentPlayerId;
                         let onlyRemainsOnePlayer = playersIds.length == 1;
-                        if(hasChangedPlayer || onlyRemainsOnePlayer) {
+                        let deckIsEmpty = false;
+                        if(hasChangedPlayer || onlyRemainsOnePlayer || deckIsEmpty) {
                             window.location.reload();
                         }
                     }

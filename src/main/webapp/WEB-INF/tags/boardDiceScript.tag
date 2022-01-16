@@ -22,19 +22,11 @@ let dice = document.getElementById("dice");
 let diceThrown = '${game.dieThrows}' == 'true';
 let diceImg = dice.firstChild.nextSibling;
 let diceValue = "${game.valueOfDie}";
-console.log(diceValue);
 
 startDiceIfPossible();
 
 function startDiceIfPossible() {
-    console.log("try to start");
-
-    console.log("thrown: " + diceThrown);
-    console.log("diceValue: " + diceValue);
-    
-
     if(diceValue != "" && diceThrown) {
-        console.log("start dice");
         rollDice();
     }
 }
@@ -71,14 +63,12 @@ function setDiceValue(diceValue) {
 
         let face = diceValue;
         diceImg.src = diceFaces[face];
-        console.log("DONE: " + face);
     }, diceRollingTime);
 
 }
 
 function rollDice() {
     console.log("click");
-    // let value = Math.floor(Math.random() * 6)+ 1; // Random 1-6
     setDiceValue(diceValue);
 }
 
