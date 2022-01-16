@@ -26,6 +26,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <input type="hidden" name="playerId" value="${player.id}"/>
+                    <input type="hidden" name="version" value="${player.version}"/>
                     <button class="btn btn-default" type="submit">Save Player</button>
                 </div>
             </div>

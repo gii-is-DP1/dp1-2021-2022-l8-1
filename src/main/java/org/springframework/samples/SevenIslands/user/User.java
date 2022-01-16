@@ -10,6 +10,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonView;
+
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.samples.SevenIslands.web.jsonview.Views;
 
 import lombok.Getter;
@@ -18,6 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "users")
 public class User{
 
@@ -40,8 +44,10 @@ public class User{
 	@PasswordConstraint
 	String password;
 	
+	@NotAudited
 	boolean enabled;
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "user")
+	@NotAudited
 	private Set<Authorities> authorities;
 }

@@ -1,0 +1,265 @@
+
+#mid-game-section {
+    background-color: @spring-light-blue;
+    position: relative;
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    #turn-section {
+        width: 100%;
+        min-height: 30px;
+
+        h3 {
+            width: 140px;
+            margin: 20px 20px auto auto;
+            color: @spring-light-grey;
+            border-bottom: solid 1px @spring-light-grey;
+            padding-left: 10px;
+        }
+    }
+    
+    #central-section {
+        width: 100%;
+        min-height: 300px;
+        display: flex;
+        justify-content: space-evenly;
+
+        > * {
+            margin: 20px;
+            min-height: 300px;
+            background: pink;
+            background-color: @spring-grey;
+            border: 1px solid #bbbbbb;
+            box-shadow: 0 0 5px 1px #60606047;    
+        }
+
+        #players-section {
+            flex-grow: 0.1;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+
+            h2 {
+                font-size: 16px;
+                line-height: 24px;
+                margin-bottom: auto;
+                margin-top: 15px;
+                font-weight: 700;
+                border-bottom: 1px solid #363636;
+                width: 80%;
+                text-align: center;
+            }
+
+            .player-list {
+                justify-content: space-evenly;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                height: 100%;
+                width: 100%;
+                padding: 0 5px 0 10px;
+            }
+        }
+        
+        #game-section {
+            flex-grow: 0.8;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: stretch;
+            justify-content: stretch;
+
+            #board-section {
+                flex-grow: 0.7;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+
+                canvas {
+                    width: 350px;
+                    border: solid 2px @spring-brown;
+                }
+            }
+
+            #actions-section {
+                flex-grow: 0.3;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                flex-wrap: wrap;
+                flex-direction: column;
+
+                .game-btn {
+                    width: 160px;
+                    height: 70px;
+                    margin: 15px;
+                    display:flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    border-radius: 10px;
+                    text-decoration: none;
+                    background-color: @spring-brown;
+                    box-shadow: inset 5px 5px 5px -5px #ffffff3b, 0 2px 7px 1px #00000059;
+
+                    p {
+                        font-family: 'montserratregular';
+                        color: white;
+                    }
+
+                    img {
+                        width: 45px;
+                        filter: invert(1);
+                    }
+                }
+
+                .game-btn-pending {
+                    animation: 2s game-btn-pending cubic-bezier(0.46, 0.03, 0.52, 0.96) infinite alternate;
+                }
+
+                .game-btn-pending:hover {
+                    box-shadow: 0 0 0 5px yellow;
+                    cursor: pointer;
+                }
+
+                .game-btn-disabled {
+                    filter: contrast(0.5);
+                    pointer-events: none;
+                }
+
+                #dice {
+                    margin: 15px;
+                    border-radius: 10px;
+                    transition: border-color cubic-bezier(1, 0.24, 1, 1) 0.8s;
+
+                    img {
+                        width: 70px;
+                    }
+                }
+
+                .dice-stop {
+                    border: 10px solid red;
+                }
+
+                .dice-rolling {
+                    border: 10px solid yellow;
+                    animation: 1s dice-rolling infinite ease-in-out;
+                }
+
+                .dice-done {
+                    border: 10px solid limegreen;
+                }
+            }
+        }
+    }
+    
+    #deck-section {
+        width: 100%;
+        min-height: 120px;
+        background: red;
+        background-color: @spring-grey;
+        border: 1px solid #bbbbbb;
+        box-shadow: 0 0 5px 1px #60606047;
+
+        .deck-list {
+            margin: 5px;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+
+            .card-item {
+                margin: 5px;
+                transition: transform ease 1s;
+                border-radius: 6px;
+                border: 4px transparent solid;
+                position: relative;
+
+                .card-checkbox {
+                    opacity: 0;
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    cursor: default;
+                }
+
+                img {
+                    height: 105px;
+                    border-radius: inherit;
+                    box-shadow: inset 5px 5px 5px -5px #ffffff3b, 2px 2px 3px 1px #00000047;
+                }
+                
+            }
+
+            // .card-item-selectable:has(.card-checkbox:checked){
+            //     border: 4px yellow solid;
+            //     background: yellow;
+            //     transform: translateY(-20px);
+            //     animation: none;
+            // }
+
+            .card-item-checked {
+                border: 4px yellow solid;
+                background: yellow;
+                transform: translateY(-20px);
+                animation: none !important;
+            }
+
+            .card-item-selectable:hover {
+                border: 4px yellow solid;
+                background: yellow;
+                transform: translateY(-20px);
+                animation: none;
+            }
+
+            .card-item-selectable {
+                animation: 2s card-item-selectable ease-in-out infinite alternate;
+            }
+        }
+    }
+
+    #extra-section {
+        width: 100%;
+        min-height: 70px;
+        background-color: @spring-grey;
+        border: 1px solid #bbbbbb;
+        box-shadow: 0 0 5px 1px #60606047;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+
+
+@keyframes game-btn-pending {
+    0% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes dice-rolling {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes card-item-selectable {
+    0% {
+        transform: translateY(3px);
+    }
+    100% {
+        transform: translateY(-3px);
+    }
+}
+

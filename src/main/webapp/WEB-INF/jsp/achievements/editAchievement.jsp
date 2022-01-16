@@ -17,6 +17,9 @@
         <h2>Achievement</h2>
         <form:form modelAttribute="achievement" class="form-horizontal" action="/achievements/save">
             <div class="form-group has-feedback">
+
+                <input type="hidden" name="version" value="${achiviement.version}"/>
+
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="row">

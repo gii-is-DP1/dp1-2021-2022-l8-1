@@ -1,7 +1,6 @@
 package org.springframework.samples.SevenIslands.player;
 
 import org.junit.jupiter.api.Test;
-import org.hamcrest.beans.HasProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +21,8 @@ import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.context.annotation.FilterType;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

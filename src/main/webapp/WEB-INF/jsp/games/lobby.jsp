@@ -6,7 +6,7 @@
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 
 
-<sevenislands:gameLayout title="Lobby" pageName="Lobby">
+<sevenislands:lobbyLayout title="Lobby" pageName="Lobby">
 
     <span id="left-section">
         <h2>Game details</h2>
@@ -31,7 +31,7 @@
         <h2>Party members</h2>
 
         <div class="section-content">
-            <sevenislands:playerList players="${game.players}"/>
+            <sevenislands:playerList players="${game.players}" animated="true"/>
         </div>
 
     </span>
@@ -45,6 +45,7 @@
 
     <script>
 
+        const ajaxIntervalTime = 3000;
         const gameId = '${game.id}';
         const playerId = '${player.id}';
         var lastPlayers = new Array();
@@ -56,7 +57,7 @@
                 loadPlayers();
                 loadGame();
 
-            }, 1500);
+            }, ajaxIntervalTime);
 
         };
 
@@ -166,7 +167,7 @@
             let playerItems = [];
             for (let player of players) {
                 let playerItemHTML = 
-                    `<li class="player-item">
+                    `<li class="player-item player-item-animated">
                         <a href="/players/profile/\${player.id}" htmlescape="true">
 
                             <p class="username">\${player.user.username}</p>
@@ -188,4 +189,4 @@
         
     </script>
 
-</sevenislands:gameLayout>
+</sevenislands:lobbyLayout>

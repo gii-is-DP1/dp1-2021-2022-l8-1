@@ -86,14 +86,12 @@ public class GameController {
     }
 
     @PostMapping(path = "/save")
-    public String saveGame(@Valid Game game, BindingResult result, ModelMap modelMap) {
-        //TODO PORQUE AQUI SI FUNCIONA PERO EN LA LINEA 79 NO        
+    public String saveGame(@Valid Game game, BindingResult result, ModelMap modelMap) {   
 
         Deck deck = deckService.init(game.getName());
        
         //poner aqui las cartas de la isla
         
-        //String view = "games/lobby";
         if(gameService.gameHasInappropiateWords(game)){
             modelMap.put("game", game);
             modelMap.addAttribute("errorMessage", "The room's name contains inappropiate words. Please, check your language.");
@@ -111,7 +109,6 @@ public class GameController {
             game.addPlayerinPlayers(currentPlayer);
             currentPlayer.addGameinGames(game);
             game.setDeck(deck);
-            System.out.println(game.getCode());
             
 
             boardService.init(game); //INITIALIZE BOARD FOR GAME
@@ -146,6 +143,7 @@ public class GameController {
     public String deleteGame(@PathVariable("gameId") int gameId, ModelMap modelMap, HttpServletRequest request) {
 
         Optional<Game> game = gameService.findGameById(gameId); 
+        securityService.insertIdUserModelMap(modelMap);
         
         return gameService.deleteGame(game, gameId, modelMap, request);
     }
@@ -154,6 +152,8 @@ public class GameController {
     @GetMapping(path = "/{code}/lobby")
     public String lobby(@PathVariable("code") String gameCode, ModelMap model,
         HttpServletRequest request) {
+
+        securityService.insertIdUserModelMap(model);
         Player p = securityService.getCurrentPlayer();
         Game g = gameService.findGamesByRoomCode(gameCode).iterator().next();
         Boolean inGame = securityService.getCurrentPlayer().getInGame();
@@ -184,27 +184,7 @@ public class GameController {
         
 
     }
-
-    // @RequestMapping(value = "/players/{gameId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    // @ResponseBody
-    // public List<Player> getGamePlayers(@PathVariable("gameId") int gameId, ModelMap model,
-    //     HttpServletRequest request, HttpServletResponse response) {
-    //         Game game = gameService.findGameById(gameId).get();
-    //         List<Player> players = game.getPlayers();
-
-    //         return players;
-    // }
-
-    // @RequestMapping(value = "/players/{gameId}")
-    // @ResponseBody
-    // public String getGamePlayersList(@PathVariable("gameId") int gameId, ModelMap model,
-    //     HttpServletRequest request, HttpServletResponse response) {
-    //         Game game = gameService.findGameById(gameId).get();
-    //         List<Player> players = game.getPlayers();
-
-    //         return "";
-    // }
-
+    
     @JsonView(Views.Public.class)
     @ResponseBody
     @RequestMapping(value = "/players/{gameId}")

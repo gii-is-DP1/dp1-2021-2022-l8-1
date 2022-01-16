@@ -7,10 +7,12 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import org.hibernate.envers.Audited;
 import org.springframework.samples.SevenIslands.model.BaseEntity;
 import org.springframework.samples.SevenIslands.web.jsonview.Views;
 
 @MappedSuperclass
+@Audited
 public class Person extends BaseEntity {
 
     @JsonView(Views.Public.class)

@@ -20,8 +20,6 @@ import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javassist.expr.NewArray;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
@@ -158,6 +156,17 @@ public class PlayerService {
 
     }
 
+    @Transactional(readOnly = true)
+    public Collection<?> getAuditPlayers(String username) {
+        return playerRepo.findAuditPlayers(username);
+
+    }
+
+    @Transactional(readOnly = true)
+    public Collection<?> getAuditPlayers2() {
+        return playerRepo.findAuditPlayers2();
+
+    }
   
     @Transactional(readOnly = true)
     public Boolean playerHasInappropiateWords(Player player){

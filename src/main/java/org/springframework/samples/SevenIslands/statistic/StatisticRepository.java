@@ -1,7 +1,7 @@
 package org.springframework.samples.SevenIslands.statistic;
 
-import java.time.Duration;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Modifying;
@@ -56,24 +56,38 @@ public interface StatisticRepository extends CrudRepository<Statistic, String>{
     @Query("SELECT MIN(G.duration) FROM Game G WHERE G.player.id = :playerId")
     Integer findMinTimePlayedByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 
-    @Query("SELECT S FROM Statistic S WHERE S.player.id = :playerId and S.game.id = :gameId")
-    Statistic findByGameAndPlayerId(@Param("playerId") int playerId, @Param("gameId") int gameId) throws DataAccessException;
+    @Query("SELECT S FROM Statistic S WHERE S.player.id = :playerId")
+    List<Statistic> findByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 
+    //INSERT CARD IF THE TABLE HAS NOT THE ROW
     @Modifying
     @Query(value = "INSERT INTO STATISTIC_CARDS_COUNT VALUES (:id,1,:cardId)", nativeQuery = true)
     void insertCardCount(@Param("id") Integer id, @Param("cardId") Integer cardId);
 
+    //INSERT INSLAND INIT
     @Modifying
     @Query(value = "INSERT INTO Statistic_Islands_Count VALUES (:id,:add,:islandId)", nativeQuery = true)
     void initIslandCount(@Param("id") Integer id,@Param("add") Integer add ,@Param("islandId") Integer islandId);
     
+    //ISLAND COUNT AND UPDATE
     @Query(value = "SELECT island_count FROM Statistic_Islands_Count WHERE statistic_id = :id and island_id = :islandId", nativeQuery = true)
     Integer getCountingIslandById(@Param("id") Integer id, @Param("islandId") Integer islandId) throws DataAccessException;
   
     @Modifying
     @Query(value = "UPDATE statistic_islands_count set island_count = :sum where statistic_id = :id and island_id = :islandId", nativeQuery = true)
     void updateIslandCount(@Param("id") Integer id,@Param("islandId") Integer islandId,@Param("sum") Integer sum);
+    
+    
+    //CARDS COUNTS AND UPDATE
+    @Query(value = "SELECT card_count FROM Statistic_Cards_Count WHERE statistic_id = :id and card_id = :cardId", nativeQuery = true)
+    Integer getCountingCardById(@Param("id") Integer id, @Param("cardId") Integer cardId) throws DataAccessException;
 
+    @Modifying
+    @Query(value = "UPDATE Statistic_Cards_Count set card_count = :sum where statistic_id = :id and card_id = :cardId", nativeQuery = true)
+    void updateCardCount(@Param("id") Integer id,@Param("cardId") Integer card_id,@Param("sum") Integer sum);
+
+    @Query(value = "SELECT Count(*) FROM Statistic_Cards_Count C WHERE C.statistic_id = :stats_id AND C.card_id = :cardId", nativeQuery = true)
+    Integer findExistRow(@Param("stats_id") Integer stats_id, @Param("cardId") Integer cardId);
 
 
  

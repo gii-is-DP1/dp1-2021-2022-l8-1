@@ -45,19 +45,27 @@ public class PlayerServiceTests {
     @Test
     public void shouldInsertPlayerAndUser(){
 
-        User user = new UserBuilder().setUsername("antoniog11")
-        .setPassword("4G4rc14@1234").setEnabled(true).build();
+        Player player = new Player();
+        player.setFirstName("Antonio");
+        player.setSurname("García");
+        player.setEmail("antoniogar@gmail.com");
+        player.setProfilePhoto("www.foto.png");
 
-        Player player = new PlayerBuilder().setFirstName("Antonio")
-        .setSurname("García").setEmail("antoniogar@gmail.com")
-        .setProfilePhoto("www.foto.png").setUser(user).build();
-       
-        User user1 = new UserBuilder().setUsername("antoniog11B")
-        .setPassword("4G4rc14@1234").setEnabled(true).build();
+        Player player1 = new Player();
+        player1.setFirstName("Antonio1");
+        player1.setSurname("García1");
+        player1.setEmail("antonio1gar@gmail.com");
+        player1.setProfilePhoto("www.foto.png");
 
-        Player player1 = new PlayerBuilder().setFirstName("Antonio1")
-        .setSurname("García1").setEmail("antonio1gar@gmail.com")
-        .setProfilePhoto("www.foto.png").setUser(user1).build();
+        User user = new User();
+        user.setUsername("antoniog11");
+        user.setPassword("4G4rc14!1234");
+        user.setEnabled(true);
+
+        User user1 = new User();
+        user1.setUsername("antoniog111");
+        user1.setPassword("4G4rc14!1234");
+        user1.setEnabled(true);
 
         player.setUser(user);
         player1.setUser(user1);
@@ -98,7 +106,7 @@ public class PlayerServiceTests {
         int countAfter=playerService.playerCount();
 
 
-        assertNotEquals(countBefore, countAfter);
+        assertEquals(countBefore-1, countAfter);
 
     }
 
@@ -108,21 +116,6 @@ public class PlayerServiceTests {
         long count = players.spliterator().getExactSizeIfKnown();
         assertEquals(2, count);
     }
-
-    // @Test
-    // public void testFindInvitationsByPlayerId(){
-    //     Iterable<Player> players = playerService.findInvitationsByPlayerId(2);
-    //     long count = players.spliterator().getExactSizeIfKnown();
-    //     assertEquals(2, count);
-    // }
-
-    // @Test
-    // public void testFindRequestsByPlayerId(){
-    //     Iterable<Player> players = playerService.findRequestsByPlayerId(3);
-    //     long count = players.spliterator().getExactSizeIfKnown();
-    //     assertEquals(1, count);
-
-    // }
 
     @Test
     public void testFinPlayerByUsername(){
@@ -147,13 +140,6 @@ public class PlayerServiceTests {
         long count = playerService.getAchievementsByPlayerId(1).spliterator().getExactSizeIfKnown();
         assertEquals(2,count);
     }
-
-    // @Disabled
-    // @Test
-    // public void testGetCardsByPlayerId(){
-    //     long count = playerService.getCardsByPlayerId(1).spliterator().getExactSizeIfKnown();
-    //     assertEquals(3,count);
-    // }
 
     @Test
     public void testWatchGameByPlayerId(){
@@ -210,22 +196,21 @@ public class PlayerServiceTests {
     @Test
     public void shouldDeleteUser(){
 
-        User user = new UserBuilder().setUsername("antoniog11")
-        .setPassword("4G4rc14@1234").setEnabled(true).build();
-        // user.setUsername("antoniog11");
-        // user.setPassword("4G4rc14");
-        // user.setEnabled(true);
+        int countBefore = userService.userCount();
+
+        User user = new User();
+        user.setUsername("antoniog11");
+        user.setPassword("4G4rc14!1234");
+        user.setEnabled(true);
 
         userService.saveUser(user);
-
-        int countBefore = userService.userCount();
 
         userService.delete(user.getUsername());
 
         int countAfter = userService.userCount();
 
     
-        assertNotEquals(countBefore, countAfter);
+        assertEquals(countBefore, countAfter);
 
     }
 

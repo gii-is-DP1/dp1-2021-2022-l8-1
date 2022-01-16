@@ -134,7 +134,7 @@ public class BoardController {
             //Same code in changeTurn
             Integer n = game.getPlayers().size();
             game.setActualPlayer((game.getActualPlayer()+1)%n);
-            game.setDieThrows(false);       //No sabemos si tiró dado o no
+            game.setDieThrows(false);       
             game.setTurnTime(LocalDateTime.now());
             request.getSession().removeAttribute("message");
             request.getSession().removeAttribute("options");
@@ -240,7 +240,7 @@ public class BoardController {
         int res = d.roll();
 
         game.setDieThrows(true);
-        game.setValueOfDie("Actual value: "+res);
+        game.setValueOfDie(res);
         gameService.save(game);      
 
 
@@ -249,6 +249,8 @@ public class BoardController {
 
     @GetMapping(path = "/{code}/actions/{number}")
     public String actions(@PathVariable("number") int number, @PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
+
+        securityService.insertIdUserModelMap(modelMap);
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         int cartasActualmente = game.getPlayers().get(game.getActualPlayer()).getCards().size();
@@ -292,7 +294,7 @@ public class BoardController {
         
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
-        int cardsToSpend = Math.abs(Integer.parseInt(game.getValueOfDie().replace("Actual value: ", ""))-island); 
+        int cardsToSpend = Math.abs(game.getValueOfDie()-island);
         
         if(l!=null){
             if(cardsToSpend != l.length){
@@ -327,16 +329,21 @@ public class BoardController {
 
             if(islandCard!=null){
                 now.add(islandCard);
-                int statisticId = statisticService.getStatisticByPlayerAndGameId(actualP.getId(), game.getId()).getId();
+                int statisticId = statisticService.getStatisticByPlayerId(actualP.getId()).stream().filter(x->x.getHad_won()==null).findFirst().get().getId();
                 if(l!=null){
                     for(int i=0; i<l.length;i++){
                         int n = l[i];
-                        statisticService.insertCardCount(statisticId, n);
+                        if(statisticService.existsRow(statisticId, n)){
+                            statisticService.updateCardCount(statisticId, n);
+                        }else{
+                            statisticService.insertCardCount(statisticId, n); //AQUI SE INSERTA LAS CARTAS QUE HAS USADO
+                        }
+                         
                     }
                 }  
                 
-                statisticService.insertCardCount(statisticId, islandCard.getId());
-                statisticService.updateIslandCount(statisticId, island);
+                statisticService.insertCardCount(statisticId, islandCard.getId()); //AQUI SE INSERTA LA CARTA QUE HAS ESCOGIDA
+                statisticService.updateIslandCount(statisticId, island); //AQUI SE INCREMENTA LA ISLA QUE HAS USADO PORQUE TE GUSTA
 
             }else{
                 request.getSession().setAttribute("message", "Island "+island+ " hasn't a card, choose another island");
@@ -377,6 +384,8 @@ public class BoardController {
     @GetMapping(path = "/{code}/endGame")
     public String endGame(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
 
+        securityService.insertIdUserModelMap(modelMap);
+
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         List<Player> players = game.getPlayers();
         List<Integer> playersIdAtStart = (List<Integer>) request.getSession().getAttribute("playersAtStart");
@@ -398,6 +407,8 @@ public class BoardController {
 
     @GetMapping(path = "/{code}/leaveGame")
     public String leave(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
+
+        securityService.insertIdUserModelMap(modelMap);
 
         Player playerWhoLeft = playerService.findPlayerById(securityService.getCurrentPlayerId()).get();
         playerWhoLeft.setInGame(false);
