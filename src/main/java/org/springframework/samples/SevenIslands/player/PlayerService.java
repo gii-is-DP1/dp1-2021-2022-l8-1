@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 @Service
 public class PlayerService {
@@ -235,7 +236,6 @@ public class PlayerService {
         int totalGames = player.getGames().size();
         int totalWins = statsService.getWinsCountByPlayerId(player.getId())==null?0:statsService.getWinsCountByPlayerId(player.getId());
         int totalLoses = totalGames - totalWins;
-
     
         for(Achievement a: notAchieved) {
 
@@ -250,13 +250,26 @@ public class PlayerService {
             } 
         }
 
-
-
         return achieved;
 
+    }
 
+    @Transactional
+    public List<Player> getPaginatedPlayers(String filterName, Integer pageNumber) {
+
+        if(pageNumber == null) {
+            pageNumber = 0;
+        }
         
+        Pageable page = PageRequest.of(pageNumber, 5);
 
+        Iterable<Player> playersPaginated = findAll(page);
+
+            if(filterName != null) {    // if the user has typed something in the search bar
+                playersPaginated = findIfPlayerContains(filterName.toLowerCase(), page);
+            }
+
+        return StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
 
     }
 

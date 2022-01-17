@@ -70,40 +70,15 @@ public class PlayerController {
         String view ="players/listPlayers";
         securityService.insertIdUserModelMap(modelMap);
 
-        //if pageNumber== null, we takes page number 0
-        Pageable page;
-        if(pageNumber!= null){
-            //this method takes the page number pageNumber of two elements
-            //Ex, if pageNumber=3, it takes the third page of two elements
-            page = PageRequest.of(pageNumber, 5);
-        }else{
-            pageNumber=0;
-            page = PageRequest.of(0, 5);
-        }
-
-    
         List<Integer> pages = playerService.calculatePages(pageNumber);
-
-        //to pass it to the view:
         Integer previousPageNumber = pages.get(0);
         Integer nextPageNumber = pages.get(1);
 
         if (securityService.isAdmin()) {    // if the user is admin
                     
-            Iterable<Player> playersPaginated = playerService.findAll(page);
-            if(filterName!=null){   //if the user has typed something in the search bar
-                Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
-                
-                List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
-                
-                modelMap.addAttribute("players", listPlayersPaginatedAndFiltered);
+            List<Player> players = playerService.getPaginatedPlayers(filterName, pageNumber);
 
-            } else{
-                
-                List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
-                modelMap.addAttribute("players", listPlayersPaginated);
-            }
-            
+            modelMap.addAttribute("players", players);
             modelMap.addAttribute("filterName", filterName);
             modelMap.addAttribute("pageNumber", pageNumber);
             modelMap.addAttribute("nextPageNumber", nextPageNumber);
@@ -401,16 +376,11 @@ public class PlayerController {
         if (securityService.isAdmin()) {
 
             if(filterName!=null){ 
-                
-                List<?> listPlayers = playerService.getAuditPlayers(filterName).stream().collect(Collectors.toList());
-                modelMap.addAttribute("players", listPlayers);
-
-            } else{
-
-                List<?> listPlayers = playerService.getAuditPlayers("").stream().collect(Collectors.toList());
-                modelMap.addAttribute("players", listPlayers);
+                filterName = "";
             }
-
+            
+            List<?> listPlayers = playerService.getAuditPlayers(filterName).stream().collect(Collectors.toList());
+            modelMap.addAttribute("players", listPlayers);
             modelMap.addAttribute("filterName", filterName);
                     
         }else{
