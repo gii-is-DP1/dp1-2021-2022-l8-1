@@ -23,11 +23,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.context.annotation.FilterType;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.util.Optional;
 import java.util.Set;
@@ -98,6 +100,8 @@ public class PlayerControllerTests {
         when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(otherPlayer));
 	}
 
+    //Method -> listPlayers
+
     @Disabled
     @WithMockUser(value = "spring")
 	@Test
@@ -106,6 +110,8 @@ public class PlayerControllerTests {
 				.andExpect(view().name("players/listPlayers"));
 	}
 
+    //Method -> profile
+
     @WithMockUser(value = "spring")
 	@Test
 	void testPlayerProfile() throws Exception {
@@ -113,6 +119,8 @@ public class PlayerControllerTests {
                 .andExpect(status().isOk()).andExpect(model().attributeExists("player"))
 				.andExpect(view().name("/players/profile"));
 	}
+
+    //Method -> achievements
 
     @WithMockUser(value = "spring")
 	@Test
@@ -125,6 +133,8 @@ public class PlayerControllerTests {
 				.andExpect(view().name("players/achievements"));
 	}
 
+    //Method -> statistics
+
     @WithMockUser(value = "spring")
 	@Test
 	void testPlayerProfileStatistics() throws Exception {
@@ -134,12 +144,7 @@ public class PlayerControllerTests {
 				.andExpect(view().name("players/statistics"));
 	}
 
-    @WithMockUser(value = "spring")
-	@Test
-	void testPlayerRooms() throws Exception {
-		mockMvc.perform(get("/players/rooms")).andExpect(status().isOk())
-				.andExpect(view().name("games/publicRooms"));
-	}
+    //Method -> games
 
     @WithMockUser(value = "spring")
 	@Test
@@ -149,26 +154,57 @@ public class PlayerControllerTests {
 				.andExpect(view().name("games/publicRooms"));
 	}
 
+    //Method -> gamesPlayed
+
     @WithMockUser(value = "spring")
 	@Test
-	void testProfilePlayer() throws Exception {
+	void testRoomsPlayedInProfilePlayer() throws Exception {
 		mockMvc.perform(get("/players/profile/{playerId}/rooms/played", TEST_PLAYER_ID))
 				.andExpect(status().isOk()).andExpect(model().attributeExists("player"))
 				.andExpect(view().name("players/roomsPlayed"));
 	}
 
+    //Method -> gamesCreated
+
     @WithMockUser(value = "spring")
 	@Test
-	void testProfile2Player() throws Exception {
+	void testRoomsCreatedInProfilePlayer() throws Exception {
 		mockMvc.perform(get("/players/profile/{playerId}/rooms/created", TEST_PLAYER_ID))
 				.andExpect(view().name("players/roomsCreated"));
+	}
+
+    //Method -> deletePlayer
+
+    //Method -> updatePlayer
+
+    //Method -> processUpdateForm
+
+    @WithMockUser(value = "spring")
+	@Test
+	void testProcessUpdatePlayerFormWithInappropiateWords() throws Exception {
+		
+        when(playerService.playerHasInappropiateWords(any())).thenReturn(true);
+
+        mockMvc.perform(post("/players/edit/{playerId}", TEST_PLAYER_ID)
+            .with(csrf())
+            .param("profilePhoto", "https://imagen.png")
+            .param("firstName","Manuel")
+            .param("surname","González")
+            .param("email","manuelgonzalez@gmail.com"))
+            .andExpect(status().isOk())
+            .andExpect(model().attributeExists("player"))
+            .andExpect(view().name("players/createOrUpdatePlayerForm"));
 	}
 
     @Disabled
     @WithMockUser(value = "spring")
 	@Test
 	void testProcessUpdatePlayerFormSuccess() throws Exception {
+
+        when(playerService.playerHasInappropiateWords(any())).thenReturn(false);
+
 		mockMvc.perform(post("/players/edit/{playerId}", TEST_PLAYER_ID)
+        .with(csrf())
         .param("profilePhoto", "https://imagen.png")
         .param("firstName","Manuel")
         .param("surname","González")
@@ -176,6 +212,31 @@ public class PlayerControllerTests {
         //.andExpect(status().is3xxRedirection())
         .andExpect(model().attributeExists("player"))
 	    .andExpect(view().name("/players/listPlayers"));
+	}
+
+    //Method -> playerAuditing
+
+    @WithMockUser(value = "spring")
+	@Test
+	void testAdminAccessAuditing() throws Exception {
+
+        when(securityService.isAdmin()).thenReturn(true);
+
+		mockMvc.perform(get("/players/auditing"))
+				.andExpect(status().isOk())
+                .andExpect(model().attributeExists("players"))
+				.andExpect(view().name("players/auditing"));
+	}
+
+    @WithMockUser(value = "spring")
+	@Test
+	void testPlayerAccessAuditing() throws Exception {
+
+        when(securityService.isAdmin()).thenReturn(false);
+
+		mockMvc.perform(get("/players/auditing"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("/error"));
 	}
 
 }
