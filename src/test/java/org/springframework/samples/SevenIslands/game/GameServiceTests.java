@@ -39,6 +39,12 @@ public class GameServiceTests {
     }
 
     @Test
+    public void testFindAllPublicNotPlaying(){
+        long count = gameService.findAllPublicNotPlaying().spliterator().getExactSizeIfKnown();
+        assertEquals(2, count);
+    }
+
+    @Test
     public void testFindAll(){
         long count = gameService.findAll().spliterator().getExactSizeIfKnown();
         assertEquals(5, count);
@@ -69,6 +75,34 @@ public class GameServiceTests {
         assertEquals(4, count);
     }
 
+    @Test
+    public void testFindGamesCountByPlayerId(){
+        int count = gameService.findGamesCountByPlayerId(1);
+        assertEquals(5, count);
+    }
+
+    @Test
+    public void testIsWaitingOnRoom(){
+        Boolean waiting = gameService.isWaitingOnRoom(3); //Should be waiting as he's only in 2 rooms
+        Boolean waiting2 = gameService.isWaitingOnRoom(2); //Should be waiting even if he is playing 1 room as he is waiting in another
+        assertEquals(true, waiting);
+        assertEquals(true, waiting2);
+    }
+
+    @Test
+    public void testIsOwner(){
+        Boolean isOwner = gameService.isOwner(1, 1);
+        Boolean isNotOwner = gameService.isOwner(4,2);
+        assertEquals(true, isOwner);
+        assertEquals(false, isNotOwner);
+    }
+
+    @Test
+    public void testWaitingRoom(){
+        Integer gameId = gameService.waitingRoom(3).getId(); 
+        assertEquals(2, gameId); //2 Because this method find the first one
+    }
+    
     @Test
     public void shouldInsertGame(){
         Game game = new Game();
