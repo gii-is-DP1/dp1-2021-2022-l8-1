@@ -229,11 +229,11 @@ public class PlayerService {
 
 
     @Transactional
-    public List<List<Achievement>> getAchievements(List<Achievement> notAchieved, List<Achievement> achieved, Player player) {
+    public List<Achievement> getAchievements(List<Achievement> notAchieved, List<Achievement> achieved, Player player) {
 
-        int totalPoints = statsService.getPointsByPlayerId(player.getId());
+        int totalPoints = statsService.getPointsByPlayerId(player.getId())==null?0:statsService.getPointsByPlayerId(player.getId());
         int totalGames = player.getGames().size();
-        int totalWins = statsService.getWinsCountByPlayerId(player.getId());
+        int totalWins = statsService.getWinsCountByPlayerId(player.getId())==null?0:statsService.getWinsCountByPlayerId(player.getId());
         int totalLoses = totalGames - totalWins;
 
     
@@ -250,11 +250,9 @@ public class PlayerService {
             } 
         }
 
-        List<List<Achievement>> res = new ArrayList<>();
-        res.add(notAchieved);
-        res.add(achieved);
 
-        return res;
+
+        return achieved;
 
 
         

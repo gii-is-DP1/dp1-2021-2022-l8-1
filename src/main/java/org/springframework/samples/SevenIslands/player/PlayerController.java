@@ -154,45 +154,12 @@ public class PlayerController {
             List<Achievement> notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
             // todos los achievements que no estén en achieved
 
-            List<List<Achievement>> res = playerService.getAchievements(notAchieved, achieved, player.get());
+            List<Achievement> res = playerService.getAchievements(notAchieved, achieved, player.get());
+            
+            List<Achievement> finalAchieved = res;
 
-            // for(Achievement a: notAchieved){
-            //     if(a.getParameter()==PARAMETER.POINTS){ //if the achievement is for points
-            //         int totalPoints = statsService.getPointsByPlayerId(player.get().getId());
-            //         if(a.getMinValue()<=totalPoints){ //if the player has enough points
-            //             player.get().getAchievements().add(a);
-            //             playerService.save(player.get());
-            //             achieved.add(a);
-            //         }
-            //     }else if(a.getParameter()==PARAMETER.GAMES_PLAYED){ //if the achievement is for games played
-            //         int totalGames = player.get().getGames().size();
-            //         if(a.getMinValue()<=totalGames){ //if the player has enough games played
-            //             player.get().getAchievements().add(a);
-            //             playerService.save(player.get());
-            //             achieved.add(a);
-            //         }
-            //     }else if(a.getParameter()==PARAMETER.LOSES){ //if the achievement is for loses
-            //         int totalLoses = player.get().getGames().size() - statsService.getWinsCountByPlayerId(player.get().getId());
-            //         if(a.getMinValue()<=totalLoses){ //if the player has enough loses
-            //             player.get().getAchievements().add(a);
-            //             playerService.save(player.get());
-            //             achieved.add(a);
-            //         }
-            //     }else if(a.getParameter()==PARAMETER.WINS){ //if the achievement is for wins
-            //         int totalWins = statsService.getWinsCountByPlayerId(player.get().getId());
-            //         if(a.getMinValue()<=totalWins){ //if the player has enough wins
-            //             player.get().getAchievements().add(a);
-            //             playerService.save(player.get());
-            //             achieved.add(a);
-            //         }
-            //     }
-            // }
-
-            // notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
-
-            //We update the values of notAchieved and achieved Achievements
-            List<Achievement> finalNotAchieved = res.get(0);
-            List<Achievement> finalAchieved = res.get(1);
+            //We update the values of notAchieved Achievements
+            List<Achievement> finalNotAchieved = achievements.stream().filter(x->!finalAchieved.contains(x)).collect(Collectors.toList());
 
 
             modelMap.addAttribute("achieved", finalAchieved); 
