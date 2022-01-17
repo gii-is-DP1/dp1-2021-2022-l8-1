@@ -7,14 +7,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-
+import org.ehcache.core.spi.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementRepository;
+import org.springframework.samples.SevenIslands.achievement.PARAMETER;
 import org.springframework.samples.SevenIslands.card.CardRepository;
 import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWord;
 import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWordService;
+import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,9 @@ public class PlayerService {
 
     @Autowired
 	private UserService userService;
+
+    @Autowired
+    private StatisticService statsService;
 	
 	@Autowired
 	private AuthoritiesService authoritiesService;
@@ -221,4 +226,40 @@ public class PlayerService {
 
         return pages;
     }
+
+
+    @Transactional
+    public List<List<Achievement>> getAchievements(List<Achievement> notAchieved, List<Achievement> achieved, Player player) {
+
+        int totalPoints = statsService.getPointsByPlayerId(player.getId());
+        int totalGames = player.getGames().size();
+        int totalWins = statsService.getWinsCountByPlayerId(player.getId());
+        int totalLoses = totalGames - totalWins;
+
+    
+        for(Achievement a: notAchieved) {
+
+            boolean condition = (a.getParameter() == PARAMETER.POINTS && totalPoints>=a.getMinValue()) || (a.getParameter() == PARAMETER.GAMES_PLAYED && totalGames>=a.getMinValue()) 
+                                || (a.getParameter() == PARAMETER.WINS && totalWins>=a.getMinValue()) || (a.getParameter() == PARAMETER.LOSES && totalLoses>=a.getMinValue());
+
+            if(condition) {
+                player.getAchievements().add(a);
+                save(player);
+                achieved.add(a);
+
+            } 
+        }
+
+        List<List<Achievement>> res = new ArrayList<>();
+        res.add(notAchieved);
+        res.add(achieved);
+
+        return res;
+
+
+        
+
+
+    }
+
 }
