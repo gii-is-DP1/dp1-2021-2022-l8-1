@@ -88,10 +88,10 @@ public class PlayerController {
         Integer previousPageNumber = pages.get(0);
         Integer nextPageNumber = pages.get(1);
 
-        if (securityService.isAdmin()) {
+        if (securityService.isAdmin()) {    // if the user is admin
                     
             Iterable<Player> playersPaginated = playerService.findAll(page);
-            if(filterName!=null){
+            if(filterName!=null){   //if the user has typed something in the search bar
                 Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
                 
                 List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
@@ -198,10 +198,10 @@ public class PlayerController {
         return view;
     }
 
-    @GetMapping(path="/profile/{playerId}/statistics")
+    @GetMapping(path="/profile/{playerId}/statistics")  
     public String statistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/statistics";
-       securityService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
@@ -244,7 +244,7 @@ public class PlayerController {
     @GetMapping(path="/profile/{playerId}/rooms/created")
     public String gamesCreated(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/roomsCreated";
-       securityService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             Collection<Game> games = gameService.findByOwnerId(player.get().getId());
@@ -260,7 +260,7 @@ public class PlayerController {
     @GetMapping(path="/profile/{playerId}/rooms/played")
     public String gamesPlayed(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/roomsPlayed";
-       securityService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
 
         if(player.isPresent()){
@@ -280,26 +280,25 @@ public class PlayerController {
     public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view= "players/listPlayers";
         securityService.insertIdUserModelMap(modelMap);
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
-                    Optional<Player> player = playerService.findPlayerById(playerId);
-                    if(player.isPresent()){
-                        Player p = player.get();
-                        Collection<Game> lg = p.getGames();
-                        Collection<Game> col = lg.stream().filter(x->x.getPlayer().getId()!=playerId).collect(Collectors.toCollection(ArrayList::new));
-                        col.stream().forEach(x->x.deletePlayerOfGame(p));
+        if (securityService.isAdmin()) {
+            Optional<Player> p = playerService.findPlayerById(playerId);
+            if(p.isPresent()){
+                Player player = p.get();
+                Collection<Game> lg = player.getGames();
+                Collection<Game> col = lg.stream().filter(x->x.getPlayer().getId()!=playerId).collect(Collectors.toCollection(ArrayList::new));
+                col.stream().forEach(x->x.deletePlayerOfGame(player));
 
-                        p.deleteGames(col);
-                
-                        playerService.delete(player.get());
-                        modelMap.addAttribute("message", "Player successfully deleted!");
+                player.deleteGames(col);
+        
+                playerService.delete(player);
+                modelMap.addAttribute("message", "Player successfully deleted!");
 
-                        return listPlayers(modelMap, null, 0);
+                return listPlayers(modelMap, null, 0);
 
-                    }else{
-                        modelMap.addAttribute("message", "Player not found");
-                        view=listPlayers(modelMap, null, 0);
-                    }
+            }else{
+                modelMap.addAttribute("message", "Player not found");
+                view=listPlayers(modelMap, null, 0);
+            }
         }else{
             view = "/error";
         }
@@ -312,33 +311,34 @@ public class PlayerController {
     @GetMapping(path="/edit/{playerId}")
     public String updatePlayer(@PathVariable("playerId") int playerId, ModelMap model) {
 
-        Optional<Player> player = playerService.findPlayerById(playerId); // optional puede ser error el import
+        Optional<Player> player = playerService.findPlayerById(playerId); 
         String view = VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-        securityService.insertIdUserModelMap(model);
-        //Test if currentplayer is admin or the same id
-        // TODO: Comprobar que sea o admin o q el usuer registrado tenga el mismo id q el de la url
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.getAuthorities().stream()
-            .anyMatch(x -> x.toString().equals("admin"))){
-            if(player.isPresent()){
+        securityService.insertIdUserModelMap(model); 
+
+        if(securityService.isAdmin()) {
+            if(player.isPresent()){ 
                 model.addAttribute("player", player.get());
             }else{
                 model.addAttribute("message", "Player not found");
                 view = "/error";
             }
-        }else if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-            User currentUser = (User) authentication.getPrincipal();
-            int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
-            if(playerId==playerLoggedId){
-                if(player.isPresent()){
+        }else if (securityService.isAuthenticatedUser()) {
+
+            if(player.isPresent()) {
+                int playerLoggedId = securityService.getCurrentPlayerId();
+                if(playerLoggedId == playerId) {
                     model.addAttribute("player", player.get());
-                }else{
+
+                } else{
                     model.addAttribute("message", "Player not found");
                     view = "/error";
                 }
-            }else{
-                view= "/error";
+            } else{
+                model.addAttribute("message", "Player not found");
+                view = "/error";
             }
+
+           
         }else{
             view = "/error";
         }
@@ -426,7 +426,7 @@ public class PlayerController {
 
         if (securityService.isAdmin()) {
 
-            if(filterName!=null){
+            if(filterName!=null){ 
                 
                 List<?> listPlayers = playerService.getAuditPlayers(filterName).stream().collect(Collectors.toList());
                 modelMap.addAttribute("players", listPlayers);
