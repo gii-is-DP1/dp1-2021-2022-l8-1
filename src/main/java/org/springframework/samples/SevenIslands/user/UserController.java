@@ -63,7 +63,7 @@ public class UserController {
 	@PostMapping(value = "/users/new")
 	public String processCreationForm(@Valid Player player, BindingResult result, ModelMap model) {
 		if(playerService.playerHasInappropiateWords(player)){
-			model.addAttribute("message", "Your profile can't contains inappropiate words. Please, check your language.");
+			model.addAttribute("errorMessage", "Your profile can't contains inappropiate words. Please, check your language.");
 			model.put("player", player);
 			return VIEWS_PLAYER_CREATE_FORM;
 		}
