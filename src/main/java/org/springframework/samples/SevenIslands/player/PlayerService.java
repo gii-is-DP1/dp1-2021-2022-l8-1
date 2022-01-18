@@ -8,10 +8,12 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.ehcache.core.spi.service.StatisticsService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementRepository;
+import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.achievement.PARAMETER;
 import org.springframework.samples.SevenIslands.card.CardRepository;
 import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWord;
@@ -19,9 +21,11 @@ import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWo
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
+import org.springframework.samples.SevenIslands.util.SecurityService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.validation.BindingResult;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,21 +48,22 @@ public class PlayerService {
     private InappropiateWordService inappropiateWordService;
 
     @Autowired
-    private CardRepository cardRepo;
+    private SecurityService securityService;
+
 
     @Autowired
-    private AchievementRepository achievementRepo;
+    private AchievementService achievementService;
 
     @Autowired
 	public PlayerService(PlayerRepository playerRepo,
                     UserService userService,
                     AuthoritiesService authoritiesService,
-                    CardRepository cardRepo,
-                    AchievementRepository achievementRepo) {
+                    SecurityService securityService,
+                    AchievementService achievementService) {
         this.playerRepo = playerRepo;
-        this.userService = userService;                
-        this.cardRepo = cardRepo;
-        this.achievementRepo = achievementRepo;
+        this.userService = userService;
+        this.securityService = securityService;
+        this.achievementService = achievementService;
 	}
 
     @Transactional(readOnly = true)
@@ -148,7 +153,7 @@ public class PlayerService {
 
     @Transactional(readOnly = true)
     public Iterable<Achievement> getAchievementsByPlayerId(int id) {
-        return achievementRepo.getByPlayerId(id);
+        return achievementService.findByPlayerId(id);
     }
 
     @Transactional(readOnly = true)
@@ -272,5 +277,56 @@ public class PlayerService {
         return StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
 
     }
+
+
+    @Transactional
+    public String processEditPlayer(Player player, int playerId, BindingResult result) {
+
+        Player playerToUpdate= findPlayerById(playerId).get();  // always present because of the validation in the controller
+        int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();   //get the id of the authority for deleting it later
+        String username = playerToUpdate.getUser().getUsername();   
+        Iterable<Player> players = findAll();
+        List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
+        
+        BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
+        
+        
+        String newUserName = playerToUpdate.getUser().getUsername();    
+
+        try {                    
+
+            // si el NUEVO username está ya en la DB && el NUEVO username NO es el mismo que el viejo
+            // se trata de un error, pues estamos editando un usuario que ya existe
+            if(usernames.stream().anyMatch(x->x.equals(newUserName) && !newUserName.equals(username))){
+                return "errors/error-500";
+            }
+
+            // guardo el nuevo player (recordemos que en playerToUpdate ya se han copiado las propiedades del nuevo player)
+            savePlayer(playerToUpdate);
+
+            authoritiesService.deleteAuthorities(id);
+            // si el NUEVO username es diferente al antiguo, se elimina el ANTIGUO 
+            if(!username.equals(newUserName)){
+                userService.delete(username);
+            }    
+
+        } catch (Exception ex) {
+            result.rejectValue("name", "duplicate", "already exists");
+            return "players/createOrUpdatePlayerForm";
+        }
+
+        if(securityService.isAdmin()){
+            return "redirect:/players";
+
+        }else{
+            if(!username.equals(newUserName)){
+                SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+                return "redirect:/welcome";
+            }
+            return "redirect:/players/profile/{playerId}";
+
+        }
+
+    } 
 
 }

@@ -310,7 +310,6 @@ public class PlayerController {
 	public String processUpdateForm(@Valid Player player, BindingResult result,@PathVariable("playerId") int playerId, ModelMap model,
                                         @RequestParam(value="version", required = false) Integer version) {
 
-        // System.out.println("player: \n\n" + player + "\n\n");
         
         if(playerService.playerHasInappropiateWords(player)){
             model.addAttribute("errorMessage", "Your profile can't contains inappropiate words. Please, check your language.");
@@ -320,55 +319,51 @@ public class PlayerController {
 
 		if (result.hasErrors()){
 			model.put("player", player);
-			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-		}
-		else {
+			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM; //TODO: no se puede refactorizar más hasta aquí
+		} else {
                     
-            Player playerToUpdate= playerService.findPlayerById(playerId).get();
-            int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();   //get the id of the authority for deleting it later
-            String username = playerToUpdate.getUser().getUsername();   
-            Iterable<Player> players = playerService.findAll();
-            List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
             
-            BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
-            // copio las propiedades de player a playerToUpdate, ignorando las que no quiero copiar
-            
-            String newUserName = player.getUser().getUsername();    // es lo mismo que hacer playerToUpdate().getUser().getUsername(), pues aquí ya se han copiado las propiedades
-
-
-            try {                    
-
-                // si el NUEVO username está ya en la DB && el NUEVO username NO es el mismo que el viejo
-                // se trata de un error, pues estamos editando un usuario que ya existe
-                if(usernames.stream().anyMatch(x->x.equals(newUserName) && !newUserName.equals(username))){
-                    return "errors/error-500";
-                }
-
-                // guardo el nuevo player (recordemos que en playerToUpdate ya se han copiado las propiedades del nuevo player)
-                this.playerService.savePlayer(playerToUpdate);
-                authoritiesService.deleteAuthorities(id);
-                // si el NUEVO username es diferente al antiguo, se elimina el ANTIGUO 
-                if(username != newUserName){
-                    userService.delete(username);
-                }      
-
-            } catch (Exception ex) {
-                result.rejectValue("name", "duplicate", "already exists");
-                return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-            }
-            if(securityService.isAdmin()){
-                return "redirect:/players";
-            }else{
-                if(!username.equals(newUserName)){
-                    SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-                    return "redirect:/welcome";
-                }
-                return "redirect:/players/profile/{playerId}";
-
-            }
+            return playerService.processEditPlayer(player, playerId, result);
 
 		}
 	}  
+
+
+    
+
+    // }else {
+                
+ 
+    //     try {                    
+    //         //this.playerService.savePlayer(playerToUpdate);
+
+    //         //If the username is already in the DB and it's was edited then it means that
+    //         //we are overwritting another user
+    //         if(usernames.stream().anyMatch(x->x.equals(playerToUpdate.getUser().getUsername()))&&
+    //         !playerToUpdate.getUser().getUsername().equals(username)){
+    //             return "errors/error-500";
+    //         }
+
+    //         this.playerService.savePlayer(playerToUpdate);
+    //         authoritiesService.deleteAuthorities(id);
+    //         if(username != playerToUpdate.getUser().getUsername()){
+    //             userService.delete(username);
+    //         }      
+
+    //     } catch (Exception ex) {
+    //         result.rejectValue("name", "duplicate", "already exists");
+    //         return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+    //     }
+    //     if(securityService.isAdmin()){
+    //         return "redirect:/players";
+    //     }else{
+    //         if(username != playerToUpdate.getUser().getUsername()){
+    //             SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+    //             return "redirect:/welcome";
+    //         }
+    //         return "redirect:/players/profile/{playerId}";
+
+    //     }
 
     @GetMapping(path="/auditing")
     public String playerAuditing(ModelMap modelMap, @PathParam("filterName") String filterName){
