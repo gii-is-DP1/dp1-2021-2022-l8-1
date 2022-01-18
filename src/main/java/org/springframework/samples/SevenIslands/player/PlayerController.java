@@ -321,7 +321,6 @@ public class PlayerController {
 			model.put("player", player);
 			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM; //TODO: no se puede refactorizar más hasta aquí
 		} else {
-                    
             
             return playerService.processEditPlayer(player, playerId, result);
 

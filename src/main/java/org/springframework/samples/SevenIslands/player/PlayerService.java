@@ -282,49 +282,55 @@ public class PlayerService {
     @Transactional
     public String processEditPlayer(Player player, int playerId, BindingResult result) {
 
-        Player playerToUpdate= findPlayerById(playerId).get();  // always present because of the validation in the controller
-        int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();   //get the id of the authority for deleting it later
-        String username = playerToUpdate.getUser().getUsername();   
-        Iterable<Player> players = findAll();
-        List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
+        Optional<Player> playerOpt = findPlayerById(playerId);
         
-        BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
-        
-        
-        String newUserName = playerToUpdate.getUser().getUsername();    
-
-        try {                    
-
-            // si el NUEVO username está ya en la DB && el NUEVO username NO es el mismo que el viejo
-            // se trata de un error, pues estamos editando un usuario que ya existe
-            if(usernames.stream().anyMatch(x->x.equals(newUserName) && !newUserName.equals(username))){
-                return "errors/error-500";
-            }
-
-            // guardo el nuevo player (recordemos que en playerToUpdate ya se han copiado las propiedades del nuevo player)
-            savePlayer(playerToUpdate);
-
-            authoritiesService.deleteAuthorities(id);
-            // si el NUEVO username es diferente al antiguo, se elimina el ANTIGUO 
-            if(!username.equals(newUserName)){
-                userService.delete(username);
-            }    
-
-        } catch (Exception ex) {
-            result.rejectValue("name", "duplicate", "already exists");
-            return "players/createOrUpdatePlayerForm";
-        }
-
-        if(securityService.isAdmin()){
+        if(!playerOpt.isPresent()) {
             return "redirect:/players";
+        } else {
+            Player playerToUpdate = playerOpt.get();
+            int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();   
+            String username = playerToUpdate.getUser().getUsername();   
+            Iterable<Player> players = findAll();
+            List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
+            
+            BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
+            
+            
+            String newUserName = playerToUpdate.getUser().getUsername();    
 
-        }else{
-            if(!username.equals(newUserName)){
-                SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-                return "redirect:/welcome";
+            try {                    
+
+                // si el NUEVO username está ya en la DB && el NUEVO username NO es el mismo que el viejo
+                // se trata de un error, pues estamos editando un usuario que ya existe
+                if(usernames.stream().anyMatch(x->x.equals(newUserName) && !newUserName.equals(username))){
+                    return "errors/error-500";
+                }
+
+                // guardo el nuevo player (recordemos que en playerToUpdate ya se han copiado las propiedades del nuevo player)
+                savePlayer(playerToUpdate);
+
+                authoritiesService.deleteAuthorities(id);
+                // si el NUEVO username es diferente al antiguo, se elimina el ANTIGUO 
+                if(!username.equals(newUserName)){
+                    userService.delete(username);
+                }    
+
+            } catch (Exception ex) {
+                result.rejectValue("name", "duplicate", "already exists");
+                return "players/createOrUpdatePlayerForm";
             }
-            return "redirect:/players/profile/{playerId}";
 
+            if(securityService.isAdmin()){
+                return "redirect:/players";
+
+            }else{
+                if(!username.equals(newUserName)){
+                    SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+                    return "redirect:/welcome";
+                }
+                return "redirect:/players/profile/{playerId}";
+
+            }
         }
 
     } 
