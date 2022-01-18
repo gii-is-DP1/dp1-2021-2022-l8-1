@@ -98,8 +98,7 @@ public class PlayerControllerTests {
         otherUser.setAuthorities(st);
         otherPlayer.setUser(otherUser);
 
-        // when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(otherPlayer));
-        when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(new Player()));
+        when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(otherPlayer));
 
 
 	}
