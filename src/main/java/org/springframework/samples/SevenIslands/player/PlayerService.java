@@ -7,15 +7,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.ehcache.core.spi.service.StatisticsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
-import org.springframework.samples.SevenIslands.achievement.AchievementRepository;
 import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.achievement.PARAMETER;
-import org.springframework.samples.SevenIslands.card.CardRepository;
 import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWord;
 import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWordService;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
@@ -210,22 +207,15 @@ public class PlayerService {
 
         
         if(pageNumber==0){
-            // previousPageNumber=0;
             pages.set(0, 0);
-
-            // nextPageNumber= pageNumber+1;
             pages.set(1, pageNumber+1);
         
         }else if(pageNumber==totalPages-1){ 
-            // previousPageNumber=pageNumber-1;
             pages.set(0, pageNumber-1);
-            // nextPageNumber = pageNumber;
             pages.set(1, pageNumber);
 
         } else {
-            // previousPageNumber=pageNumber-1;
             pages.set(0, pageNumber-1);
-            // nextPageNumber = pageNumber+1;
             pages.set(1, pageNumber+1);
 
         }
@@ -291,7 +281,7 @@ public class PlayerService {
             int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();   
             String username = playerToUpdate.getUser().getUsername();   
             Iterable<Player> players = findAll();
-            List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
+            List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername()).collect(Collectors.toList());
             
             BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
             
