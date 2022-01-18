@@ -144,7 +144,7 @@ public class BoardServiceTests {
 
     @WithMockUser(value = "spring")
     @Test
-    public void initTest(){
+    public void testInit(){
         Game game = gameService.findGameById(TEST_GAME_ID).get();
         boardService.init(game);
         assertThat(game.getBoard().getIslands()).isNotEmpty();
@@ -152,7 +152,7 @@ public class BoardServiceTests {
 
     @WithMockUser(value = "spring")
     @Test
-    public void distributeTest(){
+    public void testDistribute(){
         Game game = gameService.findGameById(TEST_GAME_ID).get();
         boardService.init(game);
         Board board = game.getBoard();
@@ -164,7 +164,7 @@ public class BoardServiceTests {
     @Disabled
     @WithMockUser(value = "spring")
     @Test
-    public void initCardPlayersTest(){
+    public void testInitCardPlayers(){
         Game game = gameService.findGameById(TEST_GAME_ID).get();
         boardService.initCardPlayers(game);
         Player player = game.getPlayers().stream().findFirst().get();
@@ -174,7 +174,7 @@ public class BoardServiceTests {
 
     @WithMockUser(value = "spring")
     @Test
-    public void calcPlayersByPunctuationTest(){
+    public void testCalcPlayersByPunctuation(){
         List<Player> listPlayerAtStart = new ArrayList<>();
         Player p1 = playerService.findPlayerById(TEST_PLAYER_ID).get();
         Player p2 = playerService.findPlayerById(TEST_PLAYER_ID_2).get();
