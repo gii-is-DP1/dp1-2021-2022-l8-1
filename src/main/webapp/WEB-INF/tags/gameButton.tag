@@ -16,7 +16,7 @@
     </c:if>
 
     <c:if test="${type == 'island'}">
-        <p>Take card</p>
+        <p>Take card [TODO]</p>
         <img src="/resources/images/icons/cards_icon.png" alt="Take card">
     </c:if>
 
