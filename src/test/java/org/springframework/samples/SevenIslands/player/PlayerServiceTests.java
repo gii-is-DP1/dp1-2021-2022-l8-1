@@ -246,6 +246,16 @@ public class PlayerServiceTests {
         
     }
 
+    @Test
+    public void testPaginatedPlayers() {
+        String filterName = "a";
+        Integer pageNumber = 1;
+
+        
+
+
+    }
+
 }
 
 

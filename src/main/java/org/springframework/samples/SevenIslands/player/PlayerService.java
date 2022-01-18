@@ -190,8 +190,12 @@ public class PlayerService {
      }
 
     @Transactional
-    public List<Integer> calculatePages(int pageNumber) {
+    public List<Integer> calculatePages(Integer pageNumber) { 
         
+        if(pageNumber == null){
+            pageNumber = 0;
+        }
+
         Integer playerCount = playerCount();
         Integer totalPages;
 
