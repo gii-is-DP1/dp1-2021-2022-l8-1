@@ -64,7 +64,6 @@ public class BoardService {
 
     @Transactional
     public void init(Game game) {  
-        //Board board = new Board();
         List<Island> l = new ArrayList<>();
         for(int i=1;i<7;i++){
             Island isl = new Island();
@@ -72,7 +71,6 @@ public class BoardService {
             islandService.save(isl);
             l.add(isl);
         }
-        //board.setIslands(l);
         Board board = new BoardBuilder().setIslands(l).build();
         game.setBoard(board);
         gameService.save(game);
