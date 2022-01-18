@@ -33,7 +33,7 @@ import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.statistic.Statistic;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
-import org.springframework.samples.SevenIslands.user.User;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.samples.SevenIslands.util.Pair;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.core.Authentication;
@@ -172,14 +172,17 @@ public class BoardService {
     }
 
     @Transactional
-    public void gameLogic(Player pl, Game game, ModelMap modelMap, HttpServletRequest request){
+    public String gameLogic(Player pl, Game game, ModelMap modelMap, HttpServletRequest request){
+        
+        String res=null;
+
         if(!game.isHas_started()){  
             
             gameIsNotStarted(game, request);
 
         }else if(game.getPlayers().stream().filter(x->x.getInGame()).count()==1L || game.getActualPlayer()==0 && game.getDeck().getCards().isEmpty()){                     
 
-            finishTheGame(game);
+            return finishTheGame(game);
 
         }else if(pl != game.getPlayers().get(game.getActualPlayer())){         //para que aunque refresque uno que no es su turno no incremente el turno
            
@@ -201,6 +204,8 @@ public class BoardService {
         modelMap.addAttribute("id_playing", game.getPlayers().get(game.getActualPlayer()).getId());
         Long temp = ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now());
         modelMap.addAttribute("tempo", 3600-temp.intValue());
+
+        return res;
 
     }
     @Transactional

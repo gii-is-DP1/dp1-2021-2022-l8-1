@@ -73,8 +73,12 @@ public class BoardController {
 		modelMap.addAttribute("board",game.getBoard()); 
     
         //Game logic
-        boardService.gameLogic(securityService.getCurrentPlayer(), game, modelMap, request);
+        String view = boardService.gameLogic(securityService.getCurrentPlayer(), game, modelMap, request);
         
+        if(view!=null){
+            return view;
+        }
+
         if(game.getPlayers().size()==1){
             boardService.toLobby(game, modelMap, game.getPlayers().size());
         }
@@ -134,14 +138,11 @@ public class BoardController {
     Game game = gameService.findGamesByRoomCode(code).iterator().next();
     int cardsToSpend = Math.abs(game.getValueOfDie()-island);
     
-    if(pickedCards!=null){
-        if(cardsToSpend != pickedCards.length){
-            boardService.doAnIllegalAction(code, island, cardsToSpend, request);
-        }
-    }else if(pickedCards==null){
-        if(cardsToSpend!=0){
-            boardService.doAnIllegalAction(code, island, cardsToSpend, request);
-        }
+    if(pickedCards!=null && cardsToSpend != pickedCards.length){
+        return boardService.doAnIllegalAction(code, island, cardsToSpend, request);
+        
+    }else if(pickedCards==null && cardsToSpend!=0){
+        return boardService.doAnIllegalAction(code, island, cardsToSpend, request);
     }
 
         return boardService.doCorrectAction(game,island,pickedCards,request);
