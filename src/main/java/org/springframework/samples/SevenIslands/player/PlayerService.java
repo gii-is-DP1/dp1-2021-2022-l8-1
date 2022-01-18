@@ -175,7 +175,7 @@ public class PlayerService {
     }
   
     @Transactional(readOnly = true)
-    public Boolean playerHasInappropiateWords(Player player){
+    public boolean playerHasInappropiateWords(Player player){
         String firstName = player.getFirstName().toLowerCase();
         String surName = player.getSurname().toLowerCase();
         String userName = player.getUser().getUsername().toLowerCase();
