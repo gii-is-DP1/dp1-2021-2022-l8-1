@@ -216,7 +216,7 @@ public class PlayerController {
   
 
     @GetMapping(path="/delete/{playerId}")
-    public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap){
+    public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap, HttpServletRequest request){
         String view= "players/listPlayers";
         securityService.insertIdUserModelMap(modelMap);
         if (securityService.isAdmin()) {
@@ -236,10 +236,11 @@ public class PlayerController {
 
             }else{
                 modelMap.addAttribute("message", "Player not found");
+                // request.getSession().setAttribute("message", "Player not found");
                 view=listPlayers(modelMap, null, 0);
             }
         }else{
-            view = "/error";
+            view = "/NOTANADMIN";
         }
         return view;
 

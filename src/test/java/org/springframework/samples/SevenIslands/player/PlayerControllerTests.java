@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.SevenIslands.achievement.AchievementService;
+import org.springframework.samples.SevenIslands.admin.Admin;
 import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
@@ -73,8 +74,12 @@ public class PlayerControllerTests {
     private StatisticService statsService;
 
     private Player otherPlayer;
+    private Admin admin;
     private User otherUser;
+    private User userAdmin;
     private Authorities auth;
+    private Authorities auth2;
+
 
     @BeforeEach
 	void setup() {
@@ -85,7 +90,9 @@ public class PlayerControllerTests {
         otherPlayer.setFirstName("Manuel");
         otherPlayer.setSurname("González");
         otherPlayer.setEmail("manuelgonzalez@gmail.com");
-        
+
+
+
         otherUser = new User();
         otherUser.setUsername("manugo44");
         otherUser.setPassword("ManueGonza9!");
@@ -95,15 +102,32 @@ public class PlayerControllerTests {
         auth.setAuthority("player");
         Set<Authorities> st = Set.of(auth);
 
-        otherUser.setAuthorities(st);
-        otherPlayer.setUser(otherUser);
+        otherUser.setAuthorities(st);   // otherUser is a player
+        otherPlayer.setUser(otherUser); // otherPlayer is a player
+
+        userAdmin = new User();
+        userAdmin.setUsername("4dm1n");
+        userAdmin.setPassword("Us_4dm1n!");
+        userAdmin.setEnabled(true);
+        auth2 = new Authorities();
+        auth2.setAuthority("admin");
+        Set<Authorities> st2 = Set.of(auth2);
+        userAdmin.setAuthorities(st2);
+
+        admin = new Admin();
+        admin.setId(3);
+        admin.setEmail("admin@us.es");
+        admin.setFirstName("Pepito");
+        admin.setSurname("Grillo");
+        admin.setUser(userAdmin);
+
 
         when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(otherPlayer));
-
 
 	}
 
     //Method -> listPlayers
+
 
     @Disabled
     @WithMockUser(value = "spring")
@@ -232,18 +256,18 @@ public class PlayerControllerTests {
     //Method -> deletePlayer
 
     
+
     @Disabled
-    @WithMockUser(value = "spring")
+    @WithMockUser(value="spring")
 	@Test
 	void testDeletePlayer() throws Exception {
 
-        when(securityService.isAdmin()).thenReturn(true);
-        when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(new Player()));
+        when(this.securityService.isAdmin()).thenReturn(true);
 
 		mockMvc.perform(get("/players/delete/{playerId}", TEST_PLAYER_ID))
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("message", "Player successfully deleted!"))
-				.andExpect(view().name("players/listPlayers"));
+                // .andExpect(model().attribute("message", "Player not found"))
+				.andExpect(view().name("/error"));
 	}
 
     //Method -> updatePlayer
@@ -290,7 +314,7 @@ public class PlayerControllerTests {
     @WithMockUser(value = "spring")
 	@Test
 	void testAdminAccessAuditing() throws Exception {
-
+        
         when(securityService.isAdmin()).thenReturn(true);
 
 		mockMvc.perform(get("/players/auditing"))
