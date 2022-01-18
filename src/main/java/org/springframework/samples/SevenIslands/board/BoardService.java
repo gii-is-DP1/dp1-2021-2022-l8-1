@@ -356,74 +356,92 @@ public class BoardService {
 
         if(island<7){
             Deck d = game.getDeck();
-           
             Card islandCard = game.getBoard().getIslands().get(island-1).getCard();
 
             if(islandCard!=null){
                 actualCards.add(islandCard);
-
-                int statisticId = 0;
-                Optional<Statistic> statisticOp=statisticService.getStatisticByPlayerId(actualPlayer.getId()).stream().filter(x->x.getHad_won()==null).findFirst();
-                if(statisticOp.isPresent()){
-                    statisticId = statisticOp.get().getId();
-                }
-                
-                if(pickedCards!=null){
-                    for(int i=0; i<pickedCards.length;i++){
-                        int n = pickedCards[i];
-                        if(statisticService.existsRow(statisticId, n)){
-                            statisticService.updateCardCount(statisticId, n);
-                        }else{
-                            statisticService.insertCardCount(statisticId, n); //AQUI SE INSERTA LAS CARTAS QUE HAS USADO
-                        }
-                         
-                    }
-                }  
-                
-                statisticService.insertCardCount(statisticId, islandCard.getId()); //AQUI SE INSERTA LA CARTA QUE HAS ESCOGIDA
-                statisticService.updateIslandCount(statisticId, island); //AQUI SE INCREMENTA LA ISLA QUE HAS USADO PORQUE TE GUSTA
+                islandStatistics(actualPlayer ,islandCard, pickedCards, island);    
 
             }else{
                 request.getSession().setAttribute("message", "Island "+island+ " hasn't a card, choose another island");
                 return REDIRECT_TO_BOARDS+ game.getCode();
             }
-
-            if(d.getCards().size()!=0){
-                Card c = null;
-
-                Optional<Card> cardOp = d.getCards().stream().findFirst();
-                if(cardOp.isPresent()){
-                    c = cardOp.get();
-                }
-                Island is = game.getBoard().getIslands().get(island-1);
-                is.setCard(c);
-                d.deleteCards(c);
-                deckService.save(d);
-                islandService.save(is);
-
-            }else{
-                Island is = game.getBoard().getIslands().get(island-1);
-                is.setCard(null);
-                islandService.save(is);
-            }         
+            changeDeck(d, game, island);           
             
         }else{
-            Deck d = game.getDeck();
-            Card c = null;
-            Optional<Card> cardOp = d.getCards().stream().findFirst();
-            if(cardOp.isPresent()){
-                c = cardOp.get();
-            }
-            actualCards.add(c);
-            d.deleteCards(c);
-            deckService.save(d);
-            
+            actualCards = changeDeckZeroCards(game, actualCards);
         }
-
 
         actualPlayer.setCards(actualCards);
         playerService.save(actualPlayer);
         return REDIRECT_TO_BOARDS+game.getId()+"/changeTurn";
+    }
+
+    @Transactional
+    public void islandStatistics(Player actualPlayer, Card islandCard, Integer[] pickedCards, Integer island){
+        
+        int statisticId = 0;
+        Optional<Statistic> statisticOp=statisticService.getStatisticByPlayerId(actualPlayer.getId()).stream().filter(x->x.getHad_won()==null).findFirst();
+        if(statisticOp.isPresent()){
+            statisticId = statisticOp.get().getId();
+        }
+        
+        if(pickedCards!=null){
+            for(int i=0; i<pickedCards.length;i++){
+                int n = pickedCards[i];
+                if(statisticService.existsRow(statisticId, n)){
+                    statisticService.updateCardCount(statisticId, n);
+                }else{
+                    statisticService.insertCardCount(statisticId, n); //AQUI SE INSERTA LAS CARTAS QUE HAS USADO
+                }
+                    
+            }
+        }  
+        
+        statisticService.insertCardCount(statisticId, islandCard.getId()); //AQUI SE INSERTA LA CARTA QUE HAS ESCOGIDA
+        statisticService.updateIslandCount(statisticId, island); //AQUI SE INCREMENTA LA ISLA QUE HAS USADO PORQUE TE GUSTA
+        
+    }
+
+    @Transactional
+    public void changeDeck(Deck d, Game game, Integer island){
+        
+        if(d.getCards().size()!=0){
+            Card c = null;
+
+            Optional<Card> cardOp = d.getCards().stream().findFirst();
+            if(cardOp.isPresent()){
+                c = cardOp.get();
+            }
+            Island is = game.getBoard().getIslands().get(island-1);
+            is.setCard(c);
+            d.deleteCards(c);
+            deckService.save(d);
+            islandService.save(is);
+
+        }else{
+            Island is = game.getBoard().getIslands().get(island-1);
+            is.setCard(null);
+            islandService.save(is);
+        }         
+        
+    }
+
+    @Transactional
+    public List<Card> changeDeckZeroCards(Game game, List<Card> actualCards){
+        
+        Deck d = game.getDeck();
+        Card c = null;
+        Optional<Card> cardOp = d.getCards().stream().findFirst();
+        if(cardOp.isPresent()){
+            c = cardOp.get();
+        }
+        actualCards.add(c);
+        d.deleteCards(c);
+        deckService.save(d);
+
+        return actualCards;
+        
     }
 
     @Transactional
