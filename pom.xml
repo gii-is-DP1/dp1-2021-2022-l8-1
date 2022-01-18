@@ -32,6 +32,10 @@
         <!-- JSON -->
         <jackson.version>2.10.1</jackson.version>
 
+        <!--Sonarcloud-->
+        <sonar.organization>gii-is-dp1</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
     </properties>
 
     <developers>

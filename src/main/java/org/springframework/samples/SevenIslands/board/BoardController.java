@@ -420,7 +420,6 @@ public class BoardController {
         
         return "redirect:/welcome";
         
-        
     }
 
 }

@@ -327,43 +327,6 @@ public class PlayerController {
 		}
 	}  
 
-
-    
-
-    // }else {
-                
- 
-    //     try {                    
-    //         //this.playerService.savePlayer(playerToUpdate);
-
-    //         //If the username is already in the DB and it's was edited then it means that
-    //         //we are overwritting another user
-    //         if(usernames.stream().anyMatch(x->x.equals(playerToUpdate.getUser().getUsername()))&&
-    //         !playerToUpdate.getUser().getUsername().equals(username)){
-    //             return "errors/error-500";
-    //         }
-
-    //         this.playerService.savePlayer(playerToUpdate);
-    //         authoritiesService.deleteAuthorities(id);
-    //         if(username != playerToUpdate.getUser().getUsername()){
-    //             userService.delete(username);
-    //         }      
-
-    //     } catch (Exception ex) {
-    //         result.rejectValue("name", "duplicate", "already exists");
-    //         return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-    //     }
-    //     if(securityService.isAdmin()){
-    //         return "redirect:/players";
-    //     }else{
-    //         if(username != playerToUpdate.getUser().getUsername()){
-    //             SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-    //             return "redirect:/welcome";
-    //         }
-    //         return "redirect:/players/profile/{playerId}";
-
-    //     }
-
     @GetMapping(path="/auditing")
     public String playerAuditing(ModelMap modelMap, @PathParam("filterName") String filterName){
         
