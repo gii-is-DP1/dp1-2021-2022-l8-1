@@ -330,8 +330,8 @@ public class BoardService {
     @Transactional
     public String doCorrectAction(Game game, Integer island, Integer[] pickedCards, HttpServletRequest request){
 
-        Player actualPlayer = null;
-        List<Card> actualCards = null;
+        Player actualPlayer = new Player();
+        List<Card> actualCards = new ArrayList<>();
 
         Optional<Player> playerOp=playerService.findPlayerById(game.getPlayers().get(game.getActualPlayer()).getId());
         if(playerOp.isPresent()){
@@ -490,7 +490,6 @@ public class BoardService {
     }
 
 
-    @Transactional
     public Map<Integer, Integer> getPointsPerSet(){
         
         Map<Integer, Integer> values = new HashMap<>();
@@ -508,7 +507,6 @@ public class BoardService {
         return values;
     }
 
-    @Transactional
     public Integer calcPoints(Integer numOfPoints, List<String> cards) {
         Map<Integer, Integer> pointsPerSet = this.getPointsPerSet();
 
