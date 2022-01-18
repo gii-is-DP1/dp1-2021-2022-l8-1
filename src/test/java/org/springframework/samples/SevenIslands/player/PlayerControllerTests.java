@@ -15,12 +15,12 @@ import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
-import org.springframework.samples.SevenIslands.user.UserBuilder;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.ModelMap;
 import org.springframework.context.annotation.FilterType;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -40,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PlayerControllerTests {
     
     private static final int TEST_PLAYER_ID = 22;
+    private static final int TEST_NOT_PLAYER_ID= 400;
 
     @Autowired
 	private PlayerController playerController;
@@ -97,7 +98,10 @@ public class PlayerControllerTests {
         otherUser.setAuthorities(st);
         otherPlayer.setUser(otherUser);
 
-        when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(otherPlayer));
+        // when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(otherPlayer));
+        when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(new Player()));
+
+
 	}
 
     //Method -> listPlayers
@@ -120,6 +124,15 @@ public class PlayerControllerTests {
 				.andExpect(view().name("/players/profile"));
 	}
 
+    @WithMockUser(value = "spring")
+	@Test
+	void testPlayerProfileNotPresent() throws Exception {
+		mockMvc.perform(get("/players/profile/{playerId}",TEST_NOT_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player not found"))
+				.andExpect(view().name("/error"));
+	}
+
     //Method -> achievements
 
     @WithMockUser(value = "spring")
@@ -133,6 +146,16 @@ public class PlayerControllerTests {
 				.andExpect(view().name("players/achievements"));
 	}
 
+    @WithMockUser(value = "spring")
+	@Test
+	void testPlayerProfileNotPresentAchievements() throws Exception {
+		mockMvc.perform(get("/players/profile/{playerId}/achievements", TEST_NOT_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player not found"))
+				.andExpect(view().name("/error"));
+	}
+    
+
     //Method -> statistics
 
     @WithMockUser(value = "spring")
@@ -144,15 +167,26 @@ public class PlayerControllerTests {
 				.andExpect(view().name("players/statistics"));
 	}
 
+    @WithMockUser(value = "spring")
+	@Test
+	void testPlayerProfileNotPresentStatistics() throws Exception {
+		mockMvc.perform(get("/players/profile/{playerId}/statistics",TEST_NOT_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player not found"))
+				.andExpect(view().name("/error"));
+	}
+
     //Method -> games
 
     @WithMockUser(value = "spring")
 	@Test
 	void testRoomsPlayer() throws Exception {
 		mockMvc.perform(get("/players/rooms"))
-				.andExpect(status().isOk()).andExpect(model().attributeExists("games"))
+				.andExpect(status().isOk())
+                .andExpect(model().attributeExists("games"))
 				.andExpect(view().name("games/publicRooms"));
 	}
+
 
     //Method -> gamesPlayed
 
@@ -160,8 +194,19 @@ public class PlayerControllerTests {
 	@Test
 	void testRoomsPlayedInProfilePlayer() throws Exception {
 		mockMvc.perform(get("/players/profile/{playerId}/rooms/played", TEST_PLAYER_ID))
-				.andExpect(status().isOk()).andExpect(model().attributeExists("player"))
+				.andExpect(status().isOk())
+                .andExpect(model().attributeExists("player"))
+                .andExpect(model().attributeExists("player"))
 				.andExpect(view().name("players/roomsPlayed"));
+	}
+
+    @WithMockUser(value = "spring")
+	@Test
+	void testRoomsPlayedInProfilePlayerNotPresent() throws Exception {
+		mockMvc.perform(get("/players/profile/{playerId}/rooms/played", TEST_NOT_PLAYER_ID))
+				.andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player not found"))
+				.andExpect(view().name("/error"));
 	}
 
     //Method -> gamesCreated
@@ -170,10 +215,37 @@ public class PlayerControllerTests {
 	@Test
 	void testRoomsCreatedInProfilePlayer() throws Exception {
 		mockMvc.perform(get("/players/profile/{playerId}/rooms/created", TEST_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("games"))
+                .andExpect(model().attributeExists("player"))
 				.andExpect(view().name("players/roomsCreated"));
 	}
 
+    @WithMockUser(value = "spring")
+	@Test
+	void testRoomsCreatedInProfilePlayerNotPresent() throws Exception {
+		mockMvc.perform(get("/players/profile/{playerId}/rooms/created", TEST_NOT_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player not found"))
+				.andExpect(view().name("/error"));
+	}
+
     //Method -> deletePlayer
+
+    
+    @Disabled
+    @WithMockUser(value = "spring")
+	@Test
+	void testDeletePlayer() throws Exception {
+
+        when(securityService.isAdmin()).thenReturn(true);
+        when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(new Player()));
+
+		mockMvc.perform(get("/players/delete/{playerId}", TEST_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player successfully deleted!"))
+				.andExpect(view().name("players/listPlayers"));
+	}
 
     //Method -> updatePlayer
 

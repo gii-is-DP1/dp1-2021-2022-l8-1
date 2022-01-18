@@ -20,7 +20,6 @@ import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
-import org.springframework.samples.SevenIslands.user.UserBuilder;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 

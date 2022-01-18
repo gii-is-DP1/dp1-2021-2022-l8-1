@@ -130,7 +130,7 @@ public class PlayerController {
             modelMap.addAttribute("achieved", finalAchieved); 
             modelMap.addAttribute("notAchieved", finalNotAchieved);
             modelMap.addAttribute("player", player.get());
-        }else{
+        }else {
             modelMap.addAttribute("message", "Player not found");
             view = "/error";
         }
