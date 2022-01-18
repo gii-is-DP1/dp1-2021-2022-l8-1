@@ -34,21 +34,9 @@ public class BoardController {
 
     @Autowired
     private PlayerService playerService;
-
-    @Autowired	
-	private AdminService adminService;
     
     @Autowired
     private SecurityService securityService;
-
-    @Autowired	
-	private DeckService deckService;
-
-    @Autowired	
-	private IslandService islandService;
-
-    @Autowired	
-	private StatisticService statisticService;
 
     @GetMapping(path = "/{code}/init")
     public String init(@PathVariable("code") String code, ModelMap modelMap){      
