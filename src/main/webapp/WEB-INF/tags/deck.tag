@@ -4,7 +4,13 @@
 <%@ taglib prefix="sevenislands" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="cards" required="false" rtexprvalue="true" type="org.hibernate.collection.internal.PersistentBag" %>
 <%@ attribute name="disabled" required="false" rtexprvalue="true" %>
+<%@ attribute name="playerUsername" required="false" rtexprvalue="true" %>
 
+<c:if test="${playerUsername != null}" >
+    <div class="deck-list-title">
+        <h2>${playerUsername}</h2>
+    </div>
+</c:if>
 
 <ul class="deck-list">
 
