@@ -110,19 +110,6 @@ public class PlayerService {
         return playerRepo.findByGameId(id);
     }
 
-    //Return invitations of a player with playerId=id
-    // @Transactional
-    // public Iterable<Player> findInvitationsByPlayerId(int id) {
-    //     return playerRepo.findInvitationsByPlayerId(id);
-    // }
-
-    // //Return requests of a player with playerId=id
-    // @Transactional
-    // public Iterable<Player> findRequestsByPlayerId(int id) {
-    //     return playerRepo.findRequestsByPlayerId(id);
-    // }
-
-     //Return watchGame of a player with playerId=id
      @Transactional
      public Iterable<Player> findWatchGameByPlayerId(int id) {
          return playerRepo.findWatchGameByPlayerId(id);
@@ -142,11 +129,6 @@ public class PlayerService {
 		//creating authorities
 		authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
 	}
-
-    // @Transactional(readOnly = true)
-    // public Iterable<Card> getCardsByPlayerId(int id) {
-    //     return cardRepo.getByPlayerId(id);
-    // }
 
     @Transactional(readOnly = true)
     public Iterable<Achievement> getAchievementsByPlayerId(int id) {
@@ -210,15 +192,15 @@ public class PlayerService {
         pages.add(0);
 
         
-        if(pageNumber==0){
-            pages.set(0, 0);
+        if(pageNumber==0){  //primera pagina
+            pages.set(0, pageNumber);
             pages.set(1, pageNumber+1);
         
-        }else if(pageNumber==totalPages-1){ 
+        }else if(pageNumber==totalPages-1){  //ultima pagina
             pages.set(0, pageNumber-1);
             pages.set(1, pageNumber);
 
-        } else {
+        } else { //paginas intermedias
             pages.set(0, pageNumber-1);
             pages.set(1, pageNumber+1);
 
@@ -232,7 +214,7 @@ public class PlayerService {
     public List<Achievement> getAchievements(List<Achievement> notAchieved, List<Achievement> achieved, Player player) {
 
         int totalPoints = statsService.getPointsByPlayerId(player.getId())==null?0:statsService.getPointsByPlayerId(player.getId());
-        int totalGames = player.getGames().size();
+        int totalGames = player.getGames() == null? 0: player.getGames().size();
         int totalWins = statsService.getWinsCountByPlayerId(player.getId())==null?0:statsService.getWinsCountByPlayerId(player.getId());
         int totalLoses = totalGames - totalWins;
     

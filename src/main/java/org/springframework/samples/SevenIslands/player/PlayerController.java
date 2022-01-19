@@ -56,17 +56,16 @@ public class PlayerController {
     private StatisticService statsService;
 
     @GetMapping()
-    public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){        //For admins
+    public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){   //For admins
         String view ="players/listPlayers";
         securityService.insertIdUserModelMap(modelMap);
 
         List<Integer> pages = playerService.calculatePages(pageNumber);
         Integer previousPageNumber = pages.get(0);
         Integer nextPageNumber = pages.get(1);
-
         
 
-        if (securityService.isAdmin()) {    // if the user is admin
+        if (securityService.isAdmin()) {    
                     
             List<Player> players = playerService.getPaginatedPlayers(filterName, pageNumber);
 

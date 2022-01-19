@@ -6,17 +6,28 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+
 import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.HashSet;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.samples.SevenIslands.achievement.Achievement;
+import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.game.Game;
+import org.springframework.samples.SevenIslands.statistic.Statistic;
+import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
@@ -34,6 +45,12 @@ public class PlayerServiceTests {
 
     @Autowired
     private AuthoritiesService authoritiesService;
+
+    @Autowired 
+    private AchievementService achievementService;
+
+    @Autowired
+    private StatisticService statisticService;
     
     @Test
     public void testCountWithInitialData(){
@@ -78,7 +95,7 @@ public class PlayerServiceTests {
 
         assertThat(p.getFirstName().equals("Antonio"));
         assertThat(p2.getFirstName().equals("Antonio1"));
-        assertThat(player.getId().longValue()).isNotEqualTo(0);
+        assertThat(player.getId().longValue()).isNotZero();
 
 
     }
@@ -152,6 +169,173 @@ public class PlayerServiceTests {
         Iterable<Player> players = playerService.findByForumId(1);
         assertEquals(1, players.spliterator().getExactSizeIfKnown());
     }
+
+    @Test
+    public void testCountPlayersPageable() {
+        Pageable page = PageRequest.of(0, 5);
+        Iterable<Player> players = playerService.findAll(page);
+        List<Player> playersLs = StreamSupport.stream(players.spliterator(), false).collect(Collectors.toList());
+        long pageSize = playersLs.size();
+        assertEquals(5, pageSize);
+        
+        
+    }
+
+    @Test
+    public void testFindIfPlayerContains() {
+        Pageable page = PageRequest.of(0, 5);
+        String data = "paco";
+        Page<Player> players = playerService.findIfPlayerContains(data, page);
+        assertEquals(1, players.getTotalElements());
+    }
+
+    @Test
+    public void testPlayerHasInappropiateWordsInFirstName() {
+        Player player = new Player();
+        player.setFirstName("Fucking");
+        player.setSurname("Fernández");
+        player.setEmail("antoniogar2@gmail.com");
+        player.setProfilePhoto("www.foto.png");
+
+        User user = new User();
+        user.setUsername("Antoniof22");
+        user.setPassword("4G4rc14!1234");
+        user.setEnabled(true);
+
+        player.setUser(user);
+    
+        playerService.savePlayer(player);
+
+        boolean b = playerService.playerHasInappropiateWords(player);
+        assertEquals(true, b);
+
+
+    }
+
+    @Test
+    public void testPlayerHasInappropiateWordsInSurname() {
+        Player player = new Player();
+        player.setFirstName("Adrián");
+        player.setSurname("FucKing");
+        player.setEmail("adrif2@gmail.com");
+        player.setProfilePhoto("www.foto.png");
+
+        User user = new User();
+        user.setUsername("adrif2");
+        user.setPassword("4G4rc14!1234");
+        user.setEnabled(true);
+
+        player.setUser(user);
+    
+        playerService.savePlayer(player);
+
+        boolean b = playerService.playerHasInappropiateWords(player);
+        assertEquals(true, b);
+
+
+    }
+
+    @Test
+    public void testPlayerHasInappropiateWordsInUserName() {
+        Player player = new Player();
+        player.setFirstName("Adrián");
+        player.setSurname("Fernández");
+        player.setEmail("adrif2@gmail.com");
+        player.setProfilePhoto("www.foto.png");
+
+        User user = new User();
+        user.setUsername("fuckingAdrianf22");
+        user.setPassword("4G4rc14!1234");
+        user.setEnabled(true);
+
+        player.setUser(user);
+    
+        playerService.savePlayer(player);
+
+        boolean b = playerService.playerHasInappropiateWords(player);
+        assertEquals(true, b);
+
+    }
+
+    @Test
+    public void testCalculatePages() {
+        List<Integer> pages = playerService.calculatePages(2);
+
+        //pages[0] es la previousPage, pages[1] es la nextPage
+        // Dado que pageNumber es 2 == totalPages-1 (página final), pages[0] debe ser pageNumber-1, y pages[1] debe ser pageNumber 
+
+        assertEquals(1, pages.get(0));
+        assertEquals(2, pages.get(1));
+    }
+
+    @Test
+    public void testCalculatePages2() {
+        List<Integer> pages = playerService.calculatePages(1);
+
+        //pages[0] es la previousPage, pages[1] es la nextPage
+        // Dado que pageNumber es 1 (página intermedia)  pages[0] debe ser pageNumber-1, y pages[1] debe ser pageNumber +1
+
+        assertEquals(0, pages.get(0));
+        assertEquals(2, pages.get(1));
+    }
+
+    @Test
+    public void testCalculatePages3() {
+        List<Integer> pages = playerService.calculatePages(0);
+        List<Integer> pages2 = playerService.calculatePages(null);
+
+        //pages[0] es la previousPage, pages[1] es la nextPage
+        // Dado que pageNumber es 1 (primera página)  pages[0] debe ser pageNumber, y pages[1] debe ser pageNumber +1
+
+        assertEquals(0, pages.get(0));
+        assertEquals(1, pages.get(1));
+
+        assertEquals(0, pages2.get(0));
+        assertEquals(1, pages2.get(1));
+
+    }
+
+    @Test
+    public void testGetAchievements() {
+        
+        Player player = new Player();
+        player.setFirstName("Adrián");
+        player.setSurname("Fernández");
+        player.setEmail("adrif2@gmail.com");
+        player.setProfilePhoto("www.foto.png");
+
+        User user = new User();
+        user.setUsername("Adrianf22");
+        user.setPassword("4G4rc14!1234");
+        user.setEnabled(true);
+
+        player.setUser(user);
+    
+        playerService.savePlayer(player);
+
+        List<Achievement> achievements = StreamSupport.stream(achievementService.findAll().spliterator(), false).collect(Collectors.toList());
+        Set<Achievement> set = new HashSet<>();
+        set.add(achievements.get(0));
+        set.add(achievements.get(1));
+        player.setAchievements(set);
+        
+        List<Achievement> achieved = StreamSupport.stream(playerService.getAchievementsByPlayerId(player.getId()).spliterator(), false).collect(Collectors.toList());
+        List<Achievement> notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
+
+        Set<Statistic> s = new HashSet<>();
+        Statistic stat = new Statistic();
+        stat.setPoints(120);
+
+        s.add(stat);
+        player.setStatistic(s);
+        stat.setPlayer(player);
+        
+
+        List<Achievement> finalAchieved = playerService.getAchievements(notAchieved, achieved, player);
+
+        assertEquals(3, finalAchieved.size());
+    }
+
 
     //USER´S HISTORIES
 
@@ -246,15 +430,6 @@ public class PlayerServiceTests {
         
     }
 
-    @Test
-    public void testPaginatedPlayers() {
-        String filterName = "a";
-        Integer pageNumber = 1;
-
-        
-
-
-    }
 
 }
 
