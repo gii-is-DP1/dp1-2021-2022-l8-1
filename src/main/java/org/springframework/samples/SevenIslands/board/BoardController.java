@@ -1,5 +1,7 @@
 package org.springframework.samples.SevenIslands.board;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -79,9 +81,14 @@ public class BoardController {
     @GetMapping(path = "/{gameId}/changeTurn")
     public String changeTurn(@PathVariable("gameId") int gameId, ModelMap modelMap) {
 
-        Game game = gameService.findGameById(gameId).stream().findFirst().get();    
+        Optional<Game> opt = gameService.findGameById(gameId).stream().findFirst();
+        if(opt.isPresent()) {
+            return boardService.changeTurn(opt.get());
         
-        return boardService.changeTurn(game);
+        } else {
+            return "/error";
+        }
+
     }
 
     @GetMapping(path = "/{gameId}/rollDie")
@@ -89,21 +96,27 @@ public class BoardController {
 
         //TODO Se puede quitar el atributo en game, y pasar el valor del dado al model atributte
 
-        Game game = gameService.findGameById(gameId).stream().findFirst().get();
-        String code = game.getCode();
+        Optional<Game> opt = gameService.findGameById(gameId).stream().findFirst();
+        if(!opt.isPresent()) {
+            return "/error";
+        
+        } else {
+            Game game = opt.get();
+            String code = game.getCode();
 
-        if(securityService.getCurrentPlayerId()!=game.getPlayers().get(game.getActualPlayer()).getId()){ 
-           
-            request.getSession().setAttribute("message", "It's not your turn");
-            return "redirect:/boards/"+ code;
-        }
-        if(game.getDieThrows()){
+            if(securityService.getCurrentPlayerId()!=game.getPlayers().get(game.getActualPlayer()).getId()){ 
             
-            request.getSession().setAttribute("message", "You have already made a roll this turn");
-            return "redirect:/boards/"+ code;
-        }
+                request.getSession().setAttribute("message", "It's not your turn");
+                return "redirect:/boards/"+ code;
+            }
+            if(game.getDieThrows()){
+                
+                request.getSession().setAttribute("message", "You have already made a roll this turn");
+                return "redirect:/boards/"+ code;
+            }
 
-        return boardService.rollDie(game);
+            return boardService.rollDie(game);
+        }
     }
 
     @GetMapping(path = "/{code}/actions/{number}")
@@ -122,14 +135,11 @@ public class BoardController {
     Game game = gameService.findGamesByRoomCode(code).iterator().next();
     int cardsToSpend = Math.abs(game.getValueOfDie()-island);
     
-    if(pickedCards!=null && cardsToSpend != pickedCards.length){
+    if((pickedCards!=null && cardsToSpend != pickedCards.length) || (pickedCards==null && cardsToSpend!=0)){
         return boardService.doAnIllegalAction(code, island, cardsToSpend, request);
         
-    }else if(pickedCards==null && cardsToSpend!=0){
-        return boardService.doAnIllegalAction(code, island, cardsToSpend, request);
     }
-
-        return boardService.doCorrectAction(game,island,pickedCards,request);
+    return boardService.doCorrectAction(game,island,pickedCards,request);
     }
 
 
@@ -146,9 +156,15 @@ public class BoardController {
     public String leave(@PathVariable("code") String code, ModelMap modelMap, HttpServletRequest request) {
 
         securityService.insertIdUserModelMap(modelMap);
-        Player playerWhoLeft = playerService.findPlayerById(securityService.getCurrentPlayerId()).get();
-        
-        return boardService.leaveGame(playerWhoLeft, code);
+        Optional<Player> opt = playerService.findPlayerById(securityService.getCurrentPlayerId());
+
+        if(opt.isPresent()) {
+            Player playerWhoLeft = opt.get();
+            return boardService.leaveGame(playerWhoLeft, code);
+        } else {
+            return "/error";
+        }
+       
     }
 
 }

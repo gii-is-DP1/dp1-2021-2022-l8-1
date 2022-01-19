@@ -87,11 +87,9 @@ public class GameService {
     @Transactional
     public boolean isOwner(int playerId, int gameId){ //Check if im the owner of the game
         Collection<Game> games = findByOwnerId(playerId);
-        if(games.contains(findGameById(gameId).get())){
-            return true;
-        } else {
-            return false;
-        }
+        Optional<Game> opt = findGameById(gameId);
+        return opt.isPresent() && games.contains(opt.get());
+
     }
     
     @Transactional
@@ -178,23 +176,29 @@ public class GameService {
                 modelMap.addAttribute("game", game);
 
                 int playerId = securityService.getCurrentPlayerId(); 
+                Optional<Player> opt = playerService.findPlayerById(playerId);
+                if(opt.isPresent()) {
 
-                Player player = playerService.findPlayerById(playerId).get();
-                modelMap.addAttribute("player", player);
-                modelMap.addAttribute("totalplayers", game.getPlayers().size());
+                    Player player = opt.get();
+                    modelMap.addAttribute("player", player);
+                    modelMap.addAttribute("totalplayers", game.getPlayers().size());
 
-                if(!game.getPlayers().contains(player) && game.getPlayers().size()<4) {
-                    game.addPlayerinPlayers(player);
-                    save(game);
-                    player.addGameinGames(game);
-                    playerService.save(player);
-                   
-                } else if(game.getPlayers().contains(player)) {
-                    return "games/lobby";
+                    if(!game.getPlayers().contains(player) && game.getPlayers().size()<4) {
+                        game.addPlayerinPlayers(player);
+                        save(game);
+                        player.addGameinGames(game);
+                        playerService.save(player);
+                        return "games/lobby";
+                    
+                    } else if(game.getPlayers().contains(player)) {
+                        return "games/lobby";
+                    } else {
+                        return "redirect:/welcome"; //TODO: Need to change
+                    }
+                    
                 } else {
-                    return "redirect:/welcome"; //Need to change
+                    return "/error";
                 }
-                return "games/lobby";
 
             } else if(securityService.isAdmin()) {
                 request.getSession().setAttribute("message", "You can't join a game if you are an admin!");
