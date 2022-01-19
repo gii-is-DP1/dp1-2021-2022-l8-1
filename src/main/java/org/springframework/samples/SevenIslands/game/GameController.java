@@ -11,7 +11,6 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.admin.AdminController;
 import org.springframework.samples.SevenIslands.board.BoardService;
@@ -19,7 +18,6 @@ import org.springframework.samples.SevenIslands.deck.Deck;
 import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerController;
-import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.samples.SevenIslands.web.jsonview.Views;
 import org.springframework.samples.SevenIslands.web.model.AjaxGameResponseBody;
@@ -53,16 +51,13 @@ public class GameController {
     private PlayerController playerController;
 
     @Autowired
-    private GameController gameController;
-
-    @Autowired
     private DeckService deckService;
 
 
     private static final String VIEW_CREATE_OR_UPDATE_GAME_FORM = "games/createOrUpdateGameForm";
     
     @GetMapping(path = "/new")
-    public String createGame(Player player, ModelMap modelMap, HttpServletRequest request) { //AQUI PLAYER player no se usa para nada, está mal, no lo pilla de ningun lado
+    public String createGame(ModelMap modelMap, HttpServletRequest request) { 
         Player p = securityService.getCurrentPlayer();
         if(securityService.isAdmin()) {
             request.getSession().setAttribute("message", "You must be a player to create a game");
@@ -78,6 +73,7 @@ public class GameController {
         
         }else if(p.getInGame()) {
             Game game = p.getGames().stream().filter(x->x.getEndTime()==null && x.isHas_started()).findFirst().get(); //JUEGO QUE ESTÁ JUGANDO AHORA MISMO
+            
             return "redirect:/boards/"+game.getCode();
         
         } else {
@@ -167,18 +163,17 @@ public class GameController {
         } else if(gocla != null){
             if(gameService.isWaitingOnRoom(p.getId()) && !gameService.waitingRoom(p.getId()).getCode().equals(gameCode)){
                 request.getSession().setAttribute("message", "You are waiting for start a game actually, can´t join an another game");
-                return gameController.publicRooms(model, request);
+                return publicRooms(model, request);
             }
            
         }
-
 		model.put("now", new Date());
         Iterable<Game> gameOpt = gameService.findGamesByRoomCode(gameCode);
         
         if(securityService.isAuthenticatedUser()) {
             return gameService.getLobby(gameOpt, model, request);
         
-        } else {    // If user is not logged
+        } else {    
             return securityService.redirectToWelcome(request);        
         }
 
@@ -193,13 +188,20 @@ public class GameController {
 
             AjaxPlayersResponseBody result = new AjaxPlayersResponseBody();
 
-            Game game = gameService.findGameById(gameId).get();
-            List<Player> players = game.getPlayers();
+            Optional<Game> opt = gameService.findGameById(gameId);
+            if(opt.isPresent()) {
+                Game game = opt.get();
+                List<Player> players = game.getPlayers();
 
-            result.setCode("200");
-            result.setPlayers(players);
+                result.setCode("200");
+                result.setPlayers(players);
+
+            } else {
+                result.setCode("404");
+            }
 
             return result;
+            
     }
 
     @JsonView(Views.Public.class)
@@ -209,17 +211,23 @@ public class GameController {
 
             AjaxGameResponseBody result = new AjaxGameResponseBody();
 
-            Game game = gameService.findGameById(gameId).get();
-            Integer playersNum = game.getPlayers().size();
-            Integer actualPlayerId = game.getActualPlayer();
+            Optional<Game> opt = gameService.findGameById(gameId);
+            if(opt.isPresent()) {
+                Game game = opt.get();
+                Integer playersNum = game.getPlayers().size();
+                Integer actualPlayerId = game.getActualPlayer();
 
-            List<Integer> playersIds = game.getPlayers().stream().map(Player::getId).collect(Collectors.toList());
+                List<Integer> playersIds = game.getPlayers().stream().map(Player::getId).collect(Collectors.toList());
 
-            result.setCode("200");
-            result.setGame(game);
-            result.setNumberOfPlayers(playersNum);
-            result.setActualPlayer(actualPlayerId);
-            result.setPlayersIds(playersIds);
+                result.setCode("200");
+                result.setGame(game);
+                result.setNumberOfPlayers(playersNum);
+                result.setActualPlayer(actualPlayerId);
+                result.setPlayersIds(playersIds);
+
+            } else {
+                result.setCode("404");
+            }
 
             return result;
     }

@@ -152,11 +152,12 @@ public class BoardService {
         return values;
     }
 
+    @Transactional
     public Integer calcPoints(Integer numOfPoints, List<String> cards) {
         Map<Integer, Integer> pointsPerSet = this.getPointsPerSet();
 
         List<Set<String>> listOfSets = new ArrayList<>();
-        while(cards.size()!=0){
+        while(!cards.isEmpty()){
             Set<String> notDuplicatedCard = new HashSet<>(cards);
             listOfSets.add(notDuplicatedCard);
             cards.removeAll(notDuplicatedCard);
@@ -170,6 +171,7 @@ public class BoardService {
         return numOfPoints;
     }
 
+    @Transactional
     public Map<Player, Pair> calcValuesPerPlayer(List<Player> players) {
         Map<Player, Pair> valuesPerPlayer = new HashMap<>();
 
@@ -190,6 +192,7 @@ public class BoardService {
         return valuesPerPlayer;
     }
 
+    @Transactional
     public LinkedHashMap<Player, Integer> calcPlayersByPunctuation(List<Player> playersAtStart, List<Player> players) {
         Map<Player, Pair> valuesPerPlayers = this.calcValuesPerPlayer(players);
         
