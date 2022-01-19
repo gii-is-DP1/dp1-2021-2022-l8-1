@@ -4,14 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.SevenIslands.admin.AdminService;
-import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
-import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
-import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -68,7 +64,7 @@ public class BoardController {
         }
 
         if(game.getPlayers().size()==1){
-            boardService.toLobby(game, modelMap, game.getPlayers().size());
+            return boardService.toLobby(game, modelMap, game.getPlayers().size());
         }
 
         boardService.addDataToModel(game, modelMap,  SecurityContextHolder.getContext().getAuthentication());
