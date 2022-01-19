@@ -33,6 +33,8 @@ import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class PlayerServiceTests {
@@ -49,17 +51,15 @@ public class PlayerServiceTests {
     @Autowired 
     private AchievementService achievementService;
 
-    @Autowired
-    private StatisticService statisticService;
     
     @Test
-    public void testCountWithInitialData(){
+    void testCountWithInitialData(){
         int count = playerService.playerCount();
         assertEquals(11, count);
     }
 
     @Test
-    public void shouldInsertPlayerAndUser(){
+    void shouldInsertPlayerAndUser(){
 
         Player player = new Player();
         player.setFirstName("Antonio");
@@ -101,7 +101,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void shouldDeletePlayer(){
+    void shouldDeletePlayer(){
 
         int playerId=1;
 
@@ -127,51 +127,51 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testFindPlayersByGameId() {
+    void testFindPlayersByGameId() {
         Iterable<Player> players = playerService.findPlayersByGameId(1);//JUGADORES QUE HAY EN UNA PARTIDA DADA POR EL ID
         long count = players.spliterator().getExactSizeIfKnown();
         assertEquals(2, count);
     }
 
     @Test
-    public void testFinPlayerByUsername(){
+    void testFinPlayerByUsername(){
         int count = playerService.getPlayerByUsername("test2").size();
         assertEquals(1,count);
     }
 
     @Test
-    public void testGetIdlayerByUsername(){
+    void testGetIdlayerByUsername(){
         int playerId = playerService.getIdPlayerByName("test3");
         assertEquals(3,playerId);
     }
 
     @Test
-    public void testFindPlayerBySurname(){
+    void testFindPlayerBySurname(){
         int count = playerService.findPlayerBySurname("Alonso").size();
         assertEquals(1,count);
     }
 
     @Test
-    public void testGetAchievementsByPlayerId(){
+    void testGetAchievementsByPlayerId(){
         long count = playerService.getAchievementsByPlayerId(1).spliterator().getExactSizeIfKnown();
         assertEquals(2,count);
     }
 
     @Test
-    public void testWatchGameByPlayerId(){
+    void testWatchGameByPlayerId(){
         Iterable<Player> players = playerService.findWatchGameByPlayerId(3);
         long count = players.spliterator().getExactSizeIfKnown();
         assertEquals(1, count);
     }
 
     @Test
-    public void testFindByForumId(){
+    void testFindByForumId(){
         Iterable<Player> players = playerService.findByForumId(1);
         assertEquals(1, players.spliterator().getExactSizeIfKnown());
     }
 
     @Test
-    public void testCountPlayersPageable() {
+    void testCountPlayersPageable() {
         Pageable page = PageRequest.of(0, 5);
         Iterable<Player> players = playerService.findAll(page);
         List<Player> playersLs = StreamSupport.stream(players.spliterator(), false).collect(Collectors.toList());
@@ -182,7 +182,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testFindIfPlayerContains() {
+    void testFindIfPlayerContains() {
         Pageable page = PageRequest.of(0, 5);
         String data = "paco";
         Page<Player> players = playerService.findIfPlayerContains(data, page);
@@ -190,7 +190,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testPlayerHasInappropiateWordsInFirstName() {
+    void testPlayerHasInappropiateWordsInFirstName() {
         Player player = new Player();
         player.setFirstName("Fucking");
         player.setSurname("Fernández");
@@ -213,7 +213,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testPlayerHasInappropiateWordsInSurname() {
+    void testPlayerHasInappropiateWordsInSurname() {
         Player player = new Player();
         player.setFirstName("Adrián");
         player.setSurname("FucKing");
@@ -236,7 +236,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testPlayerHasInappropiateWordsInUserName() {
+    void testPlayerHasInappropiateWordsInUserName() {
         Player player = new Player();
         player.setFirstName("Adrián");
         player.setSurname("Fernández");
@@ -258,7 +258,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testCalculatePages() {
+    void testCalculatePages() {
         List<Integer> pages = playerService.calculatePages(2);
 
         //pages[0] es la previousPage, pages[1] es la nextPage
@@ -269,7 +269,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testCalculatePages2() {
+    void testCalculatePages2() {
         List<Integer> pages = playerService.calculatePages(1);
 
         //pages[0] es la previousPage, pages[1] es la nextPage
@@ -280,7 +280,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testCalculatePages3() {
+    void testCalculatePages3() {
         List<Integer> pages = playerService.calculatePages(0);
         List<Integer> pages2 = playerService.calculatePages(null);
 
@@ -296,7 +296,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testGetAchievements() {
+    void testGetAchievements() {
         
         Player player = new Player();
         player.setFirstName("Adrián");
@@ -336,24 +336,66 @@ public class PlayerServiceTests {
         assertEquals(3, finalAchieved.size());
     }
 
+    
+    @Test
+    void testGetPaginatedPlayers() {
+        String filterName = "";
+        String filterName2 = "alonso";
+        Integer pageNumber = 1;
+
+        List<Player> players = playerService.getPaginatedPlayers(filterName, pageNumber);
+        List<Player> players2 = playerService.getPaginatedPlayers(filterName2, null);
+
+        assertEquals(5, players.size());
+        assertEquals(1, players2.size());
+
+
+    }
+
+    @Test
+    void testProcessEditPlayer() {
+
+        Player player = new Player();
+        player.setFirstName("Adrián");
+        player.setSurname("Fernández");
+        player.setEmail("adrif2@gmail.com");
+        player.setProfilePhoto("www.foto.png");
+
+        User user = new User();
+        user.setUsername("Adrianf22");
+        user.setPassword("4G4rc14!1234");
+        user.setEnabled(true);
+
+        player.setUser(user);
+    
+        playerService.savePlayer(player);
+
+        BindingResult result = new BeanPropertyBindingResult(player, "player");
+        playerService.processEditPlayer(player, 2, result);
+
+        assertEquals(0, result.getErrorCount());
+        
+
+    }
+
 
     //USER´S HISTORIES
 
     @Test
-    public void testCountAllPlayers() { // H16 - POSITIVE 1
+    void testCountAllPlayers() { // H16 - POSITIVE 1
         long count = playerService.findAll().spliterator().getExactSizeIfKnown();
         assertEquals(11, count);
     }
 
     @Test
-    public void testCountPlayerWithEspecificWordInUsername() { //H17 -POSITIVE 2
+    void testCountPlayerWithEspecificWordInUsername() { //H17 -POSITIVE 2
         Iterable<Player> a = playerService.findAll();
         long n = StreamSupport.stream(a.spliterator(), false).filter(x->x.getUser().getUsername().contains("1")).count();
         assertEquals(3, n);
     }
 
     @Test
-    public void testUpdateUserFirstName(){ //H17 - POSITIVE 3
+    void testUpdateUserFirstName(){ //H17 - POSITIVE 3
         Player p = playerService.findPlayerById(1).get();
         String n = p.getFirstName();
         
@@ -365,7 +407,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testUpdateUserSurName(){ //H17 - POSITIVE 3
+    void testUpdateUserSurName(){ //H17 - POSITIVE 3
         Player p = playerService.findPlayerById(1).get();
         String m = p.getSurname();
         p.setSurname("Diaz Salgado");
@@ -377,7 +419,7 @@ public class PlayerServiceTests {
 
 
     @Test
-    public void shouldDeleteUser(){
+    void shouldDeleteUser(){
 
         int countBefore = userService.userCount();
 
@@ -399,7 +441,7 @@ public class PlayerServiceTests {
 
     
     @Test
-    public void testAuthorities(){
+    void testAuthorities(){
 
         long countBefore = authoritiesService.count();
 
@@ -417,7 +459,7 @@ public class PlayerServiceTests {
     }
 
     @Test
-    public void testAuthorities2(){
+    void testAuthorities2(){
 
         Exception exception = assertThrows(RuntimeException.class, () -> {
             authoritiesService.saveAuthorities("pepito", "player");
