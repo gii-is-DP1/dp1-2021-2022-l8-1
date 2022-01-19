@@ -1,50 +1,58 @@
 package org.springframework.samples.SevenIslands.statistic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.SevenIslands.board.BoardService;
 import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 import org.springframework.samples.SevenIslands.card.Card;
+import org.springframework.samples.SevenIslands.card.CardService;
 import org.springframework.samples.SevenIslands.game.Game;
+import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.island.Island;
+import org.springframework.samples.SevenIslands.island.IslandService;
+import org.springframework.samples.SevenIslands.player.Player;
 import org.springframework.samples.SevenIslands.player.PlayerService;
-import org.springframework.samples.SevenIslands.statistic.Statistic;
-import org.springframework.samples.SevenIslands.user.Authorities;
-import org.springframework.samples.SevenIslands.user.AuthoritiesService;
-import org.springframework.samples.SevenIslands.user.User;
-import org.springframework.samples.SevenIslands.user.UserBuilder;
-import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.stereotype.Service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class StatisticServiceTest {
+
+    public static final int TEST_STATISTIC_ID= 10;
+    private static final int TEST_PLAYER_ID = 10;
 
     @Autowired
     private StatisticService statisticService;
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private CardService cardService;
+
+    @Autowired
+    private IslandService islandService;
+
+    @Autowired
+    private GameService gameService;
+
+    @Autowired
+    private BoardService boardService;
 
     @Test
     public void testGetTwentyBestPlayersByWins(){
@@ -76,6 +84,7 @@ public class StatisticServiceTest {
         assertEquals(island.getIslandNum(), favIslandIdForPlayer1);
     }
 
+    //It will be changed to use CardType instead of CardID
     @Test
     public void testGetFavoriteCardByPlayerId(){
         Card card = statisticService.getFavoriteCardByPlayerId(1);
@@ -137,6 +146,95 @@ public class StatisticServiceTest {
         Integer shouldBeMin = 20;
         assertEquals(min, shouldBeMin);
     }
+
+    @Test
+    public void testGetStatisticByPlayerId(){
+        List<Statistic> statistics = statisticService.getStatisticByPlayerId(1);
+        assertTrue(statistics.get(0).had_won);
+        assertEquals(statistics.size(), 3);
+    }
+
+    @Disabled
+    @Test
+    public void testInsertCardCount(){
+        Integer statisticId = statisticService.getStatisticByPlayerId(1).get(0).getId();
+        Statistic statistic = statisticService.getStatisticByPlayerId(1).get(0);
+        Integer i = statisticService.getStatisticByPlayerId(1).get(0).getCardCount().entrySet().size();
+        statisticService.insertCardCount(statisticId, 23);
+        statisticService.save(statistic);
+        Statistic statistic2 = statisticService.getStatisticByPlayerId(1).get(0);
+        Integer i2 = statisticService.getStatisticByPlayerId(1).get(0).getCardCount().entrySet().size();
+        assertEquals(i+1, i2);
+    }
+
+    @Disabled
+    @Test
+    public void testInsertinitIslandCount(){
+        Statistic statistic = new Statistic();
+        statistic.setPlayer(playerService.findPlayerById(TEST_PLAYER_ID).get());
+        statistic.setIslandCount(new HashMap<>());
+        statisticService.save(statistic);
+        Integer i = statistic.getIslandCount().entrySet().size();
+        statisticService.insertinitIslandCount(statistic.getId(),1);
+        statisticService.save(statistic);
+        Integer i2 = statistic.getIslandCount().entrySet().size();
+        assertEquals(i+1, i2);
+    }
+
+    @Disabled
+    @Test
+    public void testUpdateIslandCount(){
+        Island island = islandService.getByIslandId(1).get();
+        Integer i = statisticService.getStatisticByPlayerId(1).get(0).getIslandCount().get(island);
+        statisticService.updateIslandCount(statisticService.getStatisticByPlayerId(1).get(0).getId(), island.getId());
+        Integer i2 = statisticService.getStatisticByPlayerId(1).get(0).getIslandCount().get(island);
+        assertEquals(i+1, i2);
+    } 
+
+    @Disabled
+    @Test
+    public void testUpdateCardCount(){
+        Card card = cardService.findCardById(1).get();
+        Integer i = statisticService.getStatisticByPlayerId(1).get(0).getCardCount().get(card);
+        statisticService.updateCardCount(statisticService.getStatisticByPlayerId(1).get(0).getId(), card.getId());
+        Integer i2 = statisticService.getStatisticByPlayerId(1).get(0).getCardCount().get(card);
+        assertEquals(i+1, i2);
+    }
+
+    @Test
+    public void testSetFinalStatistics(){
+        Game game = gameService.findGameById(1).get();
+        List<Player> players = game.getPlayers();
+        Integer i = 1;
+        for(Player p: players){
+            Statistic s = new Statistic();
+            String iString = i.toString();
+            p.setEmail(iString+"email1@gmail");
+            p.setFirstName(iString+"firstName");
+            p.setSurname(iString+"surname");
+            playerService.save(p);
+            s.setPlayer(p);
+            statisticService.save(s);
+            List<Statistic> sts = statisticService.getStatisticByPlayerId(p.getId());
+            i++;
+        }
+        LinkedHashMap<Player, Integer> playersByPunctuation = boardService.calcPlayersByPunctuation(players, players);
+        statisticService.setFinalStatistics(players, playersByPunctuation, game);
+        for(Player p: players){
+            Boolean res = p.getStatistic().stream().noneMatch(s-> s.getPoints()==null);
+            assertTrue(res);
+        }
+    }
+
+    @Test
+    public void testExistRow(){
+        Boolean res = statisticService.existsRow(1, 1);
+        assertTrue(res);;
+        Boolean res2 = statisticService.existsRow(1, 2);
+        assertTrue(!res2);
+    }
+
+
 
 
 
