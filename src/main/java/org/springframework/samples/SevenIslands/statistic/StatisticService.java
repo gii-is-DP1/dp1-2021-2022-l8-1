@@ -3,6 +3,7 @@ package org.springframework.samples.SevenIslands.statistic;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.SevenIslands.card.Card;
@@ -191,15 +192,19 @@ public class StatisticService {
         for(Player p: players){
             Integer punctuation = playersByPunctuation.get(p);
             List<Statistic> s = this.getStatisticByPlayerId(p.getId());
-            Statistic filter = s.stream().filter(x->x.getHad_won()==null).findFirst().get();
-            filter.setHad_won(false);
-            filter.setPoints(punctuation);
-            if(playersByPunctuation.keySet().iterator().next().equals(p)){
-                filter.setHad_won(true);
+
+            Optional<Statistic> statisticOp = s.stream().filter(x->x.getHad_won()==null).findFirst();
+
+            if(statisticOp.isPresent()){
+                Statistic filter = statisticOp.get();
+                filter.setHad_won(false);
+                filter.setPoints(punctuation);
+                if(playersByPunctuation.keySet().iterator().next().equals(p)){
+                    filter.setHad_won(true);
+                }
+                playerService.save(p);
             }
-            playerService.save(p);
         }
-  
        
     }
 

@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.board;
 
+import static org.junit.Assert.assertFalse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -7,11 +8,14 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +49,7 @@ public class BoardServiceTests {
 
     @Autowired
     private BoardService boardService;
+    
 
     @Autowired
     private DeckService deckService;
@@ -116,12 +121,28 @@ public class BoardServiceTests {
         when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(firstPlayer));
         when(this.playerService.findPlayerById(TEST_PLAYER_ID_2)).thenReturn(Optional.of(secondPlayer));
 
+        List<Game> listGames = new ArrayList<>();
+        listGames.add(game);
+        Iterator<Game> iterator = listGames.iterator();
+        Iterable<Game>iterable = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0),false).collect(Collectors.toList());
+
+        when(gameService.findGamesByRoomCode(game.getCode())).thenReturn(iterable);
+
     }
 
     @Test
     public void testCountWithInitialData(){
         int count = boardService.boardCount();
         assertEquals(count, 1);
+    }
+
+    @Test
+    public void testGetPointsPerSet(){
+        Integer value = boardService.getPointsPerSet().get(1);
+        Integer value2 = boardService.getPointsPerSet().get(4);
+        assertEquals(value, 1);
+        assertTrue(value2==13);
+        assertFalse(value2==19);
     }
 
     @Test
@@ -190,5 +211,21 @@ public class BoardServiceTests {
 
 
     }
+
+    @Test
+    public void testLeaveGame(){ 
+        Game game = gameService.findGameById(TEST_GAME_ID).get();
+        Player player1 = playerService.findPlayerById(TEST_PLAYER_ID).get();
+        Player player2 = playerService.findPlayerById(TEST_PLAYER_ID_2).get();
+        game.setPlayers(List.of(player1, player2));   
+        List<Player> players = game.getPlayers();
+        String code = game.getCode();
+        if(players.stream().anyMatch(x->x.equals(player1))){
+            String none = boardService.leaveGame(player1, code);
+            List<Player> actualPlayers = game.getPlayers();
+            assertTrue(actualPlayers.stream().noneMatch(x->x.equals(player1)));
+        }
+    }
+
     
 }
