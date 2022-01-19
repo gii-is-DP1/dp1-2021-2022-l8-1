@@ -486,7 +486,9 @@ public class BoardService {
         playerService.save(player);
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
-        game.getPlayers().remove(player);
+        List<Player> players = game.getPlayers();
+        List<Player> newPlayers = players.stream().filter(x-> x!=player).collect(Collectors.toList());
+        game.setPlayers(newPlayers);
         gameService.save(game);
         
         return "redirect:/welcome";

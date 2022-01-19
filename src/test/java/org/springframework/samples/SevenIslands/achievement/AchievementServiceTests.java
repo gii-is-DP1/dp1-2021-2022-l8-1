@@ -49,7 +49,7 @@ public class AchievementServiceTests {
     }
 
     @Test
-    public void shouldInserteAchievement(){
+    public void shouldInsertAchievement(){
         Achievement achievement = new Achievement();
         achievement.setName("Test Achievement");
         achievement.setDescription("An achievement for testing");

@@ -145,17 +145,17 @@ public class StatisticService {
     }
 
     @Transactional(readOnly=true)
-    public Double getAvgPlayedByPlayerId(Integer playerId) {
+    public Double getAvgTimePlayedByPlayerId(Integer playerId) {
         return statisticRepo.findAvgTimePlayedByPlayerId(playerId);
     }
 
     @Transactional(readOnly=true)
-    public Integer getMaxPlayedByPlayerId(Integer playerId) {
+    public Integer getMaxTimePlayedByPlayerId(Integer playerId) {
         return statisticRepo.findMaxTimePlayedByPlayerId(playerId);
     }
 
     @Transactional(readOnly=true)
-    public Integer getMinPlayedByPlayerId(Integer playerId) {
+    public Integer getMinTimePlayedByPlayerId(Integer playerId) {
         return statisticRepo.findMinTimePlayedByPlayerId(playerId);
     }
 
