@@ -210,9 +210,9 @@ public class PlayerController {
             modelMap.addAttribute("totalGames", gameService.findGamesCountByPlayerId(playerId));
 
             // TIME
-            modelMap.addAttribute("maxTime", statsService.getMaxPlayedByPlayerId(playerId));
-            modelMap.addAttribute("minTime", statsService.getMinPlayedByPlayerId(playerId));
-            modelMap.addAttribute("avgTime", statsService.getAvgPlayedByPlayerId(playerId));
+            modelMap.addAttribute("maxTime", statsService.getMaxTimePlayedByPlayerId(playerId));
+            modelMap.addAttribute("minTime", statsService.getMinTimePlayedByPlayerId(playerId));
+            modelMap.addAttribute("avgTime", statsService.getAvgTimePlayedByPlayerId(playerId));
             modelMap.addAttribute("totalTime", statsService.getTimePlayedByPlayerId(playerId));
 
             // POINTS

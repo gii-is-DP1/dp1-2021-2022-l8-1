@@ -6,17 +6,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.SevenIslands.game.Game;
+import org.springframework.samples.SevenIslands.statistic.Statistic;
 import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
@@ -56,6 +58,9 @@ public class PlayerServiceTests {
         player1.setSurname("García1");
         player1.setEmail("antonio1gar@gmail.com");
         player1.setProfilePhoto("www.foto.png");
+
+        Set<Statistic> statistic = new HashSet<>();
+        player1.setStatistic(statistic);
 
         User user = new User();
         user.setUsername("antoniog11");
