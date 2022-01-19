@@ -13,14 +13,20 @@
 
     <!--<p> Your will lose your turn in <span id="countdowntimer"> 10 </span> Seconds</p>-->
     <div id="turn-section">
-        <h3>Turn: 00:00</h3>
+        <h3>Turn:     
+            &nbsp
+            <span id="turn-secs">00</span>
+            :
+            <span id="turn-mins">00</>
+        </h3>
+        
     </div>
     
     <div id="central-section">
 
         <div id="players-section">
             <h2>Players</h2>
-            <sevenislands:playerList 
+            <sevenislands:playerList
                     players="${game.players}"
                     activePlayerId="${id_playing}"/>
         </div>
@@ -57,7 +63,17 @@
 
     </div>
     <div id="deck-section">
-        <sevenislands:deck cards="${player.cards}" disabled="${id_playing!=id}"></sevenislands:deck>
+        <sevenislands:deck cards="${player.cards}" disabled="${!(game.dieThrows && id_playing==id)}"></sevenislands:deck>
+
+        <c:forEach items="${game.players}" var="opponent">
+        <c:if test="${opponent != player}">
+            <sevenislands:deck 
+                    cards="${opponent.cards}" 
+                    disabled="true"
+                    playerUsername="${player.user.username}">
+            </sevenislands:deck>
+        </c:if>
+        </c:forEach>
     </div>
     <div id="extra-section">
         <a href="/boards/${game.code}/leaveGame" class="btn btn-default">Leave Game</a>
@@ -65,127 +81,13 @@
 
     </form:form>
 
-    <script>
-        // BUTTONS
+    <%-- SCRIPTS --%>
+    <sevenislands:boardButtonsScript/>
+    <sevenislands:boardDeckScript/>
+    <sevenislands:boardDiceScript/>
+    <sevenislands:boardChangeTurnScript/>
+    <sevenislands:boardTimerScript/>
 
-        let islandBtn = document.getElementById("island-btn");
-        let travelBtn = document.getElementById("travel-btn");
-        let skipBtn = document.getElementById("skip-btn");
-        let diceBtn = document.getElementById("dice-btn");
-
-        islandBtn.addEventListener("click", (e) => {
-            location.href = "/boards/${game.id}/changeTurn";
-        });
-        
-        travelBtn.addEventListener("click", (e) => {
-            let form = document.querySelector("form");
-            form.submit();
-        });
-
-        skipBtn.addEventListener("click", (e) => {
-            location.href = "/boards/${game.id}/changeTurn";
-        });
-
-        diceBtn.addEventListener("click", (e) => {
-            location.href = "/boards/${game.id}/rollDie";
-        });
-            
-    </script>
-
-    <script  type="text/javascript" >
-
-            // DICE 
-
-        const diceRollingTime = 5000;
-
-        const diceFaces = {
-            1:"/resources/images/dice/Dice1.png",
-            2:"/resources/images/dice/Dice2.png",
-            3:"/resources/images/dice/Dice3.png",
-            4:"/resources/images/dice/Dice4.png",
-            5:"/resources/images/dice/Dice5.png",
-            6:"/resources/images/dice/Dice6.png",
-        }
-
-        let diceInterval = null;
-        let dice = document.getElementById("dice");
-        let diceImg = dice.firstChild.nextSibling;
-        let diceValue = "${game.valueOfDie}";
-        console.log(diceValue);
-
-        startDiceIfPossible();
-        
-        function startDiceIfPossible() {
-            if(diceValue != "") rollDice();
-        }
-
-        function shuffleDice() {
-            if (diceInterval != null) return;
-            diceInterval = setInterval(() => {
-                let face = Math.floor(Math.random() * 6)+ 1; // Random 1-6
-                diceImg.src = diceFaces[face];
-            }, 300);
-            
-        }
-
-        function stopShufflingDice() {
-            clearInterval(diceInterval);
-            diceInterval = null;
-        }
-
-        function setDiceValue(diceValue) {
-            stopShufflingDice();
-
-            dice.classList.add("dice-rolling");
-            dice.classList.remove("dice-stop");
-            dice.classList.remove("dice-done");
-            shuffleDice();
-
-            setTimeout(() => {
-                dice = document.getElementById("dice");
-                diceImg = dice.firstChild.nextSibling;
-
-                dice.classList.add("dice-done");
-                dice.classList.remove("dice-rolling");
-                stopShufflingDice();
-
-                let face = diceValue;
-                diceImg.src = diceFaces[face];
-                console.log("DONE: " + face);
-            }, diceRollingTime);
-        
-        }
-
-        function rollDice() {
-            console.log("click");
-            // let value = Math.floor(Math.random() * 6)+ 1; // Random 1-6
-            setDiceValue(diceValue);
-        }
-
-    </script>
-
-    <script>
-
-        // CARDS
-
-        let cards = document.querySelectorAll(".card-item-selectable");
-
-        cards.forEach((card) =>{
-            card.addEventListener("change", (e) => {
-                console.log(e);
-                let checkbox = e.target;
-                console.log(checkbox);
-                let card = checkbox.parentElement;
-                if(checkbox.checked) {
-                    card.classList.add("card-item-checked");
-                }
-                else{
-                    card.classList.remove("card-item-checked");
-                }
-            });
-        });
-
-    </script>
 
 
 <!-- ============= DEBUG INFO =============== -->
@@ -208,6 +110,13 @@
             </div>
 
         </div>
+    </div>
+
+    <div>
+        <h3 class="text-center">Actual Player:</h3>
+        <p class="text-center">
+            <c:out value ="${id_playing}"/>
+        </p>
     </div>
 
     <div>

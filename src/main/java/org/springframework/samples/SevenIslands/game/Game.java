@@ -60,6 +60,7 @@ public class Game extends NamedEntity {
     // @Column(name = "number_of_players")   
     // private Integer numberOfPlayers;
 
+    @JsonView(Views.Public.class)
     @Column(name = "actual_player")   
     private Integer actualPlayer;
 

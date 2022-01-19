@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -82,6 +83,9 @@ public class PlayerServiceTests {
         player1.setSurname("García1");
         player1.setEmail("antonio1gar@gmail.com");
         player1.setProfilePhoto("www.foto.png");
+
+        Set<Statistic> statistic = new HashSet<>();
+        player1.setStatistic(statistic);
 
         User user = new User();
         user.setUsername("antoniog11");
