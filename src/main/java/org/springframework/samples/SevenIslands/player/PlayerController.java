@@ -1,6 +1,5 @@
 package org.springframework.samples.SevenIslands.player;
 
-import java.io.FilterReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,22 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementService;
-import org.springframework.samples.SevenIslands.achievement.PARAMETER;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -45,16 +37,14 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-
     @Autowired	
-	  private SecurityService securityService;
-
+	private SecurityService securityService;
 
     @Autowired
     private GameService gameService;
 
     @Autowired	
-	  private UserService userService;
+	private UserService userService;
     
     @Autowired
     private AuthoritiesService authoritiesService;
@@ -66,44 +56,20 @@ public class PlayerController {
     private StatisticService statsService;
 
     @GetMapping()
-    public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){        //For admins
+    public String listPlayers(ModelMap modelMap, @PathParam("filterName") String filterName, @PathParam("pageNumber") Integer pageNumber){   //For admins
         String view ="players/listPlayers";
         securityService.insertIdUserModelMap(modelMap);
 
-        //if pageNumber== null, we takes page number 0
-        Pageable page;
-        if(pageNumber!= null){
-            //this method takes the page number pageNumber of two elements
-            //Ex, if pageNumber=3, it takes the third page of two elements
-            page = PageRequest.of(pageNumber, 5);
-        }else{
-            pageNumber=0;
-            page = PageRequest.of(0, 5);
-        }
-
-    
         List<Integer> pages = playerService.calculatePages(pageNumber);
-
-        //to pass it to the view:
         Integer previousPageNumber = pages.get(0);
         Integer nextPageNumber = pages.get(1);
+        
 
-        if (securityService.isAdmin()) {
+        if (securityService.isAdmin()) {    
                     
-            Iterable<Player> playersPaginated = playerService.findAll(page);
-            if(filterName!=null){
-                Iterable<Player> filteredPlayers = playerService.findIfPlayerContains(filterName.toLowerCase(), page);
-                
-                List<Player> listPlayersPaginatedAndFiltered = StreamSupport.stream(filteredPlayers.spliterator(), false).collect(Collectors.toList());
-                
-                modelMap.addAttribute("players", listPlayersPaginatedAndFiltered);
+            List<Player> players = playerService.getPaginatedPlayers(filterName, pageNumber);
 
-            } else{
-                
-                List<Player> listPlayersPaginated = StreamSupport.stream(playersPaginated.spliterator(), false).collect(Collectors.toList());
-                modelMap.addAttribute("players", listPlayersPaginated);
-            }
-            
+            modelMap.addAttribute("players", players);
             modelMap.addAttribute("filterName", filterName);
             modelMap.addAttribute("pageNumber", pageNumber);
             modelMap.addAttribute("nextPageNumber", nextPageNumber);
@@ -152,56 +118,30 @@ public class PlayerController {
             List<Achievement> achieved = StreamSupport.stream(achievementService.findByPlayerId(player.get().getId()).spliterator(), false).collect(Collectors.toList());
             List<Achievement> achievements = StreamSupport.stream(achievementService.findAll().spliterator(), false).collect(Collectors.toList());
             List<Achievement> notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
-    
+            // todos los achievements que no estén en achieved
 
-            for(Achievement a: notAchieved){
-                if(a.getParameter()==PARAMETER.POINTS){
-                    int totalPoints = statsService.getPointsByPlayerId(player.get().getId());
-                    if(a.getMinValue()<=totalPoints){
-                        player.get().getAchievements().add(a);
-                        playerService.save(player.get());
-                        achieved.add(a);
-                    }
-                }else if(a.getParameter()==PARAMETER.GAMES_PLAYED){
-                    int totalGames = player.get().getGames().size();
-                    if(a.getMinValue()<=totalGames){
-                        player.get().getAchievements().add(a);
-                        playerService.save(player.get());
-                        achieved.add(a);
-                    }
-                }else if(a.getParameter()==PARAMETER.LOSES){
-                    int totalLoses = player.get().getGames().size() - statsService.getWinsCountByPlayerId(player.get().getId());
-                    if(a.getMinValue()<=totalLoses){
-                        player.get().getAchievements().add(a);
-                        playerService.save(player.get());
-                        achieved.add(a);
-                    }
-                }else if(a.getParameter()==PARAMETER.WINS){
-                    int totalWins = statsService.getWinsCountByPlayerId(player.get().getId());
-                    if(a.getMinValue()<=totalWins){
-                        player.get().getAchievements().add(a);
-                        playerService.save(player.get());
-                        achieved.add(a);
-                    }
-                }
-            }
+            List<Achievement> res = playerService.getAchievements(notAchieved, achieved, player.get());
+            
+            List<Achievement> finalAchieved = res;
 
-            notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
+            //We update the values of notAchieved Achievements
+            List<Achievement> finalNotAchieved = achievements.stream().filter(x->!finalAchieved.contains(x)).collect(Collectors.toList());
 
-            modelMap.addAttribute("achieved", achieved); 
-            modelMap.addAttribute("notAchieved", notAchieved);
+
+            modelMap.addAttribute("achieved", finalAchieved); 
+            modelMap.addAttribute("notAchieved", finalNotAchieved);
             modelMap.addAttribute("player", player.get());
-        }else{
+        }else {
             modelMap.addAttribute("message", "Player not found");
             view = "/error";
         }
         return view;
     }
 
-    @GetMapping(path="/profile/{playerId}/statistics")
+    @GetMapping(path="/profile/{playerId}/statistics")  
     public String statistics(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/statistics";
-       securityService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             modelMap.addAttribute("player", player.get());
@@ -244,7 +184,7 @@ public class PlayerController {
     @GetMapping(path="/profile/{playerId}/rooms/created")
     public String gamesCreated(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/roomsCreated";
-       securityService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             Collection<Game> games = gameService.findByOwnerId(player.get().getId());
@@ -260,7 +200,7 @@ public class PlayerController {
     @GetMapping(path="/profile/{playerId}/rooms/played")
     public String gamesPlayed(@PathVariable("playerId") int playerId, ModelMap modelMap){
         String view = "players/roomsPlayed";
-       securityService.insertIdUserModelMap(modelMap);
+        securityService.insertIdUserModelMap(modelMap);
         Optional<Player> player = playerService.findPlayerById(playerId);
 
         if(player.isPresent()){
@@ -277,29 +217,29 @@ public class PlayerController {
   
 
     @GetMapping(path="/delete/{playerId}")
-    public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap){
+    public String deletePlayer(@PathVariable("playerId") int playerId, ModelMap modelMap, HttpServletRequest request){
         String view= "players/listPlayers";
         securityService.insertIdUserModelMap(modelMap);
-        if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-                .anyMatch(x -> x.toString().equals("admin"))) {
-                    Optional<Player> player = playerService.findPlayerById(playerId);
-                    if(player.isPresent()){
-                        Player p = player.get();
-                        Collection<Game> lg = p.getGames();
-                        Collection<Game> col = lg.stream().filter(x->x.getPlayer().getId()!=playerId).collect(Collectors.toCollection(ArrayList::new));
-                        col.stream().forEach(x->x.deletePlayerOfGame(p));
+        if (securityService.isAdmin()) {
+            Optional<Player> p = playerService.findPlayerById(playerId);
+            if(p.isPresent()){
+                Player player = p.get();
+                Collection<Game> lg = player.getGames();
+                Collection<Game> col = lg.stream().filter(x->x.getPlayer().getId()!=playerId).collect(Collectors.toCollection(ArrayList::new));
+                col.stream().forEach(x->x.deletePlayerOfGame(player));
 
-                        p.deleteGames(col);
-                
-                        playerService.delete(player.get());
-                        modelMap.addAttribute("message", "Player successfully deleted!");
+                player.deleteGames(col);
+        
+                playerService.delete(player);
+                modelMap.addAttribute("message", "Player successfully deleted!");
 
-                        return listPlayers(modelMap, null, 0);
+                return listPlayers(modelMap, null, 0);
 
-                    }else{
-                        modelMap.addAttribute("message", "Player not found");
-                        view=listPlayers(modelMap, null, 0);
-                    }
+            }else{
+                modelMap.addAttribute("message", "Player not found");
+                // request.getSession().setAttribute("message", "Player not found");
+                view=listPlayers(modelMap, null, 0);
+            }
         }else{
             view = "/error";
         }
@@ -312,33 +252,34 @@ public class PlayerController {
     @GetMapping(path="/edit/{playerId}")
     public String updatePlayer(@PathVariable("playerId") int playerId, ModelMap model) {
 
-        Optional<Player> player = playerService.findPlayerById(playerId); // optional puede ser error el import
+        Optional<Player> player = playerService.findPlayerById(playerId); 
         String view = VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-        securityService.insertIdUserModelMap(model);
-        //Test if currentplayer is admin or the same id
-        // TODO: Comprobar que sea o admin o q el usuer registrado tenga el mismo id q el de la url
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.getAuthorities().stream()
-            .anyMatch(x -> x.toString().equals("admin"))){
-            if(player.isPresent()){
+        securityService.insertIdUserModelMap(model); 
+
+        if(securityService.isAdmin()) {
+            if(player.isPresent()){ 
                 model.addAttribute("player", player.get());
             }else{
                 model.addAttribute("message", "Player not found");
                 view = "/error";
             }
-        }else if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof User) {
-            User currentUser = (User) authentication.getPrincipal();
-            int playerLoggedId = playerService.getIdPlayerByName(currentUser.getUsername());
-            if(playerId==playerLoggedId){
-                if(player.isPresent()){
+        }else if (securityService.isAuthenticatedUser()) {
+
+            if(player.isPresent()) {
+                int playerLoggedId = securityService.getCurrentPlayerId();
+                if(playerLoggedId == playerId) {
                     model.addAttribute("player", player.get());
-                }else{
+
+                } else{
                     model.addAttribute("message", "Player not found");
                     view = "/error";
                 }
-            }else{
-                view= "/error";
+            } else{
+                model.addAttribute("message", "Player not found");
+                view = "/error";
             }
+
+           
         }else{
             view = "/error";
         }
@@ -372,47 +313,10 @@ public class PlayerController {
 
 		if (result.hasErrors()){
 			model.put("player", player);
-			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-		}else {
-                    
-            Player playerToUpdate=this.playerService.findPlayerById(playerId).get();
-            int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();
-            String username = playerToUpdate.getUser().getUsername();
-            Iterable<Player> players = playerService.findAll();
-            List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername().toString()).collect(Collectors.toList());
-            //borrar user antes de grabarlo en playerToUpdate
-            //validador
-            BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
-            try {                    
-                //this.playerService.savePlayer(playerToUpdate);
-
-                //If the username is already in the DB and it's was edited then it means that
-                //we are overwritting another user
-                if(usernames.stream().anyMatch(x->x.equals(playerToUpdate.getUser().getUsername()))&&
-                !playerToUpdate.getUser().getUsername().equals(username)){
-                    return "errors/error-500";
-                }
-
-                this.playerService.savePlayer(playerToUpdate);
-                authoritiesService.deleteAuthorities(id);
-                if(username != playerToUpdate.getUser().getUsername()){
-                    userService.delete(username);
-                }      
-
-            } catch (Exception ex) {
-                result.rejectValue("name", "duplicate", "already exists");
-                return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-            }
-            if(securityService.isAdmin()){
-                return "redirect:/players";
-            }else{
-                if(username != playerToUpdate.getUser().getUsername()){
-                    SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-                    return "redirect:/welcome";
-                }
-                return "redirect:/players/profile/{playerId}";
-
-            }
+			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM; 
+		} else {
+            
+            return playerService.processEditPlayer(player, playerId, result);
 
 		}
 	}  
@@ -425,17 +329,12 @@ public class PlayerController {
 
         if (securityService.isAdmin()) {
 
-            if(filterName!=null){
-                
-                List<?> listPlayers = playerService.getAuditPlayers(filterName).stream().collect(Collectors.toList());
-                modelMap.addAttribute("players", listPlayers);
-
-            } else{
-
-                List<?> listPlayers = playerService.getAuditPlayers("").stream().collect(Collectors.toList());
-                modelMap.addAttribute("players", listPlayers);
+            if(filterName!=null){ 
+                filterName = "";
             }
-
+            
+            List<?> listPlayers = playerService.getAuditPlayers(filterName).stream().collect(Collectors.toList());
+            modelMap.addAttribute("players", listPlayers);
             modelMap.addAttribute("filterName", filterName);
                     
         }else{

@@ -4,7 +4,7 @@ INSERT INTO authorities(id,username,authority) VALUES (3,'mra21','admin');
 INSERT INTO users(username,password,enabled) VALUES ('ISMP15','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'ISMP15','admin');
 
-INSERT INTO users(username,password,enabled) VALUES ('test1','test1',TRUE);
+INSERT INTO users(username,password,enabled) VALUES ('test1','Us_2k214dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (5,'test1','player');
 
 INSERT INTO users(username,password,enabled) VALUES ('test2','test2',TRUE);
@@ -123,17 +123,7 @@ INSERT INTO cards(id,card_type,image_url) VALUES (65, 'SWORD', '/resources/image
 INSERT INTO cards(id,card_type,image_url) VALUES (66, 'SWORD', '/resources/images/cards/Sword.png');
 
 
--- DECKS-CARDS
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (1, 1);
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (1, 2);
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (2, 1);
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (2, 2);
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (3, 1);
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (3, 2);
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (4, 3);
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (4, 4);
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (5, 5);
--- INSERT INTO decks_cards(deck_id, card_id) VALUES (5, 1);
+
 
 -- PLAYERS
 INSERT INTO players(id, first_name, surname, profile_photo, username, version) 
