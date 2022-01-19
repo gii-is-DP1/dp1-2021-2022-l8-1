@@ -25,13 +25,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.achievement.AchievementService;
+import org.springframework.samples.SevenIslands.admin.Admin;
+import org.springframework.samples.SevenIslands.admin.AdminService;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.statistic.Statistic;
-import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.Authorities;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
 import org.springframework.samples.SevenIslands.user.User;
 import org.springframework.samples.SevenIslands.user.UserService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
@@ -50,6 +56,10 @@ public class PlayerServiceTests {
 
     @Autowired 
     private AchievementService achievementService;
+
+    @Autowired
+    private AdminService adminService;
+
 
     
     @Test
@@ -355,29 +365,103 @@ public class PlayerServiceTests {
     @Test
     void testProcessEditPlayer() {
 
-        Player player = new Player();
-        player.setFirstName("Adrián");
-        player.setSurname("Fernández");
-        player.setEmail("adrif2@gmail.com");
-        player.setProfilePhoto("www.foto.png");
+        Player p = playerService.findAll().iterator().next();   // player a editar
 
-        User user = new User();
-        user.setUsername("Adrianf22");
-        user.setPassword("4G4rc14!1234");
-        user.setEnabled(true);
+        Player player2 = new Player();
+        player2.setFirstName(p.getFirstName());
+        player2.setSurname(p.getSurname());
+        player2.setEmail(p.getEmail());
+        player2.setId(p.getId());
+        player2.setProfilePhoto(p.getProfilePhoto());
 
-        player.setUser(user);
-    
-        playerService.savePlayer(player);
+        User user2 = new User();
+        user2.setUsername(p.getUser().getUsername() + "1"); // test1 now is test11 (already in DB)
+        user2.setPassword(p.getUser().getPassword());
+        user2.setEnabled(p.getUser().isEnabled());
 
-        BindingResult result = new BeanPropertyBindingResult(player, "player");
-        playerService.processEditPlayer(player, 2, result);
+        player2.setUser(user2);
 
-        assertEquals(0, result.getErrorCount());
         
+
+        BindingResult result = new BeanPropertyBindingResult(player2, "player");
+
+        String res = playerService.processEditPlayer(player2, p.getId(), result);
+        assertEquals("errors/error-500", res);
 
     }
 
+    @Test
+    void testProcessEditPlayer2(){
+
+        Player p = playerService.findAll().iterator().next();   // player a editar
+        p.setEmail("test1@us.es");
+
+        Player player2 = new Player();
+        player2.setFirstName(p.getFirstName());
+        player2.setSurname(p.getSurname());
+        player2.setEmail(p.getEmail());
+        player2.setId(p.getId());
+        player2.setProfilePhoto(p.getProfilePhoto());
+
+        User user2 = new User();
+        user2.setUsername(p.getUser().getUsername() + "999"); // test1 now is test1999 (not in DB)
+        user2.setPassword(p.getUser().getPassword());
+        user2.setEnabled(p.getUser().isEnabled());
+
+        player2.setUser(user2);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(p.getUser().getUsername(), p.getUser().getPassword());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        BindingResult result = new BeanPropertyBindingResult(player2, "player");
+
+        String res = playerService.processEditPlayer(player2, p.getId(), result);
+        assertEquals("redirect:/welcome", res);
+
+
+    }
+
+
+
+    @Test
+    void testProcessEditPlayer3(){
+
+        Player p = playerService.findAll().iterator().next();   // player a editar
+        p.setEmail("test1@us.es");
+
+        Player player2 = new Player();
+        player2.setFirstName(p.getFirstName());
+        player2.setSurname(p.getSurname());
+        player2.setEmail(p.getEmail());
+        player2.setId(p.getId());
+        player2.setProfilePhoto(p.getProfilePhoto());
+
+        User user2 = new User();
+        user2.setUsername(p.getUser().getUsername() + "999"); // test1 now is test1999 (not in DB)
+        user2.setPassword(p.getUser().getPassword());
+        user2.setEnabled(p.getUser().isEnabled());
+
+        player2.setUser(user2);
+
+        Admin ad = adminService.getAdminByName("mra21").get();
+
+
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        GrantedAuthority authority = new SimpleGrantedAuthority(ad.getUser().getAuthorities().iterator().next().getAuthority());
+        authorities.add(authority);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(ad.getUser().getUsername(), ad.getUser().getPassword(),  authorities);
+
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        
+        BindingResult result = new BeanPropertyBindingResult(player2, "player");
+
+        String res = playerService.processEditPlayer(player2, p.getId(), result);
+        assertEquals("redirect:/players", res);
+
+
+    }
 
     //USER´S HISTORIES
 

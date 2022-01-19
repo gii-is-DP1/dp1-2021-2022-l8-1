@@ -282,8 +282,9 @@ public class PlayerService {
                     return "errors/error-500";
                 }
 
+                
                 // guardo el nuevo player (recordemos que en playerToUpdate ya se han copiado las propiedades del nuevo player)
-                savePlayer(playerToUpdate);
+                savePlayer(playerToUpdate); 
 
                 authoritiesService.deleteAuthorities(id);
                 // si el NUEVO username es diferente al antiguo, se elimina el ANTIGUO 
@@ -296,7 +297,7 @@ public class PlayerService {
                 return "players/createOrUpdatePlayerForm";
             }
 
-            if(securityService.isAdmin()){
+            if(securityService.isAdmin()){  
                 return "redirect:/players";
 
             }else{
