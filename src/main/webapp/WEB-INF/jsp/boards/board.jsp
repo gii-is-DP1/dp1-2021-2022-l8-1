@@ -40,7 +40,6 @@
 
             <div id="actions-section">
 
-                <sevenislands:gameButton type="island" pending="${game.dieThrows && id_playing==id}"/>
                 <sevenislands:gameButton type="travel" pending="${game.dieThrows && id_playing==id}"/>
                 <sevenislands:gameButton type="skip" pending="${!game.dieThrows && id_playing==id}"/>
                 <sevenislands:gameButton type="dice" pending="${!game.dieThrows && id_playing==id}"/>

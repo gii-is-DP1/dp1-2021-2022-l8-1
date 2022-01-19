@@ -117,7 +117,7 @@ public class AchievementControllerTests {
                 .param("parameter", PARAMETER.WINS.toString())
                 .param("version", "1"))
                 .andExpect(model().attributeExists("achievement"))
-                .andExpect(status().is3xxRedirection())
+                .andExpect(status().isOk())
 				.andExpect(view().name("redirect:/achievements"));
 	}
 
@@ -125,7 +125,6 @@ public class AchievementControllerTests {
 
     //Check insert repeated achievement
 
-    @Disabled
     @WithMockUser(value = "spring")
 	@Test
 	void testNewAchievementWithError() throws Exception {

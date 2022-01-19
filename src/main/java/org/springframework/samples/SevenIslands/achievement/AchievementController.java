@@ -177,14 +177,15 @@ public class AchievementController {
             }
 
             BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  
-                    try {                    
-                        achievementService.save(achievementToUpdate);        
-                        request.getSession().setAttribute("message", "Achievement successfully updated!");            
-                    
-                    } catch (Exception ex) {
-                        result.rejectValue("name", "duplicate", "already exists");
-                        return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
-                    }
+            try {                    
+                achievementService.save(achievementToUpdate);        
+                request.getSession().setAttribute("message", "Achievement successfully updated!");            
+            
+            } catch (Exception ex) {
+                result.rejectValue("name", "duplicate", "already exists");
+                return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+            }
+            
 			return "redirect:/achievements";
 		}
 	}
