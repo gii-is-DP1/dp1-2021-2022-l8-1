@@ -193,9 +193,17 @@ public class StatisticService {
         for(Player p: players){
             Integer punctuation = playersByPunctuation.get(p);
             List<Statistic> s = this.getStatisticByPlayerId(p.getId());
+<<<<<<< HEAD
             Optional<Statistic> opt =  s.stream().filter(x->x.getHad_won()==null).findFirst();
             if(opt.isPresent()){
                 Statistic filter = opt.get();
+=======
+
+            Optional<Statistic> statisticOp = s.stream().filter(x->x.getHad_won()==null).findFirst();
+
+            if(statisticOp.isPresent()){
+                Statistic filter = statisticOp.get();
+>>>>>>> master
                 filter.setHad_won(false);
                 filter.setPoints(punctuation);
                 if(playersByPunctuation.keySet().iterator().next().equals(p)){
@@ -204,6 +212,10 @@ public class StatisticService {
                 playerService.save(p);
             }
         }
+<<<<<<< HEAD
+=======
+       
+>>>>>>> master
     }
 
     @Transactional

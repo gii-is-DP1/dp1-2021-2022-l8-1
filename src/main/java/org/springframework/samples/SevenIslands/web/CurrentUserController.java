@@ -6,6 +6,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class CurrentUserController {
 
@@ -15,9 +18,9 @@ public class CurrentUserController {
         if(authetication != null)
             if(authetication.isAuthenticated()){
                 User currentUser = (User)authetication.getPrincipal();
-                System.out.println(currentUser.getUsername());
+                log.info("User authenticated: {}",currentUser.getUsername());
     }else
-                System.out.println("user not authenticated");
+                log.info("user not authenticated");
         return "/welcome";
     }
     
