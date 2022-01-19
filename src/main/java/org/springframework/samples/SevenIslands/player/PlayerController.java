@@ -241,7 +241,7 @@ public class PlayerController {
                 view=listPlayers(modelMap, null, 0);
             }
         }else{
-            view = "/NOTANADMIN";
+            view = "/error";
         }
         return view;
 

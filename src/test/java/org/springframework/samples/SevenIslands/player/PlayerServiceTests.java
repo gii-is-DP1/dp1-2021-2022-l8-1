@@ -458,7 +458,40 @@ public class PlayerServiceTests {
         BindingResult result = new BeanPropertyBindingResult(player2, "player");
 
         String res = playerService.processEditPlayer(player2, p.getId(), result);
+        String res2 = playerService.processEditPlayer(player2, 400, result);    // if player is not present
         assertEquals("redirect:/players", res);
+        assertEquals("redirect:/players", res2);    // bc i'm an admin
+
+
+    }
+
+    @Test
+    void testProcessEditPlayer4(){
+
+        Player p = playerService.findAll().iterator().next();   // player a editar
+        p.setEmail("test1@us.es");
+
+        Player player2 = new Player();
+        player2.setFirstName(p.getFirstName());
+        player2.setSurname(p.getSurname());
+        player2.setEmail(p.getEmail());
+        player2.setId(p.getId());
+        player2.setProfilePhoto(p.getProfilePhoto());
+
+        User user2 = new User();
+        user2.setUsername(p.getUser().getUsername() + "999"); // test1 now is test1999 (not in DB)
+        user2.setPassword(p.getUser().getPassword());
+        user2.setEnabled(p.getUser().isEnabled());
+
+        player2.setUser(user2);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(p.getUser().getUsername(), p.getUser().getPassword());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        
+        BindingResult result = new BeanPropertyBindingResult(player2, "player");
+
+        String res = playerService.processEditPlayer(player2, 400, result); // if player is not present
+        assertEquals("errors/error-404", res);
 
 
     }

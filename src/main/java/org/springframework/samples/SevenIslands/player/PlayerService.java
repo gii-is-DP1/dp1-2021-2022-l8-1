@@ -261,7 +261,11 @@ public class PlayerService {
         Optional<Player> playerOpt = findPlayerById(playerId);
         
         if(!playerOpt.isPresent()) {
-            return "redirect:/players";
+            if(securityService.isAdmin()) {
+                return "redirect:/players"; 
+            } else {
+                return "errors/error-404";
+            }    
         } else {
             Player playerToUpdate = playerOpt.get();
             int id = playerToUpdate.getUser().getAuthorities().iterator().next().getId();   
