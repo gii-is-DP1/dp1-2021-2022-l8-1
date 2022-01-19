@@ -8,6 +8,8 @@
 
 
 <sevenislands:layout pageName="achievements">
+    
+    <div id="background"></div>
 
     <h2>
         <c:if test="${achievement['new']}">New </c:if> Achievement 
