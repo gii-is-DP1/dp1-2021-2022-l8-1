@@ -151,12 +151,6 @@ public class PlayerService {
         return playerRepo.findAuditPlayers(username);
 
     }
-
-    @Transactional(readOnly = true)
-    public Collection<?> getAuditPlayers2() {
-        return playerRepo.findAuditPlayers2();
-
-    }
   
     @Transactional(readOnly = true)
     public boolean playerHasInappropiateWords(Player player){

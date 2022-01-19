@@ -333,7 +333,7 @@ public class PlayerController {
 
         if (securityService.isAdmin()) {
 
-            if(filterName!=null){ 
+            if(filterName==null){ 
                 filterName = "";
             }
             
