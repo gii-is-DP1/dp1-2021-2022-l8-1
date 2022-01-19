@@ -15,9 +15,9 @@
     <div id="turn-section">
         <h3>Turn:     
             &nbsp
-            <span id="turn-secs">00</span>
+            <span id="turn-mins">00</span>
             :
-            <span id="turn-mins">00</>
+            <span id="turn-secs">00</span>
         </h3>
         
     </div>
