@@ -25,6 +25,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.context.annotation.FilterType;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,8 +33,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Any;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
@@ -129,11 +134,24 @@ public class PlayerControllerTests {
     //Method -> listPlayers
 
 
-    @Disabled
     @WithMockUser(value = "spring")
 	@Test
 	void testListPlayers() throws Exception {
-		mockMvc.perform(get("/players")).andExpect(status().isOk())
+
+        List<Integer> ls = new ArrayList<>();
+        ls.add(0);
+        ls.add(1);
+
+        when(securityService.isAdmin()).thenReturn(true);
+        when(playerService.calculatePages(any())).thenReturn(ls);
+
+		mockMvc.perform(get("/players"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("players"))
+                .andExpect(model().attributeExists("filterName"))
+                .andExpect(model().attributeExists("pageNumber"))
+                .andExpect(model().attributeExists("nextPageNumber"))
+                .andExpect(model().attributeExists("previousPageNumber"))
 				.andExpect(view().name("players/listPlayers"));
 	}
 
@@ -143,7 +161,8 @@ public class PlayerControllerTests {
 	@Test
 	void testPlayerProfile() throws Exception {
 		mockMvc.perform(get("/players/profile/{playerId}",TEST_PLAYER_ID))
-                .andExpect(status().isOk()).andExpect(model().attributeExists("player"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("player"))
 				.andExpect(view().name("/players/profile"));
 	}
 
@@ -257,17 +276,23 @@ public class PlayerControllerTests {
 
     
 
-    @Disabled
+
     @WithMockUser(value="spring")
 	@Test
 	void testDeletePlayer() throws Exception {
 
-        when(this.securityService.isAdmin()).thenReturn(true);
+        List<Integer> ls = new ArrayList<>();
+        ls.add(0);
+        ls.add(1);
+
+        when(playerService.calculatePages(any())).thenReturn(ls);
+
+        when(securityService.isAdmin()).thenReturn(true);
 
 		mockMvc.perform(get("/players/delete/{playerId}", TEST_PLAYER_ID))
                 .andExpect(status().isOk())
-                // .andExpect(model().attribute("message", "Player not found"))
-				.andExpect(view().name("/error"));
+                .andExpect(model().attribute("message", "Player successfully deleted!"))
+				.andExpect(view().name("players/listPlayers"));
 	}
 
     //Method -> updatePlayer
@@ -291,22 +316,24 @@ public class PlayerControllerTests {
             .andExpect(view().name("players/createOrUpdatePlayerForm"));
 	}
 
+
     @Disabled
+    //FIXME: no consigo que devuelva lo esperado
     @WithMockUser(value = "spring")
 	@Test
 	void testProcessUpdatePlayerFormSuccess() throws Exception {
 
         when(playerService.playerHasInappropiateWords(any())).thenReturn(false);
 
-		mockMvc.perform(post("/players/edit/{playerId}", TEST_PLAYER_ID)
-        .with(csrf())
-        .param("profilePhoto", "https://imagen.png")
-        .param("firstName","Manuel")
-        .param("surname","González")
-        .param("email","manuelgonzalez@gmail.com"))
-        //.andExpect(status().is3xxRedirection())
-        .andExpect(model().attributeExists("player"))
-	    .andExpect(view().name("/players/listPlayers"));
+		mockMvc.perform(post("/players/edit/{playerId}", TEST_NOT_PLAYER_ID)
+                .with(csrf())
+                .param("profilePhoto", "https://imagen.png")
+                .param("firstName","Manuel")
+                .param("surname","González")
+                .param("email","manuelgonzalez@gmail.com"))
+                //.andExpect(status().is3xxRedirection())
+                .andExpect(model().attributeExists("player"))
+                .andExpect(view().name("errors/error-404"));
 	}
 
     //Method -> playerAuditing

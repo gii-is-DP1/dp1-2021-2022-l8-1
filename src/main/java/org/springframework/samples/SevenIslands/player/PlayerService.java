@@ -122,7 +122,7 @@ public class PlayerService {
 
     @Transactional
 	public void savePlayer(Player player) throws DataAccessException {
-		//creating owner
+		//creating player
 		playerRepo.save(player);		
 		//creating user
 		userService.saveUser(player.getUser());
