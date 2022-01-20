@@ -233,7 +233,9 @@ public class PlayerController {
                 col.stream().forEach(x->x.deletePlayerOfGame(player));
                 
                 if(!lg.isEmpty()) {
+
                     player.deleteGames(col);
+
                 }
                 
                 playerService.delete(player);
