@@ -31,6 +31,7 @@ public class AchievementController {
 	private SecurityService securityService;
 
     private static final String CREATE_OR_UPDATE_ACHIEVEMENTS_FORM = "achievements/createOrUpdateAchievementForm";
+    private static final String ERROR = "/error";
 
     @GetMapping()
     public String listAchievements(ModelMap modelMap, HttpServletRequest request) {
@@ -62,7 +63,7 @@ public class AchievementController {
             modelMap.addAttribute("achievement", new Achievement());
             
         }else{  
-            return "/error";
+            return ERROR;
         }
         return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
     }
@@ -98,7 +99,7 @@ public class AchievementController {
              
             }
         }else{
-            return "/error";
+            return ERROR;
         }
         return "redirect:/achievements";
     }
@@ -118,7 +119,7 @@ public class AchievementController {
                 request.getSession().setAttribute("message", "Achievement not found");                      
             }
         }else{
-            return "/error";
+            return ERROR;
         }
         return "redirect:/achievements";
 
@@ -144,7 +145,7 @@ public class AchievementController {
             }
 
         }else {
-            return "/error";
+            return ERROR;
         }
         return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
     }
