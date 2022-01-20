@@ -34,10 +34,13 @@ public class AchievementController {
 	private SecurityService securityService;
 
     private static final String CREATE_OR_UPDATE_ACHIEVEMENTS_FORM = "achievements/createOrUpdateAchievementForm";
+
+ 
     private static final String REDIRECT_TO_ACHIEVEMENTS = "redirect:/achievements";
     private static final String ACHIEVEMENT = "achievement";
     private static final String ERROR_MESSAGE = "errorMessage";
     private static final String MESSAGE = "message";
+    private static final String ERROR = "/error";
 
     @GetMapping()
     public String listAchievements(ModelMap modelMap, HttpServletRequest request) {
@@ -69,7 +72,7 @@ public class AchievementController {
             modelMap.addAttribute(ACHIEVEMENT, new Achievement());
             
         }else{  
-            return "/error";
+            return ERROR;
         }
         return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
     }
@@ -105,7 +108,7 @@ public class AchievementController {
              
             }
         }else{
-            return "/error";
+            return ERROR;
         }
         return REDIRECT_TO_ACHIEVEMENTS;
     }
@@ -117,7 +120,9 @@ public class AchievementController {
         if (securityService.isAdmin()) {
             securityService.insertIdUserModelMap(modelMap);
             Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
+
             if(achievement.isPresent()){   
+
                 achievementService.delete(achievement.get());
                 request.getSession().setAttribute(MESSAGE, "Achievement successfully deleted!");
             
@@ -125,7 +130,7 @@ public class AchievementController {
                 request.getSession().setAttribute(MESSAGE, "Achievement not found");                      
             }
         }else{
-            return "/errors";
+            return ERROR;
         }
         return REDIRECT_TO_ACHIEVEMENTS;
 
@@ -151,7 +156,7 @@ public class AchievementController {
             }
 
         }else {
-            return "/errors";
+            return ERROR;
         }
         return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
     }

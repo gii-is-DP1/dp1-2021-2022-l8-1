@@ -10,6 +10,7 @@
     <script>
        
         function main(){
+            // debugger;
             
             //can't be use without Thymeleaf template
             document.getElementById("filterName").value=element;
@@ -32,7 +33,7 @@
             </form>
         </div>
 
-        <div id="players">
+        <div id="auditing">
 
             <table class="table table-striped">
                 <thead>
