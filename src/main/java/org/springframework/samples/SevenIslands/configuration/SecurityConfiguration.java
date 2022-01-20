@@ -60,10 +60,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 					.logout().permitAll()
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout")); 
-                // Configuración para que funcione la consola de administración 
-                // de la BD H2 (deshabilitar las cabeceras de protección contra
-                // ataques de tipo csrf y habilitar los framesets si su contenido
-                // se sirve desde esta misma página.
+
+
+        // Configuration for the administration console of the DB H2 to work (disable the protection headers against
+        // csrf type attacks and enable framesets if your content is served from this same page.
 		http.csrf().ignoringAntMatchers("/h2-console/**")
 					.and()
 					.exceptionHandling().accessDeniedHandler(new AccessDeniedExceptionHandler());

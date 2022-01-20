@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/achievements")
 public class AchievementController {
@@ -114,7 +117,7 @@ public class AchievementController {
         if (securityService.isAdmin()) {
             securityService.insertIdUserModelMap(modelMap);
             Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
-            if(achievement.isPresent()){    // porque es un optional
+            if(achievement.isPresent()){   
                 achievementService.delete(achievement.get());
                 request.getSession().setAttribute(MESSAGE, "Achievement successfully deleted!");
             
@@ -196,6 +199,7 @@ public class AchievementController {
                         
                         } catch (Exception ex) {
                             result.rejectValue("name", "duplicate", "already exists");
+                            log.error("achievement already exists");
                             return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
                         }
                 return REDIRECT_TO_ACHIEVEMENTS;

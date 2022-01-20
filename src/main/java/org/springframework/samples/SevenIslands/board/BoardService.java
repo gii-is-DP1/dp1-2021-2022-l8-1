@@ -105,7 +105,7 @@ public class BoardService {
     @Transactional
     public void distribute(Board b, Deck d){
         
-        if(!d.getCards().isEmpty() && d.getCards().size()>=6){ //COMPROBAR ESTE IF QUE ES PARA CUANDO DECK NO TENGA CARTAS
+        if(!d.getCards().isEmpty() && d.getCards().size()>=6){
             for(Island i: b.getIslands()){
                 if(i.getCard()==null){  
                     List<Card> cards =  d.getCards();
@@ -185,7 +185,7 @@ public class BoardService {
 
             return finishTheGame(game);
 
-        }else if(pl != game.getPlayers().get(game.getActualPlayer())){         //para que aunque refresque uno que no es su turno no incremente el turno
+        }else if(pl != game.getPlayers().get(game.getActualPlayer())){         //so that even if it refreshes one that is not its turn, it does not increase the turn
            
             request.getSession().removeAttribute(MESSAGE);
             request.getSession().removeAttribute(OPTIONS);
@@ -283,7 +283,7 @@ public class BoardService {
     @Transactional
     public void addPlayerAtStartToSession(Game game, HttpServletRequest request){
 
-        if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())<=5){       //Jugador aún no sabe los jugadores actuales
+        if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())<=5){ 
             List<Player> players = game.getPlayers();
             List<Integer> playersAtStart = new ArrayList<>();
             players.forEach(p -> {
@@ -391,14 +391,14 @@ public class BoardService {
                 if(statisticService.existsRow(statisticId, n)){
                     statisticService.updateCardCount(statisticId, n);
                 }else{
-                    statisticService.insertCardCount(statisticId, n); //AQUI SE INSERTA LAS CARTAS QUE HAS USADO
+                    statisticService.insertCardCount(statisticId, n);
                 }
                     
             }
         }  
         
-        statisticService.insertCardCount(statisticId, islandCard.getId()); //AQUI SE INSERTA LA CARTA QUE HAS ESCOGIDA
-        statisticService.updateIslandCount(statisticId, island); //AQUI SE INCREMENTA LA ISLA QUE HAS USADO PORQUE TE GUSTA
+        statisticService.insertCardCount(statisticId, islandCard.getId());
+        statisticService.updateIslandCount(statisticId, island);
         
     }
 
@@ -456,7 +456,7 @@ public class BoardService {
         if(limitInf<=0){
             limitInf = 1;
         }
-        List<Integer> posib = IntStream.rangeClosed(limitInf, limitSup)//2 a 7
+        List<Integer> posib = IntStream.rangeClosed(limitInf, limitSup)
             .boxed().collect(Collectors.toList());
         
         List<Integer> posibilities = new ArrayList<>();

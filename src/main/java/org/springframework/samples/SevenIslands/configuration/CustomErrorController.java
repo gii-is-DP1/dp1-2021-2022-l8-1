@@ -11,25 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class CustomErrorController implements ErrorController{
 
-    /* @Bean
-    public ErrorProperties errorProperties(){
-        return new ErrorProperties();
-    }
-
-    public ErrorAttributes errorAttributes = null;
-    public ErrorProperties errorProperties = null;
-
-    @Bean
-    public BasicErrorController basicErrorController(){
-        return new BasicErrorController(errorAttributes, errorProperties);
-    }
-
-
-    /* public CustomErrorController(ErrorAttributes errorAttributes, ErrorProperties errorProperties) {
-        super(errorAttributes, errorProperties);
-        //TODO Auto-generated constructor stub
-    } */
-
     @Override
     public String getErrorPath() {
         return "/error";

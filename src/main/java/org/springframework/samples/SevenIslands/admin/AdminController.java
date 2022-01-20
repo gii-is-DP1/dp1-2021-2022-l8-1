@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/admins")
 public class AdminController {
@@ -121,6 +124,7 @@ public class AdminController {
                             
                         } catch (Exception ex) {
                             result.rejectValue("name", "duplicate", "already exists");
+                            log.error("already exists");
                             return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM ;
                         }
 

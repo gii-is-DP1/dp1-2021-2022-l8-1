@@ -24,10 +24,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+@Slf4j
 @Service
 public class PlayerService {
     @Autowired
@@ -136,7 +140,7 @@ public class PlayerService {
 
     @Transactional(readOnly = true)
     public Collection<Player> getPlayerByUsername(String n) {
-        return playerRepo.findPlayerByUsername(n); //PUESTO DE PRUEBA
+        return playerRepo.findPlayerByUsername(n);
 
     }
 
@@ -200,15 +204,16 @@ public class PlayerService {
         pages.add(0);
 
         
-        if(pageNumber==0){  //primera pagina
+        if(pageNumber==0){  //first page
+
             pages.set(0, pageNumber);
             pages.set(1, pageNumber+1);
         
-        }else if(pageNumber==totalPages-1){  //ultima pagina
+        }else if(pageNumber==totalPages-1){  //last page
             pages.set(0, pageNumber-1);
             pages.set(1, pageNumber);
 
-        } else { //paginas intermedias
+        } else { //intermediate pages
             pages.set(0, pageNumber-1);
             pages.set(1, pageNumber+1);
 
@@ -281,28 +286,30 @@ public class PlayerService {
             Iterable<Player> players = findAll();
             List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername()).collect(Collectors.toList());
             
-            BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","games","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
+            BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","games","gamesCreador");                                                                              
             
             String newUserName = playerToUpdate.getUser().getUsername();    
 
             try {                    
-                // si el NUEVO username está ya en la DB && el NUEVO username NO es el mismo que el viejo
-                // se trata de un error, pues estamos editando un usuario que ya existe
+                // If the new username is already in the db && the new username is not the same as the old one, 
+                // it is an error, because we are editing a user that already exists
+
                 if(usernames.stream().anyMatch(x->x.equals(newUserName) && !newUserName.equals(username))){
                     return "errors/error-500";
                 }
 
-                // guardo el nuevo player (recordemos que en playerToUpdate ya se han copiado las propiedades del nuevo player)
+                // I save the new player (remember that in playerToUpdate the properties of the new player have already been copied)
                 savePlayer(playerToUpdate); 
 
                 authoritiesService.deleteAuthorities(id);
-                // si el NUEVO username es diferente al antiguo, se elimina el ANTIGUO 
+                // If the new username is different from the old one, the old one is deleted
                 if(!username.equals(newUserName)){
                     userService.delete(username);
                 }    
 
             } catch (Exception ex) {
                 result.rejectValue("name", "duplicate", "already exists");
+                log.error("An ERROR Message");
                 return "players/createOrUpdatePlayerForm";
             }
 

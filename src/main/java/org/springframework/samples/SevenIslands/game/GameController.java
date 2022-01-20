@@ -75,7 +75,7 @@ public class GameController {
             Optional<Game> gameOpt =p.getGames().stream().filter(x->x.getEndTime()==null && x.isHasStarted()).findFirst();
 
             if(gameOpt.isPresent()){
-                Game game = gameOpt.get(); //JUEGO QUE ESTÁ JUGANDO AHORA MISMO
+                Game game = gameOpt.get(); //Game you are playing right now
                 return "redirect:/boards/"+game.getCode();
             }
             return "/error";
@@ -90,8 +90,6 @@ public class GameController {
     public String saveGame(@Valid Game game, BindingResult result, ModelMap modelMap) {   
 
         Deck deck = deckService.init(game.getName());
-       
-        //poner aqui las cartas de la isla
         
         if(gameService.gameHasInappropiateWords(game)){
             modelMap.put("game", game);
@@ -159,8 +157,8 @@ public class GameController {
        
         Game gameWaiting = gameService.waitingRoom(p.getId());
         
-        if(inGame && !g.getPlayers().contains(p)){ // Al empezar una partida, como se refresca, detecta que está en un juego y redirige a error
-            return "/error";                                        //Hasta que no termine el juego que abandonó no puede unirse a otro
+        if(inGame && !g.getPlayers().contains(p)){ // When starting a game, as it refreshes, it detects that it is in a game and redirects to error
+            return "/error";                                        //Until you finish the game you left you cannot join another one
         } else if(gameWaiting != null && (gameService.isWaitingOnRoom(p.getId()) && !gameService.waitingRoom(p.getId()).getCode().equals(gameCode))){
            
             request.getSession().setAttribute("message", "You are waiting for start a game actually, can´t join an another game");

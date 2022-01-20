@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Mostly used as a facade for all SevenIslands controllers Also a placeholder
  * for @Transactional and @Cacheable annotations
  *
- * @author Michael Isvy
  */
 @Service
 public class UserService {

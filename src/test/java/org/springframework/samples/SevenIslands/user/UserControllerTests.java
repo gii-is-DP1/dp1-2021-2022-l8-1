@@ -52,7 +52,7 @@ public class UserControllerTests {
     }
 
 
-    // H12-E2: Carácteres no alfanuméricos (espacio) en nombre de usuario
+    // H12-E2: Non-alphanumeric characters (space) in username
     
     @WithMockUser(value = "spring")
     @Test

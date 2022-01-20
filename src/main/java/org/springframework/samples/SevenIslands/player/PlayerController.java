@@ -97,7 +97,7 @@ public class PlayerController {
             modelMap.addAttribute("timePlayed", statsService.getTimePlayedByPlayerId(playerId));
             modelMap.addAttribute("totalWins", statsService.getWinsCountByPlayerId(playerId));
             modelMap.addAttribute("totalPoints", statsService.getPointsByPlayerId(playerId));
-            //FALLA POR EL SEGUNDO GET
+          
             modelMap.addAttribute("favIsland", statsService.getFavoriteIslandByPlayerId(playerId)==null ? "noData" : statsService.getFavoriteIslandByPlayerId(playerId).getIslandNum());
             modelMap.addAttribute("favCard", statsService.getFavoriteCardByPlayerId(playerId)==null ? "noData" : statsService.getFavoriteCardByPlayerId(playerId).getCardType());
         }else{
@@ -119,7 +119,7 @@ public class PlayerController {
             List<Achievement> achieved = StreamSupport.stream(achievementService.findByPlayerId(player.get().getId()).spliterator(), false).collect(Collectors.toList());
             List<Achievement> achievements = StreamSupport.stream(achievementService.findAll().spliterator(), false).collect(Collectors.toList());
             List<Achievement> notAchieved = achievements.stream().filter(x->!achieved.contains(x)).collect(Collectors.toList());
-            // todos los achievements que no estén en achieved
+            // all achievements that are not in achieved
 
             List<Achievement> res = playerService.getAchievements(notAchieved, achieved, player.get());
             

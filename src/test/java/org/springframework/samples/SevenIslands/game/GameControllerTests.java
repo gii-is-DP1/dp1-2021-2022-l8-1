@@ -94,7 +94,6 @@ public class GameControllerTests {
         firstGame.setPlayer(firstPlayer);
 
         when(this.gameService.findGameById(TEST_GAME_ID)).thenReturn(Optional.of(firstGame));
-        // when(this.securityService.getCurrentPlayerId()).thenReturn(TEST_PLAYER_ID);
         when(this.securityService.getCurrentPlayer()).thenReturn(firstPlayer);
         when(securityService.redirectToWelcome(any(HttpServletRequest.class))).thenReturn("redirect:/welcome");
 	}
@@ -146,7 +145,7 @@ public class GameControllerTests {
  
         firstPlayer.setInGame(true);
         firstGame.setHasStarted(true);
-        //firstGame.setEndTime(null);
+        
         Collection <Game> cl = new ArrayList<>();
         cl.add(firstGame);
 

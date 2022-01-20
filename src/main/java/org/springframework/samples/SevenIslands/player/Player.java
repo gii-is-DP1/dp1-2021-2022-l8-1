@@ -51,24 +51,24 @@ public class Player extends Person{
   @Column(name="in_game")   //Player in a game  
   private Boolean inGame=false;
 
-  // RELACION CON STATISTIC
+  // RELATION WITH STATISTIC
   @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
   @NotAudited
   private Set<Statistic> statistic;
 
-  //RELACION CON LOGROS
+  //RELATION WITH LOGROS
 	@ManyToMany(fetch = FetchType.LAZY)
 	@NotAudited
   @JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
 
-  //RELACION CON CARTAS
+  //RELATION WITH CARTAS
   @ManyToMany(fetch = FetchType.EAGER)
 	@NotAudited
   private List<Card> cards;
 
-  //RELACION CON GAMES 
+  //RELATION WITH GAMES 
 	@ManyToMany(mappedBy = "players",cascade = CascadeType.ALL) //PROBLEMA AQUI
 	@NotAudited
   private Collection<Game> games;
@@ -95,7 +95,7 @@ public class Player extends Person{
     this.games.removeAll(g);
   }
 
-  //RELACION CON USER
+  //RELATION WITH USER
   @JsonView(Views.Public.class)
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "username", referencedColumnName = "username")
@@ -104,7 +104,7 @@ public class Player extends Person{
   public User getUser() {
 		return user;
   }
-  //SEGUNDA RELACION CON GAMES
+  //SECOND RELATION WITH GAMES
   @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
   @NotAudited
   private Set<Game> gamesCreador;
