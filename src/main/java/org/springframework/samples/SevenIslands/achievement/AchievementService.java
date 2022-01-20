@@ -57,7 +57,7 @@ public class AchievementService {
     public boolean achievementHasInappropiateWords(Achievement achievement){
         Iterable<InappropiateWord> words = inappropiateWordService.findAll();
         List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(InappropiateWord::getName).collect(Collectors.toList());
-        return listWords.stream().anyMatch(word-> achievement.getName().toLowerCase().contains(word));
+        return listWords.stream().anyMatch(word-> achievement.getName().toLowerCase().contains(word) || achievement.getDescription().toLowerCase().contains(word));
     }
     
 }
