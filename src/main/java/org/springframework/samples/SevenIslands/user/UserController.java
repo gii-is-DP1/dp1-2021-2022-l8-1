@@ -63,7 +63,7 @@ public class UserController {
 	@PostMapping(value = "/users/new")
 	public String processCreationForm(@Valid Player player, BindingResult result, ModelMap model) {
 		String view = VIEWS_PLAYER_CREATE_FORM;
-		String username = player.getUser().getUsername().trim();	//FIXME: peta aquí
+		String username = player.getUser().getUsername().trim();	
 		if(playerService.playerHasInappropiateWords(player)){
 			model.addAttribute("errorMessage", "Your profile can't contain inappropiate words. Please, check your language.");
 			model.put("player", player);
