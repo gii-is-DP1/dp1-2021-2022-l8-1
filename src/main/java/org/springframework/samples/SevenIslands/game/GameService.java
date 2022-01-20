@@ -34,6 +34,8 @@ public class GameService {
     @Autowired
     private InappropiateWordService inappropiateWordService;
 
+    private static final String REDIRECT_TO_GAMES_ROOMS = "redirect:/games/rooms";
+
     @Transactional
     public int gameCount(){
         return (int) gameRepo.count();
@@ -126,7 +128,7 @@ public class GameService {
             } else if(securityService.isAuthenticatedUser()) {
                 int currentPlayerId = securityService.getCurrentPlayerId();   
 
-                if(isOwner(currentPlayerId, gameId)) {  //TODO: check if we want to be able to delete a game that has already started even if i am the owner
+                if(isOwner(currentPlayerId, gameId)) { 
                     delete(game.get());
                     request.getSession().setAttribute("message", "Game successfully deleted!");
                     
@@ -142,11 +144,7 @@ public class GameService {
             request.getSession().setAttribute("message", "Game not found");
         }
 
-        return "redirect:/games/rooms";
-
-
-
-
+        return REDIRECT_TO_GAMES_ROOMS;
         
     }
 
@@ -193,7 +191,7 @@ public class GameService {
                     } else if(game.getPlayers().contains(player)) {
                         return "games/lobby";
                     } else {
-                        return "redirect:/welcome"; //TODO: Need to change
+                        return "redirect:/welcome";
                     }
                     
                 } else {
@@ -202,11 +200,11 @@ public class GameService {
 
             } else if(securityService.isAdmin()) {
                 request.getSession().setAttribute("message", "You can't join a game if you are an admin!");
-                return "redirect:/games/rooms";
+                return REDIRECT_TO_GAMES_ROOMS;
 
             } else {    // when the user is a player and the game is not found
                 request.getSession().setAttribute("message", "The game you are trying to join doesn't exist!");
-                return "redirect:/games/rooms";
+                return REDIRECT_TO_GAMES_ROOMS;
                 
             }
     }
@@ -234,31 +232,28 @@ public class GameService {
                     request.getSession().setAttribute("message", "You have successfully exited the game!");
 
                 } else {
-                    request.getSession().setAttribute("message", "You are not a player of this game!");
-                    
+                    request.getSession().setAttribute("message", "You are not a player of this game!");   
                 }
-    
             }
 
         } else {
             request.getSession().setAttribute("message", "The game you are trying to exit does not even exist!");
         }
 
-        return "redirect:/games/rooms";
-
+        return REDIRECT_TO_GAMES_ROOMS;
 
     }
   
-    public Boolean gameHasInappropiateWords(Game game){
+    public boolean gameHasInappropiateWords(Game game){
         Iterable<InappropiateWord> words = inappropiateWordService.findAll();
-        List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(x-> x.getName()).collect(Collectors.toList());
+        List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(InappropiateWord::getName).collect(Collectors.toList());
         return listWords.stream().anyMatch(word-> game.getName().toLowerCase().contains(word));
     }
 
     @Transactional
     public boolean isWaitingOnRoom(int playerId){ //Check if the player is waiting on a room
         Collection<Game> games = findGamesByPlayerId(playerId);
-        if(games.stream().anyMatch(x->x.isHasStarted()==false)){
+        if(games.stream().anyMatch(x->!x.isHasStarted())){
             return true;
         } else {
             return false;
@@ -268,8 +263,16 @@ public class GameService {
     @Transactional
     public Game waitingRoom(int playerId){ //Return the waiting room
         Collection<Game> games = findGamesByPlayerId(playerId);
-        if(games.stream().anyMatch(x->x.isHasStarted()==false)){
-            return games.stream().filter(x->x.isHasStarted()==false).findFirst().get();
+        if(games.stream().anyMatch(x->!x.isHasStarted())){
+
+
+            Optional<Game> gameOpt = games.stream().filter(x->!x.isHasStarted()).findFirst();
+
+            if(gameOpt.isPresent()){
+                return gameOpt.get();
+            }
+            return null;
+            
         } else {
             return null;
         }

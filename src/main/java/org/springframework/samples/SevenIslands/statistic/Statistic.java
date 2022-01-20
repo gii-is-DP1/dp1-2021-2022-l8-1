@@ -11,7 +11,6 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.springframework.samples.SevenIslands.card.Card;
-import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.model.BaseEntity;
 import org.springframework.samples.SevenIslands.player.Player;
@@ -28,14 +27,11 @@ public class Statistic extends BaseEntity {
     @ManyToOne(optional=false)
     private Player player;
 
-    // @ManyToOne(optional=false)
-    // private Game game;
-
     @Column(name="points")
     public Integer points;
     
     @Column(name="had_won")
-    public Boolean had_won;
+    public Boolean hadWon;
 
     @Column(name="island_count")
     @ElementCollection

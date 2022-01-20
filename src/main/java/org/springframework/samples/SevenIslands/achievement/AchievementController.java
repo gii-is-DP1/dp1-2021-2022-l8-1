@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/achievements")
 public class AchievementController {
@@ -31,6 +34,12 @@ public class AchievementController {
 	private SecurityService securityService;
 
     private static final String CREATE_OR_UPDATE_ACHIEVEMENTS_FORM = "achievements/createOrUpdateAchievementForm";
+
+ 
+    private static final String REDIRECT_TO_ACHIEVEMENTS = "redirect:/achievements";
+    private static final String ACHIEVEMENT = "achievement";
+    private static final String ERROR_MESSAGE = "errorMessage";
+    private static final String MESSAGE = "message";
     private static final String ERROR = "/error";
 
     @GetMapping()
@@ -39,16 +48,16 @@ public class AchievementController {
         if(securityService.isAdmin()) {
             String view = "achievements/achievements";
             securityService.insertIdUserModelMap(modelMap);
-            modelMap.addAttribute("message", request.getSession().getAttribute("message"));
+            modelMap.addAttribute(MESSAGE, request.getSession().getAttribute(MESSAGE));
             
             Iterable<Achievement> achievements = achievementService.findAll();
             modelMap.addAttribute("achievements", achievements);
-            request.getSession().removeAttribute("message");
+            request.getSession().removeAttribute(MESSAGE);
             
             return view;
         
         } else {    // never should enter here because we specified that only admins have access to this page in SecurityConfiguration.java
-            request.getSession().setAttribute("message", "You don't have permission to access this page!");
+            request.getSession().setAttribute(MESSAGE, "You don't have permission to access this page!");
             return "redirect:/welcome";  
         } 
 
@@ -60,7 +69,7 @@ public class AchievementController {
 
         if(securityService.isAdmin()) {
             securityService.insertIdUserModelMap(modelMap);
-            modelMap.addAttribute("achievement", new Achievement());
+            modelMap.addAttribute(ACHIEVEMENT, new Achievement());
             
         }else{  
             return ERROR;
@@ -74,11 +83,11 @@ public class AchievementController {
         if (securityService.isAdmin()) {
             if(result.hasErrors()){
 
-                modelMap.addAttribute("achievement", achievement);
+                modelMap.addAttribute(ACHIEVEMENT, achievement);
                 return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
             }else if(achievementService.achievementHasInappropiateWords(achievement)){
-                modelMap.put("achievement", achievement);
-                modelMap.addAttribute("errorMessage", "The achievement's name contains inappropiate words. Please, check your language.");
+                modelMap.put(ACHIEVEMENT, achievement);
+                modelMap.addAttribute(ERROR_MESSAGE, "The achievement's name contains inappropiate words. Please, check your language.");
                 return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
     
             }else{
@@ -89,19 +98,19 @@ public class AchievementController {
                 for(Achievement a:achievements){
                     if(a.getParameter()==achievement.getParameter() && a.getMinValue().equals(achievement.getMinValue())){
                     
-                        modelMap.put("achievement", achievement);
-                        modelMap.addAttribute("errorMessage", "Achievement already exist!");
+                        modelMap.put(ACHIEVEMENT, achievement);
+                        modelMap.addAttribute(ERROR_MESSAGE, "Achievement already exist!");
                         return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;       
                     }
                 }
                 achievementService.save(achievement);
-                request.getSession().setAttribute("message", "Achievement successfully saved!");
+                request.getSession().setAttribute(MESSAGE, "Achievement successfully saved!");
              
             }
         }else{
             return ERROR;
         }
-        return "redirect:/achievements";
+        return REDIRECT_TO_ACHIEVEMENTS;
     }
 
 
@@ -111,17 +120,19 @@ public class AchievementController {
         if (securityService.isAdmin()) {
             securityService.insertIdUserModelMap(modelMap);
             Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
-            if(achievement.isPresent()){    
+
+            if(achievement.isPresent()){   
+
                 achievementService.delete(achievement.get());
-                request.getSession().setAttribute("message", "Achievement successfully deleted!");
+                request.getSession().setAttribute(MESSAGE, "Achievement successfully deleted!");
             
             }else{
-                request.getSession().setAttribute("message", "Achievement not found");                      
+                request.getSession().setAttribute(MESSAGE, "Achievement not found");                      
             }
         }else{
             return ERROR;
         }
-        return "redirect:/achievements";
+        return REDIRECT_TO_ACHIEVEMENTS;
 
     }
 
@@ -137,11 +148,11 @@ public class AchievementController {
             securityService.insertIdUserModelMap(model);
             Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
             if(achievement.isPresent()){
-                model.put("achievement", achievement.get());
+                model.put(ACHIEVEMENT, achievement.get());
                 
             } else {
-                request.getSession().setAttribute("message", "Achievement not found!");
-                return "redirect:/achievements";
+                request.getSession().setAttribute(MESSAGE, "Achievement not found!");
+                return REDIRECT_TO_ACHIEVEMENTS;
             }
 
         }else {
@@ -167,7 +178,7 @@ public class AchievementController {
                                         @RequestParam(value="version", required = false) Integer version) {
 
         if (result.hasErrors()) {
-			model.put("achievement", achievement);
+			model.put(ACHIEVEMENT, achievement);
 			return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
 		
         } else {
@@ -177,11 +188,11 @@ public class AchievementController {
                 // always present because if not, it should have redirected to achievements page with the message "Achievement not found!" in the @GetMapping before
                 
                 if(!achievementToUpdate.getVersion().equals(version)){    //Version
-                    model.put("message", "Concurrent modification of achievement! Try again!");
+                    model.put(MESSAGE, "Concurrent modification of achievement! Try again!");
                     return updateAchievement(achievementToUpdate.getId(),model,request);
                 }else if(achievementService.achievementHasInappropiateWords(achievement)){
-                    model.put("achievement", achievement);
-                    model.addAttribute("errorMessage", "The achievement's name contains inappropiate words. Please, check your language.");
+                    model.put(ACHIEVEMENT, achievement);
+                    model.addAttribute(ERROR_MESSAGE, "The achievement's name contains inappropiate words. Please, check your language.");
                     return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
         
                 }
@@ -189,16 +200,17 @@ public class AchievementController {
                 BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  
                         try {                    
                             achievementService.save(achievementToUpdate);        
-                            request.getSession().setAttribute("message", "Achievement successfully updated!");            
+                            request.getSession().setAttribute(MESSAGE, "Achievement successfully updated!");            
                         
                         } catch (Exception ex) {
                             result.rejectValue("name", "duplicate", "already exists");
+                            log.error("achievement already exists");
                             return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
                         }
-                return "redirect:/achievements";
+                return REDIRECT_TO_ACHIEVEMENTS;
             } else {
-                request.getSession().setAttribute("message", "Achievement not found!");
-                return "redirect:/achievements";
+                request.getSession().setAttribute(MESSAGE, "Achievement not found!");
+                return REDIRECT_TO_ACHIEVEMENTS;
             }
 		}
 	}

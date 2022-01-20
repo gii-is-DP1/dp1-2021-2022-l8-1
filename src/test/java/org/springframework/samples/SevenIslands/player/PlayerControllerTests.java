@@ -285,9 +285,6 @@ public class PlayerControllerTests {
 
     //Method -> deletePlayer
 
-    
-
-
     @WithMockUser(value="spring")
 	@Test
 	void testDeletePlayer() throws Exception {
@@ -448,7 +445,7 @@ public class PlayerControllerTests {
 	}
 
 
-    // H15-E1: Nombre de usuario no válido
+    // H15-E1: Invalid username
     @WithMockUser(value = "spring")
     @Test
     void testProcessUpdatePlayerFormWithEmptySpaceInUsername() throws Exception {

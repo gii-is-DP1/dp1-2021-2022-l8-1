@@ -30,12 +30,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.ModelMap;
 
-/**
- * @author Juergen Hoeller
- * @author Ken Krebs
- * @author Arjen Poutsma
- * @author Michael Isvy
- */
 @Controller
 public class UserController {
 
@@ -53,10 +47,13 @@ public class UserController {
 		dataBinder.setDisallowedFields("id");
 	}
 
+	private static final String PLAYER = "player";
+    private static final String ERROR_MESSAGE = "errorMessage";
+
 	@GetMapping(value = "/users/new")
 	public String initCreationForm(Map<String, Object> model) {
 		Player player = new Player();
-		model.put("player", player);
+		model.put(PLAYER, player);
 		return VIEWS_PLAYER_CREATE_FORM;
 	}
 
@@ -65,26 +62,26 @@ public class UserController {
 		String view = VIEWS_PLAYER_CREATE_FORM;
 		String username = player.getUser().getUsername().trim();	
 		if(playerService.playerHasInappropiateWords(player)){
-			model.addAttribute("errorMessage", "Your profile can't contain inappropiate words. Please, check your language.");
-			model.put("player", player);
+			model.addAttribute(ERROR_MESSAGE, "Your profile can't contain inappropiate words. Please, check your language.");
+			model.put(PLAYER, player);
 			return view;
 		}
 		Boolean isNewUser = true;
 		if(playerService.emailAlreadyused(player.email, player, isNewUser)){
-            model.addAttribute("errorMessage", "Email already used by other user");
-            model.put("player", player);
+            model.addAttribute(ERROR_MESSAGE, "Email already used by other user");
+            model.put(PLAYER, player);
 			return VIEWS_PLAYER_CREATE_FORM;
         }
 		if(playerService.usernameAlreadyused(player.getUser().getUsername(), player.getUser(), isNewUser)){
-            model.addAttribute("errorMessage", "Username already used by other user");
-            model.put("player", player);
+            model.addAttribute(ERROR_MESSAGE, "Username already used by other user");
+            model.put(PLAYER, player);
 			return VIEWS_PLAYER_CREATE_FORM;
         }
 		if (result.hasErrors()) {
 			return view;
 		} else if(username.contains(" ")){
-			model.addAttribute("errorMessage", "Your username can't contain empty spaces. ");
-			model.put("player", player);
+			model.addAttribute(ERROR_MESSAGE, "Your username can't contain empty spaces. ");
+			model.put(PLAYER, player);
 			return view;
 
 		} else {

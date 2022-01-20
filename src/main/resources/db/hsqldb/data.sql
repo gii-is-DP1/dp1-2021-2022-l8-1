@@ -174,7 +174,6 @@ VALUES (4, 'Prueba3', 'ABCD121', 2, 1, 4,'PUBLIC', true, '2021-11-18 23:00:00',3
 
 INSERT INTO games(id, name,code, actual_player,player_id, deck_id, privacity,has_started, start_time,duration) 
 VALUES (5, 'Prueba4', 'ABCD120', 1, 2, 5,'PRIVATE', true, '2021-11-18 23:01:00',300);
--- TODO: AQUI HAY QUE QUITAR ATRIBUTOS NUEVOS METIDOS
 
 -- BOARDS
 INSERT INTO boards(id,background,height,width) VALUES (1,'/resources/images/board.jpg',644,527);
@@ -201,13 +200,6 @@ INSERT INTO islands(id,island_num) VALUES (4,4);
 INSERT INTO islands(id,island_num) VALUES (5,5);
 INSERT INTO islands(id,island_num) VALUES (6,6);
 
--- FORUMS
-INSERT INTO forums(id, name, description) VALUES(1, 'Players', 'Forum about players');
-INSERT INTO forums(id, name, description) VALUES(2, 'Games', 'Forum about games');
-
--- TOPICS
-INSERT INTO topics(id, name, description) VALUES(1, 'Rival players', 'do you want to be my rival?');
-
 -- GENERALS
 INSERT INTO generals(id, total_games, total_duration_all_games) VALUES (1, 200, 300);
 
@@ -215,29 +207,12 @@ INSERT INTO generals(id, total_games, total_duration_all_games) VALUES (1, 200, 
 INSERT INTO admins(first_name, surname, email, username) VALUES ('Ismael', 'Perez', 'ismperort@alum.us.es', 'ISMP15');
 INSERT INTO admins(first_name, surname, email, username) VALUES ('Miguel', 'Romero', 'migromarj@alum.us.es', 'mra21');
 
--- COMMENTS
-INSERT INTO comments(id, message) VALUES (1, 'I agree');
 
 -- PLAYERS-ACHIEVEMENTS
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 1); --ESTA TABLA ME DA LOS LOGROS QUE TENGO COMPLETADOS
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (1, 2);
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (2, 1);
 INSERT INTO players_achievements(player_id, achievement_id) VALUES (3, 2);
-
--- -- PLAYERS-CARDS
--- INSERT INTO players_cards(player_id, card_id) VALUES (1, 1);
--- INSERT INTO players_cards(player_id, card_id) VALUES (1, 2);
--- INSERT INTO players_cards(player_id, card_id) VALUES (1, 3);
-
--- PLAYERS-FORUMS
-INSERT INTO players_forums(player_id, forum_id) VALUES (1, 1);
-INSERT INTO players_forums(player_id, forum_id) VALUES (1, 2);
-
--- FORUMS-TOPICS
-INSERT INTO forums_topics(forum_id, topic_id) VALUES (1, 1);
-
--- TOPICS-COMMENTS
-INSERT INTO topics_comments(topic_id, comment_id) VALUES (1, 1);
 
 -- GAMES-PLAYERS
 INSERT INTO games_players(game_id, player_id) VALUES (1, 1);
@@ -298,20 +273,3 @@ INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUE
 INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 4, 5);
 INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 5, 6);
 INSERT INTO statistic_islands_count(statistic_id, island_id, island_count) VALUES (2, 6, 1);
-
--- -- PLAYERS-INVITATIONS
--- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (1, 2);
--- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (3, 2);
--- INSERT INTO players_invitations(invitation_id, invited_id) VALUES (2, 3);
-
--- -- PLAYERS-REQUESTS
--- INSERT INTO players_requests(friend_request_id, requested_id) VALUES (1, 2);
--- INSERT INTO players_requests(friend_request_id, requested_id) VALUES (2, 3);
-
--- -- PLAYERS-FRIENDS
--- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 2);
--- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (1, 3);
--- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (2, 1);
--- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (2, 3);
--- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (3, 1);
--- INSERT INTO players_friends(friend_id, friend_identifier) VALUES (3, 2);

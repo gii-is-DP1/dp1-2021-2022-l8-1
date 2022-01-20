@@ -24,7 +24,6 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.samples.SevenIslands.achievement.Achievement;
 import org.springframework.samples.SevenIslands.card.Card;
-import org.springframework.samples.SevenIslands.forum.Forum;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.person.Person;
 import org.springframework.samples.SevenIslands.statistic.Statistic;
@@ -47,43 +46,29 @@ public class Player extends Person{
 
   @JsonView(Views.Public.class)
   @Column(name="profile_photo")
-  // @NotEmpty
   private String profilePhoto;
 
   @Column(name="in_game")   //Player in a game  
   private Boolean inGame=false;
 
-  // RELACION CON STATISTIC
+  // RELATION WITH STATISTIC
   @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
   @NotAudited
   private Set<Statistic> statistic;
 
-  //RELACION CON LOGROS
+  //RELATION WITH LOGROS
 	@ManyToMany(fetch = FetchType.LAZY)
 	@NotAudited
   @JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
 
-  //RELACION CON CARTAS
+  //RELATION WITH CARTAS
   @ManyToMany(fetch = FetchType.EAGER)
 	@NotAudited
   private List<Card> cards;
 
-
-  //RELACION CON ESPECTADOR
-  @ManyToOne(optional = true)
-	@NotAudited
-  private Game watchGames;
-
-  //RELACION CON FOROS
-  @ManyToMany(fetch = FetchType.LAZY)
-	@NotAudited
-  @JoinTable(name = "players_forums", joinColumns = @JoinColumn(name = "player_id"),
-			inverseJoinColumns = @JoinColumn(name = "forum_id"))
-	private Set<Forum> forums;
-
-  //RELACION CON GAMES 
+  //RELATION WITH GAMES 
 	@ManyToMany(mappedBy = "players",cascade = CascadeType.ALL) //PROBLEMA AQUI
 	@NotAudited
   private Collection<Game> games;
@@ -110,27 +95,7 @@ public class Player extends Person{
     this.games.removeAll(g);
   }
 
-  // //RELACION CON PLAYER (Invitaciones)
-  // @ManyToMany(fetch = FetchType.LAZY)
-	// @JoinTable(name = "players_invitations", joinColumns = @JoinColumn(name = "invitation_id"),
-	//  		inverseJoinColumns = @JoinColumn(name = "invited_id"))
-  // private Collection<Player> invitations;
-
-  // //RELACION CON PLAYER DE REQUEST
-  // @ManyToMany(fetch = FetchType.LAZY)
-	// @JoinTable(name = "players_requests", joinColumns = @JoinColumn(name = "friend_request_id"),
-	// 		inverseJoinColumns = @JoinColumn(name = "requested_id"))
-  // private Collection<Player> friend_requests;
-
-  // //RELACION CON PLAYER (Amigos)
-  // @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	// @JoinTable(name = "players_friends", joinColumns = @JoinColumn(name = "friend_id"),
-	// 		inverseJoinColumns = @JoinColumn(name = "friend_identifier"))
-  // private List<Player> players_friends;
-
-
-
-  //RELACION CON USER
+  //RELATION WITH USER
   @JsonView(Views.Public.class)
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "username", referencedColumnName = "username")
@@ -139,7 +104,7 @@ public class Player extends Person{
   public User getUser() {
 		return user;
   }
-  //SEGUNDA RELACION CON GAMES
+  //SECOND RELATION WITH GAMES
   @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
   @NotAudited
   private Set<Game> gamesCreador;

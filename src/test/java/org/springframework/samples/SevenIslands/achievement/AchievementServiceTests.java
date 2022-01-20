@@ -26,7 +26,7 @@ public class AchievementServiceTests {
     @Test
     public void testCountWithInitialData(){
         int count = achievementService.achievementCount();
-        assertEquals(count,4);
+        assertEquals(4, count);
     }
 
     @Test
@@ -38,14 +38,14 @@ public class AchievementServiceTests {
     @Test
     public void testFindAchievementById(){
         Achievement achievement = achievementService.findAchievementById(1).get();
-        assertEquals(achievement.getName(), "Gold_points");
-        assertEquals(achievement.getDescription(), "Get 300 points.");
+        assertEquals("Gold_points",achievement.getName());
+        assertEquals("Get 300 points.",achievement.getDescription());
     }
 
     @Test
     public void testFindByPlayerId(){
         Iterable<Achievement> achievements = achievementService.findByPlayerId(1);
-        assertEquals(achievements.spliterator().getExactSizeIfKnown(), 2);
+        assertEquals(2, achievements.spliterator().getExactSizeIfKnown());
     }
 
     @Test
@@ -60,7 +60,7 @@ public class AchievementServiceTests {
 
         achievementService.save(achievement);
 
-        assertThat(achievement.getId().longValue()).isNotEqualTo(0);
+        assertThat(achievement.getId().longValue()).isNotZero();
 
         assertEquals(achievementService.findAchievementById(achievement.getId()).get(), achievement);
     }

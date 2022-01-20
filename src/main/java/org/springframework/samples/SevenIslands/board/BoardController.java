@@ -36,6 +36,9 @@ public class BoardController {
     @Autowired
     private SecurityService securityService;
 
+    private static final String MESSAGE = "message";
+    private static final String ERROR = "/error";
+
     @GetMapping(path = "/{code}/init")
     public String init(@PathVariable("code") String code, ModelMap modelMap){      
 
@@ -46,12 +49,8 @@ public class BoardController {
 
     @GetMapping(path = "/{code}")
     public String board(@PathVariable("code") String code, ModelMap modelMap, HttpServletResponse response, HttpServletRequest request) {
-        
-        //Refresh 
-        //TODO descomentar
-        //response.addHeader("Refresh", "4");
 
-        modelMap.addAttribute("message", request.getSession().getAttribute("message"));
+        modelMap.addAttribute(MESSAGE, request.getSession().getAttribute(MESSAGE));
         modelMap.addAttribute("options", request.getSession().getAttribute("options"));
         securityService.insertIdUserModelMap(modelMap);
 
@@ -71,7 +70,7 @@ public class BoardController {
 
         boardService.addDataToModel(game, modelMap,  SecurityContextHolder.getContext().getAuthentication());
         
-        request.getSession().removeAttribute("message"); 
+        request.getSession().removeAttribute(MESSAGE); 
 
         boardService.addPlayerAtStartToSession(game, request);
 
@@ -83,10 +82,11 @@ public class BoardController {
 
         Optional<Game> opt = gameService.findGameById(gameId).stream().findFirst();
         if(opt.isPresent()) {
+
             return boardService.changeTurn(opt.get());
         
         } else {
-            return "/error";
+            return ERROR;
         }
 
     }
@@ -94,11 +94,9 @@ public class BoardController {
     @GetMapping(path = "/{gameId}/rollDie")
     public String rollDie(@PathVariable("gameId") int gameId, ModelMap modelMap, HttpServletRequest request) {
 
-        //TODO Se puede quitar el atributo en game, y pasar el valor del dado al model atributte
-
         Optional<Game> opt = gameService.findGameById(gameId).stream().findFirst();
         if(!opt.isPresent()) {
-            return "/error";
+            return ERROR;
         
         } else {
             Game game = opt.get();
@@ -106,15 +104,16 @@ public class BoardController {
 
             if(securityService.getCurrentPlayerId()!=game.getPlayers().get(game.getActualPlayer()).getId()){ 
             
-                request.getSession().setAttribute("message", "It's not your turn");
+                request.getSession().setAttribute(MESSAGE, "It's not your turn");
                 return "redirect:/boards/"+ code;
             }
-            if(game.getDieThrows()){
+            if(game.getDieThrows()){        //If I have already roll the die 
                 
-                request.getSession().setAttribute("message", "You have already made a roll this turn");
+                request.getSession().setAttribute(MESSAGE, "You have already made a roll this turn");
                 return "redirect:/boards/"+ code;
             }
 
+            //Roll the die of game 'game'
             return boardService.rollDie(game);
         }
     }
@@ -125,6 +124,7 @@ public class BoardController {
         securityService.insertIdUserModelMap(modelMap);
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
 
+        //Shows where I can go
         return boardService.calculatePosibilities(game, request, number);
     }
     
@@ -135,6 +135,7 @@ public class BoardController {
     Game game = gameService.findGamesByRoomCode(code).iterator().next();
     int cardsToSpend = Math.abs(game.getValueOfDie()-island);
     
+    //If I perform an action not allowed
     if((pickedCards!=null && cardsToSpend != pickedCards.length) || (pickedCards==null && cardsToSpend!=0)){
         return boardService.doAnIllegalAction(code, island, cardsToSpend, request);
         
@@ -149,6 +150,7 @@ public class BoardController {
         securityService.insertIdUserModelMap(modelMap);
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         
+        //game ends
         return boardService.endGame(game, modelMap, request);
     }
 
@@ -160,9 +162,10 @@ public class BoardController {
 
         if(opt.isPresent()) {
             Player playerWhoLeft = opt.get();
+            //playerWhoLeft leaves the game with code 'code'
             return boardService.leaveGame(playerWhoLeft, code);
         } else {
-            return "/error";
+            return ERROR;
         }
        
     }

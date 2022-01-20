@@ -13,8 +13,6 @@
             // debugger;
             
             //can't be use without Thymeleaf template
-            //var element = [[${filterName}]];
-            console.log(element);
             document.getElementById("filterName").value=element;
         }
         document.addEventListener("DOMContentLoaded", function () {

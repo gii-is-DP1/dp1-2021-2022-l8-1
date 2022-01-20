@@ -10,9 +10,7 @@
 
     cards.forEach((card) =>{
         card.addEventListener("change", (e) => {
-            console.log(e);
             let checkbox = e.target;
-            console.log(checkbox);
             let card = checkbox.parentElement;
             if(checkbox.checked) {
                 card.classList.add("card-item-checked");
