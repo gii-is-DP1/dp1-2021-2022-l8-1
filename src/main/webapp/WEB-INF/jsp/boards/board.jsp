@@ -15,9 +15,9 @@
     <div id="turn-section">
         <h3>Turn:     
             &nbsp
-            <span id="turn-secs">00</span>
+            <span id="turn-mins">00</span>
             :
-            <span id="turn-mins">00</>
+            <span id="turn-secs">00</span>
         </h3>
         
     </div>
@@ -40,7 +40,6 @@
 
             <div id="actions-section">
 
-                <sevenislands:gameButton type="island" pending="${game.dieThrows && id_playing==id}"/>
                 <sevenislands:gameButton type="travel" pending="${game.dieThrows && id_playing==id}"/>
                 <sevenislands:gameButton type="skip" pending="${!game.dieThrows && id_playing==id}"/>
                 <sevenislands:gameButton type="dice" pending="${!game.dieThrows && id_playing==id}"/>

@@ -13,13 +13,13 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
   @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC'") // check if necessary for the project
   Collection<Game> findAllPublic() throws DataAccessException;
 
-  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC' AND P.has_started = True")
+  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC' AND P.hasStarted = True")
   Collection<Game> findAllPublicPlaying() throws DataAccessException;
 
-  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC' AND P.has_started = False")
+  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC' AND P.hasStarted = False")
   Collection<Game> findAllPublicNotPlaying() throws DataAccessException;
 
-  @Query("SELECT P from Game P WHERE P.has_started = True")
+  @Query("SELECT P from Game P WHERE P.hasStarted = True")
   Collection<Game> findAllPlaying() throws DataAccessException;
 
   @Query(value = "SELECT * FROM GAMES WHERE PLAYER_ID LIKE ?1", nativeQuery = true)

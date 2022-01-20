@@ -84,7 +84,6 @@ public class StatisticServiceTest {
         assertEquals(island.getIslandNum(), favIslandIdForPlayer1);
     }
 
-    //It will be changed to use CardType instead of CardID
     @Test
     public void testGetFavoriteCardByPlayerId(){
         Card card = statisticService.getFavoriteCardByPlayerId(1);
