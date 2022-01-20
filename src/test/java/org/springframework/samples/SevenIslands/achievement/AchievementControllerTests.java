@@ -20,8 +20,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.mockito.ArgumentMatchers.any;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
@@ -60,6 +67,13 @@ public class AchievementControllerTests {
         when(securityService.isAdmin()).thenReturn(true);
         when(achievementService.findAchievementById(TEST_ACHIEVEMENT_ID)).thenReturn(Optional.of(achievementWins));
     
+
+        List<Achievement> listAchievements = new ArrayList<>();
+        listAchievements.add(achievementWins);
+        Iterator<Achievement> iterator = listAchievements.iterator();
+        Iterable<Achievement> iterable = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0),false).collect(Collectors.toList());
+
+        when(achievementService.findAll()).thenReturn(iterable);
     }
 
 
@@ -80,12 +94,12 @@ public class AchievementControllerTests {
 
 		mockMvc.perform(post("/achievements/save")
                 .with(csrf())
-                .param("description", "Wins 1000 games")
+                .param("description", "Loses 1000 games")
                 .param("icon", "http:image.png")
-                .param("name", "Amazing Achievement")
+                .param("name", "Loses Achievement")
                 .param("minValue", "1000")
                 .param("achievementType",ACHIEVEMENT_TYPE.GOLD.toString())
-                .param("parameter", PARAMETER.WINS.toString())
+                .param("parameter", PARAMETER.LOSES.toString())
                 .param("version", "0"))
                 .andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/achievements"));
@@ -102,7 +116,6 @@ public class AchievementControllerTests {
                 .andExpect(view().name("achievements/createOrUpdateAchievementForm"));
 	}
 
-    @Disabled
     @WithMockUser(value = "spring")
 	@Test
 	void testEditAchievement() throws Exception {
@@ -118,16 +131,17 @@ public class AchievementControllerTests {
                 .param("version", "1"))
                 .andExpect(model().attributeExists("achievement"))
                 .andExpect(status().isOk())
-				.andExpect(view().name("redirect:/achievements"));
+				.andExpect(view().name("achievements/createOrUpdateAchievementForm"));
 	}
 
     //H23-E1
 
     //Check insert repeated achievement
-
     @WithMockUser(value = "spring")
 	@Test
-	void testNewAchievementWithError() throws Exception {
+	void testNewRepeatedAchievement() throws Exception {
+
+        
 
 		mockMvc.perform(post("/achievements/save")
                 .with(csrf())
@@ -138,17 +152,61 @@ public class AchievementControllerTests {
                 .param("achievementType",ACHIEVEMENT_TYPE.GOLD.toString())
                 .param("parameter", PARAMETER.WINS.toString())
                 .param("version", "0"))
-                .andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/achievements"));
+                .andExpect(model().attributeExists("achievement"))
+                .andExpect(model().attributeExists("errorMessage"))
+                .andExpect(status().isOk())
+				.andExpect(view().name("achievements/createOrUpdateAchievementForm"));
 	}
 
+    //H23-E2
 
-    //H23 - E2
+    //Insert an achievement with empty name field
+    @WithMockUser(value = "spring")
+	@Test
+	void testNewAchievementWithEmptyField() throws Exception {
+
+		mockMvc.perform(post("/achievements/save")
+                .with(csrf())
+                .param("description", "Wins 1000 games")
+                .param("icon", "http:image.png")
+                .param("name", "")
+                .param("minValue", "1000")
+                .param("achievementType",ACHIEVEMENT_TYPE.GOLD.toString())
+                .param("parameter", PARAMETER.WINS.toString())
+                .param("version", "0"))
+                .andExpect(model().attributeExists("achievement"))
+                .andExpect(status().isOk())
+				.andExpect(view().name("achievements/createOrUpdateAchievementForm"));
+	}
+
+    //Insert an achievement with inappropiate words in name field
+    @WithMockUser(value = "spring")
+	@Test
+	void testNewAchievementWithInappropiateWords() throws Exception {
+
+        when(achievementService.achievementHasInappropiateWords(any(Achievement.class))).thenReturn(true);
+
+		mockMvc.perform(post("/achievements/save")
+                .with(csrf())
+                .param("description", "Wins 1000 games")
+                .param("icon", "http:image.png")
+                .param("name", "shit")
+                .param("minValue", "1000")
+                .param("achievementType",ACHIEVEMENT_TYPE.GOLD.toString())
+                .param("parameter", PARAMETER.WINS.toString())
+                .param("version", "0"))
+                .andExpect(model().attributeExists("achievement"))
+                .andExpect(model().attributeExists("errorMessage"))
+                .andExpect(status().isOk())
+				.andExpect(view().name("achievements/createOrUpdateAchievementForm"));
+	}
+
+    //H23 - E3
 
     //Edit an achievement with empty name field
     @WithMockUser(value = "spring")
 	@Test
-	void testEditAchievementWithError() throws Exception {
+	void testEditAchievementWithEmptyField() throws Exception {
 
 		mockMvc.perform(post("/achievements/edit/{achievementId}", TEST_ACHIEVEMENT_ID)
                 .with(csrf())
@@ -158,7 +216,30 @@ public class AchievementControllerTests {
                 .param("minValue", "1000")
                 .param("achievementType",ACHIEVEMENT_TYPE.GOLD.toString())
                 .param("parameter", PARAMETER.WINS.toString())
-                .param("version", "1"))
+                .param("version", "0"))
+                .andExpect(model().attributeExists("achievement"))
+                .andExpect(status().isOk())
+				.andExpect(view().name("achievements/createOrUpdateAchievementForm"));
+	}
+
+    //Edit an achievement with inappropiate words in name field
+    @WithMockUser(value = "spring")
+	@Test
+	void testEditAchievementWithInappropiateWords() throws Exception {
+
+        when(achievementService.achievementHasInappropiateWords(any(Achievement.class))).thenReturn(true);
+
+		mockMvc.perform(post("/achievements/edit/{achievementId}", TEST_ACHIEVEMENT_ID)
+                .with(csrf())
+                .param("description", "Wins 1000 games")
+                .param("icon", "http:image.png")
+                .param("name", "Second shit")
+                .param("minValue", "1000")
+                .param("achievementType",ACHIEVEMENT_TYPE.GOLD.toString())
+                .param("parameter", PARAMETER.WINS.toString())
+                .param("version", "0"))
+                .andExpect(model().attributeExists("achievement"))
+                .andExpect(model().attributeExists("errorMessage"))
                 .andExpect(status().isOk())
 				.andExpect(view().name("achievements/createOrUpdateAchievementForm"));
 	}

@@ -248,9 +248,7 @@ public class BoardControllerTests {
         firstGame.setValueOfDie(4);
         when(boardService.doAnIllegalAction(any(),any(),any(),any(HttpServletRequest.class))).thenReturn("redirect:/boards/"+firstGame.getCode());
         
-        //Integer[] data = {}; 
-
-		mockMvc.perform(post("/boards/"+firstGame.getCode()+"/travel")
+        mockMvc.perform(post("/boards/"+firstGame.getCode()+"/travel")
                 .with(csrf())
                 .param("island", "3")
                 .param("pickedCards", ""))
