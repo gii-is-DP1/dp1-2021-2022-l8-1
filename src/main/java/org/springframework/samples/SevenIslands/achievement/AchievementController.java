@@ -110,7 +110,7 @@ public class AchievementController {
         if (securityService.isAdmin()) {
             securityService.insertIdUserModelMap(modelMap);
             Optional<Achievement> achievement = achievementService.findAchievementById(achievementId);
-            if(achievement.isPresent()){    // porque es un optional
+            if(achievement.isPresent()){    
                 achievementService.delete(achievement.get());
                 request.getSession().setAttribute("message", "Achievement successfully deleted!");
             
@@ -118,7 +118,7 @@ public class AchievementController {
                 request.getSession().setAttribute("message", "Achievement not found");                      
             }
         }else{
-            return "/errors";
+            return "/error";
         }
         return "redirect:/achievements";
 
@@ -144,7 +144,7 @@ public class AchievementController {
             }
 
         }else {
-            return "/errors";
+            return "/error";
         }
         return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
     }
