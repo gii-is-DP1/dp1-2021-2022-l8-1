@@ -103,31 +103,8 @@ public class StatisticService {
         if(cardIds.size()==0){
             return null;
         }
-        Map<CARD_TYPE, Integer> map = new HashMap<>();
-        for(Integer id: cardIds){
-            CARD_TYPE cardType = cardService.findCardById(id).get().getCardType();
-            if(!map.entrySet().contains(cardType)){
-                map.put(cardType, 1);
-            }else{
-                Integer count = map.get(cardType);
-                map.put(cardType, count+1);
-            }
-
-        }
-
-        LinkedHashMap<CARD_TYPE, Integer> cardsByPreference = new LinkedHashMap<>();
-        // Sort cardsByPreference
-         map.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue((e1,e2) -> e2.compareTo(e1)))
-            .forEachOrdered(x -> cardsByPreference.put(x.getKey(), x.getValue()));
-
-
-
-        CARD_TYPE favCardType = cardsByPreference.keySet().iterator().next();
-        Iterable<Card> cardIt = cardService.findAll();
-        Card favCard = StreamSupport.stream(cardIt.spliterator(), false).filter(x-> x.getCardType().equals(favCardType)).findFirst().get();
-        //Card favCard = cardService.findCardById(favCardId).get();
+        Integer favCardId = cardIds.iterator().next();
+        Card favCard = cardService.findCardById(favCardId).get();
         return favCard;
     }
 
