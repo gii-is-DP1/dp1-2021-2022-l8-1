@@ -53,14 +53,8 @@ public class AchievementService {
         return achievementRepo.getByPlayerId(id);
     }
 
-    /*
     @Transactional
-    public Iterable<Achievement> findByAdminId(int id) {
-        return achievementRepo.findByAdminId(id);
-    }
-    */
-
-    public Boolean achievementHasInappropiateWords(Achievement achievement){
+    public boolean achievementHasInappropiateWords(Achievement achievement){
         Iterable<InappropiateWord> words = inappropiateWordService.findAll();
         List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(InappropiateWord::getName).collect(Collectors.toList());
         return listWords.stream().anyMatch(word-> achievement.getName().toLowerCase().contains(word));

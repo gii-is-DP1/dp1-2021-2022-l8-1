@@ -27,30 +27,32 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	private static final String ADMIN = "admin";
+    private static final String PLAYER = "player";
+
 	@Autowired
 	DataSource dataSource;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/resources/**","/webjars/**","/h2-console/**").permitAll() //ESTO HAY QUE CAMBIARLO DEPENDIENDO DE NUESTRAS REGLAS DE NEGOCIO
+				.antMatchers("/resources/**","/webjars/**","/h2-console/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
 				.antMatchers("/currentuser").permitAll()
 				.antMatchers("/users/new").permitAll()
 				.antMatchers("/welcome").permitAll()
 				.antMatchers("/games").permitAll()
-				.antMatchers("/boards/**").hasAnyAuthority("player","admin")
-				// .antMatchers("/achievements").hasAnyAuthority("admin")
+				.antMatchers("/boards/**").hasAnyAuthority(PLAYER,ADMIN)
 				.antMatchers("/error/**").permitAll()
-        		.antMatchers("/achievements/**").hasAnyAuthority("admin")
+        		.antMatchers("/achievements/**").hasAnyAuthority(ADMIN)
 				.antMatchers("/players").permitAll()
+				.antMatchers("/players/auditing").hasAnyAuthority(ADMIN)
 				.antMatchers("/players/**").permitAll()
-				.antMatchers("/players/auditing").hasAnyAuthority("admin")
 				.antMatchers("/games/**").permitAll()
-				.antMatchers("/admins/**").hasAnyAuthority("admin")
-				.antMatchers("/admin/**").hasAnyAuthority("admin")
-				.antMatchers("/ranking").hasAnyAuthority("player", "admin")
-				.antMatchers("/ranking/**").hasAnyAuthority("player", "admin")
+				.antMatchers("/admins/**").hasAnyAuthority(ADMIN)
+				.antMatchers("/admin/**").hasAnyAuthority(ADMIN)
+				.antMatchers("/ranking").hasAnyAuthority(PLAYER, ADMIN)
+				.antMatchers("/ranking/**").hasAnyAuthority(PLAYER, ADMIN)
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()

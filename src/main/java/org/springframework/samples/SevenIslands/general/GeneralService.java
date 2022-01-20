@@ -26,7 +26,4 @@ public class GeneralService {
         return generalRepo.totalGames();
     }
 
-    
-
-
 }

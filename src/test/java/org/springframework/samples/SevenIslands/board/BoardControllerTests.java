@@ -1,21 +1,16 @@
 package org.springframework.samples.SevenIslands.board;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.SevenIslands.admin.AdminController;
-import org.springframework.samples.SevenIslands.board.BoardService;
 import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
-import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.game.PRIVACITY;
 import org.springframework.samples.SevenIslands.player.Player;
-import org.springframework.samples.SevenIslands.player.PlayerController;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
@@ -26,17 +21,14 @@ import org.springframework.context.annotation.FilterType;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -94,7 +86,6 @@ public class BoardControllerTests {
         firstGame.setPlayers(List.of(firstPlayer));
 
         when(this.gameService.findGameById(TEST_GAME_ID)).thenReturn(Optional.of(firstGame));
-        // when(this.securityService.getCurrentPlayerId()).thenReturn(TEST_PLAYER_ID);
         when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(firstPlayer));
         when(this.securityService.getCurrentPlayerId()).thenReturn(firstPlayer.getId());
         when(this.securityService.getCurrentPlayer()).thenReturn(firstPlayer);

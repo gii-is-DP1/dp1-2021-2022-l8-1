@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface GameRepository extends CrudRepository<Game, Integer>{
 
-  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC'") // check if necessary for the project
+  @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC'")
   Collection<Game> findAllPublic() throws DataAccessException;
 
   @Query("SELECT P from Game P WHERE P.privacity = 'PUBLIC' AND P.hasStarted = True")
@@ -33,7 +33,5 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
 
   @Query("SELECT P from Game P WHERE P.code = :code")
   Iterable<Game> findGamesByRoomCode(String code) throws DataAccessException;
-
-
 
 }

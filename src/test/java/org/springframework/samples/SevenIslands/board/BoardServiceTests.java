@@ -1,8 +1,8 @@
 package org.springframework.samples.SevenIslands.board;
 
-import static org.junit.Assert.assertFalse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -18,7 +18,6 @@ import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,22 +137,22 @@ public class BoardServiceTests {
     @Test
     public void testCountWithInitialData(){
         int count = boardService.boardCount();
-        assertEquals(count, 1);
+        assertEquals(1, count);
     }
 
     @Test
     public void testGetPointsPerSet(){
         Integer value = boardService.getPointsPerSet().get(1);
         Integer value2 = boardService.getPointsPerSet().get(4);
-        assertEquals(value, 1);
-        assertTrue(value2==13);
-        assertFalse(value2==19);
+        assertEquals(1, value);
+        assertEquals(13,value2);
+        assertNotEquals(19,value2);
     }
 
     @Test
     public void testBoardById(){ 
         Board board = boardService.findById(1).get();
-        assertEquals(board.getHeight(),644);
+        assertEquals(644,board.getHeight());
     }
 
     @Test
@@ -163,7 +162,7 @@ public class BoardServiceTests {
 
         boardService.save(board);
 
-        assertThat(board.getId().longValue()).isNotEqualTo(0);
+        assertThat(board.getId().longValue()).isNotZero();
 
         assertEquals(boardService.findById(board.getId()).get(), board);
     }
@@ -260,8 +259,8 @@ public class BoardServiceTests {
         listPlayers.add(p1);
 
         LinkedHashMap<Player, Integer> res = boardService.calcPlayersByPunctuation(listPlayerAtStart, listPlayers);
-        assertEquals(res.get(p2), 0);
-        assertEquals(res.get(p1), 2);
+        assertEquals(0,res.get(p2));
+        assertEquals(2,res.get(p1));
 
 
     }

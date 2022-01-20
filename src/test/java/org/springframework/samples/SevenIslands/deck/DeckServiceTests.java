@@ -27,14 +27,14 @@ public class DeckServiceTests {
     @Test
     public void testFindByCardId(){
         Iterable<Deck> decks = deckService.findByCardId(1);
-        assertEquals(decks.spliterator().getExactSizeIfKnown(), 0);
+        assertEquals(0,decks.spliterator().getExactSizeIfKnown());
     }
 
     @Disabled
     @Test
     public void testFindCardsOnDeck(){
         Iterable<Integer> cards = deckService.getCardsOnDeck(1);
-        assertEquals(cards.spliterator().getExactSizeIfKnown(), 2);
+        assertEquals(2,cards.spliterator().getExactSizeIfKnown());
     }
 
     @Test

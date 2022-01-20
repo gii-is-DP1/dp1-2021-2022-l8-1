@@ -172,19 +172,6 @@ public class PlayerServiceTests {
     }
 
     @Test
-    void testWatchGameByPlayerId(){
-        Iterable<Player> players = playerService.findWatchGameByPlayerId(3);
-        long count = players.spliterator().getExactSizeIfKnown();
-        assertEquals(1, count);
-    }
-
-    @Test
-    void testFindByForumId(){
-        Iterable<Player> players = playerService.findByForumId(1);
-        assertEquals(1, players.spliterator().getExactSizeIfKnown());
-    }
-
-    @Test
     void testCountPlayersPageable() {
         Pageable page = PageRequest.of(0, 5);
         Iterable<Player> players = playerService.findAll(page);

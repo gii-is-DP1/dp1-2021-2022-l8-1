@@ -67,6 +67,10 @@ public class BoardService {
 	private AdminService adminService;
 
     private static final String REDIRECT_TO_BOARDS = "redirect:/boards/";
+    private static final String MESSAGE = "message";
+    private static final String OPTIONS = "options";
+    private static final String PLAYER = "player";
+    private static final String PLAYER_AT_START = "playersAtStart";
 
     @Transactional
     public int boardCount(){
@@ -137,7 +141,6 @@ public class BoardService {
             cards.addAll(doblones);
             p.setCards(cards);
             Statistic s = new Statistic();
-            //s.setGame(game);
             s.setPlayer(p);
 
             
@@ -152,8 +155,6 @@ public class BoardService {
             statisticService.insertinitIslandCount(s.getId(),6);
             p.getStatistic().add(s);
                   
-            
-            //p.setInGame(true);
             playerService.save(p);
         }
     }
@@ -186,8 +187,8 @@ public class BoardService {
 
         }else if(pl != game.getPlayers().get(game.getActualPlayer())){         //para que aunque refresque uno que no es su turno no incremente el turno
            
-            request.getSession().removeAttribute("message");
-            request.getSession().removeAttribute("options");
+            request.getSession().removeAttribute(MESSAGE);
+            request.getSession().removeAttribute(OPTIONS);
             
         }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=40){  
             //Same code in changeTurn
@@ -195,8 +196,8 @@ public class BoardService {
             game.setActualPlayer((game.getActualPlayer()+1)%n);
             game.setDieThrows(false);       
             game.setTurnTime(LocalDateTime.now());
-            request.getSession().removeAttribute("message");
-            request.getSession().removeAttribute("options");
+            request.getSession().removeAttribute(MESSAGE);
+            request.getSession().removeAttribute(OPTIONS);
 
         }
 
@@ -224,7 +225,7 @@ public class BoardService {
         game.setHasStarted(true);
         game.setTurnTime(LocalDateTime.now());
 
-        request.getSession().setAttribute("playersAtStart", playersAtStart);
+        request.getSession().setAttribute(PLAYER_AT_START, playersAtStart);
     }
 
     @Transactional
@@ -239,9 +240,7 @@ public class BoardService {
     @Transactional
     public String toLobby(Game game, ModelMap modelMap, Integer numberOfPlayers){
 
-        //TODO Mirar como se puede juntar este código con el de lobby en GameController 
-
-        modelMap.addAttribute("message", "The game cannot start, there is only one player in the room");
+        modelMap.addAttribute(MESSAGE, "The game cannot start, there is only one player in the room");
         modelMap.addAttribute("game", game);
         
         int playerId = securityService.getCurrentPlayerId(); // Id of player that is logged
@@ -249,7 +248,7 @@ public class BoardService {
         Optional<Player> playerOp = playerService.findPlayerById(playerId);
         if(playerOp.isPresent()){
             Player pay = playerOp.get();
-            modelMap.addAttribute("player", pay);
+            modelMap.addAttribute(PLAYER, pay);
         }
 
         modelMap.addAttribute("totalplayers", numberOfPlayers);
@@ -267,13 +266,13 @@ public class BoardService {
             int adminId = adminService.getIdAdminByName(currentUser.getUsername());
             Optional<Admin> adminOp = adminService.findAdminById(adminId);
             if(adminOp.isPresent()){
-                modelMap.addAttribute("player", adminOp.get());
+                modelMap.addAttribute(PLAYER, adminOp.get());
             }
         }else{
             int playerId = playerService.getIdPlayerByName(currentUser.getUsername());  
             Optional<Player> playerOp = playerService.findPlayerById(playerId);
             if(playerOp.isPresent()){
-                modelMap.addAttribute("player", playerOp.get()); 
+                modelMap.addAttribute(PLAYER, playerOp.get()); 
             }
         }
         modelMap.addAttribute("game", gameService.findGamesByRoomCode(game.getCode()).iterator().next());   
@@ -284,7 +283,7 @@ public class BoardService {
     @Transactional
     public void addPlayerAtStartToSession(Game game, HttpServletRequest request){
 
-        if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())<=5){               //Jugador aún no sabe los jugadores actuales
+        if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())<=5){       //Jugador aún no sabe los jugadores actuales
             List<Player> players = game.getPlayers();
             List<Integer> playersAtStart = new ArrayList<>();
             players.forEach(p -> {
@@ -292,7 +291,7 @@ public class BoardService {
                 playerService.save(p);
                 playersAtStart.add(p.getId());
             });    
-            request.getSession().setAttribute("playersAtStart", playersAtStart);
+            request.getSession().setAttribute(PLAYER_AT_START, playersAtStart);
         }
 
     }
@@ -327,7 +326,7 @@ public class BoardService {
     @Transactional
     public String doAnIllegalAction(String code, Integer island, Integer cardsToSpend, HttpServletRequest request){
 
-        request.getSession().setAttribute("message", "To travel to island "+island+ " you must use "+cardsToSpend +" cards");
+        request.getSession().setAttribute(MESSAGE, "To travel to island "+island+ " you must use "+cardsToSpend +" cards");
         return REDIRECT_TO_BOARDS+ code;
         
     }
@@ -363,7 +362,7 @@ public class BoardService {
                 islandStatistics(actualPlayer ,islandCard, pickedCards, island);    
 
             }else{
-                request.getSession().setAttribute("message", "Island "+island+ " hasn't a card, choose another island");
+                request.getSession().setAttribute(MESSAGE, "Island "+island+ " hasn't a card, choose another island");
                 return REDIRECT_TO_BOARDS+ game.getCode();
             }
             changeDeck(d, game, island);           
@@ -381,7 +380,7 @@ public class BoardService {
     public void islandStatistics(Player actualPlayer, Card islandCard, Integer[] pickedCards, Integer island){
         
         int statisticId = 0;
-        Optional<Statistic> statisticOp=statisticService.getStatisticByPlayerId(actualPlayer.getId()).stream().filter(x->x.getHad_won()==null).findFirst();
+        Optional<Statistic> statisticOp=statisticService.getStatisticByPlayerId(actualPlayer.getId()).stream().filter(x->x.getHadWon()==null).findFirst();
         if(statisticOp.isPresent()){
             statisticId = statisticOp.get().getId();
         }
@@ -406,7 +405,7 @@ public class BoardService {
     @Transactional
     public void changeDeck(Deck d, Game game, Integer island){
         
-        if(d.getCards().size()!=0){
+        if(!d.getCards().isEmpty()){
             Card c = null;
 
             Optional<Card> cardOp = d.getCards().stream().findFirst();
@@ -475,7 +474,7 @@ public class BoardService {
         
         }    
 
-        request.getSession().setAttribute("options", posibilities);
+        request.getSession().setAttribute(OPTIONS, posibilities);
         return REDIRECT_TO_BOARDS+ game.getCode();
     }
 
@@ -498,7 +497,7 @@ public class BoardService {
     public String endGame(Game game, ModelMap modelMap, HttpServletRequest request){
         
         List<Player> players = game.getPlayers();
-        List<Integer> playersIdAtStart = (List<Integer>) request.getSession().getAttribute("playersAtStart");
+        List<Integer> playersIdAtStart = (List<Integer>) request.getSession().getAttribute(PLAYER_AT_START);
         List<Player> playersAtStart = playersIdAtStart.stream().map(id -> playerService.findPlayerById(id).get()).collect(Collectors.toList());
     
         if(game.getEndTime()==null) return "/error";
@@ -508,8 +507,6 @@ public class BoardService {
         statisticService.setFinalStatistics(playersAtStart, playersByPunctuation, game);
 
         modelMap.put("playersByPunctuation", playersByPunctuation);
-
-        // request.getSession().removeAttribute("playersAtStart");
 
         return "games/endGame";
     }
@@ -585,7 +582,7 @@ public class BoardService {
 
         // Set at 0 abbandoned players
         for(Player player : playersAtStart) {
-            Boolean playerHasAbbandoned = !playersByPunctuation.containsKey(player);
+            boolean playerHasAbbandoned = !playersByPunctuation.containsKey(player);
             if(playerHasAbbandoned) playersByPunctuation.put(player, 0);
         }
 

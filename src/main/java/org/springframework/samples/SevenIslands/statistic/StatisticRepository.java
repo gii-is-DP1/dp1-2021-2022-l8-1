@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface StatisticRepository extends CrudRepository<Statistic, String>{
 
-    @Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, COUNT(S)) FROM Player P JOIN P.statistic S WHERE S.had_won = TRUE GROUP BY P.id ORDER BY COUNT(S) DESC")
+    @Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, COUNT(S)) FROM Player P JOIN P.statistic S WHERE S.hadWon = TRUE GROUP BY P.id ORDER BY COUNT(S) DESC")
 	Collection<PlayerWithStatistics> findPlayersOrderedByWins() throws DataAccessException;
 
 	@Query("SELECT NEW org.springframework.samples.SevenIslands.statistic.PlayerWithStatistics(P, SUM(S.points)) FROM Player P JOIN P.statistic S GROUP BY P.id ORDER BY SUM(S.points) DESC")
@@ -26,7 +26,7 @@ public interface StatisticRepository extends CrudRepository<Statistic, String>{
     Collection<Integer> findCardIdsByPlayerIdOrderedByCount(@Param("playerId") int playerId) throws DataAccessException;
 
     //  WINS (SUM, AVG)
-    @Query("SELECT COUNT(S) FROM Statistic S WHERE S.player.id = :playerId AND S.had_won = TRUE")
+    @Query("SELECT COUNT(S) FROM Statistic S WHERE S.player.id = :playerId AND S.hadWon = TRUE")
     Integer findWinsCountByPlayerId(@Param("playerId") int playerId) throws DataAccessException;
 
     //  POINTS (SUM, AVG, MAX, MIN)
@@ -87,12 +87,6 @@ public interface StatisticRepository extends CrudRepository<Statistic, String>{
     void updateCardCount(@Param("id") Integer id,@Param("cardId") Integer card_id,@Param("sum") Integer sum);
 
     @Query(value = "SELECT Count(*) FROM Statistic_Cards_Count C WHERE C.statistic_id = :stats_id AND C.card_id = :cardId", nativeQuery = true)
-    Integer findExistRow(@Param("stats_id") Integer stats_id, @Param("cardId") Integer cardId);
-
-
- 
-    //     void deactivateUsersNotLoggedInSince(@Param("date") LocalDate date);
-    
-
+    Integer findExistRow(@Param("stats_id") Integer stats_id, @Param("cardId") Integer cardId);  
 
 }

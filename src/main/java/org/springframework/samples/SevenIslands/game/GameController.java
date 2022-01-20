@@ -72,8 +72,13 @@ public class GameController {
             return VIEW_CREATE_OR_UPDATE_GAME_FORM;
         
         }else if(p.getInGame()) {
-            Game game = p.getGames().stream().filter(x->x.getEndTime()==null && x.isHasStarted()).findFirst().get(); //JUEGO QUE ESTÁ JUGANDO AHORA MISMO
-            return "redirect:/boards/"+game.getCode();
+            Optional<Game> gameOpt =p.getGames().stream().filter(x->x.getEndTime()==null && x.isHasStarted()).findFirst();
+
+            if(gameOpt.isPresent()){
+                Game game = gameOpt.get(); //JUEGO QUE ESTÁ JUGANDO AHORA MISMO
+                return "redirect:/boards/"+game.getCode();
+            }
+            return "/error";
         
         } else {
             return securityService.redirectToWelcome(request);
@@ -130,8 +135,6 @@ public class GameController {
             return securityService.redirectToWelcome(request);
         }
         
-       
-        
     }
   
   
@@ -152,19 +155,17 @@ public class GameController {
         securityService.insertIdUserModelMap(model);
         Player p = securityService.getCurrentPlayer();
         Game g = gameService.findGamesByRoomCode(gameCode).iterator().next();
-        Boolean inGame = securityService.getCurrentPlayer().getInGame();
+        boolean inGame = securityService.getCurrentPlayer().getInGame();
        
-        Game gocla = gameService.waitingRoom(p.getId());
+        Game gameWaiting = gameService.waitingRoom(p.getId());
         
-        //TODO refactorizar
-        if(inGame && !g.getPlayers().contains(p)){ // FIXME: al empezar una partida, como se refresca, detecta que está en un juego y redirige a error
+        if(inGame && !g.getPlayers().contains(p)){ // Al empezar una partida, como se refresca, detecta que está en un juego y redirige a error
             return "/error";                                        //Hasta que no termine el juego que abandonó no puede unirse a otro
-        } else if(gocla != null){
-            if(gameService.isWaitingOnRoom(p.getId()) && !gameService.waitingRoom(p.getId()).getCode().equals(gameCode)){
-                request.getSession().setAttribute("message", "You are waiting for start a game actually, can´t join an another game");
-                return publicRooms(model, request);
-            }
+        } else if(gameWaiting != null && (gameService.isWaitingOnRoom(p.getId()) && !gameService.waitingRoom(p.getId()).getCode().equals(gameCode))){
            
+            request.getSession().setAttribute("message", "You are waiting for start a game actually, can´t join an another game");
+            return publicRooms(model, request);
+          
         }
 		model.put("now", new Date());
         Iterable<Game> gameOpt = gameService.findGamesByRoomCode(gameCode);
@@ -174,9 +175,7 @@ public class GameController {
         
         } else {    
             return securityService.redirectToWelcome(request);        
-        }
-
-        
+        }  
 
     }
     

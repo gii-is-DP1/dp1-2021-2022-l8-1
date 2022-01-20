@@ -17,18 +17,18 @@ public class GeneralServiceTests {
     @Test
     public void testCountWithInitialData(){
         int count = generalService.generalCount();
-        assertEquals(count,1);
+        assertEquals(1,count);
     }
 
     @Test
     public void testTotalDurationAll(){
         int count = generalService.totalDurationAll();
-        assertEquals(count,300);
+        assertEquals(300,count);
     }
 
     @Test
     public void testGamesCount(){
         int count = generalService.totalGamesCount();
-        assertEquals(count,200);
+        assertEquals(200,count);
     }
 }

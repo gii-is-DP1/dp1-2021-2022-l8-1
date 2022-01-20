@@ -117,11 +117,7 @@ public class UserControllerTests {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
  
-        
-
+    
     }
-
-
-
     
 }

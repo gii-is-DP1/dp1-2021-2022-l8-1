@@ -22,26 +22,5 @@ public class Admin extends Person{
 	@OneToOne(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
 	@JoinColumn(name = "username", referencedColumnName = "username")
 	  private User user;
-
-    /*
-	  
-    @ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "admins_achievements", joinColumns = @JoinColumn(name = "admin_id"),
-			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
-	private List<Achievement> achievements;
-
-
-	public void addAchievementInAdmins(Achievement achi){
-        if(this.getAchievements()==null){
-            List<Achievement> l = new ArrayList<>();
-            l.add(achi);
-            this.setAchievements(l);     
-        }else{
-            List<Achievement> l = this.getAchievements();
-            l.add(achi);
-            this.setAchievements(l);
-        }
-    }
-    */
     
 }

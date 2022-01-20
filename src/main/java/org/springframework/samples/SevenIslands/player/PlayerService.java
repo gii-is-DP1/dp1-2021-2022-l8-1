@@ -111,16 +111,6 @@ public class PlayerService {
         return playerRepo.findByGameId(id);
     }
 
-     @Transactional
-     public Iterable<Player> findWatchGameByPlayerId(int id) {
-         return playerRepo.findWatchGameByPlayerId(id);
-     }
-
-    @Transactional
-    public Iterable<Player> findByForumId(int id) {
-        return playerRepo.findByForumId(id);
-    }
-
     @Transactional
 	public void savePlayer(Player player) throws DataAccessException {
 
@@ -291,20 +281,17 @@ public class PlayerService {
             Iterable<Player> players = findAll();
             List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername()).collect(Collectors.toList());
             
-            BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","watchGames","forums","games","invitations","friend_requests","players_friends","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
-            
+            BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","games","gamesCreador");  //METER AQUI OTRAS PROPIEDADES                                                                                
             
             String newUserName = playerToUpdate.getUser().getUsername();    
 
             try {                    
-
                 // si el NUEVO username está ya en la DB && el NUEVO username NO es el mismo que el viejo
                 // se trata de un error, pues estamos editando un usuario que ya existe
                 if(usernames.stream().anyMatch(x->x.equals(newUserName) && !newUserName.equals(username))){
                     return "errors/error-500";
                 }
 
-                
                 // guardo el nuevo player (recordemos que en playerToUpdate ya se han copiado las propiedades del nuevo player)
                 savePlayer(playerToUpdate); 
 
@@ -328,10 +315,8 @@ public class PlayerService {
                     return "redirect:/welcome";
                 }
                 return "redirect:/players/profile/{playerId}";
-
             }
         }
-
     } 
 
 }

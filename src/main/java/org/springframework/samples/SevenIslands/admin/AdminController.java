@@ -41,6 +41,11 @@ public class AdminController {
     private UserService userService;
 
     private static final String VIEWS_ADMINS_CREATE_OR_UPDATE_FORM = "admins/createOrUpdateAdminForm";
+    private static final String ADMIN_NOT_FOUND = "admin not found";
+    private static final String ADMIN = "admin";
+    private static final String MESSAGE = "message";
+    private static final String ERROR = "/error";
+
 
     
     @GetMapping(path="/profile/{adminId}")
@@ -51,11 +56,11 @@ public class AdminController {
         Optional<Admin> admin = adminService.findAdminById(adminId);
         
         if(admin.isPresent()){
-            modelMap.addAttribute("admin", admin.get());
+            modelMap.addAttribute(ADMIN, admin.get());
         
         } else{
-            modelMap.addAttribute("message", "admin not found");
-            return "/error";
+            modelMap.addAttribute(MESSAGE, ADMIN_NOT_FOUND);
+            return ERROR;
         }
         return "admins/profile";
     }
@@ -65,9 +70,9 @@ public class AdminController {
     public String rooms(ModelMap modelMap, HttpServletRequest request) {
 
         Iterable<Game> games = gameService.findAll();
-        modelMap.addAttribute("message", request.getSession().getAttribute("message"));
+        modelMap.addAttribute(MESSAGE, request.getSession().getAttribute(MESSAGE));
         modelMap.addAttribute("games", games);
-        request.getSession().removeAttribute("message");
+        request.getSession().removeAttribute(MESSAGE);
         return "admins/rooms";
     }
 
@@ -77,10 +82,10 @@ public class AdminController {
         securityService.insertIdUserModelMap(modelMap);
         Optional<Admin> admin = adminService.findAdminById(adminId);
         if(admin.isPresent()){
-            modelMap.addAttribute("admin", admin.get());
+            modelMap.addAttribute(ADMIN, admin.get());
         }else{
-            modelMap.addAttribute("message", "admin not found");
-            return "/error";
+            modelMap.addAttribute(MESSAGE, ADMIN_NOT_FOUND);
+            return ERROR;
         }
         return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
     }
@@ -98,8 +103,7 @@ public class AdminController {
             if(opt.isPresent()) {
                 Admin adminToUpdate = opt.get();
                 // always present because if not, it should have redirected to error page in @GetMapping before
-            
-                
+                   
                 int authId = adminToUpdate.getUser().getAuthorities().iterator().next().getId();
                 String userName = adminToUpdate.getUser().getUsername();
 
@@ -108,7 +112,7 @@ public class AdminController {
                             adminService.save(adminToUpdate);
                             userService.saveUser(adminToUpdate.getUser());
                             
-                            authoritiesService.saveAuthorities(adminToUpdate.getUser().getUsername(), "admin");  
+                            authoritiesService.saveAuthorities(adminToUpdate.getUser().getUsername(), ADMIN);  
                             authoritiesService.deleteAuthorities(authId);
                             
                             if(!userName.equals(adminToUpdate.getUser().getUsername())){   
@@ -126,13 +130,11 @@ public class AdminController {
                         }
                 return "redirect:/admins/profile/" + adminId;
             } else {
-                model.put("message", "admin not found");
-                return "/error";
+                model.put(MESSAGE, ADMIN_NOT_FOUND);
+                return ERROR;
             }
             
 		}
 	}
-
-   
 
 }
