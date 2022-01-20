@@ -18,8 +18,6 @@ import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
-import org.springframework.samples.SevenIslands.user.AuthoritiesService;
-import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -227,7 +225,7 @@ public class PlayerController {
                 col.stream().forEach(x->x.deletePlayerOfGame(player));
                 
                 if(!lg.isEmpty()) {
-                    player.deleteGames(col);    //FIXME: peta aquí el test
+                    player.deleteGames(col);    
                 }
                 
         
