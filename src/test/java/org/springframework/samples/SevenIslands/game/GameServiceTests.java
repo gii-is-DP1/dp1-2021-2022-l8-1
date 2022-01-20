@@ -110,7 +110,7 @@ public class GameServiceTests {
         Deck deck = deckService.init(game.getName());
         game.setCode("AAAABBBB1");
         game.setPrivacity(PRIVACITY.PUBLIC);
-        game.setHas_started(false);
+        game.setHasStarted(false);
         game.setPlayer(playerService.findPlayerById(1).get());
         game.setDeck(deck);
 
@@ -135,7 +135,7 @@ public class GameServiceTests {
         Deck deck = deckService.init(game.getName());
         game.setCode("AAAABBBB1");
         game.setPrivacity(PRIVACITY.PUBLIC);
-        game.setHas_started(false);
+        game.setHasStarted(false);
         game.setPlayer(playerService.findPlayerById(1).get());
         game.setDeck(deck);
 

@@ -8,13 +8,8 @@
 
     // TIMER
 
-    let turnDate = new Date('${game.turnTime}');
-    let actualDate = new Date();
-
-    let diffTimeInSeconds = Math.floor(Math.abs((actualDate - turnDate) / 1000));
-
-    let diffSeconds = Math.trunc(diffTimeInSeconds / 60);
-    let diffMinutes = Math.trunc(diffTimeInSeconds - diffSeconds * 60);
+    let diffSeconds = '${tempo}';
+    let diffMinutes = 0;
 
 
     window.addEventListener("load", ()=>{
@@ -28,15 +23,22 @@
         }, 1000);
 
         function updateTimer() {
-        timerSecs.innerHTML = diffSeconds;
-        timerMins.innerHTML = diffMinutes;
-    }
+            timerSecs.innerHTML = diffSeconds;
+            timerMins.innerHTML = diffMinutes;
+        }
 
         function decrementTime() {
-            diffTimeInSeconds--;
 
-            diffSeconds = Math.trunc(diffTimeInSeconds / 60);
-            diffMinutes = Math.trunc(diffTimeInSeconds - diffSeconds * 60);
+            diffSeconds --;
+
+            if(diffSeconds<0){
+                reloadPage();
+            }
+        }
+
+        function reloadPage() {
+
+            location.reload();
         }
     });
 

@@ -73,7 +73,6 @@ public class GameController {
         
         }else if(p.getInGame()) {
             Game game = p.getGames().stream().filter(x->x.getEndTime()==null && x.isHas_started()).findFirst().get(); //JUEGO QUE ESTÁ JUGANDO AHORA MISMO
-            
             return "redirect:/boards/"+game.getCode();
         
         } else {

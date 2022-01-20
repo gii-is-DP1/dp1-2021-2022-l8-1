@@ -1,15 +1,24 @@
 package org.springframework.samples.SevenIslands.achievement;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWord;
+import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWordService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AchievementService {
+    
     @Autowired
     private AchievementRepository achievementRepo;
+
+    @Autowired
+    private InappropiateWordService inappropiateWordService;
 
     @Transactional
     public int achievementCount() {
@@ -50,5 +59,11 @@ public class AchievementService {
         return achievementRepo.findByAdminId(id);
     }
     */
+
+    public Boolean achievementHasInappropiateWords(Achievement achievement){
+        Iterable<InappropiateWord> words = inappropiateWordService.findAll();
+        List<String> listWords = StreamSupport.stream(words.spliterator(), false).map(InappropiateWord::getName).collect(Collectors.toList());
+        return listWords.stream().anyMatch(word-> achievement.getName().toLowerCase().contains(word));
+    }
     
 }

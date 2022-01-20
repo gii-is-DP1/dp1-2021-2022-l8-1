@@ -21,6 +21,18 @@
     </jsp:attribute>
 
     <jsp:body>
+
+        <div id="background">
+            <div id="sun">
+                <div id="sun-shadow"></div>
+            </div>
+            <div class="waves">
+                    <div class="wave circulo a" ></div>
+                    <div class="wave circulo b" ></div>
+                    <div class="wave circulo c" ></div>
+            </div>
+        </div>
+        
         <c:if test="${errorMessage != null}">
             <div class="alert alert-danger" role="alert">
                 <c:out value="${errorMessage}"></c:out>

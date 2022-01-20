@@ -115,7 +115,7 @@ public class GameService {
 
             if(securityService.isAdmin()) {
 
-                if(game.get().isHas_started()){
+                if(game.get().isHasStarted()){
                    request.getSession().setAttribute("message", "The game has already started, you can't delete it");
                 } else {
                     delete(game.get());
@@ -169,7 +169,7 @@ public class GameService {
                 Game game = gameOpt.iterator().next();  // get the game (first element of the iterable)
                 
                 
-                if(game.isHas_started()) {
+                if(game.isHasStarted()) {
                     return "redirect:/boards/" + game.getCode();
                 } 
                 
@@ -258,7 +258,7 @@ public class GameService {
     @Transactional
     public boolean isWaitingOnRoom(int playerId){ //Check if the player is waiting on a room
         Collection<Game> games = findGamesByPlayerId(playerId);
-        if(games.stream().anyMatch(x->x.isHas_started()==false)){
+        if(games.stream().anyMatch(x->x.isHasStarted()==false)){
             return true;
         } else {
             return false;
@@ -268,8 +268,8 @@ public class GameService {
     @Transactional
     public Game waitingRoom(int playerId){ //Return the waiting room
         Collection<Game> games = findGamesByPlayerId(playerId);
-        if(games.stream().anyMatch(x->x.isHas_started()==false)){
-            return games.stream().filter(x->x.isHas_started()==false).findFirst().get();
+        if(games.stream().anyMatch(x->x.isHasStarted()==false)){
+            return games.stream().filter(x->x.isHasStarted()==false).findFirst().get();
         } else {
             return null;
         }

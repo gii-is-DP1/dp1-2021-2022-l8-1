@@ -7,6 +7,7 @@
 <%@ taglib prefix="SevenIslands" tagdir="/WEB-INF/tags" %>
 
 <SevenIslands:layout pageName="players">
+    <div id="background"></div>
     <c:if test="${errorMessage != null}">
         <div class="alert alert-danger" role="alert">
             <c:out value="${errorMessage}"></c:out>

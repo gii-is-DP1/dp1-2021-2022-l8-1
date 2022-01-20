@@ -40,6 +40,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
+                    <th>Date</th>
                     <th>Action</th>
                     <th>Username</th>
                     <th>Email</th>
@@ -55,7 +56,12 @@
                 <c:forEach items="${players}" var="player">
 
                         <tr>
-                            
+                            <td>
+                                <jsp:useBean id="dateObject" class="java.util.Date" />
+                                <jsp:setProperty name="dateObject" property="time" value="${player[10]}" />
+                                <p><fmt:formatDate value="${dateObject }" pattern="dd/MM/yyyy" /></p>
+                                <p><fmt:formatDate value="${dateObject }" pattern="hh:mm a" /></p>
+                            </td>
                             <td>
                                 <c:if test="${player[1] == 0}">
                                     <c:out value="Insert"/>

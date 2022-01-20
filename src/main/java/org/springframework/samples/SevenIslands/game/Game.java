@@ -91,7 +91,7 @@ public class Game extends NamedEntity {
 
     @JsonView(Views.Public.class)
     @Column(name="has_started")
-    private boolean has_started;
+    private boolean hasStarted;
     
     //RELATION WITH PLAYERS 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

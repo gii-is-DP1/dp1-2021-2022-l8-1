@@ -69,6 +69,17 @@ public class UserController {
 			model.put("player", player);
 			return view;
 		}
+		Boolean isNewUser = true;
+		if(playerService.emailAlreadyused(player.email, player, isNewUser)){
+            model.addAttribute("errorMessage", "Email already used by other user");
+            model.put("player", player);
+			return VIEWS_PLAYER_CREATE_FORM;
+        }
+		if(playerService.usernameAlreadyused(player.getUser().getUsername(), player.getUser(), isNewUser)){
+            model.addAttribute("errorMessage", "Username already used by other user");
+            model.put("player", player);
+			return VIEWS_PLAYER_CREATE_FORM;
+        }
 		if (result.hasErrors()) {
 			return view;
 		} else if(username.contains(" ")){
