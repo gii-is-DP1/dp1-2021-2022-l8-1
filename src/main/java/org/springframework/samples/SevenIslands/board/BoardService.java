@@ -87,10 +87,23 @@ public class BoardService {
     }
 
     @Transactional
-    public void init(Game game) {  
+    public String initBoard(Game g){        //Creating 6 islands and a board, placing 1 card from the deck on each island
+                                            // and handing out 3 doubloons to each player at the beginning of the game
+        Board board = g.getBoard();
+        
+        initCardPlayers(g);
+        distribute(board, g.getDeck());
+        g.setBoard(board);
+        gameService.save(g);     
+        
+        return REDIRECT_TO_BOARDS+ g.getCode();
+    }
+
+    @Transactional
+    public void init(Game game) {  //Creating 6 islands and a board
         List<Island> l = new ArrayList<>();
         for(int i=1;i<7;i++){
-            Island isl = new Island();
+            Island isl = new Island();          
             isl.setIslandNum(i);
             islandService.save(isl);
             l.add(isl);
@@ -103,9 +116,9 @@ public class BoardService {
     }
 
     @Transactional
-    public void distribute(Board b, Deck d){
+    public void distribute(Board b, Deck d){        //Placing 1 card from the deck on each island
         
-        if(!d.getCards().isEmpty() && d.getCards().size()>=6){
+        if(!d.getCards().isEmpty() && d.getCards().size()>=6){              
             for(Island i: b.getIslands()){
                 if(i.getCard()==null){  
                     List<Card> cards =  d.getCards();
@@ -130,8 +143,8 @@ public class BoardService {
     }
 
     @Transactional
-    public void initCardPlayers(Game game){
-        List<Player> players = game.getPlayers();
+    public void initCardPlayers(Game game){             //Handing out 3 doubloons to each player at the beginning of the game
+        List<Player> players = game.getPlayers();       
         Deck d = game.getDeck();
         for(Player p: players){
             List<Card> cards = new ArrayList<>();      
@@ -143,8 +156,6 @@ public class BoardService {
             Statistic s = new Statistic();
             s.setPlayer(p);
 
-            
-            
             statisticService.save(s);
 
             statisticService.insertinitIslandCount(s.getId(),1);
@@ -160,27 +171,16 @@ public class BoardService {
     }
 
     @Transactional
-    public String initBoard(Game g){
-
-        Board board = g.getBoard();
-        
-        initCardPlayers(g);
-        distribute(board, g.getDeck());
-        g.setBoard(board);
-        gameService.save(g);     
-        
-        return REDIRECT_TO_BOARDS+ g.getCode();
-    }
-
-    @Transactional
     public String gameLogic(Player pl, Game game, ModelMap modelMap, HttpServletRequest request){
         
         String res=null;
 
-        if(!game.isHasStarted()){  
+        if(!game.isHasStarted()){                       //The game has not started
             
             gameIsNotStarted(game, request);
 
+        
+        //The condition for the game to end is met
         }else if(game.getPlayers().stream().filter(x->x.getInGame()).count()==1L || game.getActualPlayer()==0 && game.getDeck().getCards().isEmpty()){                     
 
             return finishTheGame(game);
@@ -190,8 +190,8 @@ public class BoardService {
             request.getSession().removeAttribute(MESSAGE);
             request.getSession().removeAttribute(OPTIONS);
             
-        }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=40){  
-            //Same code in changeTurn
+        }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=40){      //If the 40 seconds of the turn time elapse
+       
             Integer n = game.getPlayers().size();
             game.setActualPlayer((game.getActualPlayer()+1)%n);
             game.setDieThrows(false);       
@@ -214,16 +214,16 @@ public class BoardService {
         List<Player> players = game.getPlayers();
         List<Integer> playersAtStart = new ArrayList<>();
         players.forEach(p -> {
-            p.setInGame(true);
+            p.setInGame(true);                  //Player now is in game
             playerService.save(p);
             playersAtStart.add(p.getId());
         });    
-        Collections.shuffle(players);
+        Collections.shuffle(players);           //We randomly determine the turn of the players
         game.setPlayers(players);
         
-        game.setActualPlayer(0);    
+        game.setActualPlayer(0);                //The first player is the one in position 0
         game.setHasStarted(true);
-        game.setTurnTime(LocalDateTime.now());
+        game.setTurnTime(LocalDateTime.now());  //Start the turn of the firstplayer
 
         request.getSession().setAttribute(PLAYER_AT_START, playersAtStart);
     }
@@ -232,7 +232,7 @@ public class BoardService {
     public String finishTheGame(Game game){
         
         game.setEndTime(LocalDateTime.now());
-        game.setDuration((int) ChronoUnit.SECONDS.between(game.getStartTime(), game.getEndTime()));
+        game.setDuration((int) ChronoUnit.SECONDS.between(game.getStartTime(), game.getEndTime()));     //Duration game
         gameService.save(game);
         return REDIRECT_TO_BOARDS+ game.getCode()+"/endGame";
     }
@@ -261,6 +261,8 @@ public class BoardService {
 
         User currentUser = (User) authentication.getPrincipal();       
 
+        //Depending on whether the person is an administrator or a player, we add different things to the model
+
         if (securityService.isAdmin()) {
 
             int adminId = adminService.getIdAdminByName(currentUser.getUsername());
@@ -283,6 +285,9 @@ public class BoardService {
     @Transactional
     public void addPlayerAtStartToSession(Game game, HttpServletRequest request){
 
+        //This serves so that all the players have the information of the 
+        //players who started the game, and can calculate the points correctly
+
         if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())<=5){ 
             List<Player> players = game.getPlayers();
             List<Integer> playersAtStart = new ArrayList<>();
@@ -302,7 +307,8 @@ public class BoardService {
         String code = g.getCode();
         Integer n = g.getPlayers().size();
 
-        g.setActualPlayer((g.getActualPlayer()+1)%n);
+        //The current player and turn time changes
+        g.setActualPlayer((g.getActualPlayer()+1)%n);   
         g.setTurnTime(LocalDateTime.now());
         g.setDieThrows(false);
         gameService.save(g);
@@ -343,21 +349,21 @@ public class BoardService {
             actualCards = actualPlayer.getCards();
         }
        
-        if(pickedCards!=null){
+        if(pickedCards!=null){                      //If we give cards to move
             for(int i=0; i<pickedCards.length;i++){
                 int n = pickedCards[i];
                 Optional<Card> cardOp=actualCards.stream().filter(x->x.getId()==n).findFirst();
                 if(cardOp.isPresent()){
-                    actualCards.remove(cardOp.get());
+                    actualCards.remove(cardOp.get());   //We lose those cards
                 }
             }
         }       
 
-        if(island<7){
+        if(island<7){                               //If we choose an island and not the deck
             Deck d = game.getDeck();
             Card islandCard = game.getBoard().getIslands().get(island-1).getCard();
 
-            if(islandCard!=null){
+            if(islandCard!=null){                       //If the island has a card
                 actualCards.add(islandCard);
                 islandStatistics(actualPlayer ,islandCard, pickedCards, island);    
 
@@ -365,10 +371,10 @@ public class BoardService {
                 request.getSession().setAttribute(MESSAGE, "Island "+island+ " hasn't a card, choose another island");
                 return REDIRECT_TO_BOARDS+ game.getCode();
             }
-            changeDeck(d, game, island);           
+            chooseIsland(d, game, island);           
             
-        }else{
-            actualCards = changeDeckZeroCards(game, actualCards);
+        }else{                                     //If we choose the deck
+            actualCards = chooseDeck(game, actualCards);
         }
 
         actualPlayer.setCards(actualCards);
@@ -403,9 +409,9 @@ public class BoardService {
     }
 
     @Transactional
-    public void changeDeck(Deck d, Game game, Integer island){
+    public void chooseIsland(Deck d, Game game, Integer island){
         
-        if(!d.getCards().isEmpty()){
+        if(!d.getCards().isEmpty()){        //The deck has cards
             Card c = null;
 
             Optional<Card> cardOp = d.getCards().stream().findFirst();
@@ -413,7 +419,7 @@ public class BoardService {
                 c = cardOp.get();
             }
             Island is = game.getBoard().getIslands().get(island-1);
-            is.setCard(c);
+            is.setCard(c);                  //we put a card on the chosen island
             d.deleteCards(c);
             deckService.save(d);
             islandService.save(is);
@@ -427,7 +433,7 @@ public class BoardService {
     }
 
     @Transactional
-    public List<Card> changeDeckZeroCards(Game game, List<Card> actualCards){
+    public List<Card> chooseDeck(Game game, List<Card> actualCards){
         
         Deck d = game.getDeck();
         Card c = null;
@@ -435,7 +441,7 @@ public class BoardService {
         if(cardOp.isPresent()){
             c = cardOp.get();
         }
-        actualCards.add(c);
+        actualCards.add(c);         //We take the first card from the deck
         d.deleteCards(c);
         deckService.save(d);
 
@@ -446,14 +452,14 @@ public class BoardService {
     @Transactional
     public String calculatePosibilities(Game game, HttpServletRequest request, int number){
 
-        int cardsCurrently = game.getPlayers().get(game.getActualPlayer()).getCards().size();
+        int cardsCurrently = game.getPlayers().get(game.getActualPlayer()).getCards().size();    //Cards that we have
         
         int limitSup = number + cardsCurrently;
         int limitInf = number - cardsCurrently;
-        if(limitSup>7){
+        if(limitSup>7){             //LimitSup cannot be greater than 7 because there are 6 islands and a deck
             limitSup = 7;
         }
-        if(limitInf<=0){
+        if(limitInf<=0){            //LimitInf cannot be less than 1 because the first island occupies position 1
             limitInf = 1;
         }
         List<Integer> posib = IntStream.rangeClosed(limitInf, limitSup)
@@ -461,12 +467,12 @@ public class BoardService {
         
         List<Integer> posibilities = new ArrayList<>();
         for(Integer i: posib){
-            if(i==7){
+            if(i==7){           //If we choose to take a card from the deck
                 List<Card> a = game.getDeck().getCards();
                 if(!a.isEmpty()){
                     posibilities.add(i);
                 }
-            }else if(i >=1 && i <= 6 && game.getBoard().getIslands().get(i-1).getCard()!=null){
+            }else if(i >=1 && i <= 6 && game.getBoard().getIslands().get(i-1).getCard()!=null){ //If we choose to take a card from an island
                
                 posibilities.add(i);
                
@@ -486,7 +492,7 @@ public class BoardService {
 
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         List<Player> players = game.getPlayers();
-        List<Player> newPlayers = players.stream().filter(x-> x!=player).collect(Collectors.toList());
+        List<Player> newPlayers = players.stream().filter(x-> x!=player).collect(Collectors.toList());     //Remove the player of game player
         game.setPlayers(newPlayers);
         gameService.save(game);
         
@@ -502,8 +508,10 @@ public class BoardService {
     
         if(game.getEndTime()==null) return "/error";
         
+        //Calculate the score of each player
         LinkedHashMap<Player, Integer> playersByPunctuation = calcPlayersByPunctuation(playersAtStart, players);
 
+        //Set staisttics
         statisticService.setFinalStatistics(playersAtStart, playersByPunctuation, game);
 
         modelMap.put("playersByPunctuation", playersByPunctuation);
@@ -511,10 +519,12 @@ public class BoardService {
         return "games/endGame";
     }
 
-
+    
     public Map<Integer, Integer> getPointsPerSet(){
         
         Map<Integer, Integer> values = new HashMap<>();
+
+        //We declare the points per set
 
         values.put(1, 1);
         values.put(2, 3);
@@ -531,6 +541,9 @@ public class BoardService {
 
     @Transactional
     public Integer calcPoints(Integer numOfPoints, List<String> cards) {
+
+        //Determine the points depending on the sets
+        
         Map<Integer, Integer> pointsPerSet = this.getPointsPerSet();
 
         List<Set<String>> listOfSets = new ArrayList<>();
@@ -550,6 +563,9 @@ public class BoardService {
 
     @Transactional
     public Map<Player, Pair> calcValuesPerPlayer(List<Player> players) {
+
+        //We create a map to store the players with their points and their doubloons
+
         Map<Player, Pair> valuesPerPlayer = new HashMap<>();
 
         for(Player player : players){

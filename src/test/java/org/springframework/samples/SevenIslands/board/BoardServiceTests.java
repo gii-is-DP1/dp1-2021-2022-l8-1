@@ -220,7 +220,7 @@ public class BoardServiceTests {
     @Test
     public void testChangeDeckZeroCards(){
         Game game = gameService.findGameById(TEST_GAME_ID).get();
-        boardService.changeDeckZeroCards(game, game.getDeck().getCards());
+        boardService.chooseDeck(game, game.getDeck().getCards());
         assertThat(game.getDeck().getCards().size() == 0);
     }
 

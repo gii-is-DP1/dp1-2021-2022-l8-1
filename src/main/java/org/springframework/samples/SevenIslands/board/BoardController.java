@@ -82,6 +82,7 @@ public class BoardController {
 
         Optional<Game> opt = gameService.findGameById(gameId).stream().findFirst();
         if(opt.isPresent()) {
+
             return boardService.changeTurn(opt.get());
         
         } else {
@@ -106,12 +107,13 @@ public class BoardController {
                 request.getSession().setAttribute(MESSAGE, "It's not your turn");
                 return "redirect:/boards/"+ code;
             }
-            if(game.getDieThrows()){
+            if(game.getDieThrows()){        //If I have already roll the die 
                 
                 request.getSession().setAttribute(MESSAGE, "You have already made a roll this turn");
                 return "redirect:/boards/"+ code;
             }
 
+            //Roll the die of game 'game'
             return boardService.rollDie(game);
         }
     }
@@ -122,6 +124,7 @@ public class BoardController {
         securityService.insertIdUserModelMap(modelMap);
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
 
+        //Shows where I can go
         return boardService.calculatePosibilities(game, request, number);
     }
     
@@ -132,6 +135,7 @@ public class BoardController {
     Game game = gameService.findGamesByRoomCode(code).iterator().next();
     int cardsToSpend = Math.abs(game.getValueOfDie()-island);
     
+    //If I perform an action not allowed
     if((pickedCards!=null && cardsToSpend != pickedCards.length) || (pickedCards==null && cardsToSpend!=0)){
         return boardService.doAnIllegalAction(code, island, cardsToSpend, request);
         
@@ -146,6 +150,7 @@ public class BoardController {
         securityService.insertIdUserModelMap(modelMap);
         Game game = gameService.findGamesByRoomCode(code).iterator().next();
         
+        //game ends
         return boardService.endGame(game, modelMap, request);
     }
 
@@ -157,6 +162,7 @@ public class BoardController {
 
         if(opt.isPresent()) {
             Player playerWhoLeft = opt.get();
+            //playerWhoLeft leaves the game with code 'code'
             return boardService.leaveGame(playerWhoLeft, code);
         } else {
             return ERROR;
