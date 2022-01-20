@@ -75,6 +75,11 @@ public class AchievementController {
 
                 modelMap.addAttribute("achievement", achievement);
                 return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+            }else if(achievementService.achievementHasInappropiateWords(achievement)){
+                modelMap.put("achievement", achievement);
+                modelMap.addAttribute("errorMessage", "The achievement's name contains inappropiate words. Please, check your language.");
+                return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+    
             }else{
                 
                 Iterable<Achievement> achievementsI = achievementService.findAll();
@@ -82,18 +87,16 @@ public class AchievementController {
 
                 for(Achievement a:achievements){
 
-                    if(a.getParameter()==achievement.getParameter()&&a.getMinValue()==achievement.getMinValue()){
-                        
-                        modelMap.addAttribute("message", "Achievement already exist!");
-                        return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
-                        
+                    if(a.getParameter()==achievement.getParameter() && a.getMinValue().equals(achievement.getMinValue())){
+                    
+                        modelMap.put("achievement", achievement);
+                        modelMap.addAttribute("errorMessage", "Achievement already exist!");
+                        return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;       
                     }
                 }
-
                 achievementService.save(achievement);
                 request.getSession().setAttribute("message", "Achievement successfully saved!");
              
-                
             }
         }else{
             return "/error";
@@ -174,6 +177,11 @@ public class AchievementController {
             if(achievementToUpdate.getVersion()!=version){    //Version
                 model.put("message", "Concurrent modification of achievement! Try again!");
                 return updateAchievement(achievementToUpdate.getId(),model,request);
+            }else if(achievementService.achievementHasInappropiateWords(achievement)){
+                
+                model.put("achievement", achievement);
+                model.addAttribute("errorMessage", "The achievement's name contains inappropiate words. Please, check your language.");
+                return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
             }
 
             BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  

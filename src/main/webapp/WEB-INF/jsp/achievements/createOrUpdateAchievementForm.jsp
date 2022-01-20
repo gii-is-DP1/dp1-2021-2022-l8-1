@@ -11,6 +11,15 @@
     
     <div id="background"></div>
 
+    <c:if test="${errorMessage != null}">
+        <div class="alert alert-danger" role="alert">
+            <c:out value="${errorMessage}"></c:out>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </c:if>
+
     <h2>
         <c:if test="${achievement['new']}">New </c:if> Achievement 
     </h2>
