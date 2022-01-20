@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -147,7 +148,7 @@ public class GameController {
 
     @GetMapping(path = "/{code}/lobby")
     public String lobby(@PathVariable("code") String gameCode, ModelMap model,
-        HttpServletRequest request) {
+        HttpServletRequest request, HttpServletResponse response) {
 
         securityService.insertIdUserModelMap(model);
         Player p = securityService.getCurrentPlayer();
@@ -162,7 +163,7 @@ public class GameController {
         } else if(gocla != null){
             if(gameService.isWaitingOnRoom(p.getId()) && !gameService.waitingRoom(p.getId()).getCode().equals(gameCode)){
                 request.getSession().setAttribute("message", "You are waiting for start a game actually, can´t join an another game");
-                return publicRooms(model, request);
+                return publicRooms(model, request, response);
             }
            
         }
@@ -247,7 +248,8 @@ public class GameController {
 
     // ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
-    public String publicRooms(ModelMap modelMap, HttpServletRequest request) {
+    public String publicRooms(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
+        response.addHeader("Refresh", "20");
         if (securityService.isAuthenticatedUser()) {
             securityService.insertIdUserModelMap(modelMap);
              
