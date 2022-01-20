@@ -22,7 +22,7 @@ import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.springframework.validation.BindingResult;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -333,23 +333,23 @@ public class PlayerControllerTests {
 	}
 
 
-    @Disabled
-    //FIXME: no consigo que devuelva lo esperado
     @WithMockUser(value = "spring")
 	@Test
 	void testProcessUpdatePlayerFormSuccess() throws Exception {
 
         when(playerService.playerHasInappropiateWords(any())).thenReturn(false);
+        when(playerService.processEditPlayer(any(Player.class), any(Integer.class), any(BindingResult.class))).thenReturn("redirect:/welcome");
 
-		mockMvc.perform(post("/players/edit/{playerId}", TEST_NOT_PLAYER_ID)
+		mockMvc.perform(post("/players/edit/{playerId}", TEST_PLAYER_ID)
                 .with(csrf())
-                .param("profilePhoto", "https://imagen.png")
-                .param("firstName","Manuel")
-                .param("surname","González")
-                .param("email","manuelgonzalez@gmail.com"))
-                //.andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("player"))
-                .andExpect(view().name("errors/error-404"));
+                .param("profilePhoto", otherPlayer.getProfilePhoto())
+                .param("firstName",otherPlayer.getFirstName())
+                .param("surname",otherPlayer.getSurname())
+                .param("email", otherPlayer.getEmail())
+                .param("user.username", otherPlayer.getUser().getUsername() + "9")  //username editado
+                .param("user.password", otherPlayer.getUser().getPassword()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/welcome"));
 	}
 
     //Method -> playerAuditing
