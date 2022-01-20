@@ -89,7 +89,7 @@ public class BoardControllerTests {
         firstGame.setName("First Game");
         firstGame.setCode("AHG28FD9J");
         firstGame.setPrivacity(PRIVACITY.PUBLIC);
-        firstGame.setHas_started(true);
+        firstGame.setHasStarted(true);
         firstGame.setPlayer(firstPlayer);
         firstGame.setPlayers(List.of(firstPlayer));
 
@@ -248,9 +248,7 @@ public class BoardControllerTests {
         firstGame.setValueOfDie(4);
         when(boardService.doAnIllegalAction(any(),any(),any(),any(HttpServletRequest.class))).thenReturn("redirect:/boards/"+firstGame.getCode());
         
-        //Integer[] data = {}; 
-
-		mockMvc.perform(post("/boards/"+firstGame.getCode()+"/travel")
+        mockMvc.perform(post("/boards/"+firstGame.getCode()+"/travel")
                 .with(csrf())
                 .param("island", "3")
                 .param("pickedCards", ""))

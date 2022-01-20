@@ -5,7 +5,7 @@
 <%@ attribute name="type" required="true" rtexprvalue="true" %>
 
 
-<button id="${type == 'dice' ? 'dice-btn' : type == 'island' ? 'island-btn' : type == 'skip' ? 'skip-btn' : type == 'travel' ? 'travel-btn' : ''}" 
+<button id="${type == 'dice' ? 'dice-btn' : type == 'skip' ? 'skip-btn' : type == 'travel' ? 'travel-btn' : ''}" 
     class="game-btn ${pending == 'true' ? 'game-btn-pending' : 'game-btn-disabled'}"
     type="button"
     ${pending == 'true' ? '' : 'disabled'}>
@@ -13,11 +13,6 @@
     <c:if test="${type == 'dice'}">
         <p>Roll the dice</p>
         <img src="/resources/images/icons/dice_icon.png" alt="Roll the dice">
-    </c:if>
-
-    <c:if test="${type == 'island'}">
-        <p>Take card [TODO]</p>
-        <img src="/resources/images/icons/cards_icon.png" alt="Take card">
     </c:if>
 
     <c:if test="${type == 'skip'}">

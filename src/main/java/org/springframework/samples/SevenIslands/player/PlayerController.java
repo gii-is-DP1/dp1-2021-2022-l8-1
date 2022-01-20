@@ -1,5 +1,6 @@
 package org.springframework.samples.SevenIslands.player;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -175,6 +176,7 @@ public class PlayerController {
         String view = "games/publicRooms";
         Iterable<Game> games = gameService.findAllPublicNotPlaying();
         modelMap.addAttribute("message", request.getSession().getAttribute("message"));
+        StreamSupport.stream(games.spliterator(), false).forEach(x->x.setStartTime(x.getStartTime().truncatedTo(ChronoUnit.SECONDS)));
         modelMap.addAttribute("games", games);
 
         request.getSession().removeAttribute("message");
@@ -188,6 +190,7 @@ public class PlayerController {
         Optional<Player> player = playerService.findPlayerById(playerId);
         if(player.isPresent()){
             Collection<Game> games = gameService.findByOwnerId(player.get().getId());
+            StreamSupport.stream(games.spliterator(), false).forEach(x->x.setStartTime(x.getStartTime().truncatedTo(ChronoUnit.SECONDS)));
             modelMap.addAttribute("games", games);
             modelMap.addAttribute("player", player.get());
         }else{
@@ -205,6 +208,7 @@ public class PlayerController {
 
         if(player.isPresent()){
             Collection<Game> games = gameService.findGamesByPlayerId(player.get().getId());
+            StreamSupport.stream(games.spliterator(), false).forEach(x->x.setStartTime(x.getStartTime().truncatedTo(ChronoUnit.SECONDS)));
             modelMap.addAttribute("games", games);
             modelMap.addAttribute("player", player.get());
         }else{
@@ -341,7 +345,7 @@ public class PlayerController {
 
         if (securityService.isAdmin()) {
 
-            if(filterName!=null){ 
+            if(filterName==null){ 
                 filterName = "";
             }
             

@@ -77,7 +77,7 @@ public class GameController {
             return VIEW_CREATE_OR_UPDATE_GAME_FORM;
         
         }else if(p.getInGame()) {
-            Game game = p.getGames().stream().filter(x->x.getEndTime()==null && x.isHas_started()).findFirst().get(); //JUEGO QUE ESTÁ JUGANDO AHORA MISMO
+            Game game = p.getGames().stream().filter(x->x.getEndTime()==null && x.isHasStarted()).findFirst().get(); //JUEGO QUE ESTÁ JUGANDO AHORA MISMO
             return "redirect:/boards/"+game.getCode();
         
         } else {

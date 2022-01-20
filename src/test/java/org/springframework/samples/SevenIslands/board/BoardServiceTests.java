@@ -112,7 +112,7 @@ public class BoardServiceTests {
         game.setCode("AAAABBBB1");
         game.setActualPlayer(1);
         game.setPrivacity(PRIVACITY.PUBLIC);
-        game.setHas_started(false);
+        game.setHasStarted(false);
         game.setPlayer(firstPlayer);
         game.setBoard(boardService.findById(1).get());
         List<Player> listPlayer = new ArrayList<>();

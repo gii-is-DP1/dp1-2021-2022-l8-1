@@ -176,7 +176,7 @@ public class BoardService {
         
         String res=null;
 
-        if(!game.isHas_started()){  
+        if(!game.isHasStarted()){  
             
             gameIsNotStarted(game, request);
 
@@ -189,7 +189,7 @@ public class BoardService {
             request.getSession().removeAttribute("message");
             request.getSession().removeAttribute("options");
             
-        }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=3600){  
+        }else if(ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now())>=40){  
             //Same code in changeTurn
             Integer n = game.getPlayers().size();
             game.setActualPlayer((game.getActualPlayer()+1)%n);
@@ -203,7 +203,7 @@ public class BoardService {
         gameService.save(game);
         modelMap.addAttribute("id_playing", game.getPlayers().get(game.getActualPlayer()).getId());
         Long temp = ChronoUnit.SECONDS.between(game.getTurnTime(), LocalDateTime.now());
-        modelMap.addAttribute("tempo", 3600-temp.intValue());
+        modelMap.addAttribute("tempo", 40-temp.intValue());
 
         return res;
 
@@ -221,7 +221,7 @@ public class BoardService {
         game.setPlayers(players);
         
         game.setActualPlayer(0);    
-        game.setHas_started(true);
+        game.setHasStarted(true);
         game.setTurnTime(LocalDateTime.now());
 
         request.getSession().setAttribute("playersAtStart", playersAtStart);
