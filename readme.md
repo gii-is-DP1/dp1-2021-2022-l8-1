@@ -26,7 +26,7 @@ java -jar target/*.jar
 
 You can then access SevenIslands here: http://localhost:8080/
 
-<img width="1042" alt="SevenIslands-screenshot" src="dp1-2021-2022-l8-1/materials/Game screenshots/lobby.JPG">
+<img width="1042" alt="SevenIslands-screenshot" src="![lobby](https://user-images.githubusercontent.com/80202474/150423306-8089f9a6-a1b2-4073-8646-16fdf8a00701.jpg)">
 
 Or you can run it from Maven directly using the Spring Boot Maven plugin. If you do this it will pick up changes that you make in the project immediately (changes to Java source files require a compile as well - most people use an IDE for this):
 
