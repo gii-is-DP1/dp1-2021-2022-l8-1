@@ -314,6 +314,18 @@ public class PlayerController {
 			model.put("player", player);
 			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
         }
+        Player playerBeforeEdit = playerService.findPlayerById(playerId).get();
+        Boolean isNewUser = false;
+        if(playerService.emailAlreadyused(player.email, playerBeforeEdit, isNewUser)){
+            model.addAttribute("errorMessage", "Email already used by other user");
+            model.put("player", player);
+			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+        }
+        if(playerService.usernameAlreadyused(player.getUser().getUsername(), playerBeforeEdit.getUser(), isNewUser)){
+            model.addAttribute("errorMessage", "Username already used by other user");
+            model.put("player", player);
+			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+        }
 
 		if (result.hasErrors()){
 			model.put("player", player);

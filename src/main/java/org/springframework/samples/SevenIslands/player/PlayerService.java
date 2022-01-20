@@ -17,6 +17,7 @@ import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWo
 import org.springframework.samples.SevenIslands.inappropriateWord.InappropiateWordService;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
 import org.springframework.samples.SevenIslands.user.AuthoritiesService;
+import org.springframework.samples.SevenIslands.user.User;
 import org.springframework.samples.SevenIslands.user.UserService;
 import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -150,6 +151,32 @@ public class PlayerService {
     public Collection<?> getAuditPlayers(String username) {
         return playerRepo.findAuditPlayers(username);
 
+    }
+  
+    @Transactional(readOnly = true)
+    public Collection<?> getAuditPlayers2() {
+        return playerRepo.findAuditPlayers2();
+
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean emailAlreadyused(String email, Player p, Boolean isNewPlayer){
+        List<String> emails = playerRepo.findEmails().stream().collect(Collectors.toList());
+        if(!isNewPlayer){
+            return emails.contains(email) && !p.getEmail().equals(email);
+        }else{
+            return emails.contains(email);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean usernameAlreadyused(String userName, User u, Boolean isNewUser){
+        List<String> userNames = playerRepo.findUsernames().stream().collect(Collectors.toList());
+        if(!isNewUser){
+            return userNames.contains(userName) && !u.getUsername().equals(userName);
+        }else{
+            return userNames.contains(userName);
+        }
     }
   
     @Transactional(readOnly = true)

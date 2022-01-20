@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,6 +18,7 @@ import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,10 +108,13 @@ public class BoardServiceTests {
         game.setId(TEST_GAME_ID);
         game.setName("Partida 1");
         Deck deck = deckService.init(game.getName());
+       
         game.setCode("AAAABBBB1");
+        game.setActualPlayer(1);
         game.setPrivacity(PRIVACITY.PUBLIC);
         game.setHasStarted(false);
         game.setPlayer(firstPlayer);
+        game.setBoard(boardService.findById(1).get());
         List<Player> listPlayer = new ArrayList<>();
         listPlayer.add(firstPlayer);
         game.setPlayers(listPlayer);
@@ -171,6 +176,55 @@ public class BoardServiceTests {
         assertThat(game.getBoard().getIslands()).isNotEmpty();
     }
 
+    @Disabled
+    @WithMockUser(value = "spring")
+    @Test
+    public void testInitBoard(){
+        Game game = gameService.findGameById(TEST_GAME_ID).get();
+        boardService.initBoard(game);
+
+        assertThat(game.getBoard().getIslands().stream().allMatch(x->x.getCard() != null));
+    }
+    
+
+    @WithMockUser(value = "spring")
+    @Test
+    public void testFinishTheGame(){
+        Game game = gameService.findGameById(TEST_GAME_ID).get();
+        LocalDateTime notEndedTime = game.getEndTime();
+        boardService.finishTheGame(game);
+        
+
+        assertThat(notEndedTime != game.getEndTime());
+    }
+
+    @WithMockUser(value = "spring")
+    @Test
+    public void testRollDie(){
+        Game game = gameService.findGameById(TEST_GAME_ID).get();
+        Boolean throwed = game.getDieThrows();
+        boardService.rollDie(game);
+
+        assertThat(throwed != game.getDieThrows());
+    }
+
+    
+    @WithMockUser(value = "spring")
+    @Test
+    public void testChangeTurn(){
+        Game game = gameService.findGameById(TEST_GAME_ID).get();
+        boardService.changeTurn(game);
+        assertThat(game.getActualPlayer() == 2);
+    }
+
+    @WithMockUser(value = "spring")
+    @Test
+    public void testChangeDeckZeroCards(){
+        Game game = gameService.findGameById(TEST_GAME_ID).get();
+        boardService.changeDeckZeroCards(game, game.getDeck().getCards());
+        assertThat(game.getDeck().getCards().size() == 0);
+    }
+
     @WithMockUser(value = "spring")
     @Test
     public void testDistribute(){
@@ -221,7 +275,7 @@ public class BoardServiceTests {
         List<Player> players = game.getPlayers();
         String code = game.getCode();
         if(players.stream().anyMatch(x->x.equals(player1))){
-            String none = boardService.leaveGame(player1, code);
+            boardService.leaveGame(player1, code);
             List<Player> actualPlayers = game.getPlayers();
             assertTrue(actualPlayers.stream().noneMatch(x->x.equals(player1)));
         }
