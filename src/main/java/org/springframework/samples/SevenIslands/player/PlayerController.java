@@ -44,12 +44,6 @@ public class PlayerController {
     @Autowired
     private GameService gameService;
 
-    @Autowired	
-	private UserService userService;
-    
-    @Autowired
-    private AuthoritiesService authoritiesService;
-
     @Autowired
     private AchievementService achievementService;
 
@@ -71,8 +65,8 @@ public class PlayerController {
             List<Player> players = playerService.getPaginatedPlayers(filterName, pageNumber);
 
             modelMap.addAttribute("players", players);
-            modelMap.addAttribute("filterName", filterName);
-            modelMap.addAttribute("pageNumber", pageNumber);
+            modelMap.addAttribute("filterName", filterName==null?"":filterName);
+            modelMap.addAttribute("pageNumber", pageNumber==null?0:pageNumber);
             modelMap.addAttribute("nextPageNumber", nextPageNumber);
             modelMap.addAttribute("previousPageNumber", previousPageNumber);
 
@@ -228,11 +222,14 @@ public class PlayerController {
             Optional<Player> p = playerService.findPlayerById(playerId);
             if(p.isPresent()){
                 Player player = p.get();
-                Collection<Game> lg = player.getGames();
+                Collection<Game> lg = player.getGames()==null? new ArrayList<>():player.getGames();
                 Collection<Game> col = lg.stream().filter(x->x.getPlayer().getId()!=playerId).collect(Collectors.toCollection(ArrayList::new));
                 col.stream().forEach(x->x.deletePlayerOfGame(player));
-
-                player.deleteGames(col);
+                
+                if(!lg.isEmpty()) {
+                    player.deleteGames(col);    //FIXME: peta aquí el test
+                }
+                
         
                 playerService.delete(player);
                 modelMap.addAttribute("message", "Player successfully deleted!");
@@ -241,7 +238,6 @@ public class PlayerController {
 
             }else{
                 modelMap.addAttribute("message", "Player not found");
-                // request.getSession().setAttribute("message", "Player not found");
                 view=listPlayers(modelMap, null, 0);
             }
         }else{
@@ -331,9 +327,14 @@ public class PlayerController {
 			model.put("player", player);
 			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM; 
 		} else {
+        
+            if(!player.getUser().getUsername().contains(" ")) {
+                return playerService.processEditPlayer(player, playerId, result);
             
-            return playerService.processEditPlayer(player, playerId, result);
-
+            } else {
+                model.addAttribute("errorMessage", "Your username can't contain empty spaces. ");
+                return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+            } 
 		}
 	}  
 

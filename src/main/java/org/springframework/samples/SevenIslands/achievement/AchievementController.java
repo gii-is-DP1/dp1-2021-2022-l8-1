@@ -86,7 +86,6 @@ public class AchievementController {
                 List<Achievement> achievements = StreamSupport.stream(achievementsI.spliterator(), false).collect(Collectors.toList());
 
                 for(Achievement a:achievements){
-
                     if(a.getParameter()==achievement.getParameter() && a.getMinValue().equals(achievement.getMinValue())){
                     
                         modelMap.put("achievement", achievement);
@@ -171,30 +170,30 @@ public class AchievementController {
 			return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
 		
         } else {
-            Achievement achievementToUpdate= achievementService.findAchievementById(achievementId).get();   
-            // always present because if not, it should have redirected to achievements page with the message "Achievement not found!" in the @GetMapping before
-			
-            if(achievementToUpdate.getVersion()!=version){    //Version
-                model.put("message", "Concurrent modification of achievement! Try again!");
-                return updateAchievement(achievementToUpdate.getId(),model,request);
-            }else if(achievementService.achievementHasInappropiateWords(achievement)){
+            Optional<Achievement> opt = achievementService.findAchievementById(achievementId);
+            if(opt.isPresent()) {
+                Achievement achievementToUpdate= opt.get();   
+                // always present because if not, it should have redirected to achievements page with the message "Achievement not found!" in the @GetMapping before
                 
-                model.put("achievement", achievement);
-                model.addAttribute("errorMessage", "The achievement's name contains inappropiate words. Please, check your language.");
-                return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+                if(!achievementToUpdate.getVersion().equals(version)){    //Version
+                    model.put("message", "Concurrent modification of achievement! Try again!");
+                    return updateAchievement(achievementToUpdate.getId(),model,request);
+                }
+    
+                BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  
+                        try {                    
+                            achievementService.save(achievementToUpdate);        
+                            request.getSession().setAttribute("message", "Achievement successfully updated!");            
+                        
+                        } catch (Exception ex) {
+                            result.rejectValue("name", "duplicate", "already exists");
+                            return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+                        }
+                return "redirect:/achievements";
+            } else {
+                request.getSession().setAttribute("message", "Achievement not found!");
+                return "redirect:/achievements";
             }
-
-            BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  
-            try {                    
-                achievementService.save(achievementToUpdate);        
-                request.getSession().setAttribute("message", "Achievement successfully updated!");            
-            
-            } catch (Exception ex) {
-                result.rejectValue("name", "duplicate", "already exists");
-                return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
-            }
-            
-			return "redirect:/achievements";
 		}
 	}
 

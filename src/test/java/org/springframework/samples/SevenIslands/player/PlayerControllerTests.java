@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
 import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.admin.Admin;
-import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
@@ -21,8 +22,7 @@ import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.ModelMap;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.validation.BindingResult;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -32,9 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @WebMvcTest(controllers = PlayerController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
@@ -102,9 +103,8 @@ public class PlayerControllerTests {
         auth.setAuthority("player");
         Set<Authorities> st = Set.of(auth);
 
-        otherUser.setAuthorities(st);   // otherUser is a player
-        otherPlayer.setUser(otherUser); // otherPlayer is a player
-
+        otherUser.setAuthorities(st);   
+        otherPlayer.setUser(otherUser); 
         userAdmin = new User();
         userAdmin.setUsername("4dm1n");
         userAdmin.setPassword("Us_4dm1n!");
@@ -129,11 +129,24 @@ public class PlayerControllerTests {
     //Method -> listPlayers
 
 
-    @Disabled
     @WithMockUser(value = "spring")
 	@Test
 	void testListPlayers() throws Exception {
-		mockMvc.perform(get("/players")).andExpect(status().isOk())
+
+        List<Integer> ls = new ArrayList<>();
+        ls.add(0);
+        ls.add(1);
+
+        when(securityService.isAdmin()).thenReturn(true);
+        when(playerService.calculatePages(any())).thenReturn(ls);
+
+		mockMvc.perform(get("/players"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("players"))
+                .andExpect(model().attributeExists("filterName"))
+                .andExpect(model().attributeExists("pageNumber"))
+                .andExpect(model().attributeExists("nextPageNumber"))
+                .andExpect(model().attributeExists("previousPageNumber"))
 				.andExpect(view().name("players/listPlayers"));
 	}
 
@@ -143,7 +156,8 @@ public class PlayerControllerTests {
 	@Test
 	void testPlayerProfile() throws Exception {
 		mockMvc.perform(get("/players/profile/{playerId}",TEST_PLAYER_ID))
-                .andExpect(status().isOk()).andExpect(model().attributeExists("player"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("player"))
 				.andExpect(view().name("/players/profile"));
 	}
 
@@ -257,17 +271,23 @@ public class PlayerControllerTests {
 
     
 
-    @Disabled
+
     @WithMockUser(value="spring")
 	@Test
 	void testDeletePlayer() throws Exception {
 
-        when(this.securityService.isAdmin()).thenReturn(true);
+        List<Integer> ls = new ArrayList<>();
+        ls.add(0);
+        ls.add(1);
+
+        when(playerService.calculatePages(any())).thenReturn(ls);
+
+        when(securityService.isAdmin()).thenReturn(true);
 
 		mockMvc.perform(get("/players/delete/{playerId}", TEST_PLAYER_ID))
                 .andExpect(status().isOk())
-                // .andExpect(model().attribute("message", "Player not found"))
-				.andExpect(view().name("/error"));
+                .andExpect(model().attribute("message", "Player successfully deleted!"))
+				.andExpect(view().name("players/listPlayers"));
 	}
 
     //Method -> updatePlayer
@@ -291,22 +311,45 @@ public class PlayerControllerTests {
             .andExpect(view().name("players/createOrUpdatePlayerForm"));
 	}
 
-    @Disabled
+
+    // H15-E1: Nombre de usuario no válido
+    @WithMockUser(value = "spring")
+    @Test
+    void testProcessUpdatePlayerFormWithEmptySpaceInUsername() throws Exception {
+		
+        when(playerService.playerHasInappropiateWords(any())).thenReturn(false);
+
+        mockMvc.perform(post("/players/edit/{playerId}", TEST_PLAYER_ID)
+            .with(csrf())
+            .param("profilePhoto", otherPlayer.getProfilePhoto())
+            .param("firstName", otherPlayer.getFirstName())
+            .param("surname",otherPlayer.getSurname())
+            .param("email",otherPlayer.getEmail())
+            .param("user.username", otherPlayer.getUser().getUsername() + " editado")
+            .param("user.password", otherPlayer.getUser().getPassword()))
+            .andExpect(status().isOk())
+            .andExpect(model().attribute("errorMessage", "Your username can't contain empty spaces. "))
+            .andExpect(view().name("players/createOrUpdatePlayerForm"));
+	}
+
+
     @WithMockUser(value = "spring")
 	@Test
 	void testProcessUpdatePlayerFormSuccess() throws Exception {
 
         when(playerService.playerHasInappropiateWords(any())).thenReturn(false);
+        when(playerService.processEditPlayer(any(Player.class), any(Integer.class), any(BindingResult.class))).thenReturn("redirect:/welcome");
 
 		mockMvc.perform(post("/players/edit/{playerId}", TEST_PLAYER_ID)
-        .with(csrf())
-        .param("profilePhoto", "https://imagen.png")
-        .param("firstName","Manuel")
-        .param("surname","González")
-        .param("email","manuelgonzalez@gmail.com"))
-        //.andExpect(status().is3xxRedirection())
-        .andExpect(model().attributeExists("player"))
-	    .andExpect(view().name("/players/listPlayers"));
+                .with(csrf())
+                .param("profilePhoto", otherPlayer.getProfilePhoto())
+                .param("firstName",otherPlayer.getFirstName())
+                .param("surname",otherPlayer.getSurname())
+                .param("email", otherPlayer.getEmail())
+                .param("user.username", otherPlayer.getUser().getUsername() + "9")  //username editado
+                .param("user.password", otherPlayer.getUser().getPassword()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/welcome"));
 	}
 
     //Method -> playerAuditing

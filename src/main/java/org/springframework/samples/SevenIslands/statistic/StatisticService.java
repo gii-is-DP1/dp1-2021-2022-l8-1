@@ -18,7 +18,6 @@ import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.island.Island;
 import org.springframework.samples.SevenIslands.island.IslandService;
 import org.springframework.samples.SevenIslands.player.Player;
-import org.springframework.samples.SevenIslands.player.PlayerRepository;
 import org.springframework.samples.SevenIslands.player.PlayerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StatisticService {
 
     @Autowired
-    public StatisticRepository statisticRepo;  // TODO: change to service
-
-    @Autowired
-    public PlayerRepository playerRepo; // TODO: change to service
+    public StatisticRepository statisticRepo;  
 
     @Autowired
     public PlayerService playerService;
@@ -45,9 +41,8 @@ public class StatisticService {
     public CardService cardService;
 
     @Autowired
-	public StatisticService(StatisticRepository statisticRepo, PlayerRepository playerRepo, PlayerService playerService, IslandService islandService, CardService cardService, GameService gameService) {
+	public StatisticService(StatisticRepository statisticRepo, PlayerService  playerService, IslandService islandService, CardService cardService, GameService gameService) {
         this.statisticRepo = statisticRepo;
-        this.playerRepo = playerRepo;
         this.playerService = playerService;
         this.islandService = islandService;
         this.cardService = cardService;
@@ -88,24 +83,31 @@ public class StatisticService {
     @Transactional(readOnly=true)
     public Island getFavoriteIslandByPlayerId(Integer playerId) {
         Collection<Integer> islandIds = statisticRepo.findIslandIdsByPlayerIdOrderedByCount(playerId);
-        if(islandIds.size()==0){
+        if(islandIds.isEmpty()){
             return null;
         }
         Integer favIslandId = islandIds.iterator().next();
-        Island favIsland = islandService.getByIslandId(favIslandId).get();
-        return favIsland;
+        Optional<Island> opt = islandService.getByIslandId(favIslandId);
+        if(opt.isPresent()) {
+            return opt.get();
+        }
+        return null;
     }
 
     // CARD
     @Transactional(readOnly=true)
     public Card getFavoriteCardByPlayerId(Integer playerId) {
         Collection<Integer> cardIds = statisticRepo.findCardIdsByPlayerIdOrderedByCount(playerId);
-        if(cardIds.size()==0){
+        if(cardIds.isEmpty()){
             return null;
         }
         Integer favCardId = cardIds.iterator().next();
-        Card favCard = cardService.findCardById(favCardId).get();
-        return favCard;
+        Optional<Card> opt = cardService.findCardById(favCardId);
+        if(opt.isPresent()) {
+            return opt.get();
+        }
+        return null;
+        
     }
 
     // WINS
@@ -118,8 +120,7 @@ public class StatisticService {
     public Double getAvgWinsByPlayerId(Integer playerId) {
         Integer games = gameService.findGamesCountByPlayerId(playerId);
         Integer wins = statisticRepo.findWinsCountByPlayerId(playerId);
-        Double avgWins = (double) wins / games;
-        return avgWins;
+        return (double) wins / games;
     }
 
     // POINTS
@@ -192,8 +193,8 @@ public class StatisticService {
         statisticRepo.updateIslandCount(id,islandId,sum + 1);
     }
 
+    @Transactional
     public void setFinalStatistics(List<Player> players, LinkedHashMap<Player, Integer> playersByPunctuation, Game game) {
-        
         for(Player p: players){
             Integer punctuation = playersByPunctuation.get(p);
             List<Statistic> s = this.getStatisticByPlayerId(p.getId());
@@ -224,11 +225,9 @@ public class StatisticService {
     @Transactional
     public boolean existsRow(Integer statsId, Integer cardId){
         Integer a = statisticRepo.findExistRow(statsId, cardId);
-        if(a == 1){
-            return true;
-        }else{
-            return false;
-        }
+
+        return a==1?true:false;
+
     }
 
     

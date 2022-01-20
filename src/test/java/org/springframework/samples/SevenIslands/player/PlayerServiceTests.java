@@ -502,6 +502,7 @@ public class PlayerServiceTests {
 
     //USER´S HISTORIES
 
+
     @Test
     void testCountAllPlayers() { // H16 - POSITIVE 1
         long count = playerService.findAll().spliterator().getExactSizeIfKnown();

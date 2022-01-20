@@ -94,36 +94,42 @@ public class AdminController {
 			return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM;
 		}
 		else {
+            Optional<Admin> opt = adminService.findAdminById(adminId);
+            if(opt.isPresent()) {
+                Admin adminToUpdate = opt.get();
+                // always present because if not, it should have redirected to error page in @GetMapping before
             
-            Admin adminToUpdate = adminService.findAdminById(adminId).get();
-            // always present because if not, it should have redirected to error page in @GetMapping before
-        
-            
-            int authId = adminToUpdate.getUser().getAuthorities().iterator().next().getId();
-            String userName = adminToUpdate.getUser().getUsername();
+                
+                int authId = adminToUpdate.getUser().getAuthorities().iterator().next().getId();
+                String userName = adminToUpdate.getUser().getUsername();
 
-			BeanUtils.copyProperties(admin, adminToUpdate, "id");                                                                                  
-                    try {                    
-                        adminService.save(adminToUpdate);
-                        userService.saveUser(adminToUpdate.getUser());
-		                
-		                authoritiesService.saveAuthorities(adminToUpdate.getUser().getUsername(), "admin");  
-                        authoritiesService.deleteAuthorities(authId);
-                        
-                        if(!userName.equals(adminToUpdate.getUser().getUsername())){   
-                            userService.delete(userName);
+                BeanUtils.copyProperties(admin, adminToUpdate, "id");                                                                                  
+                        try {                    
+                            adminService.save(adminToUpdate);
+                            userService.saveUser(adminToUpdate.getUser());
+                            
+                            authoritiesService.saveAuthorities(adminToUpdate.getUser().getUsername(), "admin");  
+                            authoritiesService.deleteAuthorities(authId);
+                            
+                            if(!userName.equals(adminToUpdate.getUser().getUsername())){   
+                                userService.delete(userName);
+                            }
+                            
+                        } catch (Exception ex) {
+                            result.rejectValue("name", "duplicate", "already exists");
+                            return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM ;
                         }
-                        
-                    } catch (Exception ex) {
-                        result.rejectValue("name", "duplicate", "already exists");
-                        return VIEWS_ADMINS_CREATE_OR_UPDATE_FORM ;
-                    }
 
-                    if(!userName.equals(adminToUpdate.getUser().getUsername())){
-                        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
-                        return "redirect:/welcome";
-                    }
-			return "redirect:/admins/profile/" + adminId;
+                        if(!userName.equals(adminToUpdate.getUser().getUsername())){
+                            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+                            return "redirect:/welcome";
+                        }
+                return "redirect:/admins/profile/" + adminId;
+            } else {
+                model.put("message", "admin not found");
+                return "/error";
+            }
+            
 		}
 	}
 

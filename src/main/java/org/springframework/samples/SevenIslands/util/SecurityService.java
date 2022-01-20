@@ -1,6 +1,7 @@
 package org.springframework.samples.SevenIslands.util;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,7 +43,8 @@ public class SecurityService {
 
     @Transactional
     public Player getCurrentPlayer() {
-        return playerService.getPlayerByUsername(getCurrentUser().getUsername()).stream().findFirst().get();
+        Optional<Player> opt = playerService.getPlayerByUsername(getCurrentUser().getUsername()).stream().findFirst();
+        return opt.isPresent()? opt.get() : null;
     }
 
     @Transactional

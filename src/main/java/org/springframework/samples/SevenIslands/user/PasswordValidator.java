@@ -9,6 +9,6 @@ public class PasswordValidator implements ConstraintValidator<PasswordConstraint
     }
     @Override 
     public boolean isValid(String contactField, ConstraintValidatorContext cxt) { 
-    return contactField != "" && contactField.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}:;<>,.?~_+-=|]).{9,}$"); 
+    return !contactField.equals("") && contactField.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}:;<>,.?~_+-=|]).{9,}$"); 
     }
     }
