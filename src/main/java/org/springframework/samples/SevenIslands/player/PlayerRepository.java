@@ -46,4 +46,11 @@ public interface PlayerRepository extends PagingAndSortingRepository<Player, Int
 	@Query("SELECT P FROM Player P INNER JOIN P.user U WHERE ( LOWER(P.surname) LIKE %:data% or LOWER(U.username) LIKE %:data% or LOWER(P.firstName) LIKE %:data%)")
 	Page<Player> findIfPlayerContains(@Param("data") String data, Pageable pageable);
 
+	@Query("SELECT P.email FROM Player P")
+	Collection<String> findEmails() throws DataAccessException;
+
+	@Query("SELECT U.username FROM User U")
+	Collection<String> findUsernames() throws DataAccessException;
+
+
 }
