@@ -82,7 +82,7 @@
         }
 
         function tryToEnterBoard(game) {
-            let hasStarted = game.has_started;
+            let hasStarted = game.hasStarted;
             if(hasStarted) location.reload();
         }
 

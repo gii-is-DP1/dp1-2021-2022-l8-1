@@ -89,7 +89,7 @@ public class BoardControllerTests {
         firstGame.setName("First Game");
         firstGame.setCode("AHG28FD9J");
         firstGame.setPrivacity(PRIVACITY.PUBLIC);
-        firstGame.setHas_started(true);
+        firstGame.setHasStarted(true);
         firstGame.setPlayer(firstPlayer);
         firstGame.setPlayers(List.of(firstPlayer));
 

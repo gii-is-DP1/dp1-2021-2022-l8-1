@@ -90,7 +90,7 @@ public class GameControllerTests {
         firstGame.setName("First Game");
         firstGame.setCode("AHG28FD9J");
         firstGame.setPrivacity(PRIVACITY.PUBLIC);
-        firstGame.setHas_started(true);
+        firstGame.setHasStarted(true);
         firstGame.setPlayer(firstPlayer);
 
         when(this.gameService.findGameById(TEST_GAME_ID)).thenReturn(Optional.of(firstGame));
@@ -145,7 +145,7 @@ public class GameControllerTests {
     void testPlayerIsInGame() throws Exception {
  
         firstPlayer.setInGame(true);
-        firstGame.setHas_started(true);
+        firstGame.setHasStarted(true);
         //firstGame.setEndTime(null);
         Collection <Game> cl = new ArrayList<>();
         cl.add(firstGame);

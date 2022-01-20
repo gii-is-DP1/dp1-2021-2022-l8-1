@@ -108,7 +108,7 @@ public class BoardServiceTests {
         Deck deck = deckService.init(game.getName());
         game.setCode("AAAABBBB1");
         game.setPrivacity(PRIVACITY.PUBLIC);
-        game.setHas_started(false);
+        game.setHasStarted(false);
         game.setPlayer(firstPlayer);
         List<Player> listPlayer = new ArrayList<>();
         listPlayer.add(firstPlayer);

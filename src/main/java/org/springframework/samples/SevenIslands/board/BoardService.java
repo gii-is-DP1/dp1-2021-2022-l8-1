@@ -176,7 +176,7 @@ public class BoardService {
         
         String res=null;
 
-        if(!game.isHas_started()){  
+        if(!game.isHasStarted()){  
             
             gameIsNotStarted(game, request);
 
@@ -221,7 +221,7 @@ public class BoardService {
         game.setPlayers(players);
         
         game.setActualPlayer(0);    
-        game.setHas_started(true);
+        game.setHasStarted(true);
         game.setTurnTime(LocalDateTime.now());
 
         request.getSession().setAttribute("playersAtStart", playersAtStart);
