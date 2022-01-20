@@ -178,6 +178,11 @@ public class AchievementController {
                 if(!achievementToUpdate.getVersion().equals(version)){    //Version
                     model.put("message", "Concurrent modification of achievement! Try again!");
                     return updateAchievement(achievementToUpdate.getId(),model,request);
+                }else if(achievementService.achievementHasInappropiateWords(achievement)){
+                    model.put("achievement", achievement);
+                    model.addAttribute("errorMessage", "The achievement's name contains inappropiate words. Please, check your language.");
+                    return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+        
                 }
     
                 BeanUtils.copyProperties(achievement, achievementToUpdate, "id");                                                                                  
