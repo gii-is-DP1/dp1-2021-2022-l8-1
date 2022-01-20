@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
 import org.springframework.samples.SevenIslands.achievement.AchievementService;
 import org.springframework.samples.SevenIslands.admin.Admin;
-import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.general.GeneralService;
 import org.springframework.samples.SevenIslands.statistic.StatisticService;
@@ -21,11 +22,9 @@ import org.springframework.samples.SevenIslands.util.SecurityService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.ModelMap;
-import org.springframework.context.annotation.FilterType;
+
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,9 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Any;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @WebMvcTest(controllers = PlayerController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
@@ -107,9 +103,8 @@ public class PlayerControllerTests {
         auth.setAuthority("player");
         Set<Authorities> st = Set.of(auth);
 
-        otherUser.setAuthorities(st);   // otherUser is a player
-        otherPlayer.setUser(otherUser); // otherPlayer is a player
-
+        otherUser.setAuthorities(st);   
+        otherPlayer.setUser(otherUser); 
         userAdmin = new User();
         userAdmin.setUsername("4dm1n");
         userAdmin.setPassword("Us_4dm1n!");
@@ -313,6 +308,27 @@ public class PlayerControllerTests {
             .param("email","manuelgonzalez@gmail.com"))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("player"))
+            .andExpect(view().name("players/createOrUpdatePlayerForm"));
+	}
+
+
+    // H15-E1: Nombre de usuario no válido
+    @WithMockUser(value = "spring")
+    @Test
+    void testProcessUpdatePlayerFormWithEmptySpaceInUsername() throws Exception {
+		
+        when(playerService.playerHasInappropiateWords(any())).thenReturn(false);
+
+        mockMvc.perform(post("/players/edit/{playerId}", TEST_PLAYER_ID)
+            .with(csrf())
+            .param("profilePhoto", otherPlayer.getProfilePhoto())
+            .param("firstName", otherPlayer.getFirstName())
+            .param("surname",otherPlayer.getSurname())
+            .param("email",otherPlayer.getEmail())
+            .param("user.username", otherPlayer.getUser().getUsername() + " editado")
+            .param("user.password", otherPlayer.getUser().getPassword()))
+            .andExpect(status().isOk())
+            .andExpect(model().attribute("errorMessage", "Your username can't contain empty spaces. "))
             .andExpect(view().name("players/createOrUpdatePlayerForm"));
 	}
 

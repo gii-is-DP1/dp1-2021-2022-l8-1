@@ -122,12 +122,15 @@ public class PlayerService {
 
     @Transactional
 	public void savePlayer(Player player) throws DataAccessException {
-		//creating player
-		playerRepo.save(player);		
-		//creating user
-		userService.saveUser(player.getUser());
-		//creating authorities
-		authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
+
+        if(!player.getUser().getUsername().contains(" ")) {
+            //creating player
+            playerRepo.save(player);		
+            //creating user
+            userService.saveUser(player.getUser());
+            //creating authorities
+            authoritiesService.saveAuthorities(player.getUser().getUsername(), "player");
+        }
 	}
 
     @Transactional(readOnly = true)

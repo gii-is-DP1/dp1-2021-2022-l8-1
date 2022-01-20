@@ -43,12 +43,6 @@ public class PlayerController {
     @Autowired
     private GameService gameService;
 
-    @Autowired	
-	private UserService userService;
-    
-    @Autowired
-    private AuthoritiesService authoritiesService;
-
     @Autowired
     private AchievementService achievementService;
 
@@ -317,9 +311,14 @@ public class PlayerController {
 			model.put("player", player);
 			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM; 
 		} else {
+        
+            if(!player.getUser().getUsername().contains(" ")) {
+                return playerService.processEditPlayer(player, playerId, result);
             
-            return playerService.processEditPlayer(player, playerId, result);
-
+            } else {
+                model.addAttribute("errorMessage", "Your username can't contain empty spaces. ");
+                return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+            } 
 		}
 	}  
 
