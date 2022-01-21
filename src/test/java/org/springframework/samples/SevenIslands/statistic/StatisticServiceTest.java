@@ -153,52 +153,7 @@ public class StatisticServiceTest {
         assertEquals(3, statistics.size());
     }
 
-    @Disabled
-    @Test
-    public void testInsertCardCount(){
-        Integer statisticId = statisticService.getStatisticByPlayerId(1).get(0).getId();
-        Statistic statistic = statisticService.getStatisticByPlayerId(1).get(0);
-        Integer i = statisticService.getStatisticByPlayerId(1).get(0).getCardCount().entrySet().size();
-        statisticService.insertCardCount(statisticId, 23);
-        statisticService.save(statistic);
-        Statistic statistic2 = statisticService.getStatisticByPlayerId(1).get(0);
-        Integer i2 = statisticService.getStatisticByPlayerId(1).get(0).getCardCount().entrySet().size();
-        assertEquals(i+1, i2);
-    }
-
-    @Disabled
-    @Test
-    public void testInsertinitIslandCount(){
-        Statistic statistic = new Statistic();
-        statistic.setPlayer(playerService.findPlayerById(TEST_PLAYER_ID).get());
-        statistic.setIslandCount(new HashMap<>());
-        statisticService.save(statistic);
-        Integer i = statistic.getIslandCount().entrySet().size();
-        statisticService.insertinitIslandCount(statistic.getId(),1);
-        statisticService.save(statistic);
-        Integer i2 = statistic.getIslandCount().entrySet().size();
-        assertEquals(i+1, i2);
-    }
-
-    @Disabled
-    @Test
-    public void testUpdateIslandCount(){
-        Island island = islandService.getByIslandId(1).get();
-        Integer i = statisticService.getStatisticByPlayerId(1).get(0).getIslandCount().get(island);
-        statisticService.updateIslandCount(statisticService.getStatisticByPlayerId(1).get(0).getId(), island.getId());
-        Integer i2 = statisticService.getStatisticByPlayerId(1).get(0).getIslandCount().get(island);
-        assertEquals(i+1, i2);
-    } 
-
-    @Disabled
-    @Test
-    public void testUpdateCardCount(){
-        Card card = cardService.findCardById(1).get();
-        Integer i = statisticService.getStatisticByPlayerId(1).get(0).getCardCount().get(card);
-        statisticService.updateCardCount(statisticService.getStatisticByPlayerId(1).get(0).getId(), card.getId());
-        Integer i2 = statisticService.getStatisticByPlayerId(1).get(0).getCardCount().get(card);
-        assertEquals(i+1, i2);
-    }
+    
 
     @Test
     public void testSetFinalStatistics(){
