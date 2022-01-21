@@ -59,6 +59,7 @@ public class GameController {
     @GetMapping(path = "/new")
     public String createGame(ModelMap modelMap, HttpServletRequest request) { 
         Player p = securityService.getCurrentPlayer();
+        securityService.insertIdUserModelMap(modelMap);
         if(securityService.isAdmin()) {
             request.getSession().setAttribute("message", "You must be a player to create a game");
             return "redirect:/games/rooms";

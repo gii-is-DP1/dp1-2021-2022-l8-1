@@ -12,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -69,7 +68,7 @@ public class Player extends Person{
   private List<Card> cards;
 
   //RELATION WITH GAMES 
-	@ManyToMany(mappedBy = "players",cascade = CascadeType.ALL) //PROBLEMA AQUI
+	@ManyToMany(mappedBy = "players",cascade = CascadeType.ALL)
 	@NotAudited
   private Collection<Game> games;
 
@@ -107,6 +106,6 @@ public class Player extends Person{
   //SECOND RELATION WITH GAMES
   @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
   @NotAudited
-  private Set<Game> gamesCreador;
+  private Set<Game> gamesCreator;
 	
 }

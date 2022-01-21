@@ -87,7 +87,7 @@ public class AchievementController {
                 return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
             }else if(achievementService.achievementHasInappropiateWords(achievement)){
                 modelMap.put(ACHIEVEMENT, achievement);
-                modelMap.addAttribute(ERROR_MESSAGE, "The achievement's name contains inappropiate words. Please, check your language.");
+                modelMap.addAttribute(ERROR_MESSAGE, "The achievement contains inappropiate words. Please, check your language.");
                 return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
     
             }else{
@@ -192,7 +192,7 @@ public class AchievementController {
                     return updateAchievement(achievementToUpdate.getId(),model,request);
                 }else if(achievementService.achievementHasInappropiateWords(achievement)){
                     model.put(ACHIEVEMENT, achievement);
-                    model.addAttribute(ERROR_MESSAGE, "The achievement's name contains inappropiate words. Please, check your language.");
+                    model.addAttribute(ERROR_MESSAGE, "The achievement contains inappropiate words. Please, check your language.");
                     return CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
         
                 }

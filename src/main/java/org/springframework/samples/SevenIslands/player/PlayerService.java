@@ -286,7 +286,7 @@ public class PlayerService {
             Iterable<Player> players = findAll();
             List<String> usernames = StreamSupport.stream(players.spliterator(),false).map(x->x.getUser().getUsername()).collect(Collectors.toList());
             
-            BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","games","gamesCreador");                                                                              
+            BeanUtils.copyProperties(player, playerToUpdate,"id", "profilePhoto","totalGames","totalTimeGames","avgTimeGames","maxTimeGame","minTimeGame","totalPointsAllGames","avgTotalPoints","favoriteIsland","favoriteTreasure","maxPointsOfGames","minPointsOfGames","achievements","cards","games","gamesCreator");                                                                              
             
             String newUserName = playerToUpdate.getUser().getUsername();    
 
