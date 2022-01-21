@@ -13,6 +13,12 @@ This is a fork of https://github.com/spring-projects/spring-SevenIslands to be u
 ## Understanding the Spring SevenIslands application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-SevenIslands-sample-application">See the presentation here</a>
 
+## Game preview
+
+<img width="1042" alt="SevenIslands-screenshot" src="https://github.com/gii-is-DP1/dp1-2021-2022-l8-1/blob/26bf4fb0e8ee734efae28ffb5b40462a38b0e97e/materials/Game%20screenshots/game.JPG">
+<img width="1042" alt="SevenIslands-screenshot" src="https://github.com/gii-is-DP1/dp1-2021-2022-l8-1/blob/26bf4fb0e8ee734efae28ffb5b40462a38b0e97e/materials/Game%20screenshots/gameCards.JPG">
+<img width="1042" alt="SevenIslands-screenshot" src="https://github.com/gii-is-DP1/dp1-2021-2022-l8-1/blob/26bf4fb0e8ee734efae28ffb5b40462a38b0e97e/materials/Game%20screenshots/lobby.JPG">
+
 ## Running SevenIslands locally
 SevenIslands is a [Spring Boot](https://spring.io/guides/gs/spring-boot) application built using [Maven](https://spring.io/guides/gs/maven/). You can build a jar file and run it from the command line:
 
