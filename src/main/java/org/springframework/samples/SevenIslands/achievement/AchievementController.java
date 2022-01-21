@@ -185,8 +185,7 @@ public class AchievementController {
             Optional<Achievement> opt = achievementService.findAchievementById(achievementId);
             if(opt.isPresent()) {
                 Achievement achievementToUpdate= opt.get();   
-                // always present because if not, it should have redirected to achievements page with the message "Achievement not found!" in the @GetMapping before
-                
+
                 if(!achievementToUpdate.getVersion().equals(version)){    //Version
                     model.put(MESSAGE, "Concurrent modification of achievement! Try again!");
                     return updateAchievement(achievementToUpdate.getId(),model,request);
