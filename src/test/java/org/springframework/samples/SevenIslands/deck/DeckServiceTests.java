@@ -30,13 +30,6 @@ public class DeckServiceTests {
         assertEquals(0,decks.spliterator().getExactSizeIfKnown());
     }
 
-    @Disabled
-    @Test
-    public void testFindCardsOnDeck(){
-        Iterable<Integer> cards = deckService.getCardsOnDeck(1);
-        assertEquals(2,cards.spliterator().getExactSizeIfKnown());
-    }
-
     @Test
     public void testGetDeckById(){
         Deck deck = deckService.getDeck(1);

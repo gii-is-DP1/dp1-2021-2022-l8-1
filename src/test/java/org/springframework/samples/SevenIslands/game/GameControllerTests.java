@@ -138,27 +138,6 @@ public class GameControllerTests {
                 .andExpect(view().name("games/createOrUpdateGameForm"));
     }
 
-    @Disabled
-    @WithMockUser(value = "spring")
-    @Test
-    void testPlayerIsInGame() throws Exception {
- 
-        firstPlayer.setInGame(true);
-        firstGame.setHasStarted(true);
-        
-        Collection <Game> cl = new ArrayList<>();
-        cl.add(firstGame);
-
-        Player player = mock(Player.class);
-        
-        when(this.securityService.getCurrentPlayer()).thenReturn(firstPlayer);
-        when(player.getGames()).thenReturn(cl);
- 
-        mockMvc.perform(get("/games/new"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("games/createOrUpdateGameForm"));
-    }
-
     @WithMockUser(value = "spring")
     @Test
     void testPlayerToWelcome() throws Exception {
