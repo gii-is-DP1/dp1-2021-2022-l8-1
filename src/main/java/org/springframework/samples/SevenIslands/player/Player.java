@@ -55,14 +55,14 @@ public class Player extends Person{
   @NotAudited
   private Set<Statistic> statistic;
 
-  //RELATION WITH LOGROS
+  //RELATION WITH ACHIEVEMENTS
 	@ManyToMany(fetch = FetchType.LAZY)
 	@NotAudited
   @JoinTable(name = "players_achievements", joinColumns = @JoinColumn(name = "player_id"),
 			inverseJoinColumns = @JoinColumn(name = "achievement_id"))
 	private Set<Achievement> achievements;
 
-  //RELATION WITH CARTAS
+  //RELATION WITH CARDS
   @ManyToMany(fetch = FetchType.EAGER)
 	@NotAudited
   private List<Card> cards;
