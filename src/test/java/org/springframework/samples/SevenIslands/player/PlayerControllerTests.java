@@ -2,7 +2,6 @@ package org.springframework.samples.SevenIslands.player;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -91,7 +90,7 @@ public class PlayerControllerTests {
         otherPlayer.setFirstName("Manuel");
         otherPlayer.setSurname("González");
         otherPlayer.setEmail("manuelgonzalez@gmail.com");
-
+        otherPlayer.setVersion(0);
 
 
         otherUser = new User();
@@ -148,6 +147,23 @@ public class PlayerControllerTests {
                 .andExpect(model().attributeExists("nextPageNumber"))
                 .andExpect(model().attributeExists("previousPageNumber"))
 				.andExpect(view().name("players/listPlayers"));
+	}
+
+
+    @WithMockUser(value = "spring")
+	@Test
+	void testListPlayersNotAdmin() throws Exception {
+
+        List<Integer> ls = new ArrayList<>();
+        ls.add(0);
+        ls.add(1);
+
+        when(securityService.isAdmin()).thenReturn(false);
+        when(playerService.calculatePages(any())).thenReturn(ls);
+
+		mockMvc.perform(get("/players"))
+                .andExpect(status().isOk())
+				.andExpect(view().name("/error"));
 	}
 
     //Method -> profile
@@ -269,9 +285,6 @@ public class PlayerControllerTests {
 
     //Method -> deletePlayer
 
-    
-
-
     @WithMockUser(value="spring")
 	@Test
 	void testDeletePlayer() throws Exception {
@@ -290,7 +303,127 @@ public class PlayerControllerTests {
 				.andExpect(view().name("players/listPlayers"));
 	}
 
+
+    @WithMockUser(value="spring")
+	@Test
+	void testDeletePlayerNotFound() throws Exception {
+
+        List<Integer> ls = new ArrayList<>();
+        ls.add(0);
+        ls.add(1);
+
+        when(playerService.calculatePages(any())).thenReturn(ls);
+
+        when(securityService.isAdmin()).thenReturn(true);
+
+		mockMvc.perform(get("/players/delete/{playerId}", TEST_NOT_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player not found"))
+				.andExpect(view().name("players/listPlayers"));
+	}
+
+    @WithMockUser(value="spring")
+	@Test
+	void testDeletePlayerNotAdmin() throws Exception {
+
+        List<Integer> ls = new ArrayList<>();
+        ls.add(0);
+        ls.add(1);
+
+        when(playerService.calculatePages(any())).thenReturn(ls);
+
+        when(securityService.isAdmin()).thenReturn(false);
+
+		mockMvc.perform(get("/players/delete/{playerId}", TEST_NOT_PLAYER_ID))
+                .andExpect(status().isOk())
+				.andExpect(view().name("/error"));
+	}
+
     //Method -> updatePlayer
+
+    @WithMockUser(value="spring")
+    @Test
+    void testUpdatePlayer() throws Exception {
+
+        when(securityService.isAdmin()).thenReturn(true);
+
+        mockMvc.perform(get("/players/edit/{playerId}", TEST_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("player"))
+                .andExpect(view().name("players/createOrUpdatePlayerForm"));
+
+    }
+
+    @WithMockUser(value="spring")
+    @Test
+    void testUpdatePlayerNotPresent() throws Exception {
+
+        when(securityService.isAdmin()).thenReturn(true);
+
+        mockMvc.perform(get("/players/edit/{playerId}", TEST_NOT_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player not found"))
+                .andExpect(view().name("/error"));
+
+    }
+
+    @WithMockUser(value="spring")
+    @Test
+    void testUpdatePlayerNotAdmin() throws Exception {
+
+        when(securityService.isAdmin()).thenReturn(false);
+        when(securityService.isAuthenticatedUser()).thenReturn(true);
+        when(securityService.getCurrentPlayerId()).thenReturn(TEST_PLAYER_ID);
+
+        mockMvc.perform(get("/players/edit/{playerId}", TEST_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("player"))
+                .andExpect(view().name("players/createOrUpdatePlayerForm"));
+
+    }
+
+    @WithMockUser(value="spring")
+    @Test
+    void testUpdateDifferentPlayertNotAdmin() throws Exception {
+
+        when(securityService.isAdmin()).thenReturn(false);
+        when(securityService.isAuthenticatedUser()).thenReturn(true);
+        when(securityService.getCurrentPlayerId()).thenReturn(TEST_PLAYER_ID-1);
+
+        mockMvc.perform(get("/players/edit/{playerId}", TEST_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player not found"))
+                .andExpect(view().name("/error"));
+
+    }
+
+    @WithMockUser(value="spring")
+    @Test
+    void testUpdatePlayerNotPresentNotAdmin() throws Exception {
+
+        when(securityService.isAdmin()).thenReturn(false);
+        when(securityService.isAuthenticatedUser()).thenReturn(true);
+
+        mockMvc.perform(get("/players/edit/{playerId}", TEST_NOT_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("message", "Player not found"))
+                .andExpect(view().name("/error"));
+
+    }
+
+    @WithMockUser(value="spring")
+    @Test
+    void testUpdatePlayerNotAuthenticatedUser() throws Exception {
+
+        when(securityService.isAdmin()).thenReturn(false);
+        when(securityService.isAuthenticatedUser()).thenReturn(false);
+
+        mockMvc.perform(get("/players/edit/{playerId}", TEST_PLAYER_ID))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/error"));
+
+    }
+
 
     //Method -> processUpdateForm
 
@@ -305,14 +438,15 @@ public class PlayerControllerTests {
             .param("profilePhoto", "https://imagen.png")
             .param("firstName","Manuel")
             .param("surname","González")
-            .param("email","manuelgonzalez@gmail.com"))
+            .param("email","manuelgonzalez@gmail.com")
+            .param("version","0"))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("player"))
             .andExpect(view().name("players/createOrUpdatePlayerForm"));
 	}
 
 
-    // H15-E1: Nombre de usuario no válido
+    // H15-E1: Invalid username
     @WithMockUser(value = "spring")
     @Test
     void testProcessUpdatePlayerFormWithEmptySpaceInUsername() throws Exception {
@@ -326,7 +460,8 @@ public class PlayerControllerTests {
             .param("surname",otherPlayer.getSurname())
             .param("email",otherPlayer.getEmail())
             .param("user.username", otherPlayer.getUser().getUsername() + " editado")
-            .param("user.password", otherPlayer.getUser().getPassword()))
+            .param("user.password", otherPlayer.getUser().getPassword())
+            .param("version","0"))
             .andExpect(status().isOk())
             .andExpect(model().attribute("errorMessage", "Your username can't contain empty spaces. "))
             .andExpect(view().name("players/createOrUpdatePlayerForm"));
@@ -347,7 +482,8 @@ public class PlayerControllerTests {
                 .param("surname",otherPlayer.getSurname())
                 .param("email", otherPlayer.getEmail())
                 .param("user.username", otherPlayer.getUser().getUsername() + "9")  //username editado
-                .param("user.password", otherPlayer.getUser().getPassword()))
+                .param("user.password", otherPlayer.getUser().getPassword())
+                .param("version","0"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/welcome"));
 	}

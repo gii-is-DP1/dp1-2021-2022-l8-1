@@ -56,7 +56,7 @@ public class AdminServiceTests {
 
         
         adminService.save(a);
-        assertThat(a.getId().longValue()).isNotEqualTo(0);
+        assertThat(a.getId().longValue()).isNotZero();
         assertThat(adminService.getAdminByName("test1").get().getSurname().toString()).isEqualTo("Alonso");
 
 

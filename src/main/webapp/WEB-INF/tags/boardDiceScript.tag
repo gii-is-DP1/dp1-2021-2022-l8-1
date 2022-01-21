@@ -68,7 +68,6 @@ function setDiceValue(diceValue) {
 }
 
 function rollDice() {
-    console.log("click");
     setDiceValue(diceValue);
 }
 

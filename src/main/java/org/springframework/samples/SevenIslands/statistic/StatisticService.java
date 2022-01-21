@@ -1,16 +1,11 @@
 package org.springframework.samples.SevenIslands.statistic;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.SevenIslands.card.CARD_TYPE;
 import org.springframework.samples.SevenIslands.card.Card;
 import org.springframework.samples.SevenIslands.card.CardService;
 import org.springframework.samples.SevenIslands.game.Game;
@@ -199,14 +194,14 @@ public class StatisticService {
             Integer punctuation = playersByPunctuation.get(p);
             List<Statistic> s = this.getStatisticByPlayerId(p.getId());
 
-            Optional<Statistic> statisticOp = s.stream().filter(x->x.getHad_won()==null).findFirst();
+            Optional<Statistic> statisticOp = s.stream().filter(x->x.getHadWon()==null).findFirst();
 
             if(statisticOp.isPresent()){
                 Statistic filter = statisticOp.get();
-                filter.setHad_won(false);
+                filter.setHadWon(false);
                 filter.setPoints(punctuation);
                 if(playersByPunctuation.keySet().iterator().next().equals(p)){
-                    filter.setHad_won(true);
+                    filter.setHadWon(true);
                 }
                 playerService.save(p);
             }

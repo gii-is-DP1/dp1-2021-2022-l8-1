@@ -29,8 +29,8 @@ public class WelcomeController {
 
 	@GetMapping({"/","/welcome"})
 	public String welcome(ModelMap modelMap, HttpServletRequest request) {
-		
-		List<Person> persons = new ArrayList<Person>();
+
+		List<Person> persons = new ArrayList<>();
 		Person a = new Person();
 		Person b = new Person();
 		Person c = new Person();
