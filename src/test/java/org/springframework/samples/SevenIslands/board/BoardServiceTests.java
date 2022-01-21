@@ -174,16 +174,6 @@ public class BoardServiceTests {
         boardService.init(game);
         assertThat(game.getBoard().getIslands()).isNotEmpty();
     }
-
-    @Disabled
-    @WithMockUser(value = "spring")
-    @Test
-    public void testInitBoard(){
-        Game game = gameService.findGameById(TEST_GAME_ID).get();
-        boardService.initBoard(game);
-
-        assertThat(game.getBoard().getIslands().stream().allMatch(x->x.getCard() != null));
-    }
     
 
     @WithMockUser(value = "spring")
@@ -234,16 +224,6 @@ public class BoardServiceTests {
         boardService.distribute(board, deck);
         assertTrue(boardService.findById(board.getId()).get().getIslands()
         .stream().noneMatch(x-> x.getCard()==null));
-    }
-    @Disabled
-    @WithMockUser(value = "spring")
-    @Test
-    public void testInitCardPlayers(){
-        Game game = gameService.findGameById(TEST_GAME_ID).get();
-        boardService.initCardPlayers(game);
-        Player player = game.getPlayers().stream().findFirst().get();
-        assertEquals(player.getCards().stream()
-            .filter(x-> x.getCardType().equals(CARD_TYPE.DOUBLON)).collect(Collectors.toList()).size(), 3);
     }
 
     @WithMockUser(value = "spring")
