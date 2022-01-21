@@ -54,36 +54,15 @@ public class Game extends NamedEntity {
     @Column(name="duration")
     private Integer duration = 0;
 
-    // @Column(name = "players_at_tStart")
-    // private List<Player> playersAtStart = new ArrayList<>();
-    
-    // @Column(name = "number_of_players")   
-    // private Integer numberOfPlayers;
-
     @JsonView(Views.Public.class)
     @Column(name = "actual_player")   
     private Integer actualPlayer;
-
-    // @Column(name = "number_of_turn")   
-    // private Integer numberOfTurn;
 
     @Column(name = "value_of_die")   
     private Integer valueOfDie = null;
 
     @Column(name = "die_throws")   
-    private Boolean dieThrows = false;  //Actual player uses die in the actual turn
-
-    // @Column(name = "remains_cards")   
-    // private Integer remainsCards;
-
-    // @Column(name = "deck")   
-    // private String deck;
-
-    // @Column(name = "name_of_players")   
-    // private String nameOfPlayers;
-
-    // @Column(name = "points")   
-    // private String points; //pointsOfPlayers
+    private Boolean dieThrows = false;  //Actual player uses die in the actual turn?
 
     @Column(name = "privacity")   
     @Enumerated(EnumType.STRING)
@@ -127,9 +106,6 @@ public class Game extends NamedEntity {
 		return deck;
 
     }
-
-    // @OneToMany(mappedBy="game", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    // private Set<Statistic> statistics;
 
     @OneToOne(cascade = CascadeType.ALL)
       private Board board;

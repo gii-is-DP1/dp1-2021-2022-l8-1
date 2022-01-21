@@ -87,7 +87,7 @@ public class StatisticServiceTest {
     @Test
     public void testGetFavoriteCardByPlayerId(){
         Card card = statisticService.getFavoriteCardByPlayerId(1);
-        assertEquals(card.getCardType(), CARD_TYPE.DOUBLON);
+        assertEquals(CARD_TYPE.DOUBLON,card.getCardType());
     }
 
     @Test
@@ -149,8 +149,8 @@ public class StatisticServiceTest {
     @Test
     public void testGetStatisticByPlayerId(){
         List<Statistic> statistics = statisticService.getStatisticByPlayerId(1);
-        assertTrue(statistics.get(0).had_won);
-        assertEquals(statistics.size(), 3);
+        assertTrue(statistics.get(0).hadWon);
+        assertEquals(3, statistics.size());
     }
 
     @Disabled

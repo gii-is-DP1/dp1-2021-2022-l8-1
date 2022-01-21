@@ -13,21 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * It's not ideal, but at least we can use classic MockMvc tests for testing error response + document it.
  */
 @ControllerAdvice
-public class ExceptionHandlerConfiguration 
-{
-	/*@Autowired(required = true)
-	private BasicErrorController errorController;
-    // add any exceptions/validations/binding problems
-    */
-    /*
-   @ExceptionHandler(Exception.class)
-   public String defaultErrorHandler(HttpServletRequest request,  Exception ex)  {
-        request.setAttribute("javax.servlet.error.request_uri", request.getPathInfo());
-        request.setAttribute("javax.servlet.error.status_code", 400);
-        request.setAttribute("exeption", ex);
-
-        return "exception";
-    }*/
+public class ExceptionHandlerConfiguration {
+	
+    
     @ExceptionHandler(Throwable.class)
     @ResponseBody
     public ResponseEntity<String> handleControllerException(Throwable ex) {

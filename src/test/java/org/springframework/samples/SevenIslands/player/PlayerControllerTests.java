@@ -90,7 +90,7 @@ public class PlayerControllerTests {
         otherPlayer.setFirstName("Manuel");
         otherPlayer.setSurname("González");
         otherPlayer.setEmail("manuelgonzalez@gmail.com");
-
+        otherPlayer.setVersion(0);
 
 
         otherUser = new User();
@@ -285,9 +285,6 @@ public class PlayerControllerTests {
 
     //Method -> deletePlayer
 
-    
-
-
     @WithMockUser(value="spring")
 	@Test
 	void testDeletePlayer() throws Exception {
@@ -441,14 +438,15 @@ public class PlayerControllerTests {
             .param("profilePhoto", "https://imagen.png")
             .param("firstName","Manuel")
             .param("surname","González")
-            .param("email","manuelgonzalez@gmail.com"))
+            .param("email","manuelgonzalez@gmail.com")
+            .param("version","0"))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("player"))
             .andExpect(view().name("players/createOrUpdatePlayerForm"));
 	}
 
 
-    // H15-E1: Nombre de usuario no válido
+    // H15-E1: Invalid username
     @WithMockUser(value = "spring")
     @Test
     void testProcessUpdatePlayerFormWithEmptySpaceInUsername() throws Exception {
@@ -462,7 +460,8 @@ public class PlayerControllerTests {
             .param("surname",otherPlayer.getSurname())
             .param("email",otherPlayer.getEmail())
             .param("user.username", otherPlayer.getUser().getUsername() + " editado")
-            .param("user.password", otherPlayer.getUser().getPassword()))
+            .param("user.password", otherPlayer.getUser().getPassword())
+            .param("version","0"))
             .andExpect(status().isOk())
             .andExpect(model().attribute("errorMessage", "Your username can't contain empty spaces. "))
             .andExpect(view().name("players/createOrUpdatePlayerForm"));
@@ -483,7 +482,8 @@ public class PlayerControllerTests {
                 .param("surname",otherPlayer.getSurname())
                 .param("email", otherPlayer.getEmail())
                 .param("user.username", otherPlayer.getUser().getUsername() + "9")  //username editado
-                .param("user.password", otherPlayer.getUser().getPassword()))
+                .param("user.password", otherPlayer.getUser().getPassword())
+                .param("version","0"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/welcome"));
 	}

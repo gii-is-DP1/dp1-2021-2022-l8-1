@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -59,6 +60,7 @@ public class GameController {
     @GetMapping(path = "/new")
     public String createGame(ModelMap modelMap, HttpServletRequest request) { 
         Player p = securityService.getCurrentPlayer();
+        securityService.insertIdUserModelMap(modelMap);
         if(securityService.isAdmin()) {
             request.getSession().setAttribute("message", "You must be a player to create a game");
             return "redirect:/games/rooms";
@@ -72,8 +74,13 @@ public class GameController {
             return VIEW_CREATE_OR_UPDATE_GAME_FORM;
         
         }else if(p.getInGame()) {
-            Game game = p.getGames().stream().filter(x->x.getEndTime()==null && x.isHasStarted()).findFirst().get(); //JUEGO QUE ESTÁ JUGANDO AHORA MISMO
-            return "redirect:/boards/"+game.getCode();
+            Optional<Game> gameOpt =p.getGames().stream().filter(x->x.getEndTime()==null && x.isHasStarted()).findFirst();
+
+            if(gameOpt.isPresent()){
+                Game game = gameOpt.get(); //Game you are playing right now
+                return "redirect:/boards/"+game.getCode();
+            }
+            return "/error";
         
         } else {
             return securityService.redirectToWelcome(request);
@@ -128,8 +135,6 @@ public class GameController {
             return securityService.redirectToWelcome(request);
         }
         
-       
-        
     }
   
   
@@ -145,24 +150,23 @@ public class GameController {
 
     @GetMapping(path = "/{code}/lobby")
     public String lobby(@PathVariable("code") String gameCode, ModelMap model,
-        HttpServletRequest request) {
+        HttpServletRequest request, HttpServletResponse response) {
 
         securityService.insertIdUserModelMap(model);
         Player p = securityService.getCurrentPlayer();
         Game g = gameService.findGamesByRoomCode(gameCode).iterator().next();
-        Boolean inGame = securityService.getCurrentPlayer().getInGame();
+        boolean inGame = securityService.getCurrentPlayer().getInGame();
        
-        Game gocla = gameService.waitingRoom(p.getId());
+        Game gameWaiting = gameService.waitingRoom(p.getId());
         
-        //TODO refactorizar
-        if(inGame && !g.getPlayers().contains(p)){ // FIXME: al empezar una partida, como se refresca, detecta que está en un juego y redirige a error
-            return "/error";                                        //Hasta que no termine el juego que abandonó no puede unirse a otro
-        } else if(gocla != null){
-            if(gameService.isWaitingOnRoom(p.getId()) && !gameService.waitingRoom(p.getId()).getCode().equals(gameCode)){
-                request.getSession().setAttribute("message", "You are waiting for start a game actually, can´t join an another game");
-                return publicRooms(model, request);
-            }
+        if(inGame && !g.getPlayers().contains(p)){ // When starting a game, as it refreshes, it detects that it is in a game and redirects to error
+            return "/error";                                        //Until you finish the game you left you cannot join another one
+        } else if(gameWaiting != null && (gameService.isWaitingOnRoom(p.getId()) && !gameService.waitingRoom(p.getId()).getCode().equals(gameCode))){
+
            
+            request.getSession().setAttribute("message", "You are waiting for start a game actually, can´t join an another game");
+            return publicRooms(model, request, response);
+          
         }
 		model.put("now", new Date());
         Iterable<Game> gameOpt = gameService.findGamesByRoomCode(gameCode);
@@ -172,9 +176,7 @@ public class GameController {
         
         } else {    
             return securityService.redirectToWelcome(request);        
-        }
-
-        
+        }  
 
     }
     
@@ -245,7 +247,8 @@ public class GameController {
 
     // ROOMS VIEW (PUBLIC ONES)
     @GetMapping(path = "/rooms")
-    public String publicRooms(ModelMap modelMap, HttpServletRequest request) {
+    public String publicRooms(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
+        response.addHeader("Refresh", "20");
         if (securityService.isAuthenticatedUser()) {
             securityService.insertIdUserModelMap(modelMap);
              

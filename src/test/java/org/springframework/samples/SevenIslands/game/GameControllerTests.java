@@ -94,7 +94,6 @@ public class GameControllerTests {
         firstGame.setPlayer(firstPlayer);
 
         when(this.gameService.findGameById(TEST_GAME_ID)).thenReturn(Optional.of(firstGame));
-        // when(this.securityService.getCurrentPlayerId()).thenReturn(TEST_PLAYER_ID);
         when(this.securityService.getCurrentPlayer()).thenReturn(firstPlayer);
         when(securityService.redirectToWelcome(any(HttpServletRequest.class))).thenReturn("redirect:/welcome");
 	}
@@ -146,7 +145,7 @@ public class GameControllerTests {
  
         firstPlayer.setInGame(true);
         firstGame.setHasStarted(true);
-        //firstGame.setEndTime(null);
+        
         Collection <Game> cl = new ArrayList<>();
         cl.add(firstGame);
 
@@ -202,9 +201,10 @@ public class GameControllerTests {
 				.andExpect(view().name("games/createOrUpdateGameForm"));
 	}
 
+    //HU1+1
     @WithMockUser(value = "spring")
 	@Test
-	void testCreationGameSuccessfully() throws Exception {
+	void testCreationPublicGameSuccessfully() throws Exception {
 
         Player player = mock(Player.class);
 
@@ -215,6 +215,24 @@ public class GameControllerTests {
                 .param("name", "New Game")
                 .param("code", "AHG28FD8J")
                 .param("privacity", PRIVACITY.PUBLIC.toString()))
+                .andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/games/AHG28FD8J/lobby"));
+	}
+
+    //HU1+2
+    @WithMockUser(value = "spring")
+	@Test
+	void testCreationPrivateGameSuccessfully() throws Exception {
+
+        Player player = mock(Player.class);
+
+        when(this.securityService.getCurrentPlayer()).thenReturn(player);
+
+		mockMvc.perform(post("/games/save")
+                .with(csrf())
+                .param("name", "New Game")
+                .param("code", "AHG28FD8J")
+                .param("privacity", PRIVACITY.PRIVATE.toString()))
                 .andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/games/AHG28FD8J/lobby"));
 	}

@@ -69,7 +69,6 @@
             xhttp.setRequestHeader("Content-type", "application/json");
             xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        console.log("SUCCESS");
                         
                         let response = JSON.parse(this.response);
                         let game = response.game;
@@ -115,7 +114,6 @@
             xhttp.setRequestHeader("Content-type", "application/json");
             xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        console.log("SUCCESS");
 
                         let response = JSON.parse(this.response);
                         var players = response.players;

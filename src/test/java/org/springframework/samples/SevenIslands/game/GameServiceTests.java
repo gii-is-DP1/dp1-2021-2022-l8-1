@@ -117,9 +117,7 @@ public class GameServiceTests {
         
         gameService.save(game);
 
-        assertThat(game.getId().longValue()).isNotEqualTo(0);
-
-        // assertThat(gameService.findGameByRoomCode(game.getCode()).stream().collect(Collectors.toList()).get(0).getCode().toString()).isEqualTo("AAAABBBB1");
+        assertThat(game.getId().longValue()).isNotZero();
         assertThat(gameService.findGamesByRoomCode(game.getCode()).iterator().next().getCode().toString()).isEqualTo("AAAABBBB1");
 
 

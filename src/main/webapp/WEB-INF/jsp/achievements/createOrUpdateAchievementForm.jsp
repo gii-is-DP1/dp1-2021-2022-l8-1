@@ -118,12 +118,10 @@
     </c:choose>
     
      <script type="text/javascript">
-        console.log("${achievement.achievementType}");
         var l = document.getElementById("type-input1");
            if("${achievement.achievementType}" == "GOLD"){
                l.value="GOLD";
            }else if("${achievement.achievementType}"  =="SILVER"){
-               console.log("hola");
                l.value="SILVER";
            }else{
             l.value="BRONZE"
@@ -132,16 +130,13 @@
     </script>
 
     <script type="text/javascript">
-        console.log("${achievement.parameter}");
         var f = document.getElementById("parameter-input1");
         if("${achievement.parameter}" == "POINTS"){
            f.value="POINTS";
         }else if("${achievement.parameter}"  =="WINS"){
-           console.log("hola");
            f.value="POINTS";
        
         }else if("${achievement.parameter}"  =="LOSES"){
-           console.log("hola");
            f.value="LOSES";
         }else{
         f.value="GAMES_PLAYED";

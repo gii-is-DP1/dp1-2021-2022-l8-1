@@ -142,7 +142,7 @@ public class PlayerServiceTests {
 
     @Test
     void testFindPlayersByGameId() {
-        Iterable<Player> players = playerService.findPlayersByGameId(1);//JUGADORES QUE HAY EN UNA PARTIDA DADA POR EL ID
+        Iterable<Player> players = playerService.findPlayersByGameId(1);//Players that are in a game given by the id
         long count = players.spliterator().getExactSizeIfKnown();
         assertEquals(2, count);
     }
@@ -169,19 +169,6 @@ public class PlayerServiceTests {
     void testGetAchievementsByPlayerId(){
         long count = playerService.getAchievementsByPlayerId(1).spliterator().getExactSizeIfKnown();
         assertEquals(2,count);
-    }
-
-    @Test
-    void testWatchGameByPlayerId(){
-        Iterable<Player> players = playerService.findWatchGameByPlayerId(3);
-        long count = players.spliterator().getExactSizeIfKnown();
-        assertEquals(1, count);
-    }
-
-    @Test
-    void testFindByForumId(){
-        Iterable<Player> players = playerService.findByForumId(1);
-        assertEquals(1, players.spliterator().getExactSizeIfKnown());
     }
 
     @Test
@@ -275,8 +262,9 @@ public class PlayerServiceTests {
     void testCalculatePages() {
         List<Integer> pages = playerService.calculatePages(2);
 
-        //pages[0] es la previousPage, pages[1] es la nextPage
-        // Dado que pageNumber es 2 == totalPages-1 (página final), pages[0] debe ser pageNumber-1, y pages[1] debe ser pageNumber 
+        //pages[0] is previousPage, pages[1] is nextPage
+        // Since pageNumber is 2 == totalPages-1 (final page), pages[0] must be pageNumber-1, and pages[1] must be pageNumber
+
 
         assertEquals(1, pages.get(0));
         assertEquals(2, pages.get(1));
@@ -286,8 +274,8 @@ public class PlayerServiceTests {
     void testCalculatePages2() {
         List<Integer> pages = playerService.calculatePages(1);
 
-        //pages[0] es la previousPage, pages[1] es la nextPage
-        // Dado que pageNumber es 1 (página intermedia)  pages[0] debe ser pageNumber-1, y pages[1] debe ser pageNumber +1
+        //pages[0] is previousPage, pages[1] is nextPage
+        // Since pageNumber is 1 (intermediate page) pages[0] must be pageNumber-1, and pages[1] must be pageNumber +1
 
         assertEquals(0, pages.get(0));
         assertEquals(2, pages.get(1));
@@ -298,8 +286,8 @@ public class PlayerServiceTests {
         List<Integer> pages = playerService.calculatePages(0);
         List<Integer> pages2 = playerService.calculatePages(null);
 
-        //pages[0] es la previousPage, pages[1] es la nextPage
-        // Dado que pageNumber es 1 (primera página)  pages[0] debe ser pageNumber, y pages[1] debe ser pageNumber +1
+        //pages[0] is previousPage, pages[1] is nextPage
+        // Since pageNumber is 1 (first page) pages[0] must be pageNumber, and pages[1] must be pageNumber +1
 
         assertEquals(0, pages.get(0));
         assertEquals(1, pages.get(1));
@@ -369,7 +357,7 @@ public class PlayerServiceTests {
     @Test
     void testProcessEditPlayer() {
 
-        Player p = playerService.findAll().iterator().next();   // player a editar
+        Player p = playerService.findAll().iterator().next();   // player to edit
 
         Player player2 = new Player();
         player2.setFirstName(p.getFirstName());
@@ -397,7 +385,7 @@ public class PlayerServiceTests {
     @Test
     void testProcessEditPlayer2(){
 
-        Player p = playerService.findAll().iterator().next();   // player a editar
+        Player p = playerService.findAll().iterator().next();   // player to edit
         p.setEmail("test1@us.es");
 
         Player player2 = new Player();
@@ -430,7 +418,7 @@ public class PlayerServiceTests {
     @Test
     void testProcessEditPlayer3(){
 
-        Player p = playerService.findAll().iterator().next();   // player a editar
+        Player p = playerService.findAll().iterator().next();   // player to edit
         p.setEmail("test1@us.es");
 
         Player player2 = new Player();
@@ -464,7 +452,7 @@ public class PlayerServiceTests {
         String res = playerService.processEditPlayer(player2, p.getId(), result);
         String res2 = playerService.processEditPlayer(player2, 400, result);    // if player is not present
         assertEquals("redirect:/players", res);
-        assertEquals("redirect:/players", res2);    // bc i'm an admin
+        assertEquals("redirect:/players", res2);    // because i'm an admin
 
 
     }
@@ -472,7 +460,7 @@ public class PlayerServiceTests {
     @Test
     void testProcessEditPlayer4(){
 
-        Player p = playerService.findAll().iterator().next();   // player a editar
+        Player p = playerService.findAll().iterator().next();   // player to edit
         p.setEmail("test1@us.es");
 
         Player player2 = new Player();

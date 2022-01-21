@@ -1,16 +1,12 @@
 package org.springframework.samples.SevenIslands.board;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.SevenIslands.admin.AdminController;
-import org.springframework.samples.SevenIslands.board.BoardService;
 import org.springframework.samples.SevenIslands.configuration.SecurityConfiguration;
-import org.springframework.samples.SevenIslands.deck.DeckService;
 import org.springframework.samples.SevenIslands.game.Game;
 import org.springframework.samples.SevenIslands.game.GameService;
 import org.springframework.samples.SevenIslands.game.PRIVACITY;
@@ -90,7 +86,6 @@ public class BoardControllerTests {
         firstGame.setPlayers(List.of(firstPlayer));
 
         when(this.gameService.findGameById(TEST_GAME_ID)).thenReturn(Optional.of(firstGame));
-        // when(this.securityService.getCurrentPlayerId()).thenReturn(TEST_PLAYER_ID);
         when(this.playerService.findPlayerById(TEST_PLAYER_ID)).thenReturn(Optional.of(firstPlayer));
         when(this.securityService.getCurrentPlayerId()).thenReturn(firstPlayer.getId());
         when(this.securityService.getCurrentPlayer()).thenReturn(firstPlayer);
