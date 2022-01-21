@@ -122,7 +122,7 @@ public class GameControllerTests {
  
         mockMvc.perform(get("/games/new"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/games/AHG28FD9J/lobby"));
+                .andExpect(view().name("redirect:/games/" + firstGame.getCode() + "/lobby"));
     }
  
     @WithMockUser(value = "spring")

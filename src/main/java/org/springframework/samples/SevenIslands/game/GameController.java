@@ -85,8 +85,6 @@ public class GameController {
     public String saveGame(@Valid Game game, BindingResult result, ModelMap modelMap) {   
 
         Deck deck = deckService.init(game.getName());
-       
-        //poner aqui las cartas de la isla
         
         if(gameService.gameHasInappropiateWords(game)){
             modelMap.put("game", game);

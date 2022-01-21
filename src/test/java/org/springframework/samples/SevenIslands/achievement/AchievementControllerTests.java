@@ -15,6 +15,7 @@ import org.springframework.context.annotation.FilterType;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -318,6 +319,26 @@ public class AchievementControllerTests {
                 .andExpect(model().attributeExists("errorMessage"))
                 .andExpect(status().isOk())
 				.andExpect(view().name("achievements/createOrUpdateAchievementForm"));
+	}
+
+    @WithMockUser(value = "spring")
+	@Test
+	void testEditAchievementSuccessfull() throws Exception {
+
+        when(achievementService.achievementHasInappropiateWords(any(Achievement.class))).thenReturn(false);
+
+		mockMvc.perform(post("/achievements/edit/{achievementId}", TEST_ACHIEVEMENT_ID)
+                .with(csrf())
+                .param("description", "Wins 1000 games")
+                .param("icon", "http:image.png")
+                .param("name", "Serial killer")
+                .param("minValue", "1000")
+                .param("achievementType",ACHIEVEMENT_TYPE.GOLD.toString())
+                .param("parameter", PARAMETER.WINS.toString())
+                .param("version", "0"))
+                .andExpect(request().sessionAttribute("message", "Achievement successfully updated!"))
+                .andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/achievements"));
 	}
 
 
