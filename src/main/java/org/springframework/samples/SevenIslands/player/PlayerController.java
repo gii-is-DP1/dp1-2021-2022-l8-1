@@ -311,17 +311,22 @@ public class PlayerController {
 	public String processUpdateForm(@Valid Player player, BindingResult result,@PathVariable("playerId") int playerId, ModelMap model,
                                         @RequestParam(value="version", required = false) Integer version) {
 
-        if(playerService.playerHasInappropiateWords(player)){
-            model.addAttribute(ERROR_MESSAGE, "Your profile can't contains inappropiate words. Please, check your language.");
-			model.put(PLAYER, player);
-			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
-        }
         Player playerBeforeEdit = new Player();
         Optional<Player> playerOpt =  playerService.findPlayerById(playerId);
 
         if(playerOpt.isPresent()){
             playerBeforeEdit=playerOpt.get();
         }
+
+        if(!playerBeforeEdit.getVersion().equals(version)){    //Version
+            model.put(MESSAGE, "Concurrent modification of player! Try again!");
+            return updatePlayer(playerBeforeEdit.getId(),model);
+        }else if(playerService.playerHasInappropiateWords(player)){
+            model.addAttribute(ERROR_MESSAGE, "Your profile can't contains inappropiate words. Please, check your language.");
+			model.put(PLAYER, player);
+			return VIEWS_PLAYERS_CREATE_OR_UPDATE_FORM;
+        }
+    
         Boolean isNewUser = false;
         if(playerService.emailAlreadyused(player.email, playerBeforeEdit, isNewUser)){
             model.addAttribute(ERROR_MESSAGE, "Email already used by other user");
